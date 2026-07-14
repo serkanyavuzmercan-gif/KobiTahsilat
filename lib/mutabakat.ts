@@ -45,7 +45,9 @@ export function buildMutabakatEmail(
                   <div style="font-size:25px;font-weight:700;margin-top:7px">Cari Hesap Mutabakatı</div>
                 </td>
                 <td align="right">
-                  <div style="display:inline-block;width:48px;height:48px;line-height:48px;text-align:center;border-radius:14px;background:#ffffff;color:#0f3d64;font-size:25px;font-weight:800">H</div>
+                  <div style="display:inline-block;padding:7px 9px;border-radius:12px;background:#ffffff">
+                    <img src="https://files.cdn-files-a.com/uploads/5644137/400_6865986816fbc.png" width="74" alt="Hidroteknik A.Ş." style="display:block;width:74px;max-height:42px;object-fit:contain;border:0">
+                  </div>
                 </td>
               </tr>
             </table>
@@ -77,7 +79,10 @@ export function buildMutabakatEmail(
                 <td colspan="2" style="padding:24px;text-align:center">
                   <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#64748b">Kayıtlarımıza göre borç bakiyeniz</div>
                   <div style="margin-top:8px;font-size:34px;font-weight:800;color:#0f3d64">${bakiye}</div>
-                  <div style="margin-top:8px;font-size:13px;color:#dc2626">Vadesi geçmiş: ${gecikmis}</div>
+                  <div style="margin:18px auto 0;max-width:310px;padding:13px 16px;border-radius:10px;background:#fef2f2;border:1px solid #fecaca">
+                    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#991b1b;font-weight:700">Vadesi geçmiş bakiye</div>
+                    <div style="margin-top:5px;font-size:22px;color:#b91c1c;font-weight:800">${gecikmis}</div>
+                  </div>
                 </td>
               </tr>
             </table>
@@ -90,13 +95,13 @@ export function buildMutabakatEmail(
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:24px">
               <tr>
                 <td width="49%" align="center">
-                  <a href="${onayUrl}" style="display:block;padding:14px 10px;border-radius:10px;background:#16865a;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700">
+                  <a href="${onayUrl}" target="_top" style="display:block;padding:14px 10px;border-radius:10px;background:#16865a;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700">
                     Evet, mutabıkız
                   </a>
                 </td>
                 <td width="2%"></td>
                 <td width="49%" align="center">
-                  <a href="${itirazUrl}" style="display:block;padding:14px 10px;border-radius:10px;background:#ffffff;color:#b42318;text-decoration:none;font-size:14px;font-weight:700;border:1px solid #f1a6a0">
+                  <a href="${itirazUrl}" target="_top" style="display:block;padding:14px 10px;border-radius:10px;background:#ffffff;color:#b42318;text-decoration:none;font-size:14px;font-weight:700;border:1px solid #f1a6a0">
                     Fark var / itiraz et
                   </a>
                 </td>

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { AlertTriangle, ArrowLeft, Mail, ShieldCheck } from 'lucide-react'
 import { getCari, loadSnapshot } from '@/lib/data'
 import { buildMutabakatEmail, formatDate } from '@/lib/mutabakat'
+import { createMutabakatToken } from '@/lib/mutabakat-token'
 import { formatTL } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -17,7 +18,11 @@ export default async function MutabakatPreviewPage({
   if (!cari) notFound()
 
   const snapshot = loadSnapshot()
-  const email = buildMutabakatEmail(cari, snapshot.snapshot_tarihi)
+  const token = createMutabakatToken(cari.cari_kod, snapshot.snapshot_tarihi, cari.bakiye)
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://kobi-tahsilat.vercel.app').replace(/\/$/, '')
+  const email = buildMutabakatEmail(cari, snapshot.snapshot_tarihi, {
+    itirazUrl: `${baseUrl}/mutabakat/itiraz/${encodeURIComponent(token)}`,
+  })
 
   return (
     <div className="space-y-5">
@@ -96,7 +101,7 @@ export default async function MutabakatPreviewPage({
           title={`${cari.firma_adi} mutabakat e-postası önizlemesi`}
           srcDoc={email.html}
           className="h-[900px] w-full bg-slate-100"
-          sandbox=""
+          sandbox="allow-top-navigation-by-user-activation"
         />
       </section>
     </div>

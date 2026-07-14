@@ -12,6 +12,12 @@ export async function proxy(request: NextRequest) {
     return new NextResponse('Kimlik doğrulama yapılandırılmadı.', { status: 503 })
   }
 
+  // Müşteri yanıt sayfaları yalnız HMAC imzalı, süreli token ile çalışır.
+  const isPublicMutabakatResponse =
+    request.nextUrl.pathname.startsWith('/mutabakat/itiraz/') ||
+    request.nextUrl.pathname === '/api/mutabakat/itiraz'
+  if (isPublicMutabakatResponse) return NextResponse.next()
+
   let response = NextResponse.next({ request })
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {

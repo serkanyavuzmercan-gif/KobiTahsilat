@@ -32,6 +32,10 @@ Mikro `CARI_HESAPLAR.cari_EMail` alanındaki adresler cari koduyla eşleştirili
 Mutabakat modülü şu anda güvenli **önizleme modundadır**; kontrol onayına kadar gerçek müşteriye
 e-posta göndermez.
 
+Mutabakat bağlantıları 30 gün geçerli HMAC token ile korunur. “Fark / itiraz” yanıtında müşteri
+yazılı açıklama ve en fazla 4 MB PNG/JPG/WEBP ekran görüntüsü iletebilir; bildirim yapılandırılmış
+Hidroteknik iç adresine e-posta ve ek olarak gönderilir.
+
 ## Giriş
 
 Uygulama `ss` ile aynı Supabase Auth projesini kullanır. Kullanıcı adı otomatik olarak
