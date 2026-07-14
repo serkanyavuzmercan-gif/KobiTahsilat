@@ -43,8 +43,8 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
           <Info label="Vadesi geçmiş" value={formatTL(cari.gecikmis_bakiye)} warning />
           <Info
             label="Ortalama gecikme"
-            value={formatGecikmeGun(cariOrtalamaGecikmeGun(cari))}
-            warning={cariOrtalamaGecikmeGun(cari) != null}
+            value={formatGecikmeGun(ortalamaGecikme)}
+            warning={ortalamaGecikme != null}
           />
           <Info label="Ödeme vadesi" value={cari.odeme_vadesi || 'Belirtilmemiş'} />
           <Info label="Vade günü" value={cari.vade_gun != null ? `${cari.vade_gun} gün` : '—'} />
