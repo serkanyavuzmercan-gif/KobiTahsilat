@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { AlertTriangle, ArrowLeft, CalendarClock, MessageCircle } from 'lucide-react'
+import { AlertTriangle, CalendarClock, MessageCircle } from 'lucide-react'
+import { BackLink } from '@/components/ui/button'
 import { CariTelefonEditor } from '@/components/cari-telefon-editor'
 import { HatirlatmaSendPanel } from '@/components/hatirlatma-send-panel'
 import { loadSnapshot } from '@/lib/data'
@@ -27,15 +28,9 @@ export default async function HatirlatmaPreviewPage({
 
   return (
     <div className="space-y-5">
-      <Link
-        href="/hatirlatma"
-        className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:underline"
-      >
-        <ArrowLeft size={16} />
-        Hatırlatma listesine dön
-      </Link>
+      <BackLink href="/hatirlatma">Hatırlatma listesine dön</BackLink>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <section className="card p-5">
         <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
           <div>
             <p className="font-mono text-xs text-slate-400">{cari.cari_kod}</p>

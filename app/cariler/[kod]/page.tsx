@@ -1,5 +1,5 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { BackLink } from '@/components/ui/button'
 import { getCari, loadSnapshot } from '@/lib/data'
 import { cariOrtalamaGecikmeGun, formatGecikmeGun } from '@/lib/gecikme'
 import { AGING_BUCKETS, formatTL, formatNumber } from '@/lib/types'
@@ -19,11 +19,9 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
 
   return (
     <div className="space-y-4">
-      <Link href="/cariler" className="text-sm text-brand-600 hover:underline">
-        ← Carilere dön
-      </Link>
+      <BackLink href="/cariler">Carilere dön</BackLink>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="card p-6">
         <p className="font-mono text-xs text-slate-500">{cari.cari_kod}</p>
         <h2 className="mt-1 text-2xl font-semibold text-slate-900">{cari.firma_adi}</h2>
         <p className={`mt-1 text-sm ${cari.email ? 'text-slate-500' : 'text-red-600'}`}>
@@ -69,7 +67,7 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
         </div>
       </section>
 
-      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <section className="table-shell">
         <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
           <div>
             <h3 className="font-semibold">Açık faturalar / evraklar</h3>

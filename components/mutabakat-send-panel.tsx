@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { LoaderCircle, Send } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import type { MailSenderAccount } from '@/lib/types'
 
 export function MutabakatSendPanel({
@@ -91,8 +92,7 @@ export function MutabakatSendPanel({
         )}
       </div>
 
-      <button
-        type="button"
+      <Button
         onClick={sendMutabakat}
         disabled={!canSend || loading}
         title={
@@ -104,11 +104,11 @@ export function MutabakatSendPanel({
                 ? 'Gönderici seçin'
                 : undefined
         }
-        className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-600"
+        className="w-full"
       >
         {loading ? <LoaderCircle className="animate-spin" size={18} /> : <Send size={18} />}
         Mutabakat gönder
-      </button>
+      </Button>
 
       {!hasRecipient && (
         <p className="text-xs text-red-600">Gönderim için doğrulanmış alıcı e-postası gerekli.</p>

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { LoaderCircle, Send } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { formatPhoneDisplay } from '@/lib/phone'
 
 export function HatirlatmaSendPanel({
@@ -68,15 +69,15 @@ export function HatirlatmaSendPanel({
         Daha önce gönderilen: <strong>{gonderimSayisi}</strong> mesaj
       </p>
 
-      <button
-        type="button"
+      <Button
+        variant="success"
         onClick={sendMessage}
         disabled={!canSend || loading}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-600"
+        className="w-full"
       >
         {loading ? <LoaderCircle className="animate-spin" size={18} /> : <Send size={18} />}
         WhatsApp gönder
-      </button>
+      </Button>
 
       {!hasPhone && <p className="text-xs text-red-600">Gönderim için cep telefonu gerekli.</p>}
       {hasPhone && !isMobile && (

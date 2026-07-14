@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { AlertTriangle, ArrowLeft, CalendarClock, Mail, Settings } from 'lucide-react'
+import { AlertTriangle, CalendarClock, Mail, Settings } from 'lucide-react'
+import { BackLink } from '@/components/ui/button'
 import { CariEmailEditor } from '@/components/cari-email-editor'
 import { MutabakatSendPanel } from '@/components/mutabakat-send-panel'
 import { requireAuthUser } from '@/lib/auth'
@@ -40,15 +41,9 @@ export default async function MutabakatPreviewPage({
 
   return (
     <div className="space-y-5">
-      <Link
-        href="/mutabakat"
-        className="inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:underline"
-      >
-        <ArrowLeft size={16} />
-        Mutabakat listesine dön
-      </Link>
+      <BackLink href="/mutabakat">Mutabakat listesine dön</BackLink>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+      <section className="card p-5">
         <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
           <div>
             <p className="font-mono text-xs text-slate-400">{cari.cari_kod}</p>

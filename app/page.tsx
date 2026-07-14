@@ -17,7 +17,7 @@ export default function HomePage() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="card p-6">
         <h2 className="text-xl font-semibold">Açık tahsilat özeti</h2>
         <p className="mt-1 text-sm text-slate-500">
           Kaynak: {snap.source} · Güncellendi:{' '}
@@ -32,7 +32,7 @@ export default function HomePage() {
         <p className="mt-4 text-xs text-slate-500">{snap.note}</p>
       </section>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="card p-6">
         <h3 className="text-lg font-semibold">Vade yaşlandırması</h3>
         <p className="mt-1 text-sm text-slate-500">
           Açık faturalar FIFO ile eşleştirilmiştir. Snapshot: {snap.snapshot_tarihi}
@@ -61,14 +61,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <section className="card p-6">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg font-semibold">En yüksek bakiyeler</h3>
           <Link href="/cariler" className="text-sm font-medium text-brand-600 hover:underline">
             Tüm cariler →
           </Link>
         </div>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto rounded-b-2xl">
           <table className="min-w-full text-left text-sm">
             <thead className="border-b border-slate-200 text-xs uppercase text-slate-500">
               <tr>
