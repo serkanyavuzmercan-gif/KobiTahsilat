@@ -1,8 +1,10 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { AlertTriangle, ArrowLeft, Mail, ShieldCheck } from 'lucide-react'
-import { getCari, loadSnapshot } from '@/lib/data'
+import { AlertTriangle, ArrowLeft, CalendarClock, Mail, ShieldCheck } from 'lucide-react'
+import { CariEmailEditor } from '@/components/cari-email-editor'
+import { loadSnapshot } from '@/lib/data'
 import { buildMutabakatEmail, formatDate } from '@/lib/mutabakat'
+import { loadMutabakatCari } from '@/lib/mutabakat-data'
 import { createMutabakatToken } from '@/lib/mutabakat-token'
 import { formatTL } from '@/lib/types'
 
@@ -14,7 +16,7 @@ export default async function MutabakatPreviewPage({
   params: Promise<{ kod: string }>
 }) {
   const { kod: encodedKod } = await params
-  const cari = getCari(decodeURIComponent(encodedKod))
+  const cari = await loadMutabakatCari(decodeURIComponent(encodedKod))
   if (!cari) notFound()
 
   const snapshot = loadSnapshot()
@@ -55,16 +57,31 @@ export default async function MutabakatPreviewPage({
           <div className="min-w-72 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm">
             <div className="flex items-start gap-2">
               <Mail size={17} className="mt-0.5 text-brand-600" />
-              <div>
+              <div className="w-full">
                 <p className="text-xs text-slate-500">Alıcı</p>
-                <p className="mt-0.5 font-medium">
-                  {email.to.length ? email.to.join(', ') : 'E-posta adresi bulunamadı'}
-                </p>
+                <div className="mt-2">
+                  <CariEmailEditor
+                    cariKod={cari.cari_kod}
+                    initialEmails={cari.email_adresleri}
+                    candidates={cari.email_adaylari}
+                  />
+                </div>
               </div>
             </div>
             <p className="mt-3 border-t border-slate-200 pt-3 text-xs text-slate-500">
               Konu: {email.subject}
             </p>
+            <div className="mt-3 flex items-start gap-2 border-t border-slate-200 pt-3">
+              <CalendarClock size={16} className="mt-0.5 shrink-0 text-brand-600" />
+              <div>
+                <p className="text-xs text-slate-500">Son mutabakat gönderimi</p>
+                <p className="mt-0.5 font-medium">
+                  {cari.mutabakat_son_gonderim
+                    ? new Date(cari.mutabakat_son_gonderim).toLocaleString('tr-TR')
+                    : 'Henüz gönderilmedi'}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 

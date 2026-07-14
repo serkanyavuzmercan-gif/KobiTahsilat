@@ -2,15 +2,16 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { CheckCircle2, Mail, MailWarning, Search } from 'lucide-react'
-import type { CariBakiye } from '@/lib/types'
+import { CalendarClock, CheckCircle2, Eye, Mail, MailWarning, Search } from 'lucide-react'
+import { CariEmailEditor } from '@/components/cari-email-editor'
+import type { MutabakatCari } from '@/lib/mutabakat-data'
 import { formatTL } from '@/lib/types'
 
 export function MutabakatClient({
   cariler,
   snapshotTarihi,
 }: {
-  cariler: CariBakiye[]
+  cariler: MutabakatCari[]
   snapshotTarihi: string
 }) {
   const [query, setQuery] = useState('')
@@ -85,13 +86,14 @@ export function MutabakatClient({
 
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
-          <table className="min-w-full text-left text-sm">
+          <table className="min-w-[1100px] text-left text-sm">
             <thead className="bg-slate-50 text-xs uppercase text-slate-500">
               <tr>
                 <th className="px-4 py-3">Firma</th>
                 <th className="px-4 py-3">E-posta</th>
                 <th className="px-4 py-3 text-right">Bakiye</th>
                 <th className="px-4 py-3 text-right">Gecikmiş</th>
+                <th className="px-4 py-3">Son gönderim</th>
                 <th className="px-4 py-3 text-right">İşlem</th>
               </tr>
             </thead>
@@ -102,30 +104,24 @@ export function MutabakatClient({
                     <p className="font-medium">{cari.firma_adi}</p>
                     <p className="mt-0.5 font-mono text-xs text-slate-400">{cari.cari_kod}</p>
                   </td>
-                  <td className="px-4 py-3">
-                    {cari.email ? (
-                      <div>
-                        <div className="flex items-center gap-2 text-slate-700">
-                          <Mail size={15} className="text-emerald-600" />
-                          <span>{cari.email_adresleri.join(', ')}</span>
-                        </div>
-                        <p className="mt-1 text-xs text-emerald-700">
-                          {cari.email_kaynagi || 'Mikro cari kartı'} · gönderime hazır
-                        </p>
-                      </div>
-                    ) : cari.email_adaylari.length ? (
-                      <div>
-                        <p className="font-medium text-amber-800">{cari.email_adaylari[0].email}</p>
-                        <p className="mt-1 text-xs text-amber-700">
-                          Gmail adayı · personel onayı gerekli
-                          {cari.email_adaylari.length > 1 ? ` · ${cari.email_adaylari.length} aday` : ''}
-                        </p>
-                      </div>
-                    ) : (
-                      <span className="inline-flex rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700">
-                        Mikro'da e-posta yok
-                      </span>
-                    )}
+                  <td className="px-4 py-3 align-top">
+                    <CariEmailEditor
+                      cariKod={cari.cari_kod}
+                      initialEmails={cari.email_adresleri}
+                      candidates={cari.email_adaylari}
+                      compact
+                    />
+                    <p
+                      className={`mt-1 text-xs ${
+                        cari.email ? 'text-emerald-700' : cari.email_adaylari.length ? 'text-amber-700' : 'text-red-600'
+                      }`}
+                    >
+                      {cari.email
+                        ? `${cari.email_kaynagi || 'Mikro cari kartı'} · gönderime hazır`
+                        : cari.email_adaylari.length
+                          ? 'Gmail adayı var · seçip kaydedin'
+                          : 'E-posta adresi bulunamadı'}
+                    </p>
                   </td>
                   <td className="px-4 py-3 text-right font-semibold tabular-nums">
                     {formatTL(cari.bakiye)}
@@ -133,12 +129,36 @@ export function MutabakatClient({
                   <td className="px-4 py-3 text-right font-medium tabular-nums text-red-700">
                     {formatTL(cari.gecikmis_bakiye)}
                   </td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3">
+                    {cari.mutabakat_son_gonderim ? (
+                      <div className="flex items-start gap-2 text-slate-700">
+                        <CalendarClock size={16} className="mt-0.5 shrink-0 text-brand-600" />
+                        <div>
+                          <p className="whitespace-nowrap font-medium">
+                            {new Date(cari.mutabakat_son_gonderim).toLocaleDateString('tr-TR')}
+                          </p>
+                          <p className="text-xs text-slate-400">
+                            {new Date(cari.mutabakat_son_gonderim).toLocaleTimeString('tr-TR', {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            })}
+                            {cari.mutabakat_gonderim_sayisi > 1
+                              ? ` · ${cari.mutabakat_gonderim_sayisi} gönderim`
+                              : ''}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-slate-400">Henüz gönderilmedi</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-right align-top">
                     <Link
                       href={`/mutabakat/${encodeURIComponent(cari.cari_kod)}`}
-                      className="inline-flex rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-xs font-semibold text-brand-700 hover:bg-brand-100"
+                      className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg bg-brand-600 px-3 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-brand-700"
                     >
-                      E-postayı önizle
+                      <Eye size={15} />
+                      Önizle
                     </Link>
                   </td>
                 </tr>

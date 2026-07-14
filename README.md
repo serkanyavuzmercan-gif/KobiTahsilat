@@ -41,6 +41,11 @@ kayıtları ve Gmail/IMAP'ten Supabase'e alınmış teklif yazışmalarından ar
 bağlı kayıtlar gönderime hazır olabilir; yalnız firma adı/domain ile bulunan Gmail adresleri
 personel onayına kadar **aday** kalır.
 
+Mutabakat ekranında kullanıcı cari e-postasını düzenleyip kaydedebilir. Düzenleme hem ortak
+`cariler.email` alanına hem de append-only override geçmişine yazılır; sonraki mutabakat
+önizlemelerinde bu adres önceliklidir. Daha önce gönderilmiş mutabakatların son tarihi ve toplam
+gönderim sayısı yalnız oturum açmış personele gösterilir.
+
 ## Giriş
 
 Uygulama `ss` ile aynı Supabase Auth projesini kullanır. Kullanıcı adı otomatik olarak

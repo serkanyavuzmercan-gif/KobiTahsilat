@@ -1,9 +1,11 @@
 import { MutabakatClient } from '@/components/mutabakat-client'
 import { loadSnapshot } from '@/lib/data'
+import { loadMutabakatCariler } from '@/lib/mutabakat-data'
 
 export const dynamic = 'force-dynamic'
 
-export default function MutabakatPage() {
+export default async function MutabakatPage() {
   const snapshot = loadSnapshot()
-  return <MutabakatClient cariler={snapshot.cariler} snapshotTarihi={snapshot.snapshot_tarihi} />
+  const cariler = await loadMutabakatCariler()
+  return <MutabakatClient cariler={cariler} snapshotTarihi={snapshot.snapshot_tarihi} />
 }
