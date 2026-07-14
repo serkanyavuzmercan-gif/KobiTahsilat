@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getCari, loadSnapshot } from '@/lib/data'
+import { cariOrtalamaGecikmeGun, formatGecikmeGun } from '@/lib/gecikme'
 import { AGING_BUCKETS, formatTL, formatNumber } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -14,6 +15,7 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
   const snap = loadSnapshot()
   const sira = snap.cariler.findIndex((c) => c.cari_kod === cari.cari_kod) + 1
   const pay = snap.toplam_alacak > 0 ? (cari.bakiye / snap.toplam_alacak) * 100 : 0
+  const ortalamaGecikme = cariOrtalamaGecikmeGun(cari)
 
   return (
     <div className="space-y-4">
@@ -36,9 +38,14 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
           </div>
         )}
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <Info label="Açık bakiye" value={formatTL(cari.bakiye)} accent />
           <Info label="Vadesi geçmiş" value={formatTL(cari.gecikmis_bakiye)} warning />
+          <Info
+            label="Ortalama gecikme"
+            value={formatGecikmeGun(cariOrtalamaGecikmeGun(cari))}
+            warning={cariOrtalamaGecikmeGun(cari) != null}
+          />
           <Info label="Ödeme vadesi" value={cari.odeme_vadesi || 'Belirtilmemiş'} />
           <Info label="Vade günü" value={cari.vade_gun != null ? `${cari.vade_gun} gün` : '—'} />
         </div>

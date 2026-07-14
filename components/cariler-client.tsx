@@ -2,6 +2,11 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
+import {
+  cariOrtalamaGecikmeGun,
+  formatGecikmeGun,
+  portfoyOrtalamaGecikmeGun,
+} from '@/lib/gecikme'
 import { formatNumber } from '@/lib/types'
 import type { CariBakiye } from '@/lib/types'
 
@@ -31,6 +36,10 @@ export default function CarilerClient({
   }, [cariler, q, minBakiye])
 
   const filtToplam = filtered.reduce((s, c) => s + c.bakiye, 0)
+  const ortalamaGecikme = useMemo(
+    () => portfoyOrtalamaGecikmeGun(filtered),
+    [filtered]
+  )
 
   return (
     <div className="space-y-4">
@@ -56,6 +65,7 @@ export default function CarilerClient({
         </div>
         <p className="mt-2 text-xs text-slate-500">
           Filtre sonucu: {filtered.length} cari · {formatNumber(filtToplam)} ₺
+          {ortalamaGecikme != null ? ` · Ortalama gecikme: ${formatGecikmeGun(ortalamaGecikme)}` : ''}
         </p>
       </div>
 
@@ -69,6 +79,7 @@ export default function CarilerClient({
                 <th className="px-3 py-3">Firma</th>
                 <th className="px-3 py-3">Ödeme vadesi</th>
                 <th className="px-3 py-3 text-right">Gecikmiş</th>
+                <th className="px-3 py-3 text-right">Ort. gecikme</th>
                 <th className="px-3 py-3 text-right">Bakiye (₺)</th>
               </tr>
             </thead>
@@ -105,6 +116,9 @@ export default function CarilerClient({
                   <td className="px-3 py-2 text-right font-medium tabular-nums text-red-700">
                     {formatNumber(c.gecikmis_bakiye)}
                   </td>
+                  <td className="px-3 py-2 text-right tabular-nums text-slate-600">
+                    {formatGecikmeGun(cariOrtalamaGecikmeGun(c))}
+                  </td>
                   <td className="px-3 py-2 text-right font-semibold tabular-nums text-slate-900">
                     {formatNumber(c.bakiye)}
                   </td>
@@ -112,14 +126,30 @@ export default function CarilerClient({
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-3 py-8 text-center text-slate-500">
+                  <td colSpan={7} className="px-3 py-8 text-center text-slate-500">
                     Eşleşen cari yok.
                   </td>
                 </tr>
               )}
             </tbody>
+            {filtered.length > 0 && (
+              <tfoot className="border-t border-slate-200 bg-slate-50 text-sm">
+                <tr>
+                  <td colSpan={5} className="px-3 py-3 text-right font-medium text-slate-600">
+                    Ortalama gecikme süresi
+                  </td>
+                  <td className="px-3 py-3 text-right font-semibold tabular-nums text-red-700">
+                    {formatGecikmeGun(ortalamaGecikme)}
+                  </td>
+                  <td className="px-3 py-3" />
+                </tr>
+              </tfoot>
+            )}
           </table>
         </div>
+        <p className="border-t border-slate-100 px-3 py-2 text-xs text-slate-500">
+          Ortalama gecikme, vadesi geçmiş açık kalemler üzerinden tutar ağırlıklı hesaplanır.
+        </p>
       </div>
     </div>
   )
