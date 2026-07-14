@@ -516,7 +516,16 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "satinalma@elteksmak.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 7,
+          "son_tarih": "2026-06-23",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0099",
@@ -824,48 +833,7 @@
           "temsilci": null
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "ali.kecelioglu@hamburger-containerboard.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 25,
-          "son_tarih": "2026-07-13",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "hasip.gonulkirmaz@ugurluotocam.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 3,
-          "son_tarih": "2026-05-11",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "sefa.isim@akca.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-10",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "pratis@pratis.net",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-04-17",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "satinalma1@bozdemir.co",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-04-17",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.2598",
@@ -3268,32 +3236,7 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "e.cicek@cayirhanenerji.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-03",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "sinem.gulmez@celiklerholding.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-02-27",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "sevilay.kizilkaya@celiklerholding.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-02-24",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0093",
@@ -3796,16 +3739,7 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "finans@menderes.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 4,
-          "son_tarih": "2026-04-20",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0038",
@@ -4005,40 +3939,7 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "cuneyt.ozcan@agt.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 3,
-          "son_tarih": "2026-05-20",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "info@hdmarine.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-05",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "satinalma@efarge.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-06",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "info@calendar.yandex.ru",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-02-26",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0116",
@@ -4772,11 +4673,11 @@
       ],
       "email_adaylari": [
         {
-          "email": "satinalma@efarge.com",
+          "email": "gucsanmakina@gucsanmakina.com.tr",
           "kaynak": "Gmail teklif geçmişi",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-04-22",
+          "son_tarih": "2026-05-14",
           "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
@@ -4871,11 +4772,11 @@
       ],
       "email_adaylari": [
         {
-          "email": "dijital@fatura.superonline.com",
+          "email": "musteridestek@a101.com.tr",
           "kaynak": "Gmail teklif geçmişi",
           "guven": "aday",
           "adet": 2,
-          "son_tarih": "2026-05-02",
+          "son_tarih": "2026-05-08",
           "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         },
         {
@@ -4887,27 +4788,11 @@
           "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         },
         {
-          "email": "sirkuler@uibsirkuler.org.tr",
+          "email": "musteri@natro.com",
           "kaynak": "Gmail teklif geçmişi",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-05-21",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "sales@dasergroup.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-05-04",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "export@dasergroup.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-04-20",
+          "son_tarih": "2026-03-03",
           "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
@@ -5154,48 +5039,7 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "mustafa.balci@celiklerholding.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 7,
-          "son_tarih": "2026-07-03",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "hamdioksas@celiklerholding.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-07-14",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "harun.karaman@celiklerholding.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-07-09",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "kamer.erdal@celiklerholding.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-17",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "omer.basikara@celiklerholding.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-15",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4131",
@@ -5519,24 +5363,7 @@
           "temsilci": "TUNÇER"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "newsletters@account.euronews.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-04-20",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "nilguniyice@azimkargo.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-23",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0090",
@@ -6402,48 +6229,7 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "esatinalma@oyakcimento.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 28,
-          "son_tarih": "2026-05-18",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "serdar.ercan@nexans.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 3,
-          "son_tarih": "2026-07-07",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "berhankurgut@sevalkablo.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-07-01",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "ahmetacikgoz@nurdil.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-05-04",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "bulent.balaban@cenal.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-04-22",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0029",
@@ -6967,16 +6753,7 @@
           "temsilci": "TUNÇER"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "alkhan.jafarov@azertexnolayn.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-31",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0230",
@@ -7168,16 +6945,7 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "k.erdogan2@ticaret.gov.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-02",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0095",
@@ -8510,24 +8278,7 @@
           "temsilci": null
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "serkanyavuzmercan@gmail.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-06-08",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "serkan.ayhan@akmercan.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-04-02",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.2895",
@@ -9177,48 +8928,7 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "sinem.gulmez@celiklerholding.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-03-10",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "bayram@kaviss.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-30",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "esteknikhirdavat@outlook.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-04-16",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "taner.cevik@manisa.bel.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-23",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "ramazan.bengin@celiklerholding.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-13",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0050",
@@ -9524,24 +9234,7 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "bulent.balaban@cenal.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-18",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "dyildirim@karsyht.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-02-24",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0160",
@@ -9997,16 +9690,7 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "elifgul.onur@dentaskagit.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-18",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0619",
@@ -10706,16 +10390,7 @@
           "temsilci": "TUNÇER"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "trvergiinfo@verginet.net",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-03",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0015",
@@ -11007,16 +10682,7 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "serdar.ercan@nexans.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-09",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4350",
@@ -11088,43 +10754,19 @@
       ],
       "email_adaylari": [
         {
-          "email": "satis@saygili-teknik.com",
+          "email": "muhammetsezen@ecogreenenerji.com",
           "kaynak": "Gmail teklif geçmişi",
           "guven": "aday",
           "adet": 2,
-          "son_tarih": "2026-05-20",
+          "son_tarih": "2026-06-15",
           "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         },
         {
-          "email": "sinan.kilic@filidea.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-03-05",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "muhasebe@tepegumruk.com.tr",
+          "email": "muhammetural@hattat.com.tr",
           "kaynak": "Gmail teklif geçmişi",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-05-18",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "satinalma@efarge.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-05-04",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "mehmet@hasmak.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-05",
+          "son_tarih": "2026-03-11",
           "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
@@ -11187,24 +10829,7 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "satinalma@crz.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-05-13",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "sender@formcnc.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-04-29",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0279",
@@ -11234,16 +10859,7 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "utap@deniztekstil.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-04",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0127",
@@ -11505,16 +11121,7 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "oozel@ilkecelik.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-23",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0062",
@@ -11840,48 +11447,7 @@
           "temsilci": "TUNÇER"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "faruk@santekotomasyon.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 3,
-          "son_tarih": "2026-06-12",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "info@abithalat.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-19",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "recep.buyukyildiz@agt.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-03",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "serkangok@nisanpaslanmaz.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-05-08",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "gizem.ozen@pieridtranslation.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-04-13",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0724",
@@ -11987,11 +11553,11 @@
       ],
       "email_adaylari": [
         {
-          "email": "supply@tunashipping.com",
+          "email": "ramazan.bengin@celiklerholding.com.tr",
           "kaynak": "Gmail teklif geçmişi",
           "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-10",
+          "adet": 3,
+          "son_tarih": "2026-06-15",
           "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         },
         {
@@ -12052,16 +11618,7 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "azra.yeni@timglobal.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-04-16",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0019",
@@ -12413,40 +11970,7 @@
           "temsilci": null
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "elif.gokoglu@guneyhidropar.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-07-09",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "melih.bozkurt@buzmavi.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-30",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "muhammetural@hattat.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-11",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "satinalma@elteksmak.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-02-27",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4326",
@@ -12674,16 +12198,7 @@
           "temsilci": "TUNÇER"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "etedarik@erdemirgrubu.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-05-12",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0553",
@@ -13049,48 +12564,7 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "funda.bayir@bmc.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 9,
-          "son_tarih": "2026-07-01",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "sinan.kilic@filidea.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 3,
-          "son_tarih": "2026-07-14",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "yaser@istanbuldynamics.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-07-14",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "waleed@pallmill-trading.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-07-13",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "oguz.saglam@energo-cons.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-07-10",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0123",
@@ -13179,16 +12653,8 @@
           "email": "einkauf-tr@bihl-wiedemann.de",
           "kaynak": "Gmail teklif geçmişi",
           "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-06-25",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "alperalyaz@gmail.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-05-30",
+          "adet": 6,
+          "son_tarih": "2026-07-07",
           "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         },
         {
@@ -13285,19 +12751,11 @@
       ],
       "email_adaylari": [
         {
-          "email": "pratis@pratis.net",
+          "email": "duyuru@mert-celik.com.tr",
           "kaynak": "Gmail teklif geçmişi",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-04-10",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "d.gunaydin@bilecikdemircelik.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-04",
+          "son_tarih": "2026-05-04",
           "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
@@ -13740,40 +13198,7 @@
           "temsilci": null
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "satis@sbtech.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-02",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "sirkuler@uibsirkuler.org.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-05-22",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "digital@hidrel.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-04-16",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "news@email.trendyol.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-02-26",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0166",
@@ -13911,16 +13336,7 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "hasip.gonulkirmaz@ugurluotocam.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-03-13",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0114",
@@ -14004,48 +13420,7 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "hatice.turkmenoglu@modalife.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-05-06",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "didem.karci@modalife.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-17",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "comment-reply@wordpress.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-05-18",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "ilkera@gamateks.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-02-26",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "emirhan.tiftik@modalife.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-02-24",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0660",
@@ -14085,16 +13460,7 @@
           "temsilci": null
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "satis@yeten.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-02-25",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0930",
@@ -14124,48 +13490,7 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "egesaldik@sevalkablo.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 25,
-          "son_tarih": "2026-07-07",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "esatinalma@oyakcimento.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 10,
-          "son_tarih": "2026-05-20",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "nurhan.yildiz@karelkalip.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 8,
-          "son_tarih": "2026-07-07",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "gaye.basak@karelkalip.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 7,
-          "son_tarih": "2026-07-08",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "satinalma2@hd.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 6,
-          "son_tarih": "2026-07-08",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0043",
@@ -14293,16 +13618,7 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "umit@pimecco.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-29",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0347",
@@ -14493,8 +13809,16 @@
           "email": "tabriz.orujov@azertexnolayn.com",
           "kaynak": "Gmail teklif geçmişi",
           "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-06-18",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "alkhan.jafarov@azertexnolayn.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-03-18",
+          "son_tarih": "2026-03-31",
           "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
@@ -14671,16 +13995,7 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "ali.kecelioglu@hamburger-containerboard.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-08",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0577",
@@ -14710,16 +14025,7 @@
           "temsilci": null
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "stok@logel.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-06-10",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0046",
@@ -14859,19 +14165,11 @@
       ],
       "email_adaylari": [
         {
-          "email": "cihangulenc@fercim.com.tr",
+          "email": "belgin.kilic@saffatlojistik.com.tr",
           "kaynak": "Gmail teklif geçmişi",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-06-29",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "aslisenol@lmcmakina.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-31",
+          "son_tarih": "2026-02-24",
           "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
@@ -14934,7 +14232,24 @@
           "temsilci": null
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "mehmet@hasmak.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-05",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "ubozkaya@hasmak.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-02-24",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0065",
@@ -15126,16 +14441,7 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "satinalma@crz.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-03-11",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0137",
@@ -15457,11 +14763,11 @@
   "email_ozet": {
     "toplam_cari": 210,
     "gonderime_hazir": 113,
-    "adayli": 40,
-    "eksik": 57,
+    "adayli": 10,
+    "eksik": 87,
     "gmail_tarandi": true,
-    "gmail_aday_sayisi": 100,
+    "gmail_aday_sayisi": 17,
     "gmail_kaynagi": "SS Supabase Gmail/IMAP geçmişi"
   },
-  "email_enriched_at": "2026-07-14T14:07:51.930Z"
+  "email_enriched_at": "2026-07-14T18:23:15.143Z"
 }

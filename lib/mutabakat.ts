@@ -1,5 +1,6 @@
 import type { CariBakiye } from './types'
 import { formatTL } from './types'
+import { addBusinessDays } from './business-days'
 
 export type MutabakatEmail = {
   to: string[]
@@ -16,7 +17,9 @@ export function buildMutabakatEmail(
   options?: { onayUrl?: string; itirazUrl?: string }
 ): MutabakatEmail {
   const mutabakatTarihi = snapshotTarihi
-  const sonYanitTarihi = addBusinessDays(snapshotTarihi, 8)
+  const sonYanitTarihi = addBusinessDays(`${snapshotTarihi}T00:00:00Z`, 8)
+    .toISOString()
+    .slice(0, 10)
   const firma = escapeHtml(cari.firma_adi)
   const cariKod = escapeHtml(cari.cari_kod)
   const bakiye = escapeHtml(formatTL(cari.bakiye))
@@ -41,8 +44,7 @@ export function buildMutabakatEmail(
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
               <tr>
                 <td>
-                  <div style="font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:#bfdbfe">Hidroteknik A.Ş.</div>
-                  <div style="font-size:25px;font-weight:700;margin-top:7px">Cari Hesap Mutabakatı</div>
+                  <div style="font-size:25px;font-weight:700">Cari Hesap Mutabakatı</div>
                 </td>
                 <td align="right">
                   <div style="display:inline-block;padding:10px 14px;border-radius:14px;background:#ffffff">
@@ -159,17 +161,6 @@ info@hidroteknik.com.tr · +90 258 251 40 60`
     mutabakatTarihi,
     sonYanitTarihi,
   }
-}
-
-function addBusinessDays(iso: string, days: number) {
-  const date = new Date(`${iso}T00:00:00Z`)
-  let added = 0
-  while (added < days) {
-    date.setUTCDate(date.getUTCDate() + 1)
-    const day = date.getUTCDay()
-    if (day !== 0 && day !== 6) added++
-  }
-  return date.toISOString().slice(0, 10)
 }
 
 export function formatDate(iso: string) {

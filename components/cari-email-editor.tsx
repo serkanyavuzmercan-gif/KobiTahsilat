@@ -21,6 +21,7 @@ export function CariEmailEditor({
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const [visibleCandidates, setVisibleCandidates] = useState(candidates)
 
   async function save() {
     setLoading(true)
@@ -39,7 +40,9 @@ export function CariEmailEditor({
         emails?: string[]
       }
       if (!response.ok || !result.success) throw new Error(result.error || 'Kaydedilemedi.')
-      setValue((result.emails || []).join('; '))
+      const savedEmails = result.emails || []
+      setValue(savedEmails.join('; '))
+      setVisibleCandidates((items) => items.filter((item) => !savedEmails.includes(item.email)))
       setMessage(result.message || 'Kaydedildi.')
       router.refresh()
     } catch (cause) {
@@ -58,6 +61,24 @@ export function CariEmailEditor({
     setValue(current.join('; '))
     setMessage('')
     setError('')
+  }
+
+  async function dismissCandidate(email: string) {
+    setError('')
+    setMessage('')
+    try {
+      const response = await fetch('/api/mutabakat/email-aday', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cariKod, email }),
+      })
+      const result = (await response.json()) as { success?: boolean; error?: string }
+      if (!response.ok || !result.success) throw new Error(result.error || 'Aday gizlenemedi.')
+      setVisibleCandidates((items) => items.filter((item) => item.email !== email))
+      router.refresh()
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Aday gizlenemedi.')
+    }
   }
 
   return (
@@ -85,18 +106,31 @@ export function CariEmailEditor({
         </button>
       </div>
 
-      {candidates.length > 0 && (
+      {visibleCandidates.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-1">
-          {candidates.slice(0, 5).map((candidate) => (
-            <button
+          {visibleCandidates.slice(0, 5).map((candidate) => (
+            <span
               key={candidate.email}
-              type="button"
-              onClick={() => useCandidate(candidate.email)}
-              title={`${candidate.kaynak} · onay bekliyor`}
-              className="rounded-md border border-amber-200 bg-amber-50 px-2 py-1 text-left text-xs text-amber-800 hover:bg-amber-100"
+              className="inline-flex items-center overflow-hidden rounded-md border border-amber-200 bg-amber-50 text-xs text-amber-800"
             >
-              + {candidate.email}
-            </button>
+              <button
+                type="button"
+                onClick={() => useCandidate(candidate.email)}
+                title={`${candidate.kaynak} · kullanmak için tıklayın`}
+                className="px-2 py-1 text-left hover:bg-amber-100"
+              >
+                + {candidate.email}
+              </button>
+              <button
+                type="button"
+                onClick={() => dismissCandidate(candidate.email)}
+                title="Bu öneriyi kalıcı olarak gizle"
+                aria-label={`${candidate.email} önerisini gizle`}
+                className="border-l border-amber-200 px-1.5 py-1 font-bold text-amber-700 hover:bg-amber-200"
+              >
+                ×
+              </button>
+            </span>
           ))}
         </div>
       )}

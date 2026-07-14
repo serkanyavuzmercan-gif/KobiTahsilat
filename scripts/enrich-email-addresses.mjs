@@ -227,9 +227,8 @@ function matchHistoricalMailCandidates(rows, missingCariler) {
     if (row.silindi === true) continue
     const parsed = parseAddress(row.mail_from)
     if (!parsed || isInternal(parsed.email) || isNoise(parsed.email)) continue
-    const haystack = `${parsed.display} ${parsed.email.split('@')[1]?.split('.')[0] || ''} ${row.mail_subject || ''} ${row.mail_body_preview || ''}`
     const ranked = missingCariler
-      .map((cari) => ({ cari, score: textMatchScore(cari.firma_adi, haystack) }))
+      .map((cari) => ({ cari, score: candidateScore(cari.firma_adi, parsed) }))
       .filter((item) => item.score >= 2)
       .sort((a, b) => b.score - a.score)
     if (!ranked.length || (ranked[1] && ranked[0].score === ranked[1].score)) continue
@@ -347,19 +346,13 @@ function externalAddresses(headers) {
 
 function candidateScore(companyName, address) {
   const companyTokens = meaningfulTokens(companyName)
-  const addressTokens = meaningfulTokens(`${address.display} ${address.email.split('@')[1]?.split('.')[0] || ''}`)
+  const displayTokens = meaningfulTokens(address.display)
+  const domainTokens = meaningfulTokens(address.email.split('@')[1]?.split('.')[0] || '')
+  const addressTokens = [...new Set([...displayTokens, ...domainTokens])]
   const overlap = companyTokens.filter((token) => addressTokens.includes(token))
   if (overlap.length >= 2) return 3
-  if (overlap.some((token) => token.length >= 6)) return 2
-  return 0
-}
-
-function textMatchScore(companyName, haystack) {
-  const companyTokens = meaningfulTokens(companyName)
-  const normalizedHaystack = normalize(haystack)
-  const matches = companyTokens.filter((token) => normalizedHaystack.includes(token))
-  if (matches.length >= 2) return 3
-  if (matches.some((token) => token.length >= 7)) return 2
+  if (overlap.some((token) => token.length >= 5 && domainTokens.includes(token))) return 2
+  if (overlap.some((token) => token.length >= 7 && displayTokens.includes(token))) return 2
   return 0
 }
 
@@ -368,7 +361,12 @@ function searchPhrase(companyName) {
 }
 
 function meaningfulTokens(value) {
-  const stop = new Set(['san', 'sanayi', 'tic', 'ticaret', 'ltd', 'sti', 'as', 'anonim', 'limited', 've', 'ithalat', 'ihracat', 'turkiye'])
+  const stop = new Set([
+    'san', 'sanayi', 'tic', 'ticaret', 'ltd', 'sti', 'as', 'anonim', 'limited', 've',
+    'ithalat', 'ihracat', 'turkiye', 'denizli', 'buyuksehir', 'belediyesi', 'bld',
+    'genel', 'mud', 'mudurlugu', 'dairesi', 'baskanligi', 'mak', 'mal', 'ikmal',
+    'elektrik', 'mekanik', 'hizmetleri', 'urunleri', 'firmasi', 'company',
+  ])
   return normalize(value)
     .split(/[^a-z0-9]+/)
     .filter((token) => token.length >= 3 && !stop.has(token))

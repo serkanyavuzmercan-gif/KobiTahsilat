@@ -109,10 +109,21 @@ export default async function MutabakatPreviewPage({
           </div>
         )}
 
-        <div className="mt-4 flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
+        <div
+          className={`mt-4 flex items-center justify-between gap-3 rounded-lg border p-3 text-sm ${
+            cari.mutabakat_gonderim_engelli
+              ? 'border-amber-200 bg-amber-50 text-amber-800'
+              : 'border-emerald-200 bg-emerald-50 text-emerald-800'
+          }`}
+        >
           <div className="flex items-center gap-2">
             <ShieldCheck size={18} />
-            Önizleme güvenlidir; müşteriye henüz e-posta gönderilmez.
+            {cari.mutabakat_gonderim_engelli &&
+            cari.mutabakat_tekrar_gonderilebilir_at
+              ? `Son gönderimden sonra 8 iş günü dolmadan yeniden gönderilemez. Tekrar gönderim: ${new Date(
+                  cari.mutabakat_tekrar_gonderilebilir_at
+                ).toLocaleDateString('tr-TR')}`
+              : 'Önizleme güvenlidir; müşteriye henüz e-posta gönderilmez.'}
           </div>
           <button
             type="button"
@@ -120,7 +131,7 @@ export default async function MutabakatPreviewPage({
             title="Kontrol onayından sonra etkinleştirilecek"
             className="rounded-lg bg-slate-300 px-4 py-2 text-xs font-semibold text-slate-600"
           >
-            Gönderim kapalı
+            {cari.mutabakat_gonderim_engelli ? 'Bekleme süresi aktif' : 'Gönderim kapalı'}
           </button>
         </div>
       </section>
