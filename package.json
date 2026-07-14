@@ -8,7 +8,8 @@
     "start": "next start -p 3000",
     "lint": "next lint",
     "sync:mikro": "node scripts/sync-mikro-bakiyeler.mjs",
-    "enrich:emails": "node scripts/enrich-email-addresses.mjs"
+    "enrich:emails": "node scripts/enrich-email-addresses.mjs",
+    "enrich:phones": "node scripts/enrich-phone-numbers.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.1",

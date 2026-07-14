@@ -22,6 +22,8 @@ Aç: http://localhost:3000
 | `/mutabakat` | Cari e-posta kontrolü ve mutabakat yönetimi |
 | `/mutabakat/ayarlar` | Gönderici e-posta bağlantıları (kullanıcı başına) |
 | `/mutabakat/[kod]` | Firmaya özel mutabakat e-postası önizlemesi ve gönderimi |
+| `/hatirlatma` | WhatsApp ödeme hatırlatması listesi |
+| `/hatirlatma/[kod]` | Mesaj önizleme, telefon düzenleme ve gönderim |
 | `/api/cariler?q=` | JSON API |
 
 Canlı snapshot: `data/tahsilat_snapshot.json` (Mikro firma **26**).
@@ -39,6 +41,12 @@ gerekmez. İsteğe bağlı gelişmiş şema için `docs/sql/mutabakat_gonderici_
 dosyası mevcuttur.
 
 Gönderimi kapatmak için `MUTABAKAT_SEND_ENABLED=false` tanımlayın.
+
+**WhatsApp hatırlatma** (`/hatirlatma`): Mutabakat değil, kibar ödeme hatırlatması.
+Telefonlar Mikro/SS cari kartından veya manuel girişle gelir. Gönderim geçmişi tarih ve
+sayım olarak tutulur. Canlı gönderim için Meta WhatsApp Cloud API gerekir:
+`WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_SEND_ENABLED=true`.
+Telefon zenginleştirme: `npm run enrich:phones`
 
 Mutabakat bağlantıları 30 gün geçerli HMAC token ile korunur. “Fark / itiraz” yanıtında müşteri
 yazılı açıklama ve en fazla 4 MB PNG/JPG/WEBP ekran görüntüsü iletebilir; bildirim yapılandırılmış

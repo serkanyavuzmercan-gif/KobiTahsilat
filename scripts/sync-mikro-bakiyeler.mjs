@@ -141,6 +141,31 @@ function emailAdresleri(value) {
   return [...new Set(candidates)]
 }
 
+function normalizePhone(input) {
+  const raw = String(input || '').trim()
+  if (!raw) return null
+  let digits = raw.replace(/[^\d+]/g, '')
+  if (digits.startsWith('+')) digits = digits.slice(1)
+  digits = digits.replace(/\D/g, '')
+  if (!digits) return null
+  if (digits.startsWith('90') && digits.length === 12) return `+${digits}`
+  if (digits.startsWith('0') && digits.length === 11) return `+90${digits.slice(1)}`
+  if (digits.length === 10 && digits.startsWith('5')) return `+90${digits}`
+  if (digits.length === 10 && /^[2-4]/.test(digits)) return `+90${digits}`
+  return null
+}
+
+function telefonAdresleri(plan) {
+  const raw = [plan.cep_tel, plan.tel1, plan.tel2].filter(Boolean).join('; ')
+  const candidates = String(raw || '')
+    .split(/[;,\n/|]+/)
+    .map((item) => normalizePhone(item))
+    .filter(Boolean)
+  const mobile = candidates.filter((p) => /^\+905\d{9}$/.test(p))
+  const ordered = [...new Set([...mobile, ...candidates])]
+  return ordered
+}
+
 loadEnv()
 
 const required = [
@@ -193,6 +218,9 @@ ORDER BY cha.cha_kod, cha.cha_tarihi`
 
 const planSql = `SELECT cari_kod, CAST(cari_odemeplan_no AS VARCHAR(20)) AS plan_no,
   ISNULL(cari_EMail,'') AS email,
+  ISNULL(cari_CepTel,'') AS cep_tel,
+  ISNULL(cari_Tel1,'') AS tel1,
+  ISNULL(cari_Tel2,'') AS tel2,
   (SELECT odp_adi FROM ODEME_PLANLARI WHERE odp_no = cari_odemeplan_no) AS odeme_vadesi,
   CAST((SELECT odp_ortgun FROM ODEME_PLANLARI WHERE odp_no = cari_odemeplan_no) AS VARCHAR(20)) AS vade_gun
   FROM CARI_HESAPLAR WHERE cari_kod LIKE '120%' OR cari_kod LIKE '320%'`
@@ -259,6 +287,7 @@ for (const entry of grouped.values()) {
   const odemeVadesi = plan.odeme_vadesi ? String(plan.odeme_vadesi).trim() : null
   const vadeGun = vadeGunHesapla(plan)
   const emails = emailAdresleri(plan.email)
+  const telefonlar = telefonAdresleri(plan)
   let kalan = bakiye
 
   // FIFO ödemeler eski borçları kapatır; açık kalanlar en yeni borç evraklarından geriye dağılır.
@@ -297,6 +326,11 @@ for (const entry of grouped.values()) {
     firma_adi: entry.firma_adi,
     email: emails[0] || null,
     email_adresleri: emails,
+    telefon: telefonlar[0] || null,
+    telefon_numaralari: telefonlar,
+    telefon_kaynagi: telefonlar.length ? 'Mikro cari kartı' : null,
+    telefon_guven: telefonlar.length ? 'dogrulanmis' : null,
+    telefon_adaylari: [],
     bakiye,
     gecikmis_bakiye: money(
       aging['1–30 gün'] + aging['31–60 gün'] + aging['61–90 gün'] + aging['90+ gün']

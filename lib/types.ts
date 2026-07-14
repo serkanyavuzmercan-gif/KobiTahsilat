@@ -39,6 +39,15 @@ export type EmailAday = {
   eslesme_notu: string | null
 }
 
+export type TelefonAday = {
+  telefon: string
+  kaynak: string
+  guven: EmailGuven
+  adet: number
+  son_tarih: string | null
+  eslesme_notu: string | null
+}
+
 export type CariBakiye = {
   cari_kod: string
   firma_adi: string
@@ -47,6 +56,11 @@ export type CariBakiye = {
   email_kaynagi?: string | null
   email_guven?: EmailGuven | null
   email_adaylari: EmailAday[]
+  telefon: string | null
+  telefon_numaralari: string[]
+  telefon_kaynagi?: string | null
+  telefon_guven?: EmailGuven | null
+  telefon_adaylari: TelefonAday[]
   bakiye: number
   gecikmis_bakiye: number
   odeme_vadesi: string | null
@@ -74,6 +88,13 @@ export type TahsilatSnapshot = {
     gmail_tarandi: boolean
     gmail_aday_sayisi: number
     gmail_kaynagi?: string
+  }
+  telefon_enriched_at?: string
+  telefon_ozet?: {
+    toplam_cari: number
+    gonderime_hazir: number
+    adayli: number
+    eksik: number
   }
 }
 

@@ -1,0 +1,98 @@
+import { NextResponse } from 'next/server'
+import { requireAuthUser } from '@/lib/auth'
+import { loadSnapshot } from '@/lib/data'
+import { toErrorMessage } from '@/lib/errors'
+import { buildHatirlatmaMessage } from '@/lib/hatirlatma'
+import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
+import { HATIRLATMA_LOG_KAYNAK, WHATSAPP_SEND_TIP } from '@/lib/hatirlatma-log'
+import { formatPhoneDisplay, formatPhoneWhatsApp, isMobileTurkey } from '@/lib/phone'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { sendWhatsApp, whatsAppSendEnabled } from '@/lib/whatsapp'
+
+export const dynamic = 'force-dynamic'
+
+export async function POST(request: Request) {
+  try {
+    if (!whatsAppSendEnabled()) {
+      return NextResponse.json(
+        { success: false, error: 'WhatsApp gönderimi şu anda kapalı.' },
+        { status: 403 }
+      )
+    }
+
+    const user = await requireAuthUser()
+    const body = (await request.json()) as { cariKod?: string }
+    const cariKod = String(body.cariKod || '').trim()
+    if (!cariKod) {
+      return NextResponse.json({ success: false, error: 'Cari kodu gerekli.' }, { status: 400 })
+    }
+
+    const cari = await loadHatirlatmaCari(cariKod)
+    if (!cari) {
+      return NextResponse.json({ success: false, error: 'Cari bulunamadı.' }, { status: 404 })
+    }
+    if (!cari.telefon) {
+      return NextResponse.json(
+        { success: false, error: 'Gönderim için kayıtlı cep telefonu gerekli.' },
+        { status: 400 }
+      )
+    }
+    if (!isMobileTurkey(cari.telefon)) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `WhatsApp için cep telefonu girin. Kayıtlı numara: ${formatPhoneDisplay(cari.telefon)}`,
+        },
+        { status: 400 }
+      )
+    }
+    if (cari.whatsapp_gonderim_engelli) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Son gönderimden sonra bekleme süresi dolmadan tekrar gönderilemez.',
+        },
+        { status: 409 }
+      )
+    }
+
+    const snapshot = loadSnapshot()
+    const message = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
+    const sentAt = new Date().toISOString()
+
+    const result = await sendWhatsApp({
+      to: formatPhoneWhatsApp(cari.telefon),
+      body: message.body,
+    })
+
+    const admin = createAdminClient()
+    const { error: logError } = await admin.from('mail_gonderim_log').insert({
+      mail_to: cari.telefon,
+      subject: message.ozet,
+      body_preview: message.body.slice(0, 240),
+      kaynak: HATIRLATMA_LOG_KAYNAK,
+      ilgili_id: cari.cari_kod,
+      ilgili_tip: WHATSAPP_SEND_TIP,
+      sent_at: sentAt,
+      gonderen_user_id: user.id,
+    })
+    if (logError) console.error('[hatirlatma-whatsapp-log]', logError.message)
+
+    return NextResponse.json({
+      success: true,
+      message: `WhatsApp mesajı ${formatPhoneDisplay(cari.telefon)} numarasına gönderildi.`,
+      sentAt,
+      providerId: result.id,
+      gonderimSayisi: cari.whatsapp_gonderim_sayisi + 1,
+    })
+  } catch (cause) {
+    console.error('[hatirlatma-whatsapp-gonder]', cause)
+    const message = toErrorMessage(cause, 'WhatsApp mesajı gönderilemedi.')
+    const status = message.includes('Oturum')
+      ? 401
+      : message.includes('yapılandır')
+        ? 503
+        : 500
+    return NextResponse.json({ success: false, error: message }, { status })
+  }
+}

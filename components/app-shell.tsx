@@ -40,6 +40,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </a>
             <a
               className="rounded-md px-2 py-1.5 text-slate-700 hover:bg-slate-100 sm:px-3"
+              href="/hatirlatma"
+            >
+              WhatsApp
+            </a>
+            <a
+              className="rounded-md px-2 py-1.5 text-slate-700 hover:bg-slate-100 sm:px-3"
               href="/mutabakat/ayarlar"
             >
               E-posta
