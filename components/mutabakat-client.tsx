@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { CalendarClock, CheckCircle2, Eye, Mail, MailWarning, Search } from 'lucide-react'
-import { CariEmailEditor } from '@/components/cari-email-editor'
 import type { MutabakatCari } from '@/lib/mutabakat-data'
 import { formatTL } from '@/lib/types'
 
@@ -86,7 +85,7 @@ export function MutabakatClient({
 
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
-          <table className="min-w-[1100px] text-left text-sm">
+          <table className="min-w-[960px] text-left text-sm">
             <thead className="bg-slate-50 text-xs uppercase text-slate-500">
               <tr>
                 <th className="px-4 py-3">Firma</th>
@@ -105,23 +104,7 @@ export function MutabakatClient({
                     <p className="mt-0.5 font-mono text-xs text-slate-400">{cari.cari_kod}</p>
                   </td>
                   <td className="px-4 py-3 align-top">
-                    <CariEmailEditor
-                      cariKod={cari.cari_kod}
-                      initialEmails={cari.email_adresleri}
-                      candidates={cari.email_adaylari}
-                      compact
-                    />
-                    <p
-                      className={`mt-1 text-xs ${
-                        cari.email ? 'text-emerald-700' : cari.email_adaylari.length ? 'text-amber-700' : 'text-red-600'
-                      }`}
-                    >
-                      {cari.email
-                        ? `${cari.email_kaynagi || 'Mikro cari kartı'} · gönderime hazır`
-                        : cari.email_adaylari.length
-                          ? 'Gmail adayı var · seçip kaydedin'
-                          : 'E-posta adresi bulunamadı'}
-                    </p>
+                    <CariEmailStatus cari={cari} />
                   </td>
                   <td className="px-4 py-3 text-right font-semibold tabular-nums">
                     {formatTL(cari.bakiye)}
@@ -176,6 +159,42 @@ export function MutabakatClient({
           </table>
         </div>
       </section>
+    </div>
+  )
+}
+
+function CariEmailStatus({ cari }: { cari: MutabakatCari }) {
+  if (cari.email) {
+    return (
+      <div>
+        <p className="font-medium text-slate-800">{cari.email_adresleri.join(', ')}</p>
+        <p className="mt-1 text-xs text-emerald-700">
+          {cari.email_kaynagi || 'Mikro cari kartı'} · gönderime hazır
+        </p>
+      </div>
+    )
+  }
+
+  if (cari.email_adaylari.length > 0) {
+    return (
+      <div>
+        <p className="text-slate-600">{cari.email_adaylari[0].email}</p>
+        {cari.email_adaylari.length > 1 && (
+          <p className="mt-0.5 text-xs text-slate-400">
+            +{cari.email_adaylari.length - 1} aday daha
+          </p>
+        )}
+        <p className="mt-1 text-xs text-amber-700">
+          Gmail adayı · önizlemede düzenleyin
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <p className="text-slate-500">—</p>
+      <p className="mt-1 text-xs text-red-600">E-posta adresi bulunamadı</p>
     </div>
   )
 }
