@@ -16,7 +16,7 @@ export function buildMutabakatEmail(
   options?: { onayUrl?: string; itirazUrl?: string }
 ): MutabakatEmail {
   const mutabakatTarihi = snapshotTarihi
-  const sonYanitTarihi = addDays(snapshotTarihi, 7)
+  const sonYanitTarihi = addBusinessDays(snapshotTarihi, 8)
   const firma = escapeHtml(cari.firma_adi)
   const cariKod = escapeHtml(cari.cari_kod)
   const bakiye = escapeHtml(formatTL(cari.bakiye))
@@ -92,6 +92,15 @@ export function buildMutabakatEmail(
               değişikliği içermez. Farklılık varsa itiraz seçeneğinden açıklamanızı iletebilirsiniz.
             </div>
 
+            <div style="margin-top:14px;padding:16px;border:1px solid #cbd5e1;background:#f8fafc;border-radius:10px;color:#334155;font-size:12px;line-height:1.7">
+              <div style="margin-bottom:6px;font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#0f3d64;font-weight:700">Yasal bilgilendirme</div>
+              Türk Ticaret Kanunu’nun ilgili maddeleri gereğince, işbu mutabakat mektubunun
+              tarafınıza ulaştığı tarihten itibaren 8 (sekiz) iş günü içinde yazılı bir itirazda
+              bulunulmaması halinde, yukarıda belirtilen bakiye taraflarca mutabık (kabul edilmiş)
+              sayılacaktır. Cari hesaplarımızın güncel kalması ve ticari süreçlerimizin aksamaması
+              adına göstereceğiniz hassasiyet için teşekkür ederiz.
+            </div>
+
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-top:24px">
               <tr>
                 <td width="49%" align="center">
@@ -139,6 +148,11 @@ Vadesi geçmiş: ${formatTL(cari.gecikmis_bakiye)}
 
 Lütfen ${formatDate(sonYanitTarihi)} tarihine kadar mutabık olup olmadığınızı bildiriniz.
 
+Türk Ticaret Kanunu’nun ilgili maddeleri gereğince, işbu mutabakat mektubunun tarafınıza
+ulaştığı tarihten itibaren 8 (sekiz) iş günü içinde yazılı bir itirazda bulunulmaması halinde,
+yukarıda belirtilen bakiye taraflarca mutabık (kabul edilmiş) sayılacaktır. Cari hesaplarımızın
+güncel kalması ve ticari süreçlerimizin aksamaması adına göstereceğiniz hassasiyet için teşekkür ederiz.
+
 Hidroteknik A.Ş.
 info@hidroteknik.com.tr · +90 258 251 40 60`
 
@@ -152,9 +166,14 @@ info@hidroteknik.com.tr · +90 258 251 40 60`
   }
 }
 
-function addDays(iso: string, days: number) {
+function addBusinessDays(iso: string, days: number) {
   const date = new Date(`${iso}T00:00:00Z`)
-  date.setUTCDate(date.getUTCDate() + days)
+  let added = 0
+  while (added < days) {
+    date.setUTCDate(date.getUTCDate() + 1)
+    const day = date.getUTCDay()
+    if (day !== 0 && day !== 6) added++
+  }
   return date.toISOString().slice(0, 10)
 }
 
