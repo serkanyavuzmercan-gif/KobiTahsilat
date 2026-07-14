@@ -23,6 +23,12 @@ Aç: http://localhost:3000
 
 Canlı snapshot: `data/tahsilat_snapshot.json` (Mikro firma **26**).
 
+## Giriş
+
+Uygulama `ss` ile aynı Supabase Auth projesini kullanır. Kullanıcı adı otomatik olarak
+`@hidroteknik.com.tr` alan adına tamamlanır. Giriş için personel kaydının `aktif=true` ve
+`erisim_servis=true` olması gerekir.
+
 ## Mikro'dan yenile
 
 ```bash
@@ -43,5 +49,4 @@ Detay: [`docs/SS-KAYNAK-YAPI.md`](docs/SS-KAYNAK-YAPI.md)
 
 - Evrak kırılımı + vade yaşlandırma (ss FIFO)
 - Tahsilat notu / takip durumu
-- Auth (Supabase veya basit oturum)
 - Telegram / Excel raporu entegrasyonu

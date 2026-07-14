@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AuthActions } from '@/components/auth-actions'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 >
                   Cariler
                 </a>
+                <AuthActions />
               </nav>
             </div>
           </header>

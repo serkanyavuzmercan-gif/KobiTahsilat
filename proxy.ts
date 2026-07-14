@@ -1,36 +1,63 @@
+import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
 
-export function proxy(request: NextRequest) {
-  const expectedPassword = process.env.APP_PASSWORD
+const AUTH_COOKIE_MAX_AGE = 60 * 60 * 24 * 30
 
-  // Parola tanımlı değilse uygulamayı yanlışlıkla açık yayınlama.
-  if (!expectedPassword) {
-    return new NextResponse('Uygulama erişimi yapılandırılmadı.', { status: 503 })
+export async function proxy(request: NextRequest) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  // Auth ayarı yoksa hassas bakiyeleri yanlışlıkla açık yayınlama.
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return new NextResponse('Kimlik doğrulama yapılandırılmadı.', { status: 503 })
   }
 
-  const authorization = request.headers.get('authorization')
-  if (authorization?.startsWith('Basic ')) {
-    try {
-      const credentials = atob(authorization.slice(6))
-      const separator = credentials.indexOf(':')
-      const username = credentials.slice(0, separator)
-      const password = credentials.slice(separator + 1)
-
-      if (username === 'admin' && password === expectedPassword) {
-        return NextResponse.next()
-      }
-    } catch {
-      // Geçersiz Basic Auth başlığı aşağıdaki 401 yanıtına düşer.
-    }
-  }
-
-  return new NextResponse('Giriş gerekli.', {
-    status: 401,
-    headers: {
-      'WWW-Authenticate': 'Basic realm="KobiTahsilat", charset="UTF-8"',
-      'Cache-Control': 'no-store',
+  let response = NextResponse.next({ request })
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll()
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
+        response = NextResponse.next({ request })
+        cookiesToSet.forEach(({ name, value, options }) => {
+          response.cookies.set(name, value, {
+            ...options,
+            maxAge: options?.maxAge ?? AUTH_COOKIE_MAX_AGE,
+          })
+        })
+      },
     },
   })
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (request.nextUrl.pathname === '/login') {
+    if (user) {
+      const url = request.nextUrl.clone()
+      url.pathname = '/'
+      return redirectWithCookies(url, response)
+    }
+    return response
+  }
+
+  if (!user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    url.searchParams.set('next', request.nextUrl.pathname)
+    return redirectWithCookies(url, response)
+  }
+
+  return response
+}
+
+function redirectWithCookies(url: URL, source: NextResponse) {
+  const redirect = NextResponse.redirect(url)
+  source.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie))
+  return redirect
 }
 
 export const config = {
