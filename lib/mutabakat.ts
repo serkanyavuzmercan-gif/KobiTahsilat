@@ -45,8 +45,8 @@ export function buildMutabakatEmail(
                   <div style="font-size:25px;font-weight:700;margin-top:7px">Cari Hesap Mutabakatı</div>
                 </td>
                 <td align="right">
-                  <div style="display:inline-block;padding:9px 12px;border-radius:14px;background:#ffffff">
-                    <img src="https://files.cdn-files-a.com/uploads/5644137/400_6865986816fbc.png" width="132" alt="Hidroteknik A.Ş." style="display:block;width:132px;max-width:100%;max-height:66px;object-fit:contain;border:0">
+                  <div style="display:inline-block;padding:10px 14px;border-radius:14px;background:#ffffff">
+                    <img src="https://files.cdn-files-a.com/uploads/5644137/400_6865986816fbc.png" width="172" alt="Hidroteknik A.Ş." style="display:block;width:172px;max-width:100%;max-height:82px;object-fit:contain;border:0">
                   </div>
                 </td>
               </tr>
@@ -87,13 +87,8 @@ export function buildMutabakatEmail(
               </tr>
             </table>
 
-            <div style="margin-top:22px;padding:14px 16px;border-left:4px solid #f59e0b;background:#fffbeb;border-radius:8px;color:#92400e;font-size:13px;line-height:1.6">
-              Bu çalışma yalnızca bakiye mutabakatı içindir. Ödeme talimatı veya banka hesap
-              değişikliği içermez. Farklılık varsa itiraz seçeneğinden açıklamanızı iletebilirsiniz.
-            </div>
-
-            <div style="margin-top:14px;padding:16px;border:1px solid #cbd5e1;background:#f8fafc;border-radius:10px;color:#334155;font-size:12px;line-height:1.7">
-              <div style="margin-bottom:6px;font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:#0f3d64;font-weight:700">Yasal bilgilendirme</div>
+            <div style="margin-top:22px;padding:16px 18px;border-left:5px solid #f59e0b;background:#fffbeb;border-radius:9px;color:#78350f;font-size:13px;line-height:1.75">
+              <div style="margin-bottom:7px;font-size:11px;text-transform:uppercase;letter-spacing:.9px;color:#92400e;font-weight:800">Yasal bilgilendirme</div>
               Türk Ticaret Kanunu’nun ilgili maddeleri gereğince, işbu mutabakat mektubunun
               tarafınıza ulaştığı tarihten itibaren 8 (sekiz) iş günü içinde yazılı bir itirazda
               bulunulmaması halinde, yukarıda belirtilen bakiye taraflarca mutabık (kabul edilmiş)
