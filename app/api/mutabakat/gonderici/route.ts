@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireAuthUser } from '@/lib/auth'
+import { toErrorMessage } from '@/lib/errors'
 import {
   addMailSender,
   listMailSenders,
@@ -15,7 +16,8 @@ export async function GET() {
     const senders = await listMailSenders(user.id)
     return NextResponse.json({ success: true, senders })
   } catch (cause) {
-    const message = cause instanceof Error ? cause.message : 'Göndericiler yüklenemedi.'
+    console.error('[mutabakat-gonderici-get]', cause)
+    const message = toErrorMessage(cause, 'Göndericiler yüklenemedi.')
     const status = message.includes('Oturum') ? 401 : 500
     return NextResponse.json({ success: false, error: message }, { status })
   }
@@ -37,7 +39,8 @@ export async function POST(request: Request) {
       message: 'Gönderici e-posta adresi bağlandı.',
     })
   } catch (cause) {
-    const message = cause instanceof Error ? cause.message : 'Gönderici eklenemedi.'
+    console.error('[mutabakat-gonderici-post]', cause)
+    const message = toErrorMessage(cause, 'Gönderici eklenemedi.')
     const status = message.includes('Oturum') ? 401 : 400
     return NextResponse.json({ success: false, error: message }, { status })
   }
@@ -63,7 +66,8 @@ export async function PATCH(request: Request) {
       message: 'Varsayılan gönderici güncellendi.',
     })
   } catch (cause) {
-    const message = cause instanceof Error ? cause.message : 'Gönderici güncellenemedi.'
+    console.error('[mutabakat-gonderici-patch]', cause)
+    const message = toErrorMessage(cause, 'Gönderici güncellenemedi.')
     const status = message.includes('Oturum') ? 401 : 400
     return NextResponse.json({ success: false, error: message }, { status })
   }
@@ -86,7 +90,8 @@ export async function DELETE(request: Request) {
       message: 'Gönderici bağlantısı kaldırıldı.',
     })
   } catch (cause) {
-    const message = cause instanceof Error ? cause.message : 'Gönderici kaldırılamadı.'
+    console.error('[mutabakat-gonderici-delete]', cause)
+    const message = toErrorMessage(cause, 'Gönderici kaldırılamadı.')
     const status = message.includes('Oturum') ? 401 : 400
     return NextResponse.json({ success: false, error: message }, { status })
   }

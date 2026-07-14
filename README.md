@@ -34,8 +34,9 @@ Mutabakat modülü Resend üzerinden gönderim yapar. Kullanıcılar `/mutabakat
 ekranından kendi gönderici e-posta adreslerini bağlar; önizleme ekranında seçilen adres
 `From` olarak kullanılır. Sistem varsayılanı `MAIL_FROM` env değişkenidir.
 
-İlk kurulumda Supabase SQL Editor'da bir kez çalıştırın:
-`docs/sql/mutabakat_gonderici_hesaplari.sql`
+İlk kurulumda gönderici kayıtları mevcut `mail_gonderim_log` tablosunda tutulur; ayrı tablo
+gerekmez. İsteğe bağlı gelişmiş şema için `docs/sql/mutabakat_gonderici_hesaplari.sql`
+dosyası mevcuttur.
 
 Gönderimi kapatmak için `MUTABAKAT_SEND_ENABLED=false` tanımlayın.
 

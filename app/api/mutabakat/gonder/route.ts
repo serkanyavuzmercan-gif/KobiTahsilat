@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { requireAuthUser } from '@/lib/auth'
+import { toErrorMessage } from '@/lib/errors'
 import { loadSnapshot } from '@/lib/data'
 import { sendMail } from '@/lib/mail'
 import {
@@ -113,8 +114,8 @@ export async function POST(request: Request) {
       providerId: result?.id || null,
     })
   } catch (cause) {
-    console.error('[mutabakat-gonder]', cause instanceof Error ? cause.message : cause)
-    const message = cause instanceof Error ? cause.message : 'Mutabakat gönderilemedi.'
+    console.error('[mutabakat-gonder]', cause)
+    const message = toErrorMessage(cause, 'Mutabakat gönderilemedi.')
     const status = message.includes('Oturum')
       ? 401
       : message.includes('yapılandır')
