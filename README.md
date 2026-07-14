@@ -1,23 +1,47 @@
 # KobiTahsilat
 
-Web üzerinden çalışan **tahsilat takip programı**.
+Web tabanlı **tahsilat takip** programı. Veri modeli ve işaret kuralları Hidroteknik `ss`
+(Satış+Servis) reposundaki mevcut yapıdan alınmıştır.
 
-## Durum
+## Hızlı başlangıç
 
-- Hedef: Firma bazlı tahsilat takibi (web uygulaması)
-- Kaynak repo: `https://github.com/alperalyaz/ss.git`
-- **Klonlama sonucu:** Repo bulunamadı / erişilemiyor (404). Muhtemelen **private** veya adı farklı.
-- `alperalyaz` kullanıcısının public repoları arasında `ss` yok (`hushdown`, `KanbanCode`, `privacy-policy`, `siyaset_meydani`, `wof_privacy`).
+```bash
+npm install
+npm run dev
+```
 
-## Devam için gerekenler
+Aç: http://localhost:3000
 
-1. `ss` reposunu **public** yapmak veya bu ortama erişim vermek  
-   **veya** repo içeriğini (gereksinimler, firma listesi vb.) buraya iletmek
-2. Mesajda eksik kalan kısım: **ihtiyacımız olan firma isimleri** ve devamındaki gereksinimler
+## Ne var?
 
-## Planlanan özellikler (taslak)
+| Sayfa | Açıklama |
+|-------|----------|
+| `/` | Toplam alacak özeti + en yüksek bakiyeler |
+| `/cariler` | Arama / min bakiye filtreli cari listesi |
+| `/cariler/[kod]` | Cari detay |
+| `/api/cariler?q=` | JSON API |
 
-- Firma yönetimi (isim, iletişim, bakiye)
-- Tahsilat / ödeme kayıtları
-- Vade / takip durumu
-- Web arayüzü üzerinden raporlama
+Canlı snapshot: `data/tahsilat_snapshot.json` (Mikro firma **26**).
+
+## Mikro'dan yenile
+
+```bash
+cp env.example .env.local   # MIKRO_* doldur
+npm run sync:mikro
+```
+
+## ss ile ilişki
+
+Detay: [`docs/SS-KAYNAK-YAPI.md`](docs/SS-KAYNAK-YAPI.md)
+
+- Açık bakiye: `CARI_HESAP_HAREKETLERI` net (borç − alacak), TL (`× cha_d_kur`)
+- **bakiye > 0** → tahsilat (alacağımız)
+- Hariç: `128.*`, `120.01.0001` (ŞAHLAN), `120.01.4249` (AYGÜN SARI)
+- Hedef şema (ss): `vade_takip_tahsilat`, `cari_bakiye_gunluk`, `cariler`
+
+## Sonraki özellikler
+
+- Evrak kırılımı + vade yaşlandırma (ss FIFO)
+- Tahsilat notu / takip durumu
+- Auth (Supabase veya basit oturum)
+- Telegram / Excel raporu entegrasyonu

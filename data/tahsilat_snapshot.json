@@ -1,0 +1,1465 @@
+{
+  "sourced_at": "2026-07-14T11:49:27.405Z",
+  "source": "Mikro firma 26",
+  "note": "bakiye>0 tahsilat (alacağımız). HARIC ŞAHLAN/AYGÜN + 128 hariç.",
+  "cari_sayisi": 208,
+  "toplam_alacak": 7328881.38,
+  "cariler": [
+    {
+      "cari_kod": "120.01.0003",
+      "firma_adi": "HİDROBARSAN MERMER MAKİNALARI SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 880903.65,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0032",
+      "firma_adi": "ELTEKSMAK MAKİNA A.Ş.",
+      "bakiye": 599036.97,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0099",
+      "firma_adi": "EGA MAKİNA İÇ VE DIŞ TİC.A.Ş.",
+      "bakiye": 467510.93,
+      "odeme_vadesi": "90 GÜN",
+      "vade_gun": 90
+    },
+    {
+      "cari_kod": "120.01.0284",
+      "firma_adi": "BERKAND MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 353297.45,
+      "odeme_vadesi": "90 GÜN",
+      "vade_gun": 90
+    },
+    {
+      "cari_kod": "120.01.4126",
+      "firma_adi": "DENİZLİ BÜYÜKŞEHİR BLD.DESKİ GENEL MD (ELEKTK.MK.VE MAL.İKMAL D.BŞ)",
+      "bakiye": 333984,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.2598",
+      "firma_adi": "HD KAUÇUK SAN.VE TİC.A.Ş.",
+      "bakiye": 324658.51,
+      "odeme_vadesi": "90 GÜN",
+      "vade_gun": 90
+    },
+    {
+      "cari_kod": "120.01.0005",
+      "firma_adi": "İDEAL HİDROLİK MAKİNA - ERGÜN SOLCAN",
+      "bakiye": 312642.28,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0004",
+      "firma_adi": "AKİ KOMPRESÖR",
+      "bakiye": 266391.59,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0034",
+      "firma_adi": "DENTAŞ KAĞIT SAN. A.Ş.",
+      "bakiye": 236778.41,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0778",
+      "firma_adi": "EGE TEK MÜHENDİSLİK SAN. VE TİC. A.Ş.",
+      "bakiye": 215245.49,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0012",
+      "firma_adi": "EUROPTEC CAM SANAYİVE TİC.A.Ş.",
+      "bakiye": 155616.33,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0014",
+      "firma_adi": "HAMBURGER TURKEY KAĞIT ÜRETİM VE TİC. LTD.ŞTİ.",
+      "bakiye": 137407.54,
+      "odeme_vadesi": "100 GÜN",
+      "vade_gun": 100
+    },
+    {
+      "cari_kod": "120.01.0002",
+      "firma_adi": "ŞAFAK TEMİZLİK İNŞAAT SAN. VE TİC. A.Ş.",
+      "bakiye": 126644.76,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0011",
+      "firma_adi": "TCM MAKİNA SAN. VE TİC. A.Ş.",
+      "bakiye": 104420.58,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0040",
+      "firma_adi": "UĞURLULAR TEKS. SAN.TİC. A.Ş.",
+      "bakiye": 100056.5,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0322",
+      "firma_adi": "PAMUKKALE BÜYÜKŞEHİR İLÇE BELEDİYE BAŞKANLIĞI - TEMİZLİK İŞLERİ",
+      "bakiye": 96108.25,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0301",
+      "firma_adi": "GREENECO ENERJİ ELEKTRİK ÜRETİM A.Ş.",
+      "bakiye": 84236.17,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "320.01.0093",
+      "firma_adi": "HATTAT OTOMOTİV PAZARLAMA A.Ş. (HEMA)",
+      "bakiye": 83275.09,
+      "odeme_vadesi": "90 GÜN",
+      "vade_gun": 90
+    },
+    {
+      "cari_kod": "120.01.0078",
+      "firma_adi": "KEMAL UĞURLU TEKS. SAN. VE TİC. A.Ş.",
+      "bakiye": 80691.1,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0049",
+      "firma_adi": "SELMAK İŞ MAKİNALARI METAL ÜRÜNLERİ MÜHENDİSLİK İNŞAAT TAAHHÜT SAN. TİC. LTD.ŞTİ.",
+      "bakiye": 73624.81,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0143",
+      "firma_adi": "BİODEN ENERJİ ÜRETİM SAN. VE TİC. A.Ş.",
+      "bakiye": 73298.18,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0418",
+      "firma_adi": "EFARGE MAKİNA İMALAT SAN. VE TİC. A.Ş.",
+      "bakiye": 68024.62,
+      "odeme_vadesi": "90 GÜN",
+      "vade_gun": 90
+    },
+    {
+      "cari_kod": "120.01.0058",
+      "firma_adi": "ALINDAIR SOĞUTMA SİSTEMLERİ SAN. VE TİC. A.Ş.",
+      "bakiye": 65738.9,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0018",
+      "firma_adi": "UYGAR MAKİNA SANAYİVE TİC. LTD.ŞTİ.",
+      "bakiye": 64133.2,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0138",
+      "firma_adi": "ENDER TEKS. SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 63954.45,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0038",
+      "firma_adi": "BMS BAHÇELİ MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 63792.87,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0145",
+      "firma_adi": "TARIM KREDİ SÜT ÜRÜNLERİ A.Ş.",
+      "bakiye": 60684.17,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0116",
+      "firma_adi": "FİLİDEA TEKS. SAN. VE TİC. A.Ş.",
+      "bakiye": 51857.11,
+      "odeme_vadesi": "90 GÜN",
+      "vade_gun": 90
+    },
+    {
+      "cari_kod": "120.01.0008",
+      "firma_adi": "UĞURLU OTO CAMSAN TİC AŞ",
+      "bakiye": 50698.93,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0072",
+      "firma_adi": "EKİZOĞLU MAKİNA MERMER TEKS. SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 49931.91,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0307",
+      "firma_adi": "ÖZGÜR GÜVEN",
+      "bakiye": 47672.07,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0048",
+      "firma_adi": "GÜÇSAN MAKİNA DOĞALGAZ MADENCİLİK GIDA SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 45787.52,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.02.000D",
+      "firma_adi": "MUHTELİF MÜŞTERİ (D-MARKET)",
+      "bakiye": 45729.14,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0025",
+      "firma_adi": "AYSAN RAF SİSTEMLERİ A.Ş.",
+      "bakiye": 43959.57,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0791",
+      "firma_adi": "PROTON APALİ OTOMASYON ELEK.MAK.İNŞ.TAAH.SAN.VE TİC. LTD.ŞTİ.",
+      "bakiye": 40783.86,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.4131",
+      "firma_adi": "DENİZLİ BÜYÜKŞEHİR BELEDİYE BAŞKANLIĞI - FEN İŞLERİ BİRİMİ",
+      "bakiye": 38118.14,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0061",
+      "firma_adi": "AKÇA HAZIR BETON SAN. VE TİC. A.Ş.",
+      "bakiye": 36992.75,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0090",
+      "firma_adi": "ALİ ABACI",
+      "bakiye": 35425.68,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0261",
+      "firma_adi": "AFS İSTİF MAKİNALARI SAN.VE.TİC. LTD.ŞTİ.",
+      "bakiye": 33600,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0036",
+      "firma_adi": "ÇETİN İNŞAAT MALZEMELERİ SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 33091.24,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0198",
+      "firma_adi": "İSKATEK MAKİNA - İSA KAYA",
+      "bakiye": 32583.58,
+      "odeme_vadesi": "PEŞİN",
+      "vade_gun": 0
+    },
+    {
+      "cari_kod": "120.01.0101",
+      "firma_adi": "MUZAFFER AKDEMİR",
+      "bakiye": 32555.7,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0050",
+      "firma_adi": "ENG MAKİNA İNŞAAT OTOMOTİV SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 32319.81,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0605",
+      "firma_adi": "HİDROYÖN HİDROLİK PNÖMATİK OTOM.FABR.MALZ.SAN.TİC. LTD.ŞTİ.",
+      "bakiye": 30445.45,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.4147",
+      "firma_adi": "KÜNPET AKARYAKIT SİSTEMLERİ  SERVİS İSTASYONLARI DONATIM MALZEMELERİ",
+      "bakiye": 30111.66,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0029",
+      "firma_adi": "GEDİK TAVUKÇULUK VE TARIM ÜRÜNLERİ TİC.SAN A.Ş.",
+      "bakiye": 27015.22,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0028",
+      "firma_adi": "NEXANS TÜRKİYE ENDÜSTRİ VE TİC. A.Ş.",
+      "bakiye": 26718.52,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0146",
+      "firma_adi": "ASYA İŞ MAKİNALARI SERVİS BAKIM ONARIM TİC.VE SAN. LTD.ŞTİ.",
+      "bakiye": 26653.8,
+      "odeme_vadesi": "45 GÜN",
+      "vade_gun": 45
+    },
+    {
+      "cari_kod": "120.01.0009",
+      "firma_adi": "FİLTORQ FİLTRE İTHALAT İHRACAT SAN. VE TİC. A.Ş.",
+      "bakiye": 26536.64,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0746",
+      "firma_adi": "OYAK ÇİMENTO FABRİKALARI A.Ş.",
+      "bakiye": 26243.6,
+      "odeme_vadesi": "100 GÜN",
+      "vade_gun": 100
+    },
+    {
+      "cari_kod": "120.01.0102",
+      "firma_adi": "POLO OTOMASYON ELEKTRİK SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 25027.46,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0379",
+      "firma_adi": "DOĞUSAN İNŞAAT TİC.A.Ş.",
+      "bakiye": 24803.02,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0348",
+      "firma_adi": "ÇRZ KURUYEMİŞ MAKİNALARI GIDA TARIM VE HAYVANCILIK SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 24691.5,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0713",
+      "firma_adi": "DOK-SAN DENİZLİ DOKUMA SAN. VE TİC. A.Ş.",
+      "bakiye": 23821.9,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0230",
+      "firma_adi": "ENŞAH ENERJİ, MAKİNA, MÜHENDİSLİK, İNŞAAT, TAAHHÜT, İMALAT SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 22400,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.4371",
+      "firma_adi": "UCS GIDA ENERJİ AKARYAKIT İNŞAAT TURİZM TEKSTİL TEMİZLİK TARIM HAY.NAK.MAK.İMAL.SAN.VE TİC.LTD.ŞTİ.",
+      "bakiye": 22277.7,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0336",
+      "firma_adi": "ÇINAR BORU  PROFİL SAN.VE TİC.A.Ş.",
+      "bakiye": 19440,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.4179",
+      "firma_adi": "Stoneterroir Doğal Tas Madencilik",
+      "bakiye": 19350,
+      "odeme_vadesi": "90 GÜN",
+      "vade_gun": 90
+    },
+    {
+      "cari_kod": "120.01.4330",
+      "firma_adi": "DOĞAN BİRLİK HAŞIL TEKSTİL LTD.ŞTİ.",
+      "bakiye": 19268.41,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0095",
+      "firma_adi": "REKMAK HİDROLİK İŞ MAK.İNŞAAT TEKSTİSAN.TİC. LTD.ŞTİ.",
+      "bakiye": 19041.45,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.1173",
+      "firma_adi": "KÜÇÜKER TEKS. SAN.VE TİC.A.Ş.",
+      "bakiye": 18258.1,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0045",
+      "firma_adi": "BOZDEMİR MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 18109.43,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.4180",
+      "firma_adi": "DENİZLİFT İŞ MAKİNELERİ SANAYİ VE TİCARET ANONİM ŞİRKETİ",
+      "bakiye": 17427.47,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0617",
+      "firma_adi": "ÇAMELİ BELEDİYE BAŞKANLIĞI",
+      "bakiye": 17214.48,
+      "odeme_vadesi": "PEŞİN",
+      "vade_gun": 0
+    },
+    {
+      "cari_kod": "120.01.0033",
+      "firma_adi": "SEVAL KABLO AYDINLATMA CİHAZLARI İTHALAT İHRACAT SAN. VE TİC. A.Ş.",
+      "bakiye": 16915.04,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0194",
+      "firma_adi": "ATADEN HİDROLİK PNÖMATİK SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 16852.86,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.4306",
+      "firma_adi": "GNC MUĞLA MAKİNA SAN.VE TİC.LTD.ŞTİ.",
+      "bakiye": 16329.96,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0100",
+      "firma_adi": "AK-YA DENİZCİLİK VE SU ÜRÜNLERİ ÜRETİM TAŞIMACILIK SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 15768,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0119",
+      "firma_adi": "AFYON TEKS. BOYAMA SAN. VE TİC. A.Ş.",
+      "bakiye": 15047.26,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0039",
+      "firma_adi": "ATA SANCAK ACIPAYAM TARIM İŞLETMESİ SAN.VE Tİ.C.A.Ş",
+      "bakiye": 14639.93,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0096",
+      "firma_adi": "HEDEF KAUÇUK KAUÇUK-PLASTİK LTD.ŞTİ.",
+      "bakiye": 14592.62,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0035",
+      "firma_adi": "FAZİLET VİNÇ OTO KURTARMA - MUHAMMET SAN",
+      "bakiye": 14295.36,
+      "odeme_vadesi": "PEŞİN",
+      "vade_gun": 0
+    },
+    {
+      "cari_kod": "320.01.0560",
+      "firma_adi": "AVUKAT ESRA CAN MERCAN",
+      "bakiye": 14268.31,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.2895",
+      "firma_adi": "SOLEMAR MERMER SAN.VE TİC. LTD.ŞTİ.",
+      "bakiye": 13797.58,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0059",
+      "firma_adi": "STAR STİL MAKİNA TİC. LTD.ŞTİ.",
+      "bakiye": 13283.52,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0229",
+      "firma_adi": "HÜSEYİN DÖNMEZ",
+      "bakiye": 13139.26,
+      "odeme_vadesi": "7 GÜN",
+      "vade_gun": 7
+    },
+    {
+      "cari_kod": "120.01.0105",
+      "firma_adi": "CANDAN KERESTE SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 12839.03,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0053",
+      "firma_adi": "ÇAĞ TEKS. SANVE TİC LTD ŞTİ",
+      "bakiye": 12762.9,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0006",
+      "firma_adi": "KARTALOĞLU MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 12673.7,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0256",
+      "firma_adi": "VELİ ÇELEBİ",
+      "bakiye": 12640.78,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0518",
+      "firma_adi": "ESENLİK MOTORLU ARAÇLAR TİC.VE SAN. A.Ş",
+      "bakiye": 12600,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0376",
+      "firma_adi": "ETK TEKNİK HIRDAVAT SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 12233.08,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "320.01.0050",
+      "firma_adi": "IŞIK ELEKTRİK  MÜH.SAN VE TİC. LTD.ŞTİ.",
+      "bakiye": 12000.05,
+      "odeme_vadesi": "90 GÜN",
+      "vade_gun": 90
+    },
+    {
+      "cari_kod": "120.01.0219",
+      "firma_adi": "SEYRAN GIDA SAN. VE TİC. A.Ş.",
+      "bakiye": 11829.82,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0017",
+      "firma_adi": "ABALIOĞLU YEM SAN. A.Ş.",
+      "bakiye": 11528,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0159",
+      "firma_adi": "ER MAKİNA HİDROLİK İŞ MAK. - HASAN TUNÇER",
+      "bakiye": 11354.28,
+      "odeme_vadesi": "PEŞİN",
+      "vade_gun": 0
+    },
+    {
+      "cari_kod": "120.01.2751",
+      "firma_adi": "MOTİF İZOLASYON HAVALANDIRMA İNŞAAT VE İNŞAAT MALZEMELERİ BOYA SIHHİ TESİSAT TARIM HAYVANCILIK GIDA SAN. TİC. LTD.ŞTİ.",
+      "bakiye": 11191.01,
+      "odeme_vadesi": "7 GÜN",
+      "vade_gun": 7
+    },
+    {
+      "cari_kod": "120.01.0160",
+      "firma_adi": "MERTŞEL HİDROLİK İŞMAKİNALARI SAN.VE TİC. LTD.ŞTİ.",
+      "bakiye": 10992.46,
+      "odeme_vadesi": "PEŞİN",
+      "vade_gun": 0
+    },
+    {
+      "cari_kod": "120.01.0070",
+      "firma_adi": "SİDE İPLİK  SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 10940.56,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0044",
+      "firma_adi": "GÜNEŞPAN ISI SİSTEMLERİ SAN. VE TİC. A.Ş.",
+      "bakiye": 10890.96,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.4146",
+      "firma_adi": "ALİ  KANTIK",
+      "bakiye": 10589.62,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0077",
+      "firma_adi": "AYHA ASANSÖR MAKİNA İNŞAAT SAN.VE TİC. LTD.ŞTİ.",
+      "bakiye": 9581.66,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0176",
+      "firma_adi": "DÜNDAR HİDROLİK TORNA MAKİNA İMALAT İTHALAT İHRACAT SAN VE TİC LTD ŞTİ",
+      "bakiye": 9373.5,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.3978",
+      "firma_adi": "DENTAŞ AMBALAJ VE KAĞIT SAN. A.Ş.",
+      "bakiye": 9354.96,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0619",
+      "firma_adi": "ATAPAK AMBALAJ SAN. VE TİC. A.Ş.",
+      "bakiye": 9237.7,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.1100",
+      "firma_adi": "VOX OTOMASYON MAKİNA MÜHENDİSLİK LTD.ŞTİ.",
+      "bakiye": 9227.05,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0057",
+      "firma_adi": "AKİ ÇELİK SAN.VE TİCLTD.ŞTİ.",
+      "bakiye": 9165.83,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0139",
+      "firma_adi": "FİESTA TEKS. SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 9159.91,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0085",
+      "firma_adi": "MELİHŞAH KUTLU",
+      "bakiye": 9023.84,
+      "odeme_vadesi": "7 GÜN",
+      "vade_gun": 7
+    },
+    {
+      "cari_kod": "120.01.0115",
+      "firma_adi": "CYL MERMER MADENCİLİK İNŞAAT SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 9000.58,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.4193",
+      "firma_adi": "VELİ SİPAHİ",
+      "bakiye": 8380.13,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0167",
+      "firma_adi": "DNZ TEKNİK MAKİNA END.SAN.VE TİC. LTD.ŞİRKET",
+      "bakiye": 8070.37,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0306",
+      "firma_adi": "SODAŞ SODYUM SAN.A.Ş.",
+      "bakiye": 7594.48,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.2106",
+      "firma_adi": "SAMER MADENCİLİK SAN.VE TİC.A.Ş.",
+      "bakiye": 7373.8,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.1318",
+      "firma_adi": "TOKEL SONDAJ SAN.TİC. LTD.ŞTİ.",
+      "bakiye": 7320,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0441",
+      "firma_adi": "SEMRUK MADENCİLİK İNŞAAT NAKLİYE İTHALAT İHRACAT SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 7200,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0015",
+      "firma_adi": "BRETON MAKİNA SAN. VE TİC. A.Ş.",
+      "bakiye": 6971.38,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.4094",
+      "firma_adi": "PAMUKKALE KURUYEMİŞ MAK.SAN.TİC. LTD.ŞTİ.",
+      "bakiye": 6795.6,
+      "odeme_vadesi": "45 GÜN",
+      "vade_gun": 45
+    },
+    {
+      "cari_kod": "120.01.0013",
+      "firma_adi": "ER-BAKIR ELEKTROLİTİK BAKIR MAMULLERİ A.Ş.",
+      "bakiye": 6787.55,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0037",
+      "firma_adi": "YONGA MOBİLYA A.Ş.",
+      "bakiye": 6746.94,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0121",
+      "firma_adi": "GÜNEY BELEDİYE BAŞKANLIĞI",
+      "bakiye": 6360.07,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0217",
+      "firma_adi": "GÖKNUR GIDA MADDELERİ ENERJİ İMALAT İTHALAT İHRACAT TİC.VE SAN. A.Ş.",
+      "bakiye": 6231.25,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0267",
+      "firma_adi": "GÖKHAN TEKS. SAN. VE TİC. A.Ş.",
+      "bakiye": 6006.6,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.4350",
+      "firma_adi": "DİNAR KRAFT KAĞITÇILIK ANONİM ŞİRKETİ",
+      "bakiye": 5940,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "320.01.0355",
+      "firma_adi": "MUHAMMET ÇIRAK - YILDIZ TEKNİK MAKİNA",
+      "bakiye": 5754.05,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.4307",
+      "firma_adi": "BATIN STONE MADENCİLİK SAN. VE TİC.LTD.ŞTİ.",
+      "bakiye": 5683.51,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.1762",
+      "firma_adi": "SİLVER MAKİNA SAN. VE DIŞ TİC. LTD.ŞTİ.",
+      "bakiye": 5650.94,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0279",
+      "firma_adi": "DENİZ TEKS. SAN. VE TİC. A.Ş.",
+      "bakiye": 5224.98,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "320.01.0127",
+      "firma_adi": "METROPOL DİJİTAL TELEVİZYON RADYO YAYINCILIK SAN. VE TİC.A.Ş",
+      "bakiye": 5180,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0496",
+      "firma_adi": "SELÇUK KOÇOĞLU",
+      "bakiye": 5040.3,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0373",
+      "firma_adi": "MAS TEKNİK - AYŞE SİNİR (MEHMET ALİ SİNİR)",
+      "bakiye": 4610.51,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0244",
+      "firma_adi": "MERCAN KİMYA SAN. VE TİC. A.Ş.",
+      "bakiye": 4528.08,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.4361",
+      "firma_adi": "PENSAN KALEM VE KAĞIT SANAYİ TİCARET ANONİM ŞİRKETİ",
+      "bakiye": 4516.87,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0062",
+      "firma_adi": "MENDERES TEKS. SAN. VE TİC.A.Ş.",
+      "bakiye": 4317.71,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0202",
+      "firma_adi": "EREN FORKLİFT PNÖMATİK HİD.VİNÇ MAK.GIDA.BİL.SAN.VE.TİC. LTD.ŞTİ.",
+      "bakiye": 4000.17,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0293",
+      "firma_adi": "CAN KARDEŞLER OTOMOTİV SAN. VE TİCLTD.ŞTİ.",
+      "bakiye": 3862.32,
+      "odeme_vadesi": "45 GÜN",
+      "vade_gun": 45
+    },
+    {
+      "cari_kod": "120.01.0089",
+      "firma_adi": "HALİL PEKDEMİR ÇİFTLİĞİ GIDA VE İHTİYAÇ MADDELERİ TİC.VE SAN. LTD.ŞTİ.",
+      "bakiye": 3848.04,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0168",
+      "firma_adi": "ÖNER NAKLİYE TURİZM İNŞ OTOMOTİV TEMİZLİK SAN. TİC LTD",
+      "bakiye": 3802.59,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0724",
+      "firma_adi": "TİKA MAKİNA VE OTOMASYON İTH.İHR.SAN.TİC.A.Ş",
+      "bakiye": 3749.7,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.4237",
+      "firma_adi": "RAMAZAN KAVAKLI",
+      "bakiye": 3597.22,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0020",
+      "firma_adi": "TIKIROĞLU HAZIR BETON HAFR.NAK.SAN.TİC. LTD.ŞTİ",
+      "bakiye": 3347.1,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0019",
+      "firma_adi": "IONIC STONE MADEN SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 3326.04,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0756",
+      "firma_adi": "ERAY YEŞİL",
+      "bakiye": 3136.51,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0551",
+      "firma_adi": "SEDAT UĞURLU TEKS. SAN.TİC. LTD.ŞTİ",
+      "bakiye": 3107.14,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0133",
+      "firma_adi": "ACIPAYAM BELEDİYE BAŞKANLIĞI",
+      "bakiye": 3100,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "320.01.0195",
+      "firma_adi": "MNG KARGO YURTİÇİ VE YURTDIŞI TAŞ.A.Ş.",
+      "bakiye": 3059.04,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.4326",
+      "firma_adi": "SERİNHİSAR BELEDİYESİ -FEN İŞLERİ MÜDÜRLÜĞÜ",
+      "bakiye": 3000,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0122",
+      "firma_adi": "DENİZLİ UZMANLAR OTO.SATIŞ YSER.YED.PAR.İKİNCİ EL HUR.NAK.KUR.HİZ.PETROL İNŞ.GAY.SAN.VE TİC.A.Ş.",
+      "bakiye": 2871,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.4127",
+      "firma_adi": "DESKİ GENEL MÜD. İÇMESUYU",
+      "bakiye": 2860.99,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0222",
+      "firma_adi": "EGE MENSUCAT SANAYİVE TİC.LTD ŞTİ.",
+      "bakiye": 2755.12,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0387",
+      "firma_adi": "DENİZLİ PREFABRİK YAPI ELEMANLARI İNŞAAT SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 2689.07,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "320.01.0553",
+      "firma_adi": "TÜRK TELEKOMÜNİKASYON A.Ş.",
+      "bakiye": 2664.75,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.1064",
+      "firma_adi": "EOS CEVİZ TARIM ÜRÜNLERİ SAN.TİC.A.Ş.",
+      "bakiye": 2600,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.4108",
+      "firma_adi": "SENA KABLO SAN. TİC. LTD. ŞTİ.",
+      "bakiye": 2542.1,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0549",
+      "firma_adi": "MMZ-ONUR BORU PROFİL ÜRETİM SAN. VETİCARET A.Ş.",
+      "bakiye": 2366.53,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0103",
+      "firma_adi": "USTA VİNÇ İŞ MAKİNALARI NAKLİYAT SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 2327.71,
+      "odeme_vadesi": "7 GÜN",
+      "vade_gun": 7
+    },
+    {
+      "cari_kod": "120.01.0055",
+      "firma_adi": "ALKİM ALKALİ KİMYA A.Ş.",
+      "bakiye": 2290.31,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0878",
+      "firma_adi": "OMR MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 2271.38,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0066",
+      "firma_adi": "MAUN GIDA SAN. A.Ş.",
+      "bakiye": 2039.99,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0285",
+      "firma_adi": "MAZIOĞLU ORM.ÜRÜN.İNŞ.MÜTEAH.NAK.AMB.SAN.TİC. LTD.ŞTİ",
+      "bakiye": 1985.33,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0123",
+      "firma_adi": "PAMİR HAVLU PAZARLAMA SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 1929.45,
+      "odeme_vadesi": "90 GÜN",
+      "vade_gun": 90
+    },
+    {
+      "cari_kod": "120.01.0027",
+      "firma_adi": "BIHL VE WIEDEMANN OTOMASYON SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 1883.73,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0084",
+      "firma_adi": "DENİZLİ İSTİF VE İŞ MAKİNALARI SAN.TİC. LTD.ŞTİ.",
+      "bakiye": 1755.13,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "320.01.0159",
+      "firma_adi": "ASKON DEMİR ÇELİK AŞ.",
+      "bakiye": 1744.76,
+      "odeme_vadesi": "45 GÜN",
+      "vade_gun": 45
+    },
+    {
+      "cari_kod": "120.01.0047",
+      "firma_adi": "MAB MAKİNA - ŞADAN BOYACI",
+      "bakiye": 1732.02,
+      "odeme_vadesi": "7 GÜN",
+      "vade_gun": 7
+    },
+    {
+      "cari_kod": "120.01.0030",
+      "firma_adi": "DEBAK DENİZLİ BAGALİT KALIP SAN. VE TİC. A.Ş.",
+      "bakiye": 1650,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0113",
+      "firma_adi": "ALTINTOP KURUYEMİŞ GIDA SAN. VE TİC. A.Ş.",
+      "bakiye": 1603.72,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0010",
+      "firma_adi": "DANTA PREFABRİK BETONARME YAPI SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 1504.73,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.4324",
+      "firma_adi": "DENİZLİ MODERN TEKSTİL SAN.VE TİC.A.Ş.",
+      "bakiye": 1414.96,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0866",
+      "firma_adi": "AYDEM YENİLENEBİLİR ENERJİ A.Ş.",
+      "bakiye": 1392.17,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0031",
+      "firma_adi": "İLKE ÇELİK METAL SAN. VE TİC. A.Ş.",
+      "bakiye": 1274.37,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0309",
+      "firma_adi": "EREN KADİFE TEKS. NAKLİYE SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 1237.15,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.4221",
+      "firma_adi": "FURKAN SÖNMEZ",
+      "bakiye": 1204.9,
+      "odeme_vadesi": "PEŞİN",
+      "vade_gun": 0
+    },
+    {
+      "cari_kod": "120.01.0407",
+      "firma_adi": "ALSERA JEOTERMAL TARIM GIDA SAN.VE TİC.A.Ş.",
+      "bakiye": 1196.91,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "320.01.0576",
+      "firma_adi": "KOZMOPOL KOZMETİK SAĞLIK GIDA SANAYİ VE TİCARET ANONİM ŞİRKETİ",
+      "bakiye": 1143,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0166",
+      "firma_adi": "ATESAN AKARYAKIT SİSTEMLERİ SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 1000.38,
+      "odeme_vadesi": "PEŞİN",
+      "vade_gun": 0
+    },
+    {
+      "cari_kod": "120.01.0377",
+      "firma_adi": "KALKANLAR OTO YEDEK PARÇA LASTİK JANT SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 940.83,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0114",
+      "firma_adi": "GUNEY MAKİNA SAN. VE TİC. A.Ş.",
+      "bakiye": 895.5,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0125",
+      "firma_adi": "BSE PLASTİK AMBALAJVE TEKS. SAN TİC. LTD.ŞTİ.",
+      "bakiye": 891.82,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0660",
+      "firma_adi": "KAYABAŞI ENDÜSTRİYEL PARÇA VE MAKİNA SAN. VE TİC. LTD.ŞTİ",
+      "bakiye": 835.13,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0930",
+      "firma_adi": "EZEL ŞARAPCILIK TAR.ÜR.GID.VE AL.ÜR.SAN.TİC. LTD.ŞTİ.",
+      "bakiye": 779.99,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0043",
+      "firma_adi": "ÇÜMEN HİDROLİK İŞ MAKİNALARI TEKS. SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 625.34,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0151",
+      "firma_adi": "MAZI ORMAN ÜRÜNLERİİTH.İHR.SANAYİ VE TİC. LTD.ŞTİ.",
+      "bakiye": 556.61,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0394",
+      "firma_adi": "ISI SAN MÜHENDİSLİK İNŞAAT SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 545.35,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0347",
+      "firma_adi": "DEVLET HAVA MEYDANLARI İŞLETMESİ GENEL MÜD.",
+      "bakiye": 525,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0986",
+      "firma_adi": "AGT AĞAÇ SAN.VE TİC.A.Ş.",
+      "bakiye": 516,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "320.01.0035",
+      "firma_adi": "GERMAK MÜHENDİSLİK ENDÜS.MALZ.SAN.TİC.A.Ş.",
+      "bakiye": 512.92,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0234",
+      "firma_adi": "EDALİFT FORKLİFT İŞ MAKİNALARI  - YASEMİN GİRGİN",
+      "bakiye": 498.23,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0170",
+      "firma_adi": "DENİZLİ ÖZER HIRDAVAT HİDROLİK LTD.ŞTİ.",
+      "bakiye": 421.13,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0372",
+      "firma_adi": "AHMET BOLAT",
+      "bakiye": 391.27,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0597",
+      "firma_adi": "AZERTEXNOLAYN LLC",
+      "bakiye": 352.87,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.4368",
+      "firma_adi": "BURHAN KÖSEOĞLU",
+      "bakiye": 309.76,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0381",
+      "firma_adi": "ÇELİKKOL MARBLE MADENCİLİK SAN.VE TİC. LTD.ŞTİ.",
+      "bakiye": 302.89,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0254",
+      "firma_adi": "DENBO BOYA SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 295.01,
+      "odeme_vadesi": "7 GÜN",
+      "vade_gun": 7
+    },
+    {
+      "cari_kod": "320.01.0577",
+      "firma_adi": "VAVA CARS TURKEY OTOMOTİV ANONİM ŞİRKETİ",
+      "bakiye": 243.84,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0046",
+      "firma_adi": "İNCİ ENERJİ SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 224.94,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0126",
+      "firma_adi": "ATİK TEL MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 218.49,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0215",
+      "firma_adi": "ÇELİKKOL PETROL MERMER SAN VE TİC. LTD. ŞTİ",
+      "bakiye": 193,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "320.01.0556",
+      "firma_adi": "PORT KARGO VE LOJİSTİK A.Ş.",
+      "bakiye": 156.71,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.4364",
+      "firma_adi": "SERİNHİSAR BELEDİYESİ- TEMİZLİK İŞLERİ MÜDÜRLÜĞÜ",
+      "bakiye": 149.51,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "320.01.0559",
+      "firma_adi": "HASMAK İMALAT MONTAJ İNŞAAT SANAYİ TİCARET ANONİM ŞİRKETİ",
+      "bakiye": 144.15,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0065",
+      "firma_adi": "HSK MAKİNA MÜHENDİSLİK İTHALAT İHRACAT SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 129.92,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0331",
+      "firma_adi": "DENİZLİ TRAVERTEN MERMER MADEN NAKLİYAT İNŞAAT SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 128.84,
+      "odeme_vadesi": "PEŞİN",
+      "vade_gun": 0
+    },
+    {
+      "cari_kod": "120.01.0420",
+      "firma_adi": "NESA TEKS. SAN. VE TİC. A.Ş.",
+      "bakiye": 119.76,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0602",
+      "firma_adi": "CNT FİLTRE OTOMOTİV SAN. TİC. LTD.ŞTİ.",
+      "bakiye": 116.24,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.4219",
+      "firma_adi": "REŞAT ERBAY-FERDİ AKKUŞ ADİ ORTAKLIĞI",
+      "bakiye": 104.82,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0073",
+      "firma_adi": "ÜÇLER MAKİNA İNŞ.TURİZM SAN.TİC. LTD.ŞTİ. - DENİZLİ  ŞUBESİ",
+      "bakiye": 90.74,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0024",
+      "firma_adi": "GÖKDELEN İSKELE KALIP SAN. VE TİC. A.Ş.",
+      "bakiye": 86.13,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "320.01.0137",
+      "firma_adi": "İSTANBUL PNÖMATİK VEOTOMASYON SİSTEMLERİ TİC. LTD.ŞTİ",
+      "bakiye": 50,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0529",
+      "firma_adi": "FEZA KOMPROSÖR  YUSUF TOPALOĞLU",
+      "bakiye": 40.81,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0068",
+      "firma_adi": "TİB MAKİNA OTOMASYON SAN. VE TİC. LTD.ŞTİ.",
+      "bakiye": 37.28,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.0911",
+      "firma_adi": "ALK MAKİNA SAN.VE TİC. LTD.ŞTİ.",
+      "bakiye": 36.56,
+      "odeme_vadesi": "60 GÜN",
+      "vade_gun": 60
+    },
+    {
+      "cari_kod": "120.01.0884",
+      "firma_adi": "ŞAN İŞ RULMAN SAN.TİC. LTD.ŞTİ.",
+      "bakiye": 9.9,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30
+    },
+    {
+      "cari_kod": "120.01.4363",
+      "firma_adi": "ASTESA TEKSTİL SAN.TİC.LTD.ŞTİ.",
+      "bakiye": 5,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0041",
+      "firma_adi": "İBRAHİM SOLCAN",
+      "bakiye": 1.92,
+      "odeme_vadesi": "PEŞİN",
+      "vade_gun": 0
+    },
+    {
+      "cari_kod": "320.01.0587",
+      "firma_adi": "BİM BİRLEŞİK MAĞAZALAR ANONİM ŞİRKETİ",
+      "bakiye": 1.67,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.0337",
+      "firma_adi": "FREŞH MERVE KOMPOST TORF MANTARCILIĞI İTHALAT İHRACAT SAN. VE TİC. A.Ş.",
+      "bakiye": 1.25,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    },
+    {
+      "cari_kod": "120.01.4242",
+      "firma_adi": "SERHAT TOKAY",
+      "bakiye": 1,
+      "odeme_vadesi": null,
+      "vade_gun": null
+    }
+  ]
+}
