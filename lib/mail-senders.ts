@@ -1,10 +1,13 @@
 import 'server-only'
 import { createAdminClient } from './supabase/admin'
+import {
+  MAIL_LOG_KAYNAK,
+  MAIL_SENDER_DEFAULT_TIP,
+  MAIL_SENDER_TIP,
+} from './mutabakat-log'
 import type { MailSenderAccount } from './types'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-const SENDER_TIP = 'mutabakat_gonderici'
-const DEFAULT_TIP = 'mutabakat_gonderici_varsayilan'
 
 type SenderState = {
   email: string
@@ -91,7 +94,7 @@ async function loadSenderStates(userId: string): Promise<SenderState[]> {
   const { data, error } = await admin
     .from('mail_gonderim_log')
     .select('mail_to,subject,body_preview,sent_at')
-    .eq('ilgili_tip', SENDER_TIP)
+    .eq('ilgili_tip', MAIL_SENDER_TIP)
     .eq('ilgili_id', userId)
     .order('sent_at', { ascending: false })
 
@@ -119,7 +122,7 @@ async function loadPreferredSenderId(userId: string): Promise<string | null> {
   const { data, error } = await admin
     .from('mail_gonderim_log')
     .select('mail_to,sent_at')
-    .eq('ilgili_tip', DEFAULT_TIP)
+    .eq('ilgili_tip', MAIL_SENDER_DEFAULT_TIP)
     .eq('ilgili_id', userId)
     .order('sent_at', { ascending: false })
     .limit(1)
@@ -139,11 +142,11 @@ async function writeSenderState(
   const admin = createAdminClient()
   const { error } = await admin.from('mail_gonderim_log').insert({
     ilgili_id: userId,
-    ilgili_tip: SENDER_TIP,
+    ilgili_tip: MAIL_SENDER_TIP,
     mail_to: email,
     subject: adSoyad || '',
     body_preview: JSON.stringify({ varsayilan, aktif }),
-    kaynak: 'kobi_tahsilat',
+    kaynak: MAIL_LOG_KAYNAK,
     sent_at: new Date().toISOString(),
   })
   if (error) throw error
@@ -153,11 +156,11 @@ async function writePreferredSenderId(userId: string, senderId: string) {
   const admin = createAdminClient()
   const { error } = await admin.from('mail_gonderim_log').insert({
     ilgili_id: userId,
-    ilgili_tip: DEFAULT_TIP,
+    ilgili_tip: MAIL_SENDER_DEFAULT_TIP,
     mail_to: senderId,
     subject: 'Varsayılan gönderici',
-    body_preview: 'kobi_tahsilat',
-    kaynak: 'kobi_tahsilat',
+    body_preview: MAIL_LOG_KAYNAK,
+    kaynak: MAIL_LOG_KAYNAK,
     sent_at: new Date().toISOString(),
   })
   if (error) throw error

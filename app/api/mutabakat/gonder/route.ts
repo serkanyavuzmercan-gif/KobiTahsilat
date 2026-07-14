@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAuthUser } from '@/lib/auth'
 import { toErrorMessage } from '@/lib/errors'
+import { MAIL_LOG_KAYNAK } from '@/lib/mutabakat-log'
 import { loadSnapshot } from '@/lib/data'
 import { sendMail } from '@/lib/mail'
 import {
@@ -93,7 +94,7 @@ export async function POST(request: Request) {
       mail_from: from,
       subject: email.subject,
       body_preview: `${cari.firma_adi} mutabakatı gönderildi`,
-      kaynak: 'kobi_tahsilat',
+      kaynak: MAIL_LOG_KAYNAK,
       ilgili_id: cari.cari_kod,
       ilgili_tip: 'mutabakat',
       sent_at: sentAt,

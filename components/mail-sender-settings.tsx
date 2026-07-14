@@ -125,10 +125,20 @@ export function MailSenderSettings() {
           </div>
           <div>
             <h2 className="text-xl font-semibold">Gönderici e-posta bağlantıları</h2>
-            <p className="mt-1 text-sm text-slate-500">
-              Mutabakat e-postalarının hangi adresten gönderileceğini burada bağlayın. Seçilen gönderici
-              önizleme ekranında kullanılır.
-            </p>
+        <p className="mt-1 text-sm text-slate-500">
+          Mutabakat e-postalarının hangi adresten gönderileceğini burada bağlayın. Seçilen gönderici
+          önizleme ekranında kullanılır.
+        </p>
+        <div className="mt-3 rounded-lg border border-sky-200 bg-sky-50 p-3 text-xs text-sky-900">
+          <p className="font-medium">Gmail / Google Workspace nasıl çalışır?</p>
+          <p className="mt-1 leading-relaxed">
+            Bu ekranda Gmail hesabınıza doğrudan giriş yapılmaz. Gönderim{' '}
+            <strong>Resend</strong> servisi üzerinden yapılır; bağladığınız{' '}
+            <strong>@hidroteknik.com.tr</strong> adresi gönderici (From) olarak kullanılır.
+            Alan adının Resend panelinde DNS ile doğrulanmış olması gerekir (SPF/DKIM).
+            Yanıtlar oturum açtığınız e-posta adresine yönlendirilir.
+          </p>
+        </div>
           </div>
         </div>
 
