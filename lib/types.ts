@@ -23,6 +23,8 @@ export type AcikKalem = {
 export type CariBakiye = {
   cari_kod: string
   firma_adi: string
+  email: string | null
+  email_adresleri: string[]
   bakiye: number
   gecikmis_bakiye: number
   odeme_vadesi: string | null

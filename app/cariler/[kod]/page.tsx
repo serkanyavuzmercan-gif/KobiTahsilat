@@ -24,6 +24,11 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
         <p className="font-mono text-xs text-slate-500">{cari.cari_kod}</p>
         <h2 className="mt-1 text-2xl font-semibold text-slate-900">{cari.firma_adi}</h2>
+        <p className={`mt-1 text-sm ${cari.email ? 'text-slate-500' : 'text-red-600'}`}>
+          {cari.email_adresleri.length
+            ? `E-posta: ${cari.email_adresleri.join(', ')}`
+            : 'Mikro cari kartında e-posta adresi yok'}
+        </p>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Info label="Açık bakiye" value={formatTL(cari.bakiye)} accent />

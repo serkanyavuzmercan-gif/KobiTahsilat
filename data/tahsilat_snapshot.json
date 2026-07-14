@@ -1,5 +1,5 @@
 {
-  "sourced_at": "2026-07-14T12:23:54.102Z",
+  "sourced_at": "2026-07-14T12:53:38.593Z",
   "source": "Mikro firma 26",
   "snapshot_tarihi": "2026-07-14",
   "note": "MikRapor TL/vade + ss cari-net/FIFO kuralları. Bakiye>0 alacağımız; 128, ŞAHLAN ve AYGÜN hariç.",
@@ -17,6 +17,10 @@
     {
       "cari_kod": "120.01.0003",
       "firma_adi": "HİDROBARSAN MERMER MAKİNALARI SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@hidrobarsan.com.tr",
+      "email_adresleri": [
+        "info@hidrobarsan.com.tr"
+      ],
       "bakiye": 880903.65,
       "gecikmis_bakiye": 449475.97,
       "odeme_vadesi": "60 GÜN",
@@ -414,6 +418,8 @@
     {
       "cari_kod": "120.01.0032",
       "firma_adi": "ELTEKSMAK MAKİNA A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 599036.97,
       "gecikmis_bakiye": 544503.93,
       "odeme_vadesi": "60 GÜN",
@@ -511,6 +517,10 @@
     {
       "cari_kod": "120.01.0099",
       "firma_adi": "EGA MAKİNA İÇ VE DIŞ TİC.A.Ş.",
+      "email": "muhasebe@ertasmakine.net",
+      "email_adresleri": [
+        "muhasebe@ertasmakine.net"
+      ],
       "bakiye": 467510.93,
       "gecikmis_bakiye": 103246.71,
       "odeme_vadesi": "90 GÜN",
@@ -624,6 +634,16 @@
           "temsilci": "DURAN"
         },
         {
+          "evrak_no": "EF-2219",
+          "belge_no": "HT02026000001691",
+          "evrak_tarihi": "2026-05-06",
+          "vade_tarihi": "2026-08-04",
+          "gecikme_gun": -21,
+          "aging_bucket": "Vadesi gelmemiş",
+          "tutar": 25882.08,
+          "temsilci": "DURAN"
+        },
+        {
           "evrak_no": "EF-2221",
           "belge_no": "HT02026000001692",
           "evrak_tarihi": "2026-05-06",
@@ -641,16 +661,6 @@
           "gecikme_gun": -21,
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 19379.48,
-          "temsilci": "DURAN"
-        },
-        {
-          "evrak_no": "EF-2219",
-          "belge_no": "HT02026000001691",
-          "evrak_tarihi": "2026-05-06",
-          "vade_tarihi": "2026-08-04",
-          "gecikme_gun": -21,
-          "aging_bucket": "Vadesi gelmemiş",
-          "tutar": 25882.08,
           "temsilci": "DURAN"
         },
         {
@@ -688,6 +698,10 @@
     {
       "cari_kod": "120.01.0284",
       "firma_adi": "BERKAND MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "email": "muhasebe@berkandmakina.com.tr",
+      "email_adresleri": [
+        "muhasebe@berkandmakina.com.tr"
+      ],
       "bakiye": 353297.45,
       "gecikmis_bakiye": 4760.09,
       "odeme_vadesi": "90 GÜN",
@@ -775,6 +789,8 @@
     {
       "cari_kod": "120.01.4126",
       "firma_adi": "DENİZLİ BÜYÜKŞEHİR BLD.DESKİ GENEL MD (ELEKTK.MK.VE MAL.İKMAL D.BŞ)",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 333984,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -802,6 +818,8 @@
     {
       "cari_kod": "120.01.2598",
       "firma_adi": "HD KAUÇUK SAN.VE TİC.A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 324658.51,
       "gecikmis_bakiye": 3403.34,
       "odeme_vadesi": "90 GÜN",
@@ -909,6 +927,10 @@
     {
       "cari_kod": "120.01.0005",
       "firma_adi": "İDEAL HİDROLİK MAKİNA - ERGÜN SOLCAN",
+      "email": "faturadenizli@hotmail.com",
+      "email_adresleri": [
+        "faturadenizli@hotmail.com"
+      ],
       "bakiye": 312642.28,
       "gecikmis_bakiye": 229450.16,
       "odeme_vadesi": "30 GÜN",
@@ -1256,6 +1278,10 @@
     {
       "cari_kod": "120.01.0004",
       "firma_adi": "AKİ KOMPRESÖR",
+      "email": "muhasebe@akikompresor.com",
+      "email_adresleri": [
+        "muhasebe@akikompresor.com"
+      ],
       "bakiye": 266391.59,
       "gecikmis_bakiye": 119526.39,
       "odeme_vadesi": "60 GÜN",
@@ -1379,16 +1405,6 @@
           "temsilci": "DURAN"
         },
         {
-          "evrak_no": "EF-2672",
-          "belge_no": "HT02026000002036",
-          "evrak_tarihi": "2026-06-04",
-          "vade_tarihi": "2026-08-03",
-          "gecikme_gun": -20,
-          "aging_bucket": "Vadesi gelmemiş",
-          "tutar": 15858.43,
-          "temsilci": "DURAN"
-        },
-        {
           "evrak_no": "EF-2670",
           "belge_no": "HT02026000002034",
           "evrak_tarihi": "2026-06-04",
@@ -1406,6 +1422,16 @@
           "gecikme_gun": -20,
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 17411.72,
+          "temsilci": "DURAN"
+        },
+        {
+          "evrak_no": "EF-2672",
+          "belge_no": "HT02026000002036",
+          "evrak_tarihi": "2026-06-04",
+          "vade_tarihi": "2026-08-03",
+          "gecikme_gun": -20,
+          "aging_bucket": "Vadesi gelmemiş",
+          "tutar": 15858.43,
           "temsilci": "DURAN"
         },
         {
@@ -1533,6 +1559,10 @@
     {
       "cari_kod": "120.01.0034",
       "firma_adi": "DENTAŞ KAĞIT SAN. A.Ş.",
+      "email": "info@dentaskagit.com.tr",
+      "email_adresleri": [
+        "info@dentaskagit.com.tr"
+      ],
       "bakiye": 236778.41,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -1610,6 +1640,10 @@
     {
       "cari_kod": "120.01.0778",
       "firma_adi": "EGE TEK MÜHENDİSLİK SAN. VE TİC. A.Ş.",
+      "email": "info@ege-tek.com",
+      "email_adresleri": [
+        "info@ege-tek.com"
+      ],
       "bakiye": 215245.49,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -1637,6 +1671,11 @@
     {
       "cari_kod": "120.01.0012",
       "firma_adi": "EUROPTEC CAM SANAYİVE TİC.A.Ş.",
+      "email": "berkcan.guenindi@europtec.com",
+      "email_adresleri": [
+        "berkcan.guenindi@europtec.com",
+        "etrfinans@europtec.com"
+      ],
       "bakiye": 170729.72,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -1824,6 +1863,10 @@
     {
       "cari_kod": "120.01.0014",
       "firma_adi": "HAMBURGER TURKEY KAĞIT ÜRETİM VE TİC. LTD.ŞTİ.",
+      "email": "ozden.cel@hamburger.com",
+      "email_adresleri": [
+        "ozden.cel@hamburger.com"
+      ],
       "bakiye": 137407.54,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "100 GÜN",
@@ -1971,6 +2014,10 @@
     {
       "cari_kod": "120.01.0002",
       "firma_adi": "ŞAFAK TEMİZLİK İNŞAAT SAN. VE TİC. A.Ş.",
+      "email": "safaktemizlikdenizli@outlook.com",
+      "email_adresleri": [
+        "safaktemizlikdenizli@outlook.com"
+      ],
       "bakiye": 127080.82,
       "gecikmis_bakiye": 7963.2,
       "odeme_vadesi": null,
@@ -2428,6 +2475,10 @@
     {
       "cari_kod": "120.01.0049",
       "firma_adi": "SELMAK İŞ MAKİNALARI METAL ÜRÜNLERİ MÜHENDİSLİK İNŞAAT TAAHHÜT SAN. TİC. LTD.ŞTİ.",
+      "email": "info@selekmakina.com",
+      "email_adresleri": [
+        "info@selekmakina.com"
+      ],
       "bakiye": 105109.09,
       "gecikmis_bakiye": 36915.78,
       "odeme_vadesi": "60 GÜN",
@@ -2705,6 +2756,10 @@
     {
       "cari_kod": "120.01.0011",
       "firma_adi": "TCM MAKİNA SAN. VE TİC. A.Ş.",
+      "email": "muhasebe@ersatel.com",
+      "email_adresleri": [
+        "muhasebe@ersatel.com"
+      ],
       "bakiye": 104420.58,
       "gecikmis_bakiye": 175.62,
       "odeme_vadesi": "60 GÜN",
@@ -2748,6 +2803,16 @@
           "temsilci": "DURAN"
         },
         {
+          "evrak_no": "EF-2848",
+          "belge_no": "HT02026000002175",
+          "evrak_tarihi": "2026-06-11",
+          "vade_tarihi": "2026-08-10",
+          "gecikme_gun": -27,
+          "aging_bucket": "Vadesi gelmemiş",
+          "tutar": 16008,
+          "temsilci": "AKAGÜNDÜZ"
+        },
+        {
           "evrak_no": "EF-2847",
           "belge_no": "HT02026000002174",
           "evrak_tarihi": "2026-06-11",
@@ -2766,16 +2831,6 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 6030,
           "temsilci": "DURAN"
-        },
-        {
-          "evrak_no": "EF-2848",
-          "belge_no": "HT02026000002175",
-          "evrak_tarihi": "2026-06-11",
-          "vade_tarihi": "2026-08-10",
-          "gecikme_gun": -27,
-          "aging_bucket": "Vadesi gelmemiş",
-          "tutar": 16008,
-          "temsilci": "AKAGÜNDÜZ"
         },
         {
           "evrak_no": "EF-3130",
@@ -2832,6 +2887,10 @@
     {
       "cari_kod": "120.01.0040",
       "firma_adi": "UĞURLULAR TEKS. SAN.TİC. A.Ş.",
+      "email": "muhasebe@ugurlular.com.tr",
+      "email_adresleri": [
+        "muhasebe@ugurlular.com.tr"
+      ],
       "bakiye": 100056.5,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -3019,6 +3078,10 @@
     {
       "cari_kod": "120.01.0322",
       "firma_adi": "PAMUKKALE BÜYÜKŞEHİR İLÇE BELEDİYE BAŞKANLIĞI - TEMİZLİK İŞLERİ",
+      "email": "temizlikisleri@pamukkale.bel.tr",
+      "email_adresleri": [
+        "temizlikisleri@pamukkale.bel.tr"
+      ],
       "bakiye": 96108.25,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -3046,6 +3109,8 @@
     {
       "cari_kod": "120.01.0301",
       "firma_adi": "GREENECO ENERJİ ELEKTRİK ÜRETİM A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 84236.17,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -3073,6 +3138,11 @@
     {
       "cari_kod": "320.01.0093",
       "firma_adi": "HATTAT OTOMOTİV PAZARLAMA A.Ş. (HEMA)",
+      "email": "sinaner@hattat.com.tr",
+      "email_adresleri": [
+        "sinaner@hattat.com.tr",
+        "siparis@hattat.com.tr"
+      ],
       "bakiye": 83275.09,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "90 GÜN",
@@ -3110,6 +3180,10 @@
     {
       "cari_kod": "120.01.0078",
       "firma_adi": "KEMAL UĞURLU TEKS. SAN. VE TİC. A.Ş.",
+      "email": "akin.yilmaz@ugurlutekstil.com.tr",
+      "email_adresleri": [
+        "akin.yilmaz@ugurlutekstil.com.tr"
+      ],
       "bakiye": 80691.1,
       "gecikmis_bakiye": 80691.1,
       "odeme_vadesi": "60 GÜN",
@@ -3137,6 +3211,10 @@
     {
       "cari_kod": "120.01.0143",
       "firma_adi": "BİODEN ENERJİ ÜRETİM SAN. VE TİC. A.Ş.",
+      "email": "fatma.kaplica@biodenenerji.com.tr",
+      "email_adresleri": [
+        "fatma.kaplica@biodenenerji.com.tr"
+      ],
       "bakiye": 73298.18,
       "gecikmis_bakiye": 0.01,
       "odeme_vadesi": "60 GÜN",
@@ -3184,6 +3262,8 @@
     {
       "cari_kod": "120.01.0418",
       "firma_adi": "EFARGE MAKİNA İMALAT SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 68024.62,
       "gecikmis_bakiye": 41150.27,
       "odeme_vadesi": "90 GÜN",
@@ -3271,6 +3351,8 @@
     {
       "cari_kod": "120.01.0058",
       "firma_adi": "ALINDAIR SOĞUTMA SİSTEMLERİ SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 65738.9,
       "gecikmis_bakiye": 15523.54,
       "odeme_vadesi": "60 GÜN",
@@ -3348,6 +3430,10 @@
     {
       "cari_kod": "120.01.0018",
       "firma_adi": "UYGAR MAKİNA SANAYİVE TİC. LTD.ŞTİ.",
+      "email": "muhasebe@um.com.tr",
+      "email_adresleri": [
+        "muhasebe@um.com.tr"
+      ],
       "bakiye": 64133.2,
       "gecikmis_bakiye": 40857.27,
       "odeme_vadesi": "60 GÜN",
@@ -3415,6 +3501,8 @@
     {
       "cari_kod": "120.01.0138",
       "firma_adi": "ENDER TEKS. SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 63954.45,
       "gecikmis_bakiye": 4477.82,
       "odeme_vadesi": "60 GÜN",
@@ -3502,6 +3590,8 @@
     {
       "cari_kod": "120.01.0038",
       "firma_adi": "BMS BAHÇELİ MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 63792.87,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -3514,6 +3604,16 @@
         "90+ gün": 0
       },
       "acik_kalemler": [
+        {
+          "evrak_no": "EF-2439",
+          "belge_no": "HT02026000001862",
+          "evrak_tarihi": "2026-05-18",
+          "vade_tarihi": "2026-07-17",
+          "gecikme_gun": -3,
+          "aging_bucket": "Vadesi gelmemiş",
+          "tutar": 8576.46,
+          "temsilci": "DURAN"
+        },
         {
           "evrak_no": "EF-2441",
           "belge_no": "HT02026000001864",
@@ -3531,18 +3631,8 @@
           "vade_tarihi": "2026-07-17",
           "gecikme_gun": -3,
           "aging_bucket": "Vadesi gelmemiş",
-          "tutar": 337.34,
+          "tutar": 294.5,
           "temsilci": "İRİŞ"
-        },
-        {
-          "evrak_no": "EF-2439",
-          "belge_no": "HT02026000001862",
-          "evrak_tarihi": "2026-05-18",
-          "vade_tarihi": "2026-07-17",
-          "gecikme_gun": -3,
-          "aging_bucket": "Vadesi gelmemiş",
-          "tutar": 8533.62,
-          "temsilci": "DURAN"
         },
         {
           "evrak_no": "EF-2545",
@@ -3639,6 +3729,8 @@
     {
       "cari_kod": "120.01.0145",
       "firma_adi": "TARIM KREDİ SÜT ÜRÜNLERİ A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 60684.17,
       "gecikmis_bakiye": 0.02,
       "odeme_vadesi": "60 GÜN",
@@ -3696,6 +3788,10 @@
     {
       "cari_kod": "120.01.0116",
       "firma_adi": "FİLİDEA TEKS. SAN. VE TİC. A.Ş.",
+      "email": "maliisler@abalioglu.com.tr",
+      "email_adresleri": [
+        "maliisler@abalioglu.com.tr"
+      ],
       "bakiye": 51857.11,
       "gecikmis_bakiye": 15829.22,
       "odeme_vadesi": "90 GÜN",
@@ -3773,6 +3869,10 @@
     {
       "cari_kod": "120.01.0008",
       "firma_adi": "UĞURLU OTO CAMSAN TİC AŞ",
+      "email": "info@ugurluotocam.com.tr",
+      "email_adresleri": [
+        "info@ugurluotocam.com.tr"
+      ],
       "bakiye": 50698.93,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -3860,6 +3960,10 @@
     {
       "cari_kod": "120.01.0072",
       "firma_adi": "EKİZOĞLU MAKİNA MERMER TEKS. SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@ekizoglumakina.com",
+      "email_adresleri": [
+        "info@ekizoglumakina.com"
+      ],
       "bakiye": 49931.91,
       "gecikmis_bakiye": 45667.2,
       "odeme_vadesi": "60 GÜN",
@@ -3997,6 +4101,8 @@
     {
       "cari_kod": "120.01.0307",
       "firma_adi": "ÖZGÜR GÜVEN",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 47672.07,
       "gecikmis_bakiye": 11573.44,
       "odeme_vadesi": "60 GÜN",
@@ -4076,7 +4182,7 @@
           "vade_tarihi": "2026-07-03",
           "gecikme_gun": 11,
           "aging_bucket": "1–30 gün",
-          "tutar": 4755.18,
+          "tutar": 388.64,
           "temsilci": "İRİŞ"
         },
         {
@@ -4086,7 +4192,7 @@
           "vade_tarihi": "2026-07-03",
           "gecikme_gun": 11,
           "aging_bucket": "1–30 gün",
-          "tutar": 388.64,
+          "tutar": 4755.18,
           "temsilci": "İRİŞ"
         },
         {
@@ -4264,6 +4370,8 @@
     {
       "cari_kod": "120.01.0048",
       "firma_adi": "GÜÇSAN MAKİNA DOĞALGAZ MADENCİLİK GIDA SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 45787.52,
       "gecikmis_bakiye": 6162.85,
       "odeme_vadesi": "60 GÜN",
@@ -4371,6 +4479,8 @@
     {
       "cari_kod": "120.02.000D",
       "firma_adi": "MUHTELİF MÜŞTERİ (D-MARKET)",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 45729.14,
       "gecikmis_bakiye": 45729.14,
       "odeme_vadesi": null,
@@ -4458,6 +4568,10 @@
     {
       "cari_kod": "120.01.0025",
       "firma_adi": "AYSAN RAF SİSTEMLERİ A.Ş.",
+      "email": "aysan@aysanraf.com.tr",
+      "email_adresleri": [
+        "aysan@aysanraf.com.tr"
+      ],
       "bakiye": 43959.57,
       "gecikmis_bakiye": 14841.7,
       "odeme_vadesi": "60 GÜN",
@@ -4625,6 +4739,8 @@
     {
       "cari_kod": "120.01.0791",
       "firma_adi": "PROTON APALİ OTOMASYON ELEK.MAK.İNŞ.TAAH.SAN.VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 40783.86,
       "gecikmis_bakiye": 34770.22,
       "odeme_vadesi": "30 GÜN",
@@ -4682,6 +4798,10 @@
     {
       "cari_kod": "120.01.4131",
       "firma_adi": "DENİZLİ BÜYÜKŞEHİR BELEDİYE BAŞKANLIĞI - FEN İŞLERİ BİRİMİ",
+      "email": "dgunes@denizli.bel.tr",
+      "email_adresleri": [
+        "dgunes@denizli.bel.tr"
+      ],
       "bakiye": 38118.14,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -4719,6 +4839,8 @@
     {
       "cari_kod": "120.01.0061",
       "firma_adi": "AKÇA HAZIR BETON SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 36992.75,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -4796,6 +4918,8 @@
     {
       "cari_kod": "120.01.4147",
       "firma_adi": "KÜNPET AKARYAKIT SİSTEMLERİ  SERVİS İSTASYONLARI DONATIM MALZEMELERİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 36492.97,
       "gecikmis_bakiye": 17341.04,
       "odeme_vadesi": "30 GÜN",
@@ -4993,6 +5117,8 @@
     {
       "cari_kod": "120.01.0090",
       "firma_adi": "ALİ ABACI",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 35495.41,
       "gecikmis_bakiye": 33934.88,
       "odeme_vadesi": "30 GÜN",
@@ -5110,6 +5236,10 @@
     {
       "cari_kod": "120.01.0261",
       "firma_adi": "AFS İSTİF MAKİNALARI SAN.VE.TİC. LTD.ŞTİ.",
+      "email": "mutlu.afs@gmail.com",
+      "email_adresleri": [
+        "mutlu.afs@gmail.com"
+      ],
       "bakiye": 33600,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -5137,6 +5267,8 @@
     {
       "cari_kod": "120.01.0036",
       "firma_adi": "ÇETİN İNŞAAT MALZEMELERİ SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 33091.24,
       "gecikmis_bakiye": 10911.95,
       "odeme_vadesi": "60 GÜN",
@@ -5304,6 +5436,10 @@
     {
       "cari_kod": "120.01.0198",
       "firma_adi": "İSKATEK MAKİNA - İSA KAYA",
+      "email": "info@iskatekmakine.com",
+      "email_adresleri": [
+        "info@iskatekmakine.com"
+      ],
       "bakiye": 32583.58,
       "gecikmis_bakiye": 32583.58,
       "odeme_vadesi": "PEŞİN",
@@ -5351,6 +5487,10 @@
     {
       "cari_kod": "120.01.0101",
       "firma_adi": "MUZAFFER AKDEMİR",
+      "email": "akdemirkaucuk@outlook.com.tr",
+      "email_adresleri": [
+        "akdemirkaucuk@outlook.com.tr"
+      ],
       "bakiye": 32555.7,
       "gecikmis_bakiye": 8085.93,
       "odeme_vadesi": "60 GÜN",
@@ -5618,6 +5758,10 @@
     {
       "cari_kod": "120.01.0050",
       "firma_adi": "ENG MAKİNA İNŞAAT OTOMOTİV SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@engmakina.com",
+      "email_adresleri": [
+        "info@engmakina.com"
+      ],
       "bakiye": 32319.81,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -5725,6 +5869,8 @@
     {
       "cari_kod": "120.01.0605",
       "firma_adi": "HİDROYÖN HİDROLİK PNÖMATİK OTOM.FABR.MALZ.SAN.TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 30445.45,
       "gecikmis_bakiye": 27539.9,
       "odeme_vadesi": "30 GÜN",
@@ -5822,6 +5968,8 @@
     {
       "cari_kod": "120.01.0029",
       "firma_adi": "GEDİK TAVUKÇULUK VE TARIM ÜRÜNLERİ TİC.SAN A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 27015.22,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -5869,6 +6017,8 @@
     {
       "cari_kod": "120.01.0028",
       "firma_adi": "NEXANS TÜRKİYE ENDÜSTRİ VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 26718.52,
       "gecikmis_bakiye": 0.04,
       "odeme_vadesi": "60 GÜN",
@@ -5926,6 +6076,10 @@
     {
       "cari_kod": "120.01.0146",
       "firma_adi": "ASYA İŞ MAKİNALARI SERVİS BAKIM ONARIM TİC.VE SAN. LTD.ŞTİ.",
+      "email": "asyaismakinalari07@gmail.com",
+      "email_adresleri": [
+        "asyaismakinalari07@gmail.com"
+      ],
       "bakiye": 26653.8,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "45 GÜN",
@@ -5953,6 +6107,10 @@
     {
       "cari_kod": "120.01.0009",
       "firma_adi": "FİLTORQ FİLTRE İTHALAT İHRACAT SAN. VE TİC. A.Ş.",
+      "email": "defaultpk@filtorg.com.tr",
+      "email_adresleri": [
+        "defaultpk@filtorg.com.tr"
+      ],
       "bakiye": 26536.64,
       "gecikmis_bakiye": 0.01,
       "odeme_vadesi": "60 GÜN",
@@ -6000,6 +6158,10 @@
     {
       "cari_kod": "120.01.0746",
       "firma_adi": "OYAK ÇİMENTO FABRİKALARI A.Ş.",
+      "email": "carihesaplar@oyakcimento.com",
+      "email_adresleri": [
+        "carihesaplar@oyakcimento.com"
+      ],
       "bakiye": 26243.6,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "100 GÜN",
@@ -6037,6 +6199,8 @@
     {
       "cari_kod": "120.01.0102",
       "firma_adi": "POLO OTOMASYON ELEKTRİK SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 25027.46,
       "gecikmis_bakiye": 25027.46,
       "odeme_vadesi": "60 GÜN",
@@ -6104,6 +6268,10 @@
     {
       "cari_kod": "120.01.0379",
       "firma_adi": "DOĞUSAN İNŞAAT TİC.A.Ş.",
+      "email": "ugongor34@gmail.com",
+      "email_adresleri": [
+        "ugongor34@gmail.com"
+      ],
       "bakiye": 24803.02,
       "gecikmis_bakiye": 0.01,
       "odeme_vadesi": "30 GÜN",
@@ -6171,6 +6339,8 @@
     {
       "cari_kod": "120.01.0348",
       "firma_adi": "ÇRZ KURUYEMİŞ MAKİNALARI GIDA TARIM VE HAYVANCILIK SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 24691.5,
       "gecikmis_bakiye": 196.58,
       "odeme_vadesi": "60 GÜN",
@@ -6214,16 +6384,6 @@
           "temsilci": "İRİŞ"
         },
         {
-          "evrak_no": "EF-2913",
-          "belge_no": "HT02026000002224",
-          "evrak_tarihi": "2026-06-16",
-          "vade_tarihi": "2026-08-15",
-          "gecikme_gun": -32,
-          "aging_bucket": "Vadesi gelmemiş",
-          "tutar": 180.73,
-          "temsilci": "DURAN"
-        },
-        {
           "evrak_no": "EF-2914",
           "belge_no": "HT02026000002225",
           "evrak_tarihi": "2026-06-16",
@@ -6232,6 +6392,16 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 16080,
           "temsilci": "İRİŞ"
+        },
+        {
+          "evrak_no": "EF-2913",
+          "belge_no": "HT02026000002224",
+          "evrak_tarihi": "2026-06-16",
+          "vade_tarihi": "2026-08-15",
+          "gecikme_gun": -32,
+          "aging_bucket": "Vadesi gelmemiş",
+          "tutar": 180.73,
+          "temsilci": "DURAN"
         },
         {
           "evrak_no": "EF-3483",
@@ -6248,6 +6418,8 @@
     {
       "cari_kod": "120.01.0713",
       "firma_adi": "DOK-SAN DENİZLİ DOKUMA SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 23821.9,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -6295,6 +6467,10 @@
     {
       "cari_kod": "120.01.0230",
       "firma_adi": "ENŞAH ENERJİ, MAKİNA, MÜHENDİSLİK, İNŞAAT, TAAHHÜT, İMALAT SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@ensah.com.tr",
+      "email_adresleri": [
+        "info@ensah.com.tr"
+      ],
       "bakiye": 22400,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -6332,6 +6508,10 @@
     {
       "cari_kod": "120.01.4371",
       "firma_adi": "UCS GIDA ENERJİ AKARYAKIT İNŞAAT TURİZM TEKSTİL TEMİZLİK TARIM HAY.NAK.MAK.İMAL.SAN.VE TİC.LTD.ŞTİ.",
+      "email": "info@ucsmoduler.com.tr",
+      "email_adresleri": [
+        "info@ucsmoduler.com.tr"
+      ],
       "bakiye": 22277.7,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -6359,6 +6539,10 @@
     {
       "cari_kod": "120.01.0336",
       "firma_adi": "ÇINAR BORU  PROFİL SAN.VE TİC.A.Ş.",
+      "email": "info@cinarboru.com",
+      "email_adresleri": [
+        "info@cinarboru.com"
+      ],
       "bakiye": 19440,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -6386,6 +6570,8 @@
     {
       "cari_kod": "120.01.4179",
       "firma_adi": "Stoneterroir Doğal Tas Madencilik",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 19350,
       "gecikmis_bakiye": 12600,
       "odeme_vadesi": "90 GÜN",
@@ -6423,6 +6609,8 @@
     {
       "cari_kod": "120.01.4330",
       "firma_adi": "DOĞAN BİRLİK HAŞIL TEKSTİL LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 19268.41,
       "gecikmis_bakiye": 19268.41,
       "odeme_vadesi": null,
@@ -6450,6 +6638,10 @@
     {
       "cari_kod": "120.01.0095",
       "firma_adi": "REKMAK HİDROLİK İŞ MAK.İNŞAAT TEKSTİSAN.TİC. LTD.ŞTİ.",
+      "email": "rekmakhidrolik@hotmail.com",
+      "email_adresleri": [
+        "rekmakhidrolik@hotmail.com"
+      ],
       "bakiye": 19041.45,
       "gecikmis_bakiye": 970.95,
       "odeme_vadesi": null,
@@ -6577,6 +6769,8 @@
     {
       "cari_kod": "120.01.1173",
       "firma_adi": "KÜÇÜKER TEKS. SAN.VE TİC.A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 18258.1,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -6624,6 +6818,10 @@
     {
       "cari_kod": "120.01.0070",
       "firma_adi": "SİDE İPLİK  SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@sideiplik.com",
+      "email_adresleri": [
+        "info@sideiplik.com"
+      ],
       "bakiye": 18211.52,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -6671,6 +6869,10 @@
     {
       "cari_kod": "120.01.0045",
       "firma_adi": "BOZDEMİR MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@bozdemirmakina.com",
+      "email_adresleri": [
+        "info@bozdemirmakina.com"
+      ],
       "bakiye": 18109.43,
       "gecikmis_bakiye": 2263.93,
       "odeme_vadesi": null,
@@ -6838,6 +7040,10 @@
     {
       "cari_kod": "120.01.0194",
       "firma_adi": "ATADEN HİDROLİK PNÖMATİK SAN. VE TİC. LTD.ŞTİ.",
+      "email": "atahidrolikdenizli@gmail.com",
+      "email_adresleri": [
+        "atahidrolikdenizli@gmail.com"
+      ],
       "bakiye": 17608.86,
       "gecikmis_bakiye": 13872.92,
       "odeme_vadesi": "30 GÜN",
@@ -7035,6 +7241,8 @@
     {
       "cari_kod": "120.01.4180",
       "firma_adi": "DENİZLİFT İŞ MAKİNELERİ SANAYİ VE TİCARET ANONİM ŞİRKETİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 17427.47,
       "gecikmis_bakiye": 10702.12,
       "odeme_vadesi": "30 GÜN",
@@ -7162,6 +7370,10 @@
     {
       "cari_kod": "120.01.0617",
       "firma_adi": "ÇAMELİ BELEDİYE BAŞKANLIĞI",
+      "email": "camelibld.destekhizmetleri@outlook.com",
+      "email_adresleri": [
+        "camelibld.destekhizmetleri@outlook.com"
+      ],
       "bakiye": 17214.48,
       "gecikmis_bakiye": 17214.48,
       "odeme_vadesi": "PEŞİN",
@@ -7199,6 +7411,8 @@
     {
       "cari_kod": "120.01.0033",
       "firma_adi": "SEVAL KABLO AYDINLATMA CİHAZLARI İTHALAT İHRACAT SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 16915.04,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -7256,6 +7470,8 @@
     {
       "cari_kod": "120.01.4306",
       "firma_adi": "GNC MUĞLA MAKİNA SAN.VE TİC.LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 16329.96,
       "gecikmis_bakiye": 15433.63,
       "odeme_vadesi": "30 GÜN",
@@ -7303,6 +7519,10 @@
     {
       "cari_kod": "120.01.0100",
       "firma_adi": "AK-YA DENİZCİLİK VE SU ÜRÜNLERİ ÜRETİM TAŞIMACILIK SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@ak-ya.com",
+      "email_adresleri": [
+        "info@ak-ya.com"
+      ],
       "bakiye": 15768,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -7330,6 +7550,8 @@
     {
       "cari_kod": "120.01.0119",
       "firma_adi": "AFYON TEKS. BOYAMA SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 15047.26,
       "gecikmis_bakiye": 0.01,
       "odeme_vadesi": "60 GÜN",
@@ -7377,6 +7599,10 @@
     {
       "cari_kod": "120.01.0039",
       "firma_adi": "ATA SANCAK ACIPAYAM TARIM İŞLETMESİ SAN.VE Tİ.C.A.Ş",
+      "email": "m@atasancak.com.tr",
+      "email_adresleri": [
+        "m@atasancak.com.tr"
+      ],
       "bakiye": 14639.93,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -7404,6 +7630,10 @@
     {
       "cari_kod": "120.01.0096",
       "firma_adi": "HEDEF KAUÇUK KAUÇUK-PLASTİK LTD.ŞTİ.",
+      "email": "info@hedefkaucuk.com",
+      "email_adresleri": [
+        "info@hedefkaucuk.com"
+      ],
       "bakiye": 14592.62,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -7481,6 +7711,10 @@
     {
       "cari_kod": "120.01.0035",
       "firma_adi": "FAZİLET VİNÇ OTO KURTARMA - MUHAMMET SAN",
+      "email": "muhammetsann@hotmail.com",
+      "email_adresleri": [
+        "muhammetsann@hotmail.com"
+      ],
       "bakiye": 14295.36,
       "gecikmis_bakiye": 14295.36,
       "odeme_vadesi": "PEŞİN",
@@ -7544,16 +7778,6 @@
           "temsilci": "DURAN"
         },
         {
-          "evrak_no": "EF-3185",
-          "belge_no": "HT02026000002452",
-          "evrak_tarihi": "2026-06-25",
-          "vade_tarihi": "2026-06-25",
-          "gecikme_gun": 19,
-          "aging_bucket": "1–30 gün",
-          "tutar": 965,
-          "temsilci": "AKAGÜNDÜZ"
-        },
-        {
           "evrak_no": "EF-3163",
           "belge_no": "HT02026000002435",
           "evrak_tarihi": "2026-06-25",
@@ -7561,6 +7785,16 @@
           "gecikme_gun": 19,
           "aging_bucket": "1–30 gün",
           "tutar": 119.76,
+          "temsilci": "AKAGÜNDÜZ"
+        },
+        {
+          "evrak_no": "EF-3185",
+          "belge_no": "HT02026000002452",
+          "evrak_tarihi": "2026-06-25",
+          "vade_tarihi": "2026-06-25",
+          "gecikme_gun": 19,
+          "aging_bucket": "1–30 gün",
+          "tutar": 965,
           "temsilci": "AKAGÜNDÜZ"
         },
         {
@@ -7598,6 +7832,8 @@
     {
       "cari_kod": "320.01.0560",
       "firma_adi": "AVUKAT ESRA CAN MERCAN",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 14268.31,
       "gecikmis_bakiye": 14268.31,
       "odeme_vadesi": null,
@@ -7665,6 +7901,8 @@
     {
       "cari_kod": "120.01.2895",
       "firma_adi": "SOLEMAR MERMER SAN.VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 13797.58,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -7702,6 +7940,10 @@
     {
       "cari_kod": "120.01.0059",
       "firma_adi": "STAR STİL MAKİNA TİC. LTD.ŞTİ.",
+      "email": "muhammedbahsiti7@gmail.com",
+      "email_adresleri": [
+        "muhammedbahsiti7@gmail.com"
+      ],
       "bakiye": 13283.52,
       "gecikmis_bakiye": 1141.72,
       "odeme_vadesi": "30 GÜN",
@@ -7839,6 +8081,10 @@
     {
       "cari_kod": "120.01.0229",
       "firma_adi": "HÜSEYİN DÖNMEZ",
+      "email": "etbdemirci@gmail.com",
+      "email_adresleri": [
+        "etbdemirci@gmail.com"
+      ],
       "bakiye": 13139.26,
       "gecikmis_bakiye": 13139.26,
       "odeme_vadesi": "7 GÜN",
@@ -7896,6 +8142,10 @@
     {
       "cari_kod": "120.01.0105",
       "firma_adi": "CANDAN KERESTE SAN. VE TİC. LTD.ŞTİ.",
+      "email": "candankereste@gmail.com",
+      "email_adresleri": [
+        "candankereste@gmail.com"
+      ],
       "bakiye": 12839.03,
       "gecikmis_bakiye": 12065.98,
       "odeme_vadesi": null,
@@ -7943,6 +8193,11 @@
     {
       "cari_kod": "120.01.0053",
       "firma_adi": "ÇAĞ TEKS. SANVE TİC LTD ŞTİ",
+      "email": "info@cagtekstil.com",
+      "email_adresleri": [
+        "info@cagtekstil.com",
+        "denizliemin@hotmail.com"
+      ],
       "bakiye": 12762.9,
       "gecikmis_bakiye": 5031.13,
       "odeme_vadesi": "60 GÜN",
@@ -8020,6 +8275,10 @@
     {
       "cari_kod": "120.01.0006",
       "firma_adi": "KARTALOĞLU MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "email": "muhasebe@kartaloglumakina.com",
+      "email_adresleri": [
+        "muhasebe@kartaloglumakina.com"
+      ],
       "bakiye": 12673.7,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -8097,6 +8356,8 @@
     {
       "cari_kod": "120.01.0256",
       "firma_adi": "VELİ ÇELEBİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 12640.78,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -8154,6 +8415,8 @@
     {
       "cari_kod": "120.01.0518",
       "firma_adi": "ESENLİK MOTORLU ARAÇLAR TİC.VE SAN. A.Ş",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 12600,
       "gecikmis_bakiye": 12600,
       "odeme_vadesi": "60 GÜN",
@@ -8181,6 +8444,8 @@
     {
       "cari_kod": "120.01.0222",
       "firma_adi": "EGE MENSUCAT SANAYİVE TİC.LTD ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 12285.71,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -8218,6 +8483,8 @@
     {
       "cari_kod": "120.01.0376",
       "firma_adi": "ETK TEKNİK HIRDAVAT SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 12233.08,
       "gecikmis_bakiye": 5242.34,
       "odeme_vadesi": "30 GÜN",
@@ -8255,6 +8522,10 @@
     {
       "cari_kod": "320.01.0050",
       "firma_adi": "IŞIK ELEKTRİK  MÜH.SAN VE TİC. LTD.ŞTİ.",
+      "email": "ahmetn@isik.info",
+      "email_adresleri": [
+        "ahmetn@isik.info"
+      ],
       "bakiye": 12000.05,
       "gecikmis_bakiye": 7406.85,
       "odeme_vadesi": "90 GÜN",
@@ -8302,6 +8573,10 @@
     {
       "cari_kod": "120.01.0219",
       "firma_adi": "SEYRAN GIDA SAN. VE TİC. A.Ş.",
+      "email": "muhasebe@seyran.com.tr",
+      "email_adresleri": [
+        "muhasebe@seyran.com.tr"
+      ],
       "bakiye": 11829.82,
       "gecikmis_bakiye": 7687.5,
       "odeme_vadesi": "60 GÜN",
@@ -8369,6 +8644,10 @@
     {
       "cari_kod": "120.01.0017",
       "firma_adi": "ABALIOĞLU YEM SAN. A.Ş.",
+      "email": "ahmet.tuncel@abaliogluyem.com.tr",
+      "email_adresleri": [
+        "ahmet.tuncel@abaliogluyem.com.tr"
+      ],
       "bakiye": 11528,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -8416,6 +8695,10 @@
     {
       "cari_kod": "120.01.0159",
       "firma_adi": "ER MAKİNA HİDROLİK İŞ MAK. - HASAN TUNÇER",
+      "email": "ermakinahidrolik20@gmail.com",
+      "email_adresleri": [
+        "ermakinahidrolik20@gmail.com"
+      ],
       "bakiye": 11354.28,
       "gecikmis_bakiye": 11354.28,
       "odeme_vadesi": "PEŞİN",
@@ -8493,6 +8776,8 @@
     {
       "cari_kod": "120.01.2751",
       "firma_adi": "MOTİF İZOLASYON HAVALANDIRMA İNŞAAT VE İNŞAAT MALZEMELERİ BOYA SIHHİ TESİSAT TARIM HAYVANCILIK GIDA SAN. TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 11191.01,
       "gecikmis_bakiye": 11191.01,
       "odeme_vadesi": "7 GÜN",
@@ -8520,6 +8805,10 @@
     {
       "cari_kod": "120.01.0160",
       "firma_adi": "MERTŞEL HİDROLİK İŞMAKİNALARI SAN.VE TİC. LTD.ŞTİ.",
+      "email": "info@mertselhidrolik.com.tr",
+      "email_adresleri": [
+        "info@mertselhidrolik.com.tr"
+      ],
       "bakiye": 10992.46,
       "gecikmis_bakiye": 10992.46,
       "odeme_vadesi": "PEŞİN",
@@ -8607,6 +8896,10 @@
     {
       "cari_kod": "120.01.0044",
       "firma_adi": "GÜNEŞPAN ISI SİSTEMLERİ SAN. VE TİC. A.Ş.",
+      "email": "aysan.bag@gunespan.com",
+      "email_adresleri": [
+        "aysan.bag@gunespan.com"
+      ],
       "bakiye": 10890.96,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -8664,6 +8957,10 @@
     {
       "cari_kod": "120.01.4146",
       "firma_adi": "ALİ  KANTIK",
+      "email": "alkmakina20@gmail.com",
+      "email_adresleri": [
+        "alkmakina20@gmail.com"
+      ],
       "bakiye": 10589.62,
       "gecikmis_bakiye": 9337.83,
       "odeme_vadesi": "30 GÜN",
@@ -8751,6 +9048,11 @@
     {
       "cari_kod": "120.01.0077",
       "firma_adi": "AYHA ASANSÖR MAKİNA İNŞAAT SAN.VE TİC. LTD.ŞTİ.",
+      "email": "info@ayha.com.tr",
+      "email_adresleri": [
+        "info@ayha.com.tr",
+        "niliferkaya@ayha.com.tr"
+      ],
       "bakiye": 9581.66,
       "gecikmis_bakiye": 7222.03,
       "odeme_vadesi": null,
@@ -8828,6 +9130,8 @@
     {
       "cari_kod": "120.01.0176",
       "firma_adi": "DÜNDAR HİDROLİK TORNA MAKİNA İMALAT İTHALAT İHRACAT SAN VE TİC LTD ŞTİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 9373.5,
       "gecikmis_bakiye": 973.49,
       "odeme_vadesi": "30 GÜN",
@@ -8885,6 +9189,8 @@
     {
       "cari_kod": "120.01.3978",
       "firma_adi": "DENTAŞ AMBALAJ VE KAĞIT SAN. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 9354.96,
       "gecikmis_bakiye": 770.4,
       "odeme_vadesi": "60 GÜN",
@@ -8932,6 +9238,8 @@
     {
       "cari_kod": "120.01.0619",
       "firma_adi": "ATAPAK AMBALAJ SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 9237.7,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -8969,6 +9277,8 @@
     {
       "cari_kod": "120.01.1100",
       "firma_adi": "VOX OTOMASYON MAKİNA MÜHENDİSLİK LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 9227.05,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -9006,6 +9316,10 @@
     {
       "cari_kod": "120.01.0057",
       "firma_adi": "AKİ ÇELİK SAN.VE TİCLTD.ŞTİ.",
+      "email": "akicelik@akicelik.com.tr",
+      "email_adresleri": [
+        "akicelik@akicelik.com.tr"
+      ],
       "bakiye": 9165.83,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -9053,6 +9367,10 @@
     {
       "cari_kod": "120.01.0139",
       "firma_adi": "FİESTA TEKS. SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@fiestatekstil.com.tr",
+      "email_adresleri": [
+        "info@fiestatekstil.com.tr"
+      ],
       "bakiye": 9159.91,
       "gecikmis_bakiye": 4168.47,
       "odeme_vadesi": null,
@@ -9100,6 +9418,10 @@
     {
       "cari_kod": "120.01.0085",
       "firma_adi": "MELİHŞAH KUTLU",
+      "email": "meliksahkutlu_16@hotmail.com",
+      "email_adresleri": [
+        "meliksahkutlu_16@hotmail.com"
+      ],
       "bakiye": 9023.84,
       "gecikmis_bakiye": 9023.84,
       "odeme_vadesi": "7 GÜN",
@@ -9177,6 +9499,8 @@
     {
       "cari_kod": "120.01.0115",
       "firma_adi": "CYL MERMER MADENCİLİK İNŞAAT SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 9000.58,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -9214,6 +9538,8 @@
     {
       "cari_kod": "120.01.4193",
       "firma_adi": "VELİ SİPAHİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 8380.13,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -9251,6 +9577,10 @@
     {
       "cari_kod": "120.01.0167",
       "firma_adi": "DNZ TEKNİK MAKİNA END.SAN.VE TİC. LTD.ŞİRKET",
+      "email": "dnzteknikkompresor@gmail.com",
+      "email_adresleri": [
+        "dnzteknikkompresor@gmail.com"
+      ],
       "bakiye": 8070.37,
       "gecikmis_bakiye": 8070.37,
       "odeme_vadesi": "30 GÜN",
@@ -9408,6 +9738,8 @@
     {
       "cari_kod": "120.01.0306",
       "firma_adi": "SODAŞ SODYUM SAN.A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 7594.48,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -9435,6 +9767,8 @@
     {
       "cari_kod": "120.01.2106",
       "firma_adi": "SAMER MADENCİLİK SAN.VE TİC.A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 7373.8,
       "gecikmis_bakiye": 7373.8,
       "odeme_vadesi": null,
@@ -9462,6 +9796,8 @@
     {
       "cari_kod": "120.01.1318",
       "firma_adi": "TOKEL SONDAJ SAN.TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 7320,
       "gecikmis_bakiye": 7320,
       "odeme_vadesi": null,
@@ -9489,6 +9825,10 @@
     {
       "cari_kod": "120.01.0441",
       "firma_adi": "SEMRUK MADENCİLİK İNŞAAT NAKLİYE İTHALAT İHRACAT SAN. VE TİC. LTD.ŞTİ.",
+      "email": "semrukmaden@gmail.com",
+      "email_adresleri": [
+        "semrukmaden@gmail.com"
+      ],
       "bakiye": 7200,
       "gecikmis_bakiye": 7200,
       "odeme_vadesi": null,
@@ -9516,6 +9856,8 @@
     {
       "cari_kod": "120.01.0121",
       "firma_adi": "GÜNEY BELEDİYE BAŞKANLIĞI",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 7064.71,
       "gecikmis_bakiye": 5711.47,
       "odeme_vadesi": null,
@@ -9573,6 +9915,10 @@
     {
       "cari_kod": "120.01.0015",
       "firma_adi": "BRETON MAKİNA SAN. VE TİC. A.Ş.",
+      "email": "muhasebe@ionbreton.com",
+      "email_adresleri": [
+        "muhasebe@ionbreton.com"
+      ],
       "bakiye": 6971.38,
       "gecikmis_bakiye": 52.84,
       "odeme_vadesi": "60 GÜN",
@@ -9620,6 +9966,8 @@
     {
       "cari_kod": "120.01.0267",
       "firma_adi": "GÖKHAN TEKS. SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 6944.74,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -9667,6 +10015,8 @@
     {
       "cari_kod": "120.01.4094",
       "firma_adi": "PAMUKKALE KURUYEMİŞ MAK.SAN.TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 6795.6,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "45 GÜN",
@@ -9704,6 +10054,8 @@
     {
       "cari_kod": "120.01.0013",
       "firma_adi": "ER-BAKIR ELEKTROLİTİK BAKIR MAMULLERİ A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 6787.55,
       "gecikmis_bakiye": 2081.25,
       "odeme_vadesi": "60 GÜN",
@@ -9751,6 +10103,10 @@
     {
       "cari_kod": "120.01.0037",
       "firma_adi": "YONGA MOBİLYA A.Ş.",
+      "email": "ibrahimunlu@yongamobilya.com",
+      "email_adresleri": [
+        "ibrahimunlu@yongamobilya.com"
+      ],
       "bakiye": 6746.94,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -9778,6 +10134,8 @@
     {
       "cari_kod": "120.01.0217",
       "firma_adi": "GÖKNUR GIDA MADDELERİ ENERJİ İMALAT İTHALAT İHRACAT TİC.VE SAN. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 6231.25,
       "gecikmis_bakiye": 0.02,
       "odeme_vadesi": "60 GÜN",
@@ -9825,6 +10183,8 @@
     {
       "cari_kod": "120.01.4350",
       "firma_adi": "DİNAR KRAFT KAĞITÇILIK ANONİM ŞİRKETİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 5940,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -9852,6 +10212,8 @@
     {
       "cari_kod": "320.01.0355",
       "firma_adi": "MUHAMMET ÇIRAK - YILDIZ TEKNİK MAKİNA",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 5754.05,
       "gecikmis_bakiye": 5754.04,
       "odeme_vadesi": "30 GÜN",
@@ -9889,6 +10251,8 @@
     {
       "cari_kod": "120.01.4307",
       "firma_adi": "BATIN STONE MADENCİLİK SAN. VE TİC.LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 5683.51,
       "gecikmis_bakiye": 5683.51,
       "odeme_vadesi": "60 GÜN",
@@ -9916,6 +10280,8 @@
     {
       "cari_kod": "120.01.1762",
       "firma_adi": "SİLVER MAKİNA SAN. VE DIŞ TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 5650.94,
       "gecikmis_bakiye": 5650.94,
       "odeme_vadesi": "60 GÜN",
@@ -9943,6 +10309,8 @@
     {
       "cari_kod": "120.01.0279",
       "firma_adi": "DENİZ TEKS. SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 5224.98,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -9970,6 +10338,10 @@
     {
       "cari_kod": "320.01.0127",
       "firma_adi": "METROPOL DİJİTAL TELEVİZYON RADYO YAYINCILIK SAN. VE TİC.A.Ş",
+      "email": "arifzor@denizlimetropol.com",
+      "email_adresleri": [
+        "arifzor@denizlimetropol.com"
+      ],
       "bakiye": 5180,
       "gecikmis_bakiye": 5180,
       "odeme_vadesi": null,
@@ -9997,6 +10369,8 @@
     {
       "cari_kod": "120.01.0496",
       "firma_adi": "SELÇUK KOÇOĞLU",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 5040.3,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -10044,6 +10418,10 @@
     {
       "cari_kod": "120.01.0168",
       "firma_adi": "ÖNER NAKLİYE TURİZM İNŞ OTOMOTİV TEMİZLİK SAN. TİC LTD",
+      "email": "mmoran2020@gmail.com",
+      "email_adresleri": [
+        "mmoran2020@gmail.com"
+      ],
       "bakiye": 4816,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -10091,6 +10469,10 @@
     {
       "cari_kod": "120.01.0373",
       "firma_adi": "MAS TEKNİK - AYŞE SİNİR (MEHMET ALİ SİNİR)",
+      "email": "info@masteknik.com.tr",
+      "email_adresleri": [
+        "info@masteknik.com.tr"
+      ],
       "bakiye": 4610.51,
       "gecikmis_bakiye": 4610.51,
       "odeme_vadesi": null,
@@ -10128,6 +10510,8 @@
     {
       "cari_kod": "120.01.0244",
       "firma_adi": "MERCAN KİMYA SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 4528.08,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -10175,6 +10559,8 @@
     {
       "cari_kod": "120.01.4361",
       "firma_adi": "PENSAN KALEM VE KAĞIT SANAYİ TİCARET ANONİM ŞİRKETİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 4516.87,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -10202,6 +10588,10 @@
     {
       "cari_kod": "120.01.0062",
       "firma_adi": "MENDERES TEKS. SAN. VE TİC.A.Ş.",
+      "email": "muhasebe@menderes.com.tr",
+      "email_adresleri": [
+        "muhasebe@menderes.com.tr"
+      ],
       "bakiye": 4317.71,
       "gecikmis_bakiye": 0.01,
       "odeme_vadesi": "60 GÜN",
@@ -10259,6 +10649,10 @@
     {
       "cari_kod": "120.01.0202",
       "firma_adi": "EREN FORKLİFT PNÖMATİK HİD.VİNÇ MAK.GIDA.BİL.SAN.VE.TİC. LTD.ŞTİ.",
+      "email": "muhasebe@erenvinc.com",
+      "email_adresleri": [
+        "muhasebe@erenvinc.com"
+      ],
       "bakiye": 4000.17,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -10376,6 +10770,10 @@
     {
       "cari_kod": "120.01.0430",
       "firma_adi": "FUTURE GARAGE MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@futuregarage.com.tr",
+      "email_adresleri": [
+        "info@futuregarage.com.tr"
+      ],
       "bakiye": 3943.73,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -10403,6 +10801,10 @@
     {
       "cari_kod": "120.01.0293",
       "firma_adi": "CAN KARDEŞLER OTOMOTİV SAN. VE TİCLTD.ŞTİ.",
+      "email": "cankardesler@man.com.tr",
+      "email_adresleri": [
+        "cankardesler@man.com.tr"
+      ],
       "bakiye": 3862.32,
       "gecikmis_bakiye": 1680,
       "odeme_vadesi": "45 GÜN",
@@ -10440,6 +10842,8 @@
     {
       "cari_kod": "120.01.0089",
       "firma_adi": "HALİL PEKDEMİR ÇİFTLİĞİ GIDA VE İHTİYAÇ MADDELERİ TİC.VE SAN. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 3848.04,
       "gecikmis_bakiye": 1453.9,
       "odeme_vadesi": "60 GÜN",
@@ -10487,6 +10891,10 @@
     {
       "cari_kod": "120.01.0724",
       "firma_adi": "TİKA MAKİNA VE OTOMASYON İTH.İHR.SAN.TİC.A.Ş",
+      "email": "info@tikamakine.com",
+      "email_adresleri": [
+        "info@tikamakine.com"
+      ],
       "bakiye": 3749.7,
       "gecikmis_bakiye": 3749.7,
       "odeme_vadesi": "30 GÜN",
@@ -10534,6 +10942,8 @@
     {
       "cari_kod": "120.01.4237",
       "firma_adi": "RAMAZAN KAVAKLI",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 3597.22,
       "gecikmis_bakiye": 3597.22,
       "odeme_vadesi": null,
@@ -10581,6 +10991,8 @@
     {
       "cari_kod": "120.01.0020",
       "firma_adi": "TIKIROĞLU HAZIR BETON HAFR.NAK.SAN.TİC. LTD.ŞTİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 3347.1,
       "gecikmis_bakiye": 0.56,
       "odeme_vadesi": "60 GÜN",
@@ -10628,6 +11040,8 @@
     {
       "cari_kod": "120.01.0019",
       "firma_adi": "IONIC STONE MADEN SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 3326.04,
       "gecikmis_bakiye": 3326.04,
       "odeme_vadesi": "60 GÜN",
@@ -10655,6 +11069,10 @@
     {
       "cari_kod": "120.01.0756",
       "firma_adi": "ERAY YEŞİL",
+      "email": "yesilforklift@hotmail.com",
+      "email_adresleri": [
+        "yesilforklift@hotmail.com"
+      ],
       "bakiye": 3136.51,
       "gecikmis_bakiye": 199.09,
       "odeme_vadesi": "30 GÜN",
@@ -10722,6 +11140,8 @@
     {
       "cari_kod": "120.01.0551",
       "firma_adi": "SEDAT UĞURLU TEKS. SAN.TİC. LTD.ŞTİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 3107.14,
       "gecikmis_bakiye": 3107.14,
       "odeme_vadesi": "60 GÜN",
@@ -10749,6 +11169,11 @@
     {
       "cari_kod": "120.01.0133",
       "firma_adi": "ACIPAYAM BELEDİYE BAŞKANLIĞI",
+      "email": "bilgi@acipayam.bel.tr",
+      "email_adresleri": [
+        "bilgi@acipayam.bel.tr",
+        "akifsozer_kiraz@hotmail.com"
+      ],
       "bakiye": 3100,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -10776,6 +11201,10 @@
     {
       "cari_kod": "120.01.0022",
       "firma_adi": "ERSOY METAL HADDECİLİK VE NAKLİYAT SAN.TİC. LTD.ŞTİ.",
+      "email": "info@ersoymetal.com",
+      "email_adresleri": [
+        "info@ersoymetal.com"
+      ],
       "bakiye": 3059.04,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -10803,6 +11232,8 @@
     {
       "cari_kod": "320.01.0195",
       "firma_adi": "MNG KARGO YURTİÇİ VE YURTDIŞI TAŞ.A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 3059.04,
       "gecikmis_bakiye": 3059.04,
       "odeme_vadesi": null,
@@ -10816,23 +11247,13 @@
       },
       "acik_kalemler": [
         {
-          "evrak_no": "TED-13",
-          "belge_no": null,
-          "evrak_tarihi": "2026-04-08",
-          "vade_tarihi": "2026-04-08",
-          "gecikme_gun": 97,
-          "aging_bucket": "90+ gün",
-          "tutar": 147,
-          "temsilci": null
-        },
-        {
           "evrak_no": "TED-14",
           "belge_no": null,
           "evrak_tarihi": "2026-04-08",
           "vade_tarihi": "2026-04-08",
           "gecikme_gun": 97,
           "aging_bucket": "90+ gün",
-          "tutar": 441.04,
+          "tutar": 588.04,
           "temsilci": null
         },
         {
@@ -10950,6 +11371,8 @@
     {
       "cari_kod": "120.01.4326",
       "firma_adi": "SERİNHİSAR BELEDİYESİ -FEN İŞLERİ MÜDÜRLÜĞÜ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 3000,
       "gecikmis_bakiye": 3000,
       "odeme_vadesi": null,
@@ -10977,6 +11400,10 @@
     {
       "cari_kod": "120.01.0122",
       "firma_adi": "DENİZLİ UZMANLAR OTO.SATIŞ YSER.YED.PAR.İKİNCİ EL HUR.NAK.KUR.HİZ.PETROL İNŞ.GAY.SAN.VE TİC.A.Ş.",
+      "email": "uzmanlar_muhasebe@hotmail.com",
+      "email_adresleri": [
+        "uzmanlar_muhasebe@hotmail.com"
+      ],
       "bakiye": 2871,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -11004,6 +11431,10 @@
     {
       "cari_kod": "120.01.4127",
       "firma_adi": "DESKİ GENEL MÜD. İÇMESUYU",
+      "email": "a.deniz.demirci@deski.gov.tr",
+      "email_adresleri": [
+        "a.deniz.demirci@deski.gov.tr"
+      ],
       "bakiye": 2860.99,
       "gecikmis_bakiye": 2860.99,
       "odeme_vadesi": null,
@@ -11071,6 +11502,8 @@
     {
       "cari_kod": "120.01.4108",
       "firma_adi": "SENA KABLO SAN. TİC. LTD. ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 2851.85,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -11108,6 +11541,8 @@
     {
       "cari_kod": "120.01.0387",
       "firma_adi": "DENİZLİ PREFABRİK YAPI ELEMANLARI İNŞAAT SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 2689.07,
       "gecikmis_bakiye": 1170.99,
       "odeme_vadesi": "30 GÜN",
@@ -11155,6 +11590,8 @@
     {
       "cari_kod": "320.01.0553",
       "firma_adi": "TÜRK TELEKOMÜNİKASYON A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 2664.75,
       "gecikmis_bakiye": 2664.75,
       "odeme_vadesi": null,
@@ -11242,6 +11679,10 @@
     {
       "cari_kod": "120.01.1064",
       "firma_adi": "EOS CEVİZ TARIM ÜRÜNLERİ SAN.TİC.A.Ş.",
+      "email": "account@armadorshipping.com",
+      "email_adresleri": [
+        "account@armadorshipping.com"
+      ],
       "bakiye": 2600,
       "gecikmis_bakiye": 2600,
       "odeme_vadesi": null,
@@ -11269,6 +11710,8 @@
     {
       "cari_kod": "120.01.0549",
       "firma_adi": "MMZ-ONUR BORU PROFİL ÜRETİM SAN. VETİCARET A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 2366.53,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -11296,6 +11739,10 @@
     {
       "cari_kod": "120.01.0103",
       "firma_adi": "USTA VİNÇ İŞ MAKİNALARI NAKLİYAT SAN. VE TİC. LTD.ŞTİ.",
+      "email": "ustavinc@hotmail.com",
+      "email_adresleri": [
+        "ustavinc@hotmail.com"
+      ],
       "bakiye": 2327.71,
       "gecikmis_bakiye": 2327.71,
       "odeme_vadesi": "7 GÜN",
@@ -11323,6 +11770,10 @@
     {
       "cari_kod": "120.01.0055",
       "firma_adi": "ALKİM ALKALİ KİMYA A.Ş.",
+      "email": "koralkimmutabakat@alkim.com",
+      "email_adresleri": [
+        "koralkimmutabakat@alkim.com"
+      ],
       "bakiye": 2290.31,
       "gecikmis_bakiye": 1774.31,
       "odeme_vadesi": "60 GÜN",
@@ -11370,6 +11821,8 @@
     {
       "cari_kod": "120.01.0878",
       "firma_adi": "OMR MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 2271.38,
       "gecikmis_bakiye": 2271.38,
       "odeme_vadesi": "60 GÜN",
@@ -11397,6 +11850,8 @@
     {
       "cari_kod": "120.01.0066",
       "firma_adi": "MAUN GIDA SAN. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 2039.99,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -11424,6 +11879,8 @@
     {
       "cari_kod": "120.01.0285",
       "firma_adi": "MAZIOĞLU ORM.ÜRÜN.İNŞ.MÜTEAH.NAK.AMB.SAN.TİC. LTD.ŞTİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1985.33,
       "gecikmis_bakiye": 1473.59,
       "odeme_vadesi": null,
@@ -11481,6 +11938,10 @@
     {
       "cari_kod": "120.01.0123",
       "firma_adi": "PAMİR HAVLU PAZARLAMA SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@pamirtekstil.com",
+      "email_adresleri": [
+        "info@pamirtekstil.com"
+      ],
       "bakiye": 1929.45,
       "gecikmis_bakiye": 0.01,
       "odeme_vadesi": "90 GÜN",
@@ -11518,6 +11979,8 @@
     {
       "cari_kod": "120.01.0027",
       "firma_adi": "BIHL VE WIEDEMANN OTOMASYON SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1883.73,
       "gecikmis_bakiye": 1883.73,
       "odeme_vadesi": null,
@@ -11555,6 +12018,10 @@
     {
       "cari_kod": "120.01.0084",
       "firma_adi": "DENİZLİ İSTİF VE İŞ MAKİNALARI SAN.TİC. LTD.ŞTİ.",
+      "email": "denizliismakinalari@hotmail.com",
+      "email_adresleri": [
+        "denizliismakinalari@hotmail.com"
+      ],
       "bakiye": 1755.13,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -11602,6 +12069,8 @@
     {
       "cari_kod": "320.01.0159",
       "firma_adi": "ASKON DEMİR ÇELİK AŞ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1744.76,
       "gecikmis_bakiye": 1744.76,
       "odeme_vadesi": "45 GÜN",
@@ -11629,6 +12098,10 @@
     {
       "cari_kod": "120.01.0047",
       "firma_adi": "MAB MAKİNA - ŞADAN BOYACI",
+      "email": "seckintekstil20@hotmail.com",
+      "email_adresleri": [
+        "seckintekstil20@hotmail.com"
+      ],
       "bakiye": 1732.02,
       "gecikmis_bakiye": 1732.02,
       "odeme_vadesi": "7 GÜN",
@@ -11656,6 +12129,10 @@
     {
       "cari_kod": "120.01.0030",
       "firma_adi": "DEBAK DENİZLİ BAGALİT KALIP SAN. VE TİC. A.Ş.",
+      "email": "info@debak.com.tr",
+      "email_adresleri": [
+        "info@debak.com.tr"
+      ],
       "bakiye": 1650,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -11683,6 +12160,8 @@
     {
       "cari_kod": "120.01.0113",
       "firma_adi": "ALTINTOP KURUYEMİŞ GIDA SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1603.72,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -11710,6 +12189,8 @@
     {
       "cari_kod": "120.01.0420",
       "firma_adi": "NESA TEKS. SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1601.75,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -11747,6 +12228,8 @@
     {
       "cari_kod": "120.01.0010",
       "firma_adi": "DANTA PREFABRİK BETONARME YAPI SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1504.73,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -11774,6 +12257,8 @@
     {
       "cari_kod": "120.01.4324",
       "firma_adi": "DENİZLİ MODERN TEKSTİL SAN.VE TİC.A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1414.96,
       "gecikmis_bakiye": 1414.96,
       "odeme_vadesi": "30 GÜN",
@@ -11801,6 +12286,8 @@
     {
       "cari_kod": "120.01.0866",
       "firma_adi": "AYDEM YENİLENEBİLİR ENERJİ A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1392.17,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -11828,6 +12315,10 @@
     {
       "cari_kod": "120.01.0031",
       "firma_adi": "İLKE ÇELİK METAL SAN. VE TİC. A.Ş.",
+      "email": "muhasebe@ilkecelik.com.tr",
+      "email_adresleri": [
+        "muhasebe@ilkecelik.com.tr"
+      ],
       "bakiye": 1274.37,
       "gecikmis_bakiye": 0.02,
       "odeme_vadesi": "60 GÜN",
@@ -11865,6 +12356,10 @@
     {
       "cari_kod": "120.01.0309",
       "firma_adi": "EREN KADİFE TEKS. NAKLİYE SAN. VE TİC. LTD.ŞTİ.",
+      "email": "deniz@erenkadife.com.tr",
+      "email_adresleri": [
+        "deniz@erenkadife.com.tr"
+      ],
       "bakiye": 1237.15,
       "gecikmis_bakiye": 448.16,
       "odeme_vadesi": null,
@@ -11902,6 +12397,8 @@
     {
       "cari_kod": "120.01.4221",
       "firma_adi": "FURKAN SÖNMEZ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1204.9,
       "gecikmis_bakiye": 1204.9,
       "odeme_vadesi": "PEŞİN",
@@ -11929,6 +12426,8 @@
     {
       "cari_kod": "120.01.0407",
       "firma_adi": "ALSERA JEOTERMAL TARIM GIDA SAN.VE TİC.A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1196.91,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -11976,6 +12475,8 @@
     {
       "cari_kod": "320.01.0576",
       "firma_adi": "KOZMOPOL KOZMETİK SAĞLIK GIDA SANAYİ VE TİCARET ANONİM ŞİRKETİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1143,
       "gecikmis_bakiye": 1143,
       "odeme_vadesi": null,
@@ -12003,6 +12504,10 @@
     {
       "cari_kod": "120.01.0166",
       "firma_adi": "ATESAN AKARYAKIT SİSTEMLERİ SAN. VE TİC. LTD.ŞTİ.",
+      "email": "atesanticaret@hotmail.com",
+      "email_adresleri": [
+        "atesanticaret@hotmail.com"
+      ],
       "bakiye": 1000.38,
       "gecikmis_bakiye": 1000.38,
       "odeme_vadesi": "PEŞİN",
@@ -12030,6 +12535,10 @@
     {
       "cari_kod": "120.01.0234",
       "firma_adi": "EDALİFT FORKLİFT İŞ MAKİNALARI  - YASEMİN GİRGİN",
+      "email": "edalift@gmail.com",
+      "email_adresleri": [
+        "edalift@gmail.com"
+      ],
       "bakiye": 992.7,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -12097,6 +12606,8 @@
     {
       "cari_kod": "120.01.0377",
       "firma_adi": "KALKANLAR OTO YEDEK PARÇA LASTİK JANT SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 940.83,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -12124,6 +12635,10 @@
     {
       "cari_kod": "120.01.0114",
       "firma_adi": "GUNEY MAKİNA SAN. VE TİC. A.Ş.",
+      "email": "info@guney.us",
+      "email_adresleri": [
+        "info@guney.us"
+      ],
       "bakiye": 895.5,
       "gecikmis_bakiye": 895.5,
       "odeme_vadesi": "60 GÜN",
@@ -12151,6 +12666,8 @@
     {
       "cari_kod": "120.01.0125",
       "firma_adi": "BSE PLASTİK AMBALAJVE TEKS. SAN TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 891.82,
       "gecikmis_bakiye": 686.67,
       "odeme_vadesi": null,
@@ -12198,6 +12715,8 @@
     {
       "cari_kod": "120.01.0660",
       "firma_adi": "KAYABAŞI ENDÜSTRİYEL PARÇA VE MAKİNA SAN. VE TİC. LTD.ŞTİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 835.13,
       "gecikmis_bakiye": 835.13,
       "odeme_vadesi": "60 GÜN",
@@ -12235,6 +12754,8 @@
     {
       "cari_kod": "120.01.0930",
       "firma_adi": "EZEL ŞARAPCILIK TAR.ÜR.GID.VE AL.ÜR.SAN.TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 779.99,
       "gecikmis_bakiye": 779.99,
       "odeme_vadesi": null,
@@ -12262,6 +12783,10 @@
     {
       "cari_kod": "120.01.0043",
       "firma_adi": "ÇÜMEN HİDROLİK İŞ MAKİNALARI TEKS. SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@cumenhidrolik.com",
+      "email_adresleri": [
+        "info@cumenhidrolik.com"
+      ],
       "bakiye": 625.34,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -12299,6 +12824,10 @@
     {
       "cari_kod": "120.01.0151",
       "firma_adi": "MAZI ORMAN ÜRÜNLERİİTH.İHR.SANAYİ VE TİC. LTD.ŞTİ.",
+      "email": "muhasebe@mazi.com.tr",
+      "email_adresleri": [
+        "muhasebe@mazi.com.tr"
+      ],
       "bakiye": 556.61,
       "gecikmis_bakiye": 556.61,
       "odeme_vadesi": null,
@@ -12346,6 +12875,8 @@
     {
       "cari_kod": "120.01.0394",
       "firma_adi": "ISI SAN MÜHENDİSLİK İNŞAAT SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 545.35,
       "gecikmis_bakiye": 545.35,
       "odeme_vadesi": null,
@@ -12373,6 +12904,10 @@
     {
       "cari_kod": "120.01.0347",
       "firma_adi": "DEVLET HAVA MEYDANLARI İŞLETMESİ GENEL MÜD.",
+      "email": "murattugkan.dagarslan@dhmi.gov.tr",
+      "email_adresleri": [
+        "murattugkan.dagarslan@dhmi.gov.tr"
+      ],
       "bakiye": 525,
       "gecikmis_bakiye": 525,
       "odeme_vadesi": null,
@@ -12400,6 +12935,8 @@
     {
       "cari_kod": "120.01.0986",
       "firma_adi": "AGT AĞAÇ SAN.VE TİC.A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 516,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -12427,6 +12964,10 @@
     {
       "cari_kod": "120.01.0170",
       "firma_adi": "DENİZLİ ÖZER HIRDAVAT HİDROLİK LTD.ŞTİ.",
+      "email": "ozerhirdavat20@gmail.com",
+      "email_adresleri": [
+        "ozerhirdavat20@gmail.com"
+      ],
       "bakiye": 421.13,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -12464,6 +13005,10 @@
     {
       "cari_kod": "120.01.0372",
       "firma_adi": "AHMET BOLAT",
+      "email": "muhasebe@bolcekoto.com.tr",
+      "email_adresleri": [
+        "muhasebe@bolcekoto.com.tr"
+      ],
       "bakiye": 391.27,
       "gecikmis_bakiye": 64.68,
       "odeme_vadesi": null,
@@ -12501,6 +13046,8 @@
     {
       "cari_kod": "120.01.0597",
       "firma_adi": "AZERTEXNOLAYN LLC",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 352.87,
       "gecikmis_bakiye": 352.87,
       "odeme_vadesi": null,
@@ -12528,6 +13075,8 @@
     {
       "cari_kod": "120.01.0024",
       "firma_adi": "GÖKDELEN İSKELE KALIP SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 332.85,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -12565,6 +13114,8 @@
     {
       "cari_kod": "120.01.4368",
       "firma_adi": "BURHAN KÖSEOĞLU",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 309.76,
       "gecikmis_bakiye": 309.76,
       "odeme_vadesi": null,
@@ -12592,6 +13143,8 @@
     {
       "cari_kod": "120.01.0381",
       "firma_adi": "ÇELİKKOL MARBLE MADENCİLİK SAN.VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 302.89,
       "gecikmis_bakiye": 302.89,
       "odeme_vadesi": "30 GÜN",
@@ -12619,6 +13172,10 @@
     {
       "cari_kod": "120.01.0254",
       "firma_adi": "DENBO BOYA SAN. VE TİC. LTD.ŞTİ.",
+      "email": "planlama@diyatekstil.com",
+      "email_adresleri": [
+        "planlama@diyatekstil.com"
+      ],
       "bakiye": 295.01,
       "gecikmis_bakiye": 295.01,
       "odeme_vadesi": "7 GÜN",
@@ -12656,6 +13213,8 @@
     {
       "cari_kod": "120.01.0326",
       "firma_adi": "EGE MAKARA AMB. SAN.TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 266.57,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "7 GÜN",
@@ -12683,6 +13242,8 @@
     {
       "cari_kod": "320.01.0577",
       "firma_adi": "VAVA CARS TURKEY OTOMOTİV ANONİM ŞİRKETİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 243.84,
       "gecikmis_bakiye": 243.84,
       "odeme_vadesi": null,
@@ -12710,6 +13271,8 @@
     {
       "cari_kod": "120.01.0046",
       "firma_adi": "İNCİ ENERJİ SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 224.94,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -12737,6 +13300,10 @@
     {
       "cari_kod": "120.01.0126",
       "firma_adi": "ATİK TEL MAKİNA SAN. VE TİC. LTD.ŞTİ.",
+      "email": "info@atiktel.com",
+      "email_adresleri": [
+        "info@atiktel.com"
+      ],
       "bakiye": 218.49,
       "gecikmis_bakiye": 148.21,
       "odeme_vadesi": "30 GÜN",
@@ -12774,6 +13341,10 @@
     {
       "cari_kod": "120.01.0215",
       "firma_adi": "ÇELİKKOL PETROL MERMER SAN VE TİC. LTD. ŞTİ",
+      "email": "fatma@celikkolmarble.com",
+      "email_adresleri": [
+        "fatma@celikkolmarble.com"
+      ],
       "bakiye": 193,
       "gecikmis_bakiye": 193,
       "odeme_vadesi": null,
@@ -12801,6 +13372,8 @@
     {
       "cari_kod": "320.01.0556",
       "firma_adi": "PORT KARGO VE LOJİSTİK A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 156.71,
       "gecikmis_bakiye": 156.71,
       "odeme_vadesi": null,
@@ -12828,6 +13401,8 @@
     {
       "cari_kod": "120.01.4364",
       "firma_adi": "SERİNHİSAR BELEDİYESİ- TEMİZLİK İŞLERİ MÜDÜRLÜĞÜ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 149.51,
       "gecikmis_bakiye": 149.51,
       "odeme_vadesi": null,
@@ -12855,6 +13430,8 @@
     {
       "cari_kod": "320.01.0559",
       "firma_adi": "HASMAK İMALAT MONTAJ İNŞAAT SANAYİ TİCARET ANONİM ŞİRKETİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 144.15,
       "gecikmis_bakiye": 144.15,
       "odeme_vadesi": null,
@@ -12882,6 +13459,10 @@
     {
       "cari_kod": "120.01.0065",
       "firma_adi": "HSK MAKİNA MÜHENDİSLİK İTHALAT İHRACAT SAN. VE TİC. LTD.ŞTİ.",
+      "email": "hyilmazkara@gmail.com",
+      "email_adresleri": [
+        "hyilmazkara@gmail.com"
+      ],
       "bakiye": 129.92,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -12909,6 +13490,8 @@
     {
       "cari_kod": "120.01.0331",
       "firma_adi": "DENİZLİ TRAVERTEN MERMER MADEN NAKLİYAT İNŞAAT SAN. VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 128.84,
       "gecikmis_bakiye": 128.84,
       "odeme_vadesi": "PEŞİN",
@@ -12936,6 +13519,10 @@
     {
       "cari_kod": "120.01.0602",
       "firma_adi": "CNT FİLTRE OTOMOTİV SAN. TİC. LTD.ŞTİ.",
+      "email": "muhasebe@protechfilter.com",
+      "email_adresleri": [
+        "muhasebe@protechfilter.com"
+      ],
       "bakiye": 116.24,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -12973,6 +13560,10 @@
     {
       "cari_kod": "120.01.4219",
       "firma_adi": "REŞAT ERBAY-FERDİ AKKUŞ ADİ ORTAKLIĞI",
+      "email": "cinartornafreze@gmail.com",
+      "email_adresleri": [
+        "cinartornafreze@gmail.com"
+      ],
       "bakiye": 104.82,
       "gecikmis_bakiye": 104.82,
       "odeme_vadesi": "30 GÜN",
@@ -13010,6 +13601,8 @@
     {
       "cari_kod": "120.01.0073",
       "firma_adi": "ÜÇLER MAKİNA İNŞ.TURİZM SAN.TİC. LTD.ŞTİ. - DENİZLİ  ŞUBESİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 90.74,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -13037,6 +13630,10 @@
     {
       "cari_kod": "320.01.0137",
       "firma_adi": "İSTANBUL PNÖMATİK VEOTOMASYON SİSTEMLERİ TİC. LTD.ŞTİ",
+      "email": "info@istanbulpnomatik.com",
+      "email_adresleri": [
+        "info@istanbulpnomatik.com"
+      ],
       "bakiye": 50,
       "gecikmis_bakiye": 50,
       "odeme_vadesi": "30 GÜN",
@@ -13064,6 +13661,10 @@
     {
       "cari_kod": "120.01.0529",
       "firma_adi": "FEZA KOMPROSÖR  YUSUF TOPALOĞLU",
+      "email": "feza@fezakompresor.com",
+      "email_adresleri": [
+        "feza@fezakompresor.com"
+      ],
       "bakiye": 40.81,
       "gecikmis_bakiye": 40.81,
       "odeme_vadesi": null,
@@ -13091,6 +13692,10 @@
     {
       "cari_kod": "120.01.0068",
       "firma_adi": "TİB MAKİNA OTOMASYON SAN. VE TİC. LTD.ŞTİ.",
+      "email": "mustafademirkayasmmm@gmail.com",
+      "email_adresleri": [
+        "mustafademirkayasmmm@gmail.com"
+      ],
       "bakiye": 37.28,
       "gecikmis_bakiye": 37.28,
       "odeme_vadesi": "30 GÜN",
@@ -13118,6 +13723,8 @@
     {
       "cari_kod": "120.01.0911",
       "firma_adi": "ALK MAKİNA SAN.VE TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 36.56,
       "gecikmis_bakiye": 36.56,
       "odeme_vadesi": "60 GÜN",
@@ -13145,6 +13752,8 @@
     {
       "cari_kod": "120.01.0884",
       "firma_adi": "ŞAN İŞ RULMAN SAN.TİC. LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 9.9,
       "gecikmis_bakiye": 9.9,
       "odeme_vadesi": "30 GÜN",
@@ -13172,6 +13781,8 @@
     {
       "cari_kod": "120.01.4363",
       "firma_adi": "ASTESA TEKSTİL SAN.TİC.LTD.ŞTİ.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 5,
       "gecikmis_bakiye": 5,
       "odeme_vadesi": null,
@@ -13199,6 +13810,10 @@
     {
       "cari_kod": "120.01.0041",
       "firma_adi": "İBRAHİM SOLCAN",
+      "email": "solcanhidrolik@gmail.com",
+      "email_adresleri": [
+        "solcanhidrolik@gmail.com"
+      ],
       "bakiye": 1.92,
       "gecikmis_bakiye": 1.92,
       "odeme_vadesi": "PEŞİN",
@@ -13226,6 +13841,8 @@
     {
       "cari_kod": "320.01.0587",
       "firma_adi": "BİM BİRLEŞİK MAĞAZALAR ANONİM ŞİRKETİ",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1.67,
       "gecikmis_bakiye": 1.67,
       "odeme_vadesi": null,
@@ -13253,6 +13870,8 @@
     {
       "cari_kod": "120.01.0337",
       "firma_adi": "FREŞH MERVE KOMPOST TORF MANTARCILIĞI İTHALAT İHRACAT SAN. VE TİC. A.Ş.",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1.25,
       "gecikmis_bakiye": 1.25,
       "odeme_vadesi": null,
@@ -13280,6 +13899,8 @@
     {
       "cari_kod": "120.01.4242",
       "firma_adi": "SERHAT TOKAY",
+      "email": null,
+      "email_adresleri": [],
       "bakiye": 1,
       "gecikmis_bakiye": 1,
       "odeme_vadesi": null,

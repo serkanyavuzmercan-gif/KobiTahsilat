@@ -84,6 +84,9 @@ export default function CarilerClient({
                     >
                       {c.firma_adi}
                     </Link>
+                    <p className={`mt-0.5 text-xs ${c.email ? 'text-slate-500' : 'text-red-500'}`}>
+                      {c.email_adresleri.length ? c.email_adresleri.join(', ') : 'E-posta adresi yok'}
+                    </p>
                   </td>
                   <td className="px-3 py-2 text-slate-600">
                     {c.odeme_vadesi || '—'}

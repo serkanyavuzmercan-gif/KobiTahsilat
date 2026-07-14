@@ -19,12 +19,18 @@ Aç: http://localhost:3000
 | `/` | Toplam alacak özeti + en yüksek bakiyeler |
 | `/cariler` | Arama / min bakiye filtreli cari ve gecikmiş bakiye listesi |
 | `/cariler/[kod]` | Açık faturalar, vade tarihleri, FIFO ve yaşlandırma |
+| `/mutabakat` | Cari e-posta kontrolü ve mutabakat yönetimi |
+| `/mutabakat/[kod]` | Firmaya özel mutabakat e-postası önizlemesi |
 | `/api/cariler?q=` | JSON API |
 
 Canlı snapshot: `data/tahsilat_snapshot.json` (Mikro firma **26**).
 
 Vade ve yaşlandırma motoru MikRapor'daki doğrulanmış kuralları kullanır:
 `cha_vade → ödeme planı → evrak tarihi`; açık kalemler FIFO ile hesaplanır.
+
+Mikro `CARI_HESAPLAR.cari_EMail` alanındaki adresler cari koduyla eşleştirilir.
+Mutabakat modülü şu anda güvenli **önizleme modundadır**; kontrol onayına kadar gerçek müşteriye
+e-posta göndermez.
 
 ## Giriş
 

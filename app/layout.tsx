@@ -30,6 +30,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 >
                   Cariler
                 </a>
+                <a
+                  className="rounded-md px-3 py-1.5 text-slate-700 hover:bg-slate-100"
+                  href="/mutabakat"
+                >
+                  Mutabakat
+                </a>
                 <AuthActions />
               </nav>
             </div>

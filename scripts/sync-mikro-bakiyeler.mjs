@@ -133,6 +133,14 @@ function money(value) {
   return Math.round(value * 100) / 100
 }
 
+function emailAdresleri(value) {
+  const candidates = String(value || '')
+    .split(/[;,\s]+/)
+    .map((email) => email.trim().toLocaleLowerCase('tr'))
+    .filter((email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+  return [...new Set(candidates)]
+}
+
 loadEnv()
 
 const required = [
@@ -184,6 +192,7 @@ WHERE ISNULL(cha.cha_iptal,0)=0 AND ISNULL(cha.cha_hidden,0)=0
 ORDER BY cha.cha_kod, cha.cha_tarihi`
 
 const planSql = `SELECT cari_kod, CAST(cari_odemeplan_no AS VARCHAR(20)) AS plan_no,
+  ISNULL(cari_EMail,'') AS email,
   (SELECT odp_adi FROM ODEME_PLANLARI WHERE odp_no = cari_odemeplan_no) AS odeme_vadesi,
   CAST((SELECT odp_ortgun FROM ODEME_PLANLARI WHERE odp_no = cari_odemeplan_no) AS VARCHAR(20)) AS vade_gun
   FROM CARI_HESAPLAR WHERE cari_kod LIKE '120%' OR cari_kod LIKE '320%'`
@@ -249,6 +258,7 @@ for (const entry of grouped.values()) {
   const plan = planMap.get(entry.cari_kod) || {}
   const odemeVadesi = plan.odeme_vadesi ? String(plan.odeme_vadesi).trim() : null
   const vadeGun = vadeGunHesapla(plan)
+  const emails = emailAdresleri(plan.email)
   let kalan = bakiye
 
   // FIFO ödemeler eski borçları kapatır; açık kalanlar en yeni borç evraklarından geriye dağılır.
@@ -285,6 +295,8 @@ for (const entry of grouped.values()) {
   cariler.push({
     cari_kod: entry.cari_kod,
     firma_adi: entry.firma_adi,
+    email: emails[0] || null,
+    email_adresleri: emails,
     bakiye,
     gecikmis_bakiye: money(
       aging['1–30 gün'] + aging['31–60 gün'] + aging['61–90 gün'] + aging['90+ gün']
@@ -313,3 +325,4 @@ const dest = path.join(root, 'data', 'tahsilat_snapshot.json')
 fs.writeFileSync(dest, JSON.stringify(out, null, 2))
 console.log(`OK → ${dest}`)
 console.log(`cari=${out.cari_sayisi} toplam=${out.toplam_alacak}`)
+console.log(`email=${cariler.filter((c) => c.email).length} eksik=${cariler.filter((c) => !c.email).length}`)
