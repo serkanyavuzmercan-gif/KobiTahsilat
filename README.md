@@ -12,6 +12,30 @@ npm run dev
 
 Aç: http://localhost:3000
 
+### Windows (PowerShell)
+
+```powershell
+cd KobiTahsilat          # repoyu klonladığınız klasör
+.\scripts\setup-local.ps1  # ilk kurulum (npm install + .env.local)
+notepad .env.local         # Supabase anahtarlarını yapıştırın
+npm run dev
+```
+
+`.env.local` yoksa: `Copy-Item env.example .env.local`
+
+**Sık hatalar**
+
+| Hata | Çözüm |
+|------|--------|
+| `npm is not recognized` | [Node.js LTS](https://nodejs.org) kurun, PowerShell'i yeniden açın |
+| `next is not recognized` | Önce `npm install` çalıştırın |
+| `EADDRINUSE :::3000` | Port dolu: `npx kill-port 3000` veya başka terminalde çalışan dev'i kapatın |
+| `running scripts is disabled` | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` |
+| Giriş yapılamıyor / 503 | `.env.local` içinde `NEXT_PUBLIC_SUPABASE_URL` ve `NEXT_PUBLIC_SUPABASE_ANON_KEY` dolu olmalı |
+| Sayfa açılıyor ama veri yok | `data/tahsilat_snapshot.json` repoda gelir; Mikro için `npm run sync:mikro` |
+
+Geliştirme için Vercel deploy şart değil; yerelde `npm run dev` yeterli. Canlı test için deploy isteyin.
+
 ## Ne var?
 
 | Sayfa | Açıklama |
