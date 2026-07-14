@@ -7,5 +7,12 @@ export const dynamic = 'force-dynamic'
 export default async function MutabakatPage() {
   const snapshot = loadSnapshot()
   const cariler = await loadMutabakatCariler()
-  return <MutabakatClient cariler={cariler} snapshotTarihi={snapshot.snapshot_tarihi} />
+  const sendEnabled = process.env.MUTABAKAT_SEND_ENABLED !== 'false'
+  return (
+    <MutabakatClient
+      cariler={cariler}
+      snapshotTarihi={snapshot.snapshot_tarihi}
+      sendEnabled={sendEnabled}
+    />
+  )
 }

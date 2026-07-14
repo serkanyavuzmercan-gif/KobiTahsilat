@@ -1,14 +1,21 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { AlertTriangle, ArrowLeft, CalendarClock, Mail, ShieldCheck } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, CalendarClock, Mail, Settings } from 'lucide-react'
 import { CariEmailEditor } from '@/components/cari-email-editor'
+import { MutabakatSendPanel } from '@/components/mutabakat-send-panel'
+import { requireAuthUser } from '@/lib/auth'
 import { loadSnapshot } from '@/lib/data'
+import { defaultSenderId, listMailSenders } from '@/lib/mail-senders'
 import { buildMutabakatEmail, formatDate } from '@/lib/mutabakat'
 import { loadMutabakatCari } from '@/lib/mutabakat-data'
 import { createMutabakatToken } from '@/lib/mutabakat-token'
 import { formatTL } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
+
+function sendEnabled() {
+  return process.env.MUTABAKAT_SEND_ENABLED !== 'false'
+}
 
 export default async function MutabakatPreviewPage({
   params,
@@ -18,6 +25,11 @@ export default async function MutabakatPreviewPage({
   const { kod: encodedKod } = await params
   const cari = await loadMutabakatCari(decodeURIComponent(encodedKod))
   if (!cari) notFound()
+
+  const user = await requireAuthUser()
+  const senders = await listMailSenders(user.id)
+  const selectedSenderId = defaultSenderId(senders)
+  const canSend = sendEnabled()
 
   const snapshot = loadSnapshot()
   const token = createMutabakatToken(cari.cari_kod, snapshot.snapshot_tarihi, cari.bakiye)
@@ -82,6 +94,27 @@ export default async function MutabakatPreviewPage({
                 </p>
               </div>
             </div>
+            <div className="mt-3 border-t border-slate-200 pt-3">
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <p className="text-xs font-medium text-slate-500">Gönderim</p>
+                <Link
+                  href="/mutabakat/ayarlar"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:underline"
+                >
+                  <Settings size={13} />
+                  Gönderici ayarları
+                </Link>
+              </div>
+              <MutabakatSendPanel
+                cariKod={cari.cari_kod}
+                senders={senders}
+                defaultSenderId={selectedSenderId}
+                hasRecipient={Boolean(cari.email)}
+                sendBlocked={cari.mutabakat_gonderim_engelli}
+                blockedUntil={cari.mutabakat_tekrar_gonderilebilir_at}
+                sendEnabled={canSend}
+              />
+            </div>
           </div>
         </div>
 
@@ -109,31 +142,16 @@ export default async function MutabakatPreviewPage({
           </div>
         )}
 
-        <div
-          className={`mt-4 flex items-center justify-between gap-3 rounded-lg border p-3 text-sm ${
-            cari.mutabakat_gonderim_engelli
-              ? 'border-amber-200 bg-amber-50 text-amber-800'
-              : 'border-emerald-200 bg-emerald-50 text-emerald-800'
-          }`}
-        >
-          <div className="flex items-center gap-2">
-            <ShieldCheck size={18} />
-            {cari.mutabakat_gonderim_engelli &&
-            cari.mutabakat_tekrar_gonderilebilir_at
-              ? `Son gönderimden sonra 8 iş günü dolmadan yeniden gönderilemez. Tekrar gönderim: ${new Date(
-                  cari.mutabakat_tekrar_gonderilebilir_at
-                ).toLocaleDateString('tr-TR')}`
-              : 'Önizleme güvenlidir; müşteriye henüz e-posta gönderilmez.'}
+        {canSend ? (
+          <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
+            Gönderici adresini seçip mutabakatı gönderebilirsiniz. Yanıtlar oturum açtığınız
+            e-postaya yönlendirilebilir.
           </div>
-          <button
-            type="button"
-            disabled
-            title="Kontrol onayından sonra etkinleştirilecek"
-            className="rounded-lg bg-slate-300 px-4 py-2 text-xs font-semibold text-slate-600"
-          >
-            {cari.mutabakat_gonderim_engelli ? 'Bekleme süresi aktif' : 'Gönderim kapalı'}
-          </button>
-        </div>
+        ) : (
+          <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+            Gönderim şu anda kapalı. Yönetici `MUTABAKAT_SEND_ENABLED=true` ile etkinleştirebilir.
+          </div>
+        )}
       </section>
 
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 shadow-sm">

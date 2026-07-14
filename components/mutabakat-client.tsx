@@ -9,9 +9,11 @@ import { formatTL } from '@/lib/types'
 export function MutabakatClient({
   cariler,
   snapshotTarihi,
+  sendEnabled,
 }: {
   cariler: MutabakatCari[]
   snapshotTarihi: string
+  sendEnabled: boolean
 }) {
   const [query, setQuery] = useState('')
   const [emailFilter, setEmailFilter] = useState<'all' | 'ready' | 'candidate' | 'missing'>('all')
@@ -45,12 +47,22 @@ export function MutabakatClient({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-xl font-semibold">Bakiye mutabakatı</h2>
-              <span className="rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800">
-                Önizleme modu
-              </span>
+              {sendEnabled ? (
+                <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-800">
+                  Gönderim açık
+                </span>
+              ) : (
+                <span className="rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-800">
+                  Gönderim kapalı
+                </span>
+              )}
             </div>
             <p className="mt-1 text-sm text-slate-500">
-              Dönem: {snapshotTarihi} · Gerçek e-posta gönderimi kontrol onayına kadar kapalıdır.
+              Dönem: {snapshotTarihi} · Gönderici e-posta bağlantıları{' '}
+              <Link href="/mutabakat/ayarlar" className="font-medium text-brand-600 hover:underline">
+                ayarlardan
+              </Link>{' '}
+              yönetilir.
             </p>
           </div>
           <div className="grid grid-cols-3 gap-2">

@@ -22,6 +22,14 @@ export type AcikKalem = {
 
 export type EmailGuven = 'dogrulanmis' | 'yuksek' | 'aday'
 
+export type MailSenderAccount = {
+  id: string
+  email: string
+  ad_soyad: string | null
+  varsayilan: boolean
+  sistem: boolean
+}
+
 export type EmailAday = {
   email: string
   kaynak: string
