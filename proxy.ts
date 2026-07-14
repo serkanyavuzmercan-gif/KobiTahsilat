@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const expectedPassword = process.env.APP_PASSWORD
 
   // Parola tanımlı değilse uygulamayı yanlışlıkla açık yayınlama.
