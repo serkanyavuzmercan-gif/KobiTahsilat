@@ -1,17 +1,45 @@
+export const AGING_BUCKETS = [
+  'Vadesi gelmemiş',
+  '1–30 gün',
+  '31–60 gün',
+  '61–90 gün',
+  '90+ gün',
+] as const
+
+export type AgingBucket = (typeof AGING_BUCKETS)[number]
+export type AgingTotals = Record<AgingBucket, number>
+
+export type AcikKalem = {
+  evrak_no: string | null
+  belge_no: string | null
+  evrak_tarihi: string | null
+  vade_tarihi: string | null
+  gecikme_gun: number
+  aging_bucket: AgingBucket
+  tutar: number
+  temsilci: string | null
+}
+
 export type CariBakiye = {
   cari_kod: string
   firma_adi: string
   bakiye: number
+  gecikmis_bakiye: number
   odeme_vadesi: string | null
   vade_gun: number | null
+  aging: AgingTotals
+  acik_kalemler: AcikKalem[]
 }
 
 export type TahsilatSnapshot = {
   sourced_at: string
   source: string
+  snapshot_tarihi: string
   note: string
   cari_sayisi: number
   toplam_alacak: number
+  toplam_gecikmis: number
+  aging: AgingTotals
   cariler: CariBakiye[]
 }
 

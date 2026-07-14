@@ -68,6 +68,7 @@ export default function CarilerClient({
                 <th className="px-3 py-3">Cari kod</th>
                 <th className="px-3 py-3">Firma</th>
                 <th className="px-3 py-3">Ödeme vadesi</th>
+                <th className="px-3 py-3 text-right">Gecikmiş</th>
                 <th className="px-3 py-3 text-right">Bakiye (₺)</th>
               </tr>
             </thead>
@@ -90,6 +91,9 @@ export default function CarilerClient({
                       <span className="ml-1 text-xs text-slate-400">({c.vade_gun}g)</span>
                     ) : null}
                   </td>
+                  <td className="px-3 py-2 text-right font-medium tabular-nums text-red-700">
+                    {formatNumber(c.gecikmis_bakiye)}
+                  </td>
                   <td className="px-3 py-2 text-right font-semibold tabular-nums text-slate-900">
                     {formatNumber(c.bakiye)}
                   </td>
@@ -97,7 +101,7 @@ export default function CarilerClient({
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-3 py-8 text-center text-slate-500">
+                  <td colSpan={6} className="px-3 py-8 text-center text-slate-500">
                     Eşleşen cari yok.
                   </td>
                 </tr>

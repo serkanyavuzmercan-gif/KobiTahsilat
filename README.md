@@ -17,11 +17,14 @@ Aç: http://localhost:3000
 | Sayfa | Açıklama |
 |-------|----------|
 | `/` | Toplam alacak özeti + en yüksek bakiyeler |
-| `/cariler` | Arama / min bakiye filtreli cari listesi |
-| `/cariler/[kod]` | Cari detay |
+| `/cariler` | Arama / min bakiye filtreli cari ve gecikmiş bakiye listesi |
+| `/cariler/[kod]` | Açık faturalar, vade tarihleri, FIFO ve yaşlandırma |
 | `/api/cariler?q=` | JSON API |
 
 Canlı snapshot: `data/tahsilat_snapshot.json` (Mikro firma **26**).
+
+Vade ve yaşlandırma motoru MikRapor'daki doğrulanmış kuralları kullanır:
+`cha_vade → ödeme planı → evrak tarihi`; açık kalemler FIFO ile hesaplanır.
 
 ## Giriş
 
@@ -47,6 +50,6 @@ Detay: [`docs/SS-KAYNAK-YAPI.md`](docs/SS-KAYNAK-YAPI.md)
 
 ## Sonraki özellikler
 
-- Evrak kırılımı + vade yaşlandırma (ss FIFO)
 - Tahsilat notu / takip durumu
+- Tahsilat bildirim otomasyonu
 - Telegram / Excel raporu entegrasyonu

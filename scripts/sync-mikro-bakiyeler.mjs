@@ -79,6 +79,60 @@ function gunFromPlanAdi(planAdi) {
   return null
 }
 
+const ODEME_PLANI_GUN = new Map([
+  [0, 0], [1, 0], [2, 30], [3, 60], [5, 45],
+  [6, 75], [7, 90], [8, 100], [9, 120], [10, 7],
+])
+
+function vadeGunHesapla(plan) {
+  const planNo = numberOrNull(plan?.plan_no)
+  const ortGun = numberOrNull(plan?.vade_gun)
+  if (planNo != null && planNo < 0) return Math.abs(planNo)
+  if (planNo === 0) return 0
+  if (ortGun != null && ortGun > 0) return ortGun
+  const fromName = gunFromPlanAdi(plan?.odeme_vadesi)
+  if (fromName != null) return fromName
+  return planNo != null ? (ODEME_PLANI_GUN.get(planNo) ?? null) : null
+}
+
+function numberOrNull(value) {
+  if (value == null || String(value).trim() === '') return null
+  const number = Number(value)
+  return Number.isFinite(number) ? number : null
+}
+
+function dateOrNull(value) {
+  if (!value) return null
+  const iso = String(value).replace('T', ' ').split(' ')[0]
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso) || Number(iso.slice(0, 4)) < 1900) return null
+  return iso
+}
+
+function addDays(iso, days) {
+  const date = new Date(`${iso}T00:00:00Z`)
+  date.setUTCDate(date.getUTCDate() + (days || 0))
+  return date.toISOString().slice(0, 10)
+}
+
+function diffDays(later, earlier) {
+  return Math.round(
+    (new Date(`${later}T00:00:00Z`).getTime() - new Date(`${earlier}T00:00:00Z`).getTime()) /
+      86400000
+  )
+}
+
+function agingBucket(gecikmeGun) {
+  if (gecikmeGun <= 0) return 'Vadesi gelmemiş'
+  if (gecikmeGun <= 30) return '1–30 gün'
+  if (gecikmeGun <= 60) return '31–60 gün'
+  if (gecikmeGun <= 90) return '61–90 gün'
+  return '90+ gün'
+}
+
+function money(value) {
+  return Math.round(value * 100) / 100
+}
+
 loadEnv()
 
 const required = [
@@ -107,21 +161,27 @@ const auth = {
 const sql = `
 SELECT
   cha.cha_kod AS cari_kod,
-  MAX(ch.cari_unvan1) AS firma_adi,
-  ROUND(SUM(CASE WHEN cha.cha_tip=0 THEN ABS(ISNULL(cha.cha_meblag,0))*ISNULL(cha.cha_d_kur,1)
-                 ELSE -ABS(ISNULL(cha.cha_meblag,0))*ISNULL(cha.cha_d_kur,1) END), 2) AS bakiye
+  ch.cari_unvan1 AS firma_adi,
+  LTRIM(RTRIM(ISNULL(cha.cha_evrakno_seri,''))) AS seri,
+  cha.cha_evrakno_sira AS sira,
+  LTRIM(RTRIM(ISNULL(cha.cha_belge_no,''))) AS belge_no,
+  CONVERT(varchar(10), cha.cha_tarihi, 23) AS evrak_tarihi,
+  CONVERT(varchar(10), cha.cha_vade, 23) AS cha_vade,
+  cha.cha_tip AS tip,
+  ABS(ISNULL(cha.cha_meblag,0)) AS meblag,
+  ISNULL(cha.cha_d_cins,0) AS doviz_cinsi,
+  ISNULL(cha.cha_d_kur,1) AS kur,
+  ISNULL(cha.cha_meblag_ana_doviz_icin_gecersiz_fl,0) AS gecersiz_doviz,
+  LTRIM(RTRIM(ISNULL(cha.cha_satici_kodu,''))) AS temsilci
 FROM CARI_HESAP_HAREKETLERI cha WITH (NOLOCK)
 LEFT JOIN CARI_HESAPLAR ch WITH (NOLOCK) ON ch.cari_kod = cha.cha_kod
-WHERE ISNULL(cha.cha_iptal,0)=0
+WHERE ISNULL(cha.cha_iptal,0)=0 AND ISNULL(cha.cha_hidden,0)=0
   AND (cha.cha_kod LIKE '120%' OR cha.cha_kod LIKE '320%')
   AND cha.cha_kod NOT LIKE '120.B%'
   AND cha.cha_kod NOT LIKE '128%'
   AND cha.cha_kod NOT IN ('120.01.0001','120.01.4249')
-GROUP BY cha.cha_kod
-HAVING ABS(SUM(CASE WHEN cha.cha_tip=0 THEN ABS(ISNULL(cha.cha_meblag,0))*ISNULL(cha.cha_d_kur,1)
-                    ELSE -ABS(ISNULL(cha.cha_meblag,0))*ISNULL(cha.cha_d_kur,1) END)) >= 1
-ORDER BY ABS(SUM(CASE WHEN cha.cha_tip=0 THEN ABS(ISNULL(cha.cha_meblag,0))*ISNULL(cha.cha_d_kur,1)
-                      ELSE -ABS(ISNULL(cha.cha_meblag,0))*ISNULL(cha.cha_d_kur,1) END)) DESC`
+  AND ISNULL(cha.cha_meblag,0) <> 0
+ORDER BY cha.cha_kod, cha.cha_tarihi`
 
 const planSql = `SELECT cari_kod, CAST(cari_odemeplan_no AS VARCHAR(20)) AS plan_no,
   (SELECT odp_adi FROM ODEME_PLANLARI WHERE odp_no = cari_odemeplan_no) AS odeme_vadesi,
@@ -139,35 +199,113 @@ const planMap = new Map(
   rows(planRes).map((p) => [String(p.cari_kod).trim(), p])
 )
 
-const cariler = rows(balRes)
-  .map((x) => {
-    const cari_kod = String(x.cari_kod || '').trim()
-    const bakiye = Number(x.bakiye || 0)
-    if (bakiye <= 0) return null
-    const p = planMap.get(cari_kod) || {}
-    const odeme_vadesi = p.odeme_vadesi ? String(p.odeme_vadesi).trim() : null
-    const fromName = gunFromPlanAdi(odeme_vadesi)
-    const fromOrt =
-      p.vade_gun != null && String(p.vade_gun).trim() !== ''
-        ? Number(p.vade_gun)
-        : null
-    return {
-      cari_kod,
-      firma_adi: String(x.firma_adi || '').trim(),
-      bakiye,
-      odeme_vadesi,
-      vade_gun: fromName ?? (fromOrt && fromOrt > 0 ? fromOrt : fromOrt),
-    }
+const grouped = new Map()
+for (const row of rows(balRes)) {
+  const cariKod = String(row.cari_kod || '').trim()
+  if (!cariKod) continue
+
+  // MikRapor doğrulanmış TL kuralı: TL harekette kurla çarpma; geçersiz döviz satırını sayma.
+  const meblag = Math.abs(Number(row.meblag || 0))
+  const dovizCinsi = Number(row.doviz_cinsi || 0)
+  const kur = Number(row.kur || 1) || 1
+  const tl = Number(row.gecersiz_doviz || 0) === 1 ? 0 : meblag * (dovizCinsi === 0 ? 1 : kur)
+  const tip = Number(row.tip)
+
+  const entry = grouped.get(cariKod) || {
+    cari_kod: cariKod,
+    firma_adi: String(row.firma_adi || '').trim() || cariKod,
+    net: 0,
+    docs: [],
+  }
+  entry.net += tip === 0 ? tl : -tl
+  entry.docs.push({
+    tip,
+    tl: money(tl),
+    seri: String(row.seri || '').trim(),
+    sira: row.sira != null ? String(row.sira).trim() : '',
+    belge_no: String(row.belge_no || '').trim() || null,
+    evrak_tarihi: dateOrNull(row.evrak_tarihi),
+    cha_vade: dateOrNull(row.cha_vade),
+    temsilci: String(row.temsilci || '').trim() || null,
   })
-  .filter(Boolean)
-  .sort((a, b) => b.bakiye - a.bakiye)
+  grouped.set(cariKod, entry)
+}
+
+const snapshotTarihi = new Date().toISOString().slice(0, 10)
+const emptyAging = () => ({
+  'Vadesi gelmemiş': 0,
+  '1–30 gün': 0,
+  '31–60 gün': 0,
+  '61–90 gün': 0,
+  '90+ gün': 0,
+})
+const toplamAging = emptyAging()
+const cariler = []
+
+for (const entry of grouped.values()) {
+  const bakiye = money(entry.net)
+  if (bakiye < 1) continue
+
+  const plan = planMap.get(entry.cari_kod) || {}
+  const odemeVadesi = plan.odeme_vadesi ? String(plan.odeme_vadesi).trim() : null
+  const vadeGun = vadeGunHesapla(plan)
+  let kalan = bakiye
+
+  // FIFO ödemeler eski borçları kapatır; açık kalanlar en yeni borç evraklarından geriye dağılır.
+  const charges = entry.docs
+    .filter((doc) => doc.tip === 0 && doc.tl > 0)
+    .sort((a, b) => (b.evrak_tarihi || '').localeCompare(a.evrak_tarihi || ''))
+
+  const acikKalemler = []
+  const aging = emptyAging()
+  for (const doc of charges) {
+    if (kalan <= 0.005) break
+    const tutar = money(Math.min(doc.tl, kalan))
+    kalan = money(kalan - tutar)
+    const vadeTarihi =
+      doc.cha_vade ||
+      (doc.evrak_tarihi ? addDays(doc.evrak_tarihi, vadeGun || 0) : null)
+    const gecikmeGun = vadeTarihi ? diffDays(snapshotTarihi, vadeTarihi) : 0
+    const bucket = agingBucket(gecikmeGun)
+    aging[bucket] = money(aging[bucket] + tutar)
+    toplamAging[bucket] = money(toplamAging[bucket] + tutar)
+    acikKalemler.push({
+      evrak_no: doc.seri || doc.sira ? `${doc.seri}${doc.seri && doc.sira ? '-' : ''}${doc.sira}` : null,
+      belge_no: doc.belge_no,
+      evrak_tarihi: doc.evrak_tarihi,
+      vade_tarihi: vadeTarihi,
+      gecikme_gun: gecikmeGun,
+      aging_bucket: bucket,
+      tutar,
+      temsilci: doc.temsilci,
+    })
+  }
+
+  acikKalemler.sort((a, b) => (a.vade_tarihi || '9999').localeCompare(b.vade_tarihi || '9999'))
+  cariler.push({
+    cari_kod: entry.cari_kod,
+    firma_adi: entry.firma_adi,
+    bakiye,
+    gecikmis_bakiye: money(
+      aging['1–30 gün'] + aging['31–60 gün'] + aging['61–90 gün'] + aging['90+ gün']
+    ),
+    odeme_vadesi: odemeVadesi,
+    vade_gun: vadeGun,
+    aging,
+    acik_kalemler: acikKalemler,
+  })
+}
+cariler.sort((a, b) => b.bakiye - a.bakiye)
 
 const out = {
   sourced_at: new Date().toISOString(),
   source: `Mikro firma ${process.env.MIKRO_FIRMA_KODU}`,
-  note: 'bakiye>0 tahsilat (alacağımız). HARIC ŞAHLAN/AYGÜN + 128 hariç. ss vade-takip işaret kuralı.',
+  snapshot_tarihi: snapshotTarihi,
+  note: 'MikRapor TL/vade + ss cari-net/FIFO kuralları. Bakiye>0 alacağımız; 128, ŞAHLAN ve AYGÜN hariç.',
   cari_sayisi: cariler.length,
   toplam_alacak: Math.round(cariler.reduce((s, c) => s + c.bakiye, 0) * 100) / 100,
+  toplam_gecikmis: money(cariler.reduce((s, c) => s + c.gecikmis_bakiye, 0)),
+  aging: toplamAging,
   cariler,
 }
 

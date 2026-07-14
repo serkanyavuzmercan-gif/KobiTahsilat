@@ -11,11 +11,14 @@ function normalize(c: CariBakiye): CariBakiye {
       ? c.vade_gun
       : gunFromPlanAdi(c.odeme_vadesi) ?? c.vade_gun
   return {
+    ...c,
     cari_kod: c.cari_kod,
     firma_adi: c.firma_adi,
     bakiye: Number(c.bakiye) || 0,
+    gecikmis_bakiye: Number(c.gecikmis_bakiye) || 0,
     odeme_vadesi: c.odeme_vadesi,
     vade_gun,
+    acik_kalemler: c.acik_kalemler || [],
   }
 }
 

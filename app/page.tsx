@@ -1,5 +1,5 @@
 import { loadSnapshot } from '@/lib/data'
-import { formatTL, formatNumber } from '@/lib/types'
+import { AGING_BUCKETS, formatTL, formatNumber } from '@/lib/types'
 import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
@@ -17,12 +17,42 @@ export default function HomePage() {
           Kaynak: {snap.source} · Güncellendi:{' '}
           {new Date(snap.sourced_at).toLocaleString('tr-TR')}
         </p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-3">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Stat label="Toplam alacak" value={formatTL(snap.toplam_alacak)} accent />
+          <Stat label="Vadesi geçmiş" value={formatTL(snap.toplam_gecikmis)} warning />
           <Stat label="Açık cari sayısı" value={String(snap.cari_sayisi)} />
           <Stat label="Ortalama bakiye" value={formatTL(ort)} />
         </div>
         <p className="mt-4 text-xs text-slate-500">{snap.note}</p>
+      </section>
+
+      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 className="text-lg font-semibold">Vade yaşlandırması</h3>
+        <p className="mt-1 text-sm text-slate-500">
+          Açık faturalar FIFO ile eşleştirilmiştir. Snapshot: {snap.snapshot_tarihi}
+        </p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          {AGING_BUCKETS.map((bucket, index) => {
+            const amount = snap.aging[bucket] || 0
+            const percent = snap.toplam_alacak ? (amount / snap.toplam_alacak) * 100 : 0
+            return (
+              <div
+                key={bucket}
+                className={`rounded-xl border p-4 ${
+                  index === 0
+                    ? 'border-emerald-200 bg-emerald-50'
+                    : index === 4
+                      ? 'border-red-200 bg-red-50'
+                      : 'border-amber-200 bg-amber-50'
+                }`}
+              >
+                <p className="text-xs font-medium text-slate-600">{bucket}</p>
+                <p className="mt-2 text-lg font-semibold tabular-nums">{formatTL(amount)}</p>
+                <p className="mt-1 text-xs text-slate-500">%{percent.toFixed(1)}</p>
+              </div>
+            )
+          })}
+        </div>
       </section>
 
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -39,6 +69,7 @@ export default function HomePage() {
                 <th className="px-2 py-2">Cari kod</th>
                 <th className="px-2 py-2">Firma</th>
                 <th className="px-2 py-2">Vade</th>
+                <th className="px-2 py-2 text-right">Gecikmiş</th>
                 <th className="px-2 py-2 text-right">Bakiye</th>
               </tr>
             </thead>
@@ -52,6 +83,9 @@ export default function HomePage() {
                     </Link>
                   </td>
                   <td className="px-2 py-2 text-slate-600">{c.odeme_vadesi || '—'}</td>
+                  <td className="px-2 py-2 text-right font-medium tabular-nums text-red-700">
+                    {formatNumber(c.gecikmis_bakiye)}
+                  </td>
                   <td className="px-2 py-2 text-right font-semibold tabular-nums">
                     {formatNumber(c.bakiye)}
                   </td>
@@ -69,15 +103,29 @@ function Stat({
   label,
   value,
   accent,
+  warning,
 }: {
   label: string
   value: string
   accent?: boolean
+  warning?: boolean
 }) {
   return (
-    <div className={`rounded-xl border p-4 ${accent ? 'border-brand-200 bg-brand-50' : 'border-slate-200 bg-slate-50'}`}>
+    <div
+      className={`rounded-xl border p-4 ${
+        accent
+          ? 'border-brand-200 bg-brand-50'
+          : warning
+            ? 'border-red-200 bg-red-50'
+            : 'border-slate-200 bg-slate-50'
+      }`}
+    >
       <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
-      <p className={`mt-1 text-2xl font-semibold tabular-nums ${accent ? 'text-brand-700' : 'text-slate-900'}`}>
+      <p
+        className={`mt-1 text-2xl font-semibold tabular-nums ${
+          accent ? 'text-brand-700' : warning ? 'text-red-700' : 'text-slate-900'
+        }`}
+      >
         {value}
       </p>
     </div>
