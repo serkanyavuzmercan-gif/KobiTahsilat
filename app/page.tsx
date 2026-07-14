@@ -1,4 +1,9 @@
 import { loadSnapshot } from '@/lib/data'
+import {
+  cariOrtalamaGecikmeGun,
+  formatGecikmeGun,
+  portfoyOrtalamaGecikmeGun,
+} from '@/lib/gecikme'
 import { AGING_BUCKETS, formatTL, formatNumber } from '@/lib/types'
 import Link from 'next/link'
 
@@ -8,6 +13,7 @@ export default function HomePage() {
   const snap = loadSnapshot()
   const top = snap.cariler.slice(0, 10)
   const ort = snap.cari_sayisi ? snap.toplam_alacak / snap.cari_sayisi : 0
+  const ortalamaGecikme = portfoyOrtalamaGecikmeGun(snap.cariler)
 
   return (
     <div className="space-y-6">
@@ -70,6 +76,7 @@ export default function HomePage() {
                 <th className="px-2 py-2">Firma</th>
                 <th className="px-2 py-2">Vade</th>
                 <th className="px-2 py-2 text-right">Gecikmiş</th>
+                <th className="px-2 py-2 text-right">Ort. gecikme</th>
                 <th className="px-2 py-2 text-right">Bakiye</th>
               </tr>
             </thead>
@@ -86,14 +93,31 @@ export default function HomePage() {
                   <td className="px-2 py-2 text-right font-medium tabular-nums text-red-700">
                     {formatNumber(c.gecikmis_bakiye)}
                   </td>
+                  <td className="px-2 py-2 text-right tabular-nums text-slate-600">
+                    {formatGecikmeGun(cariOrtalamaGecikmeGun(c))}
+                  </td>
                   <td className="px-2 py-2 text-right font-semibold tabular-nums">
                     {formatNumber(c.bakiye)}
                   </td>
                 </tr>
               ))}
             </tbody>
+            <tfoot className="border-t border-slate-200 bg-slate-50 text-sm">
+              <tr>
+                <td colSpan={4} className="px-2 py-3 text-right font-medium text-slate-600">
+                  Ortalama gecikme süresi
+                </td>
+                <td className="px-2 py-3 text-right font-semibold tabular-nums text-red-700">
+                  {formatGecikmeGun(ortalamaGecikme)}
+                </td>
+                <td className="px-2 py-3" />
+              </tr>
+            </tfoot>
           </table>
         </div>
+        <p className="mt-3 text-xs text-slate-500">
+          Ortalama gecikme, vadesi geçmiş açık kalemler üzerinden tutar ağırlıklı hesaplanır.
+        </p>
       </section>
     </div>
   )
