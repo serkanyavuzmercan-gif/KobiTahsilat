@@ -45,8 +45,8 @@ export function buildMutabakatEmail(
                   <div style="font-size:25px;font-weight:700;margin-top:7px">Cari Hesap Mutabakatı</div>
                 </td>
                 <td align="right">
-                  <div style="display:inline-block;padding:7px 9px;border-radius:12px;background:#ffffff">
-                    <img src="https://files.cdn-files-a.com/uploads/5644137/400_6865986816fbc.png" width="74" alt="Hidroteknik A.Ş." style="display:block;width:74px;max-height:42px;object-fit:contain;border:0">
+                  <div style="display:inline-block;padding:9px 12px;border-radius:14px;background:#ffffff">
+                    <img src="https://files.cdn-files-a.com/uploads/5644137/400_6865986816fbc.png" width="132" alt="Hidroteknik A.Ş." style="display:block;width:132px;max-width:100%;max-height:66px;object-fit:contain;border:0">
                   </div>
                 </td>
               </tr>
