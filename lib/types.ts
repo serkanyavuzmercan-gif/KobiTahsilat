@@ -20,11 +20,25 @@ export type AcikKalem = {
   temsilci: string | null
 }
 
+export type EmailGuven = 'dogrulanmis' | 'yuksek' | 'aday'
+
+export type EmailAday = {
+  email: string
+  kaynak: string
+  guven: EmailGuven
+  adet: number
+  son_tarih: string | null
+  eslesme_notu: string | null
+}
+
 export type CariBakiye = {
   cari_kod: string
   firma_adi: string
   email: string | null
   email_adresleri: string[]
+  email_kaynagi?: string | null
+  email_guven?: EmailGuven | null
+  email_adaylari: EmailAday[]
   bakiye: number
   gecikmis_bakiye: number
   odeme_vadesi: string | null
@@ -43,6 +57,16 @@ export type TahsilatSnapshot = {
   toplam_gecikmis: number
   aging: AgingTotals
   cariler: CariBakiye[]
+  email_enriched_at?: string
+  email_ozet?: {
+    toplam_cari: number
+    gonderime_hazir: number
+    adayli: number
+    eksik: number
+    gmail_tarandi: boolean
+    gmail_aday_sayisi: number
+    gmail_kaynagi?: string
+  }
 }
 
 /** ss reposu ile aynı işaret kuralı: bakiye > 0 → müşteri bize borçlu (tahsilat). */

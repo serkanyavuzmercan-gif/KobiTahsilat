@@ -71,8 +71,24 @@ export default async function MutabakatPreviewPage({
         {!cari.email && (
           <div className="mt-4 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
             <AlertTriangle size={18} className="mt-0.5 shrink-0" />
-            Bu firmanın Mikro cari kartında geçerli e-posta adresi bulunmuyor. Gönderimden önce
-            adres eklenmelidir.
+            <div>
+              <p>Bu firmanın doğrulanmış e-posta adresi bulunmuyor.</p>
+              {cari.email_adaylari.length > 0 ? (
+                <div className="mt-2">
+                  <p className="font-medium">Gmail/yazışma geçmişinden bulunan adaylar:</p>
+                  <ul className="mt-1 list-disc pl-5">
+                    {cari.email_adaylari.map((aday) => (
+                      <li key={aday.email}>
+                        {aday.email} <span className="text-amber-700">({aday.kaynak})</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-1 text-xs">Personel onayı olmadan gönderime açılmaz.</p>
+                </div>
+              ) : (
+                <p className="mt-1">Gönderimden önce adres eklenmelidir.</p>
+              )}
+            </div>
           </div>
         )}
 

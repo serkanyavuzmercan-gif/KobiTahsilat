@@ -14,7 +14,7 @@ export function MutabakatClient({
   snapshotTarihi: string
 }) {
   const [query, setQuery] = useState('')
-  const [emailFilter, setEmailFilter] = useState<'all' | 'ready' | 'missing'>('all')
+  const [emailFilter, setEmailFilter] = useState<'all' | 'ready' | 'candidate' | 'missing'>('all')
 
   const filtered = useMemo(() => {
     const term = query.trim().toLocaleLowerCase('tr')
@@ -23,17 +23,20 @@ export function MutabakatClient({
         !term ||
         cari.firma_adi.toLocaleLowerCase('tr').includes(term) ||
         cari.cari_kod.toLocaleLowerCase('tr').includes(term) ||
-        cari.email_adresleri.some((email) => email.includes(term))
+        cari.email_adresleri.some((email) => email.includes(term)) ||
+        cari.email_adaylari.some((aday) => aday.email.includes(term))
       const matchesEmail =
         emailFilter === 'all' ||
         (emailFilter === 'ready' && Boolean(cari.email)) ||
-        (emailFilter === 'missing' && !cari.email)
+        (emailFilter === 'candidate' && !cari.email && cari.email_adaylari.length > 0) ||
+        (emailFilter === 'missing' && !cari.email && cari.email_adaylari.length === 0)
       return matchesSearch && matchesEmail
     })
   }, [cariler, emailFilter, query])
 
   const ready = cariler.filter((cari) => cari.email).length
-  const missing = cariler.length - ready
+  const candidate = cariler.filter((cari) => !cari.email && cari.email_adaylari.length > 0).length
+  const missing = cariler.length - ready - candidate
 
   return (
     <div className="space-y-5">
@@ -50,9 +53,10 @@ export function MutabakatClient({
               Dönem: {snapshotTarihi} · Gerçek e-posta gönderimi kontrol onayına kadar kapalıdır.
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <Summary icon={<CheckCircle2 size={18} />} label="E-postası hazır" value={ready} ok />
-            <Summary icon={<MailWarning size={18} />} label="E-posta eksik" value={missing} />
+          <div className="grid grid-cols-3 gap-2">
+            <Summary icon={<CheckCircle2 size={18} />} label="Gönderime hazır" value={ready} tone="ok" />
+            <Summary icon={<Mail size={18} />} label="Onay bekleyen" value={candidate} tone="candidate" />
+            <Summary icon={<MailWarning size={18} />} label="E-posta eksik" value={missing} tone="missing" />
           </div>
         </div>
 
@@ -73,6 +77,7 @@ export function MutabakatClient({
           >
             <option value="all">Tüm firmalar</option>
             <option value="ready">E-postası hazır</option>
+            <option value="candidate">Gmail adayı var</option>
             <option value="missing">E-posta eksik</option>
           </select>
         </div>
@@ -99,9 +104,22 @@ export function MutabakatClient({
                   </td>
                   <td className="px-4 py-3">
                     {cari.email ? (
-                      <div className="flex items-center gap-2 text-slate-700">
-                        <Mail size={15} className="text-emerald-600" />
-                        <span>{cari.email_adresleri.join(', ')}</span>
+                      <div>
+                        <div className="flex items-center gap-2 text-slate-700">
+                          <Mail size={15} className="text-emerald-600" />
+                          <span>{cari.email_adresleri.join(', ')}</span>
+                        </div>
+                        <p className="mt-1 text-xs text-emerald-700">
+                          {cari.email_kaynagi || 'Mikro cari kartı'} · gönderime hazır
+                        </p>
+                      </div>
+                    ) : cari.email_adaylari.length ? (
+                      <div>
+                        <p className="font-medium text-amber-800">{cari.email_adaylari[0].email}</p>
+                        <p className="mt-1 text-xs text-amber-700">
+                          Gmail adayı · personel onayı gerekli
+                          {cari.email_adaylari.length > 1 ? ` · ${cari.email_adaylari.length} aday` : ''}
+                        </p>
                       </div>
                     ) : (
                       <span className="inline-flex rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-700">
@@ -137,20 +155,21 @@ function Summary({
   icon,
   label,
   value,
-  ok,
+  tone,
 }: {
   icon: React.ReactNode
   label: string
   value: number
-  ok?: boolean
+  tone: 'ok' | 'candidate' | 'missing'
 }) {
+  const styles = {
+    ok: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+    candidate: 'border-amber-200 bg-amber-50 text-amber-700',
+    missing: 'border-red-200 bg-red-50 text-red-700',
+  }[tone]
   return (
-    <div
-      className={`min-w-36 rounded-xl border px-4 py-3 ${
-        ok ? 'border-emerald-200 bg-emerald-50' : 'border-red-200 bg-red-50'
-      }`}
-    >
-      <div className={`flex items-center gap-2 ${ok ? 'text-emerald-700' : 'text-red-700'}`}>
+    <div className={`min-w-32 rounded-xl border px-3 py-3 ${styles}`}>
+      <div className="flex items-center gap-2">
         {icon}
         <span className="text-xs font-medium">{label}</span>
       </div>

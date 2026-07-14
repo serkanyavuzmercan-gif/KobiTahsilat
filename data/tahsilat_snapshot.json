@@ -413,7 +413,10 @@
           "tutar": 53530.34,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0032",
@@ -512,7 +515,8 @@
           "tutar": 3355.32,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0099",
@@ -693,7 +697,10 @@
           "tutar": 532.14,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0284",
@@ -784,7 +791,10 @@
           "tutar": 318000,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4126",
@@ -812,6 +822,48 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 333984,
           "temsilci": null
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "ali.kecelioglu@hamburger-containerboard.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 25,
+          "son_tarih": "2026-07-13",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "hasip.gonulkirmaz@ugurluotocam.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 3,
+          "son_tarih": "2026-05-11",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "sefa.isim@akca.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-10",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "pratis@pratis.net",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-17",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "satinalma1@bozdemir.co",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-17",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -922,7 +974,8 @@
           "tutar": 23104.32,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0005",
@@ -1273,7 +1326,10 @@
           "tutar": 4061.63,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0004",
@@ -1554,14 +1610,19 @@
           "tutar": 388.45,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0034",
       "firma_adi": "DENTAŞ KAĞIT SAN. A.Ş.",
       "email": "info@dentaskagit.com.tr",
       "email_adresleri": [
-        "info@dentaskagit.com.tr"
+        "info@dentaskagit.com.tr",
+        "elifgul.onur@dentaskagit.com.tr",
+        "hatice.demirer@dentaskagit.com.tr"
       ],
       "bakiye": 236778.41,
       "gecikmis_bakiye": 0,
@@ -1635,6 +1696,26 @@
           "tutar": 23967.22,
           "temsilci": "DURAN"
         }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "elifgul.onur@dentaskagit.com.tr",
+          "kaynak": "Eski teklif + Gmail teklif talebi + Gmail yazışma thread’i",
+          "guven": "yuksek",
+          "adet": 11,
+          "son_tarih": "2026-06-30",
+          "eslesme_notu": null
+        },
+        {
+          "email": "hatice.demirer@dentaskagit.com.tr",
+          "kaynak": "Eski teklif + Gmail teklif talebi",
+          "guven": "yuksek",
+          "adet": 5,
+          "son_tarih": "2026-07-07",
+          "eslesme_notu": null
+        }
       ]
     },
     {
@@ -1666,7 +1747,10 @@
           "tutar": 215245.49,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0012",
@@ -1858,6 +1942,18 @@
           "tutar": 15113.39,
           "temsilci": "DURAN"
         }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "etrfinans@europtec.com",
+          "kaynak": "SS cari kartı",
+          "guven": "dogrulanmis",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": null
+        }
       ]
     },
     {
@@ -1865,7 +1961,8 @@
       "firma_adi": "HAMBURGER TURKEY KAĞIT ÜRETİM VE TİC. LTD.ŞTİ.",
       "email": "ozden.cel@hamburger.com",
       "email_adresleri": [
-        "ozden.cel@hamburger.com"
+        "ozden.cel@hamburger.com",
+        "ali.kecelioglu@hamburger-containerboard.com"
       ],
       "bakiye": 137407.54,
       "gecikmis_bakiye": 0,
@@ -2008,6 +2105,18 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 7200,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "ali.kecelioglu@hamburger-containerboard.com",
+          "kaynak": "Eski teklif + Gmail teklif talebi + Gmail yazışma thread’i",
+          "guven": "yuksek",
+          "adet": 33,
+          "son_tarih": "2026-07-13",
+          "eslesme_notu": null
         }
       ]
     },
@@ -2470,7 +2579,10 @@
           "tutar": 436.06,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0049",
@@ -2751,14 +2863,18 @@
           "tutar": 6296.82,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0011",
       "firma_adi": "TCM MAKİNA SAN. VE TİC. A.Ş.",
       "email": "muhasebe@ersatel.com",
       "email_adresleri": [
-        "muhasebe@ersatel.com"
+        "muhasebe@ersatel.com",
+        "info@tcmmakina.com.tr"
       ],
       "bakiye": 104420.58,
       "gecikmis_bakiye": 175.62,
@@ -2881,6 +2997,18 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 8460,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "info@tcmmakina.com.tr",
+          "kaynak": "Servis kaydı",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": "2026-06-25",
+          "eslesme_notu": null
         }
       ]
     },
@@ -3073,7 +3201,10 @@
           "tutar": 406.88,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0322",
@@ -3104,7 +3235,10 @@
           "tutar": 96108.25,
           "temsilci": null
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0301",
@@ -3132,6 +3266,32 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 84236.17,
           "temsilci": "İRİŞ"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "e.cicek@cayirhanenerji.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-03",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "sinem.gulmez@celiklerholding.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-02-27",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "sevilay.kizilkaya@celiklerholding.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-02-24",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -3175,6 +3335,18 @@
           "tutar": 70573.28,
           "temsilci": null
         }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "siparis@hattat.com.tr",
+          "kaynak": "SS cari kartı",
+          "guven": "dogrulanmis",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": null
+        }
       ]
     },
     {
@@ -3206,7 +3378,10 @@
           "tutar": 80691.1,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0143",
@@ -3257,13 +3432,18 @@
           "tutar": 71123.12,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0418",
       "firma_adi": "EFARGE MAKİNA İMALAT SAN. VE TİC. A.Ş.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "satinalma@efarge.com",
+      "email_adresleri": [
+        "satinalma@efarge.com"
+      ],
       "bakiye": 68024.62,
       "gecikmis_bakiye": 41150.27,
       "odeme_vadesi": "90 GÜN",
@@ -3346,13 +3526,18 @@
           "tutar": 15751.07,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Servis kaydı",
+      "email_guven": "yuksek",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0058",
       "firma_adi": "ALINDAIR SOĞUTMA SİSTEMLERİ SAN. VE TİC. A.Ş.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "info@alindair.com.tr",
+      "email_adresleri": [
+        "info@alindair.com.tr"
+      ],
       "bakiye": 65738.9,
       "gecikmis_bakiye": 15523.54,
       "odeme_vadesi": "60 GÜN",
@@ -3425,14 +3610,19 @@
           "tutar": 7435.52,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Servis kaydı",
+      "email_guven": "yuksek",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0018",
       "firma_adi": "UYGAR MAKİNA SANAYİVE TİC. LTD.ŞTİ.",
       "email": "muhasebe@um.com.tr",
       "email_adresleri": [
-        "muhasebe@um.com.tr"
+        "muhasebe@um.com.tr",
+        "uretim@um.com.tr",
+        "info@um.com.tr"
       ],
       "bakiye": 64133.2,
       "gecikmis_bakiye": 40857.27,
@@ -3495,6 +3685,26 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 1687.5,
           "temsilci": "İRİŞ"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "uretim@um.com.tr",
+          "kaynak": "Servis kaydı",
+          "guven": "yuksek",
+          "adet": 7,
+          "son_tarih": "2026-06-03",
+          "eslesme_notu": null
+        },
+        {
+          "email": "info@um.com.tr",
+          "kaynak": "Servis kaydı",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": "2026-01-29",
+          "eslesme_notu": null
         }
       ]
     },
@@ -3584,6 +3794,16 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 45376.63,
           "temsilci": "AKAGÜNDÜZ"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "finans@menderes.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 4,
+          "son_tarih": "2026-04-20",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -3724,7 +3944,8 @@
           "tutar": 12400.9,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0145",
@@ -3783,6 +4004,40 @@
           "tutar": 1200,
           "temsilci": "İRİŞ"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "cuneyt.ozcan@agt.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 3,
+          "son_tarih": "2026-05-20",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "info@hdmarine.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-05",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "satinalma@efarge.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-06",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "info@calendar.yandex.ru",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-02-26",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -3790,7 +4045,8 @@
       "firma_adi": "FİLİDEA TEKS. SAN. VE TİC. A.Ş.",
       "email": "maliisler@abalioglu.com.tr",
       "email_adresleri": [
-        "maliisler@abalioglu.com.tr"
+        "maliisler@abalioglu.com.tr",
+        "sinan.kilic@filidea.com.tr"
       ],
       "bakiye": 51857.11,
       "gecikmis_bakiye": 15829.22,
@@ -3864,6 +4120,18 @@
           "tutar": 180,
           "temsilci": "DURAN"
         }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "sinan.kilic@filidea.com.tr",
+          "kaynak": "Gmail teklif talebi + Gmail yazışma thread’i",
+          "guven": "yuksek",
+          "adet": 2,
+          "son_tarih": "2026-07-14",
+          "eslesme_notu": null
+        }
       ]
     },
     {
@@ -3871,7 +4139,8 @@
       "firma_adi": "UĞURLU OTO CAMSAN TİC AŞ",
       "email": "info@ugurluotocam.com.tr",
       "email_adresleri": [
-        "info@ugurluotocam.com.tr"
+        "info@ugurluotocam.com.tr",
+        "hasip.gonulkirmaz@ugurluotocam.com.tr"
       ],
       "bakiye": 50698.93,
       "gecikmis_bakiye": 0,
@@ -3955,6 +4224,18 @@
           "tutar": 1200,
           "temsilci": "DURAN"
         }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "hasip.gonulkirmaz@ugurluotocam.com.tr",
+          "kaynak": "Eski teklif + Gmail teklif talebi",
+          "guven": "yuksek",
+          "adet": 7,
+          "son_tarih": "2026-07-13",
+          "eslesme_notu": null
+        }
       ]
     },
     {
@@ -3962,7 +4243,8 @@
       "firma_adi": "EKİZOĞLU MAKİNA MERMER TEKS. SAN. VE TİC. LTD.ŞTİ.",
       "email": "info@ekizoglumakina.com",
       "email_adresleri": [
-        "info@ekizoglumakina.com"
+        "info@ekizoglumakina.com",
+        "ekiz.sinan@gmail.com"
       ],
       "bakiye": 49931.91,
       "gecikmis_bakiye": 45667.2,
@@ -4095,6 +4377,18 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 3093.34,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "ekiz.sinan@gmail.com",
+          "kaynak": "Eski teklif + Gmail teklif talebi",
+          "guven": "yuksek",
+          "adet": 2,
+          "son_tarih": "2026-07-06",
+          "eslesme_notu": null
         }
       ]
     },
@@ -4365,7 +4659,8 @@
           "tutar": 159.29,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0048",
@@ -4474,6 +4769,16 @@
           "tutar": 6568.57,
           "temsilci": "DURAN"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "satinalma@efarge.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-22",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -4563,6 +4868,48 @@
           "tutar": 7665.36,
           "temsilci": "DURAN"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "dijital@fatura.superonline.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-05-02",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "musteridestek@sabancidx.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-09",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "sirkuler@uibsirkuler.org.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-05-21",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "sales@dasergroup.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-05-04",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "export@dasergroup.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-20",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -4570,7 +4917,8 @@
       "firma_adi": "AYSAN RAF SİSTEMLERİ A.Ş.",
       "email": "aysan@aysanraf.com.tr",
       "email_adresleri": [
-        "aysan@aysanraf.com.tr"
+        "aysan@aysanraf.com.tr",
+        "satinalma@aysanraf.com.tr"
       ],
       "bakiye": 43959.57,
       "gecikmis_bakiye": 14841.7,
@@ -4734,6 +5082,18 @@
           "tutar": 363.31,
           "temsilci": "İRİŞ"
         }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "satinalma@aysanraf.com.tr",
+          "kaynak": "Servis kaydı",
+          "guven": "yuksek",
+          "adet": 2,
+          "son_tarih": "2026-03-05",
+          "eslesme_notu": null
+        }
       ]
     },
     {
@@ -4793,6 +5153,48 @@
           "tutar": 499.27,
           "temsilci": "AKAGÜNDÜZ"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "mustafa.balci@celiklerholding.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 7,
+          "son_tarih": "2026-07-03",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "hamdioksas@celiklerholding.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-07-14",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "harun.karaman@celiklerholding.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-07-09",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "kamer.erdal@celiklerholding.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-17",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "omer.basikara@celiklerholding.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-15",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -4834,7 +5236,10 @@
           "tutar": 31736.17,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0061",
@@ -4913,7 +5318,8 @@
           "tutar": 917.38,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4147",
@@ -5112,6 +5518,24 @@
           "tutar": 349.2,
           "temsilci": "TUNÇER"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "newsletters@account.euronews.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-20",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "nilguniyice@azimkargo.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-23",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -5231,7 +5655,8 @@
           "tutar": 69.73,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0261",
@@ -5262,7 +5687,10 @@
           "tutar": 33600,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0036",
@@ -5431,7 +5859,8 @@
           "tutar": 3819.78,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0198",
@@ -5482,7 +5911,10 @@
           "tutar": 1002.5,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0101",
@@ -5753,7 +6185,10 @@
           "tutar": 975.86,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0050",
@@ -5864,7 +6299,10 @@
           "tutar": 13671.44,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0605",
@@ -5963,13 +6401,57 @@
           "tutar": 873.95,
           "temsilci": "DURAN"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "esatinalma@oyakcimento.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 28,
+          "son_tarih": "2026-05-18",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "serdar.ercan@nexans.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 3,
+          "son_tarih": "2026-07-07",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "berhankurgut@sevalkablo.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-07-01",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "ahmetacikgoz@nurdil.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-05-04",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "bulent.balaban@cenal.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-04-22",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
       "cari_kod": "120.01.0029",
       "firma_adi": "GEDİK TAVUKÇULUK VE TARIM ÜRÜNLERİ TİC.SAN A.Ş.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "satinalma@gedikpilic.com",
+      "email_adresleri": [
+        "satinalma@gedikpilic.com"
+      ],
       "bakiye": 27015.22,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -6012,13 +6494,18 @@
           "tutar": 3000,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Eski teklif",
+      "email_guven": "yuksek",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0028",
       "firma_adi": "NEXANS TÜRKİYE ENDÜSTRİ VE TİC. A.Ş.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "serdar.ercan@nexans.com",
+      "email_adresleri": [
+        "serdar.ercan@nexans.com"
+      ],
       "bakiye": 26718.52,
       "gecikmis_bakiye": 0.04,
       "odeme_vadesi": "60 GÜN",
@@ -6071,7 +6558,10 @@
           "tutar": 24512.75,
           "temsilci": null
         }
-      ]
+      ],
+      "email_kaynagi": "Eski teklif + Servis kaydı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0146",
@@ -6102,7 +6592,10 @@
           "tutar": 26653.8,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0009",
@@ -6153,7 +6646,10 @@
           "tutar": 7389.88,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0746",
@@ -6194,7 +6690,10 @@
           "tutar": 25000,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0102",
@@ -6263,7 +6762,8 @@
           "tutar": 5220,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0379",
@@ -6334,7 +6834,10 @@
           "tutar": 4397.06,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0348",
@@ -6413,7 +6916,8 @@
           "tutar": 4388.39,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0713",
@@ -6462,6 +6966,16 @@
           "tutar": 3669.92,
           "temsilci": "TUNÇER"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "alkhan.jafarov@azertexnolayn.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-31",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -6503,7 +7017,10 @@
           "tutar": 20000,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4371",
@@ -6534,14 +7051,18 @@
           "tutar": 22277.7,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0336",
       "firma_adi": "ÇINAR BORU  PROFİL SAN.VE TİC.A.Ş.",
       "email": "info@cinarboru.com",
       "email_adresleri": [
-        "info@cinarboru.com"
+        "info@cinarboru.com",
+        "yildirayi@cinarboru.com"
       ],
       "bakiye": 19440,
       "gecikmis_bakiye": 0,
@@ -6564,6 +7085,18 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 19440,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "yildirayi@cinarboru.com",
+          "kaynak": "Eski teklif + Gmail teklif talebi",
+          "guven": "yuksek",
+          "adet": 3,
+          "son_tarih": "2026-06-30",
+          "eslesme_notu": null
         }
       ]
     },
@@ -6604,7 +7137,8 @@
           "tutar": 6750,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4330",
@@ -6632,6 +7166,16 @@
           "aging_bucket": "1–30 gün",
           "tutar": 19268.41,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "k.erdogan2@ticaret.gov.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-02",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -6764,13 +7308,18 @@
           "tutar": 78.66,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.1173",
       "firma_adi": "KÜÇÜKER TEKS. SAN.VE TİC.A.Ş.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "udemircan@kucuker.com",
+      "email_adresleri": [
+        "udemircan@kucuker.com"
+      ],
       "bakiye": 18258.1,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -6813,7 +7362,10 @@
           "tutar": 1110.1,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Eski teklif",
+      "email_guven": "yuksek",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0070",
@@ -6864,14 +7416,19 @@
           "tutar": 7270.97,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0045",
       "firma_adi": "BOZDEMİR MAKİNA SAN. VE TİC. LTD.ŞTİ.",
       "email": "info@bozdemirmakina.com",
       "email_adresleri": [
-        "info@bozdemirmakina.com"
+        "info@bozdemirmakina.com",
+        "satinalma2@bozdemir.co",
+        "satinalma1@bozdemir.co"
       ],
       "bakiye": 18109.43,
       "gecikmis_bakiye": 2263.93,
@@ -7034,6 +7591,26 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 160.56,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "satinalma2@bozdemir.co",
+          "kaynak": "Eski teklif + Gmail teklif talebi",
+          "guven": "yuksek",
+          "adet": 2,
+          "son_tarih": "2026-07-09",
+          "eslesme_notu": null
+        },
+        {
+          "email": "satinalma1@bozdemir.co",
+          "kaynak": "Eski teklif + Gmail teklif talebi",
+          "guven": "yuksek",
+          "adet": 2,
+          "son_tarih": "2026-07-09",
+          "eslesme_notu": null
         }
       ]
     },
@@ -7236,7 +7813,10 @@
           "tutar": 756,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4180",
@@ -7365,7 +7945,8 @@
           "tutar": 6064.45,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0617",
@@ -7406,13 +7987,19 @@
           "tutar": 4708.08,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0033",
       "firma_adi": "SEVAL KABLO AYDINLATMA CİHAZLARI İTHALAT İHRACAT SAN. VE TİC. A.Ş.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "egesaldik@sevalkablo.com",
+      "email_adresleri": [
+        "egesaldik@sevalkablo.com",
+        "berhankurgut@sevalkablo.com"
+      ],
       "bakiye": 16915.04,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -7465,6 +8052,18 @@
           "tutar": 7206.84,
           "temsilci": "DURAN"
         }
+      ],
+      "email_kaynagi": "Eski teklif",
+      "email_guven": "yuksek",
+      "email_adaylari": [
+        {
+          "email": "berhankurgut@sevalkablo.com",
+          "kaynak": "Eski teklif + Gmail teklif talebi",
+          "guven": "yuksek",
+          "adet": 4,
+          "son_tarih": "2026-07-01",
+          "eslesme_notu": null
+        }
       ]
     },
     {
@@ -7514,7 +8113,8 @@
           "tutar": 896.33,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0100",
@@ -7545,7 +8145,10 @@
           "tutar": 15768,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0119",
@@ -7594,7 +8197,8 @@
           "tutar": 6797.95,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0039",
@@ -7625,7 +8229,10 @@
           "tutar": 14639.93,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0096",
@@ -7706,7 +8313,10 @@
           "tutar": 187.2,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0035",
@@ -7827,7 +8437,10 @@
           "tutar": 8640,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0560",
@@ -7896,6 +8509,24 @@
           "tutar": 5000,
           "temsilci": null
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "serkanyavuzmercan@gmail.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-06-08",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "serkan.ayhan@akmercan.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-02",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -7935,7 +8566,8 @@
           "tutar": 12300,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0059",
@@ -8076,7 +8708,10 @@
           "tutar": 4700.11,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0229",
@@ -8137,7 +8772,10 @@
           "tutar": 2458.58,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0105",
@@ -8188,7 +8826,10 @@
           "tutar": 773.05,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0053",
@@ -8269,6 +8910,18 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 2750,
           "temsilci": "AKAGÜNDÜZ"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "denizliemin@hotmail.com",
+          "kaynak": "SS cari kartı",
+          "guven": "dogrulanmis",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": null
         }
       ]
     },
@@ -8351,7 +9004,10 @@
           "tutar": 922.16,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0256",
@@ -8410,7 +9066,8 @@
           "tutar": 24.5,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0518",
@@ -8439,7 +9096,8 @@
           "tutar": 12600,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0222",
@@ -8478,7 +9136,8 @@
           "tutar": 9530.59,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0376",
@@ -8516,6 +9175,48 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 6990.73,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "sinem.gulmez@celiklerholding.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-03-10",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "bayram@kaviss.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-30",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "esteknikhirdavat@outlook.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-16",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "taner.cevik@manisa.bel.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-23",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "ramazan.bengin@celiklerholding.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-13",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -8568,7 +9269,10 @@
           "tutar": 1020,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0219",
@@ -8639,14 +9343,18 @@
           "tutar": 2062.5,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0017",
       "firma_adi": "ABALIOĞLU YEM SAN. A.Ş.",
       "email": "ahmet.tuncel@abaliogluyem.com.tr",
       "email_adresleri": [
-        "ahmet.tuncel@abaliogluyem.com.tr"
+        "ahmet.tuncel@abaliogluyem.com.tr",
+        "ertugrul.oner@abaliogluyem.com.tr"
       ],
       "bakiye": 11528,
       "gecikmis_bakiye": 0,
@@ -8689,6 +9397,18 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 490.56,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "ertugrul.oner@abaliogluyem.com.tr",
+          "kaynak": "Eski teklif + Gmail teklif talebi",
+          "guven": "yuksek",
+          "adet": 6,
+          "son_tarih": "2026-07-14",
+          "eslesme_notu": null
         }
       ]
     },
@@ -8771,7 +9491,10 @@
           "tutar": 280,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.2751",
@@ -8799,6 +9522,24 @@
           "aging_bucket": "1–30 gün",
           "tutar": 11191.01,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "bulent.balaban@cenal.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-18",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "dyildirim@karsyht.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-02-24",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -8891,7 +9632,10 @@
           "tutar": 5100,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0044",
@@ -8952,7 +9696,10 @@
           "tutar": 86.22,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4146",
@@ -9043,7 +9790,10 @@
           "tutar": 633.24,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0077",
@@ -9125,6 +9875,18 @@
           "tutar": 109.63,
           "temsilci": "DURAN"
         }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "niliferkaya@ayha.com.tr",
+          "kaynak": "SS cari kartı",
+          "guven": "dogrulanmis",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": null
+        }
       ]
     },
     {
@@ -9184,7 +9946,8 @@
           "tutar": 8400,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.3978",
@@ -9233,6 +9996,16 @@
           "tutar": 4804.56,
           "temsilci": "İRİŞ"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "elifgul.onur@dentaskagit.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-18",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -9272,7 +10045,8 @@
           "tutar": 3323.99,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.1100",
@@ -9311,7 +10085,8 @@
           "tutar": 540,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0057",
@@ -9362,7 +10137,10 @@
           "tutar": 867.48,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0139",
@@ -9413,7 +10191,10 @@
           "tutar": 2236.85,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0085",
@@ -9494,7 +10275,10 @@
           "tutar": 924.36,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0115",
@@ -9533,7 +10317,8 @@
           "tutar": 9000,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4193",
@@ -9572,7 +10357,8 @@
           "tutar": 5119.14,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0167",
@@ -9733,7 +10519,10 @@
           "tutar": 85.1,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0306",
@@ -9762,7 +10551,8 @@
           "tutar": 7594.48,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.2106",
@@ -9791,7 +10581,8 @@
           "tutar": 7373.8,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.1318",
@@ -9820,7 +10611,8 @@
           "tutar": 7320,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0441",
@@ -9851,7 +10643,10 @@
           "tutar": 7200,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0121",
@@ -9910,6 +10705,16 @@
           "tutar": 704.64,
           "temsilci": "TUNÇER"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "trvergiinfo@verginet.net",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-03",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -9961,7 +10766,10 @@
           "tutar": 217.9,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0267",
@@ -10010,7 +10818,8 @@
           "tutar": 938.14,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4094",
@@ -10049,13 +10858,16 @@
           "tutar": 855.6,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0013",
       "firma_adi": "ER-BAKIR ELEKTROLİTİK BAKIR MAMULLERİ A.Ş.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "kozbulbul@erbakir.com.tr",
+      "email_adresleri": [
+        "kozbulbul@erbakir.com.tr"
+      ],
       "bakiye": 6787.55,
       "gecikmis_bakiye": 2081.25,
       "odeme_vadesi": "60 GÜN",
@@ -10098,14 +10910,18 @@
           "tutar": 2902.18,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": [],
+      "email_kaynagi": "Gmail teklif talebi",
+      "email_guven": "yuksek"
     },
     {
       "cari_kod": "120.01.0037",
       "firma_adi": "YONGA MOBİLYA A.Ş.",
       "email": "ibrahimunlu@yongamobilya.com",
       "email_adresleri": [
-        "ibrahimunlu@yongamobilya.com"
+        "ibrahimunlu@yongamobilya.com",
+        "mustafa@yongamobilya.com"
       ],
       "bakiye": 6746.94,
       "gecikmis_bakiye": 0,
@@ -10128,6 +10944,18 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 6746.94,
           "temsilci": "İRİŞ"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "mustafa@yongamobilya.com",
+          "kaynak": "Servis kaydı",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": "2026-01-28",
+          "eslesme_notu": null
         }
       ]
     },
@@ -10178,6 +11006,16 @@
           "tutar": 3831.23,
           "temsilci": "İRİŞ"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "serdar.ercan@nexans.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-09",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -10207,7 +11045,8 @@
           "tutar": 5940,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0355",
@@ -10246,6 +11085,48 @@
           "tutar": 3754.04,
           "temsilci": "DURAN"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "satis@saygili-teknik.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-05-20",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "sinan.kilic@filidea.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-03-05",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe@tepegumruk.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-05-18",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "satinalma@efarge.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-05-04",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "mehmet@hasmak.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-05",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -10275,7 +11156,8 @@
           "tutar": 5683.51,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.1762",
@@ -10303,6 +11185,24 @@
           "aging_bucket": "1–30 gün",
           "tutar": 5650.94,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "satinalma@crz.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-05-13",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "sender@formcnc.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-29",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -10332,6 +11232,16 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 5224.98,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "utap@deniztekstil.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-04",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -10364,7 +11274,10 @@
           "tutar": 5180,
           "temsilci": null
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0496",
@@ -10413,7 +11326,8 @@
           "tutar": 3746.4,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0168",
@@ -10464,7 +11378,10 @@
           "tutar": 1013.41,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0373",
@@ -10505,7 +11422,10 @@
           "tutar": 3566.65,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0244",
@@ -10554,7 +11474,8 @@
           "tutar": 2877.25,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4361",
@@ -10583,6 +11504,16 @@
           "tutar": 4516.87,
           "temsilci": "AKAGÜNDÜZ"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "oozel@ilkecelik.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-23",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -10590,7 +11521,8 @@
       "firma_adi": "MENDERES TEKS. SAN. VE TİC.A.Ş.",
       "email": "muhasebe@menderes.com.tr",
       "email_adresleri": [
-        "muhasebe@menderes.com.tr"
+        "muhasebe@menderes.com.tr",
+        "fatmakaratas@menderes.com"
       ],
       "bakiye": 4317.71,
       "gecikmis_bakiye": 0.01,
@@ -10643,6 +11575,18 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 1941.6,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "fatmakaratas@menderes.com",
+          "kaynak": "Eski teklif",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": "2026-06-05",
+          "eslesme_notu": null
         }
       ]
     },
@@ -10765,7 +11709,10 @@
           "tutar": 643.84,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0430",
@@ -10796,7 +11743,10 @@
           "tutar": 3943.73,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0293",
@@ -10837,7 +11787,10 @@
           "tutar": 2182.32,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0089",
@@ -10885,6 +11838,48 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 2394.14,
           "temsilci": "TUNÇER"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "faruk@santekotomasyon.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 3,
+          "son_tarih": "2026-06-12",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "info@abithalat.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-19",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "recep.buyukyildiz@agt.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-03",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "serkangok@nisanpaslanmaz.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-05-08",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "gizem.ozen@pieridtranslation.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-13",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -10937,7 +11932,10 @@
           "tutar": 764.2,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4237",
@@ -10985,6 +11983,24 @@
           "aging_bucket": "1–30 gün",
           "tutar": 1000,
           "temsilci": "İRİŞ"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "supply@tunashipping.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-10",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "auysal@sefine.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-02",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -11035,6 +12051,16 @@
           "tutar": 728.93,
           "temsilci": "İRİŞ"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "azra.yeni@timglobal.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-16",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -11064,7 +12090,8 @@
           "tutar": 3326.04,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0756",
@@ -11135,7 +12162,10 @@
           "tutar": 1765.96,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0551",
@@ -11164,7 +12194,8 @@
           "tutar": 3107.14,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0133",
@@ -11195,6 +12226,18 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 3100,
           "temsilci": "İRİŞ"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "akifsozer_kiraz@hotmail.com",
+          "kaynak": "SS cari kartı",
+          "guven": "dogrulanmis",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": null
         }
       ]
     },
@@ -11227,7 +12270,10 @@
           "tutar": 3059.04,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0195",
@@ -11366,6 +12412,40 @@
           "tutar": 145,
           "temsilci": null
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "elif.gokoglu@guneyhidropar.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-07-09",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "melih.bozkurt@buzmavi.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-30",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "muhammetural@hattat.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-11",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "satinalma@elteksmak.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-02-27",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -11395,7 +12475,8 @@
           "tutar": 3000,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0122",
@@ -11426,7 +12507,10 @@
           "tutar": 2871,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4127",
@@ -11497,7 +12581,10 @@
           "tutar": 1148,
           "temsilci": null
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4108",
@@ -11536,7 +12623,8 @@
           "tutar": 309.74,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0387",
@@ -11584,6 +12672,16 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 1518.08,
           "temsilci": "TUNÇER"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "etedarik@erdemirgrubu.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-05-12",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -11674,7 +12772,8 @@
           "tutar": 469.75,
           "temsilci": null
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.1064",
@@ -11705,13 +12804,18 @@
           "tutar": 2600,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0549",
       "firma_adi": "MMZ-ONUR BORU PROFİL ÜRETİM SAN. VETİCARET A.Ş.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "azmi.buyuk@mmz.com.tr",
+      "email_adresleri": [
+        "azmi.buyuk@mmz.com.tr"
+      ],
       "bakiye": 2366.53,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -11734,7 +12838,10 @@
           "tutar": 2366.53,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Eski teklif",
+      "email_guven": "yuksek",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0103",
@@ -11765,7 +12872,10 @@
           "tutar": 2327.71,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0055",
@@ -11816,7 +12926,10 @@
           "tutar": 192,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0878",
@@ -11845,7 +12958,8 @@
           "tutar": 2271.38,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0066",
@@ -11874,7 +12988,8 @@
           "tutar": 2039.99,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0285",
@@ -11933,6 +13048,48 @@
           "tutar": 511.74,
           "temsilci": "İRİŞ"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "funda.bayir@bmc.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 9,
+          "son_tarih": "2026-07-01",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "sinan.kilic@filidea.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 3,
+          "son_tarih": "2026-07-14",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "yaser@istanbuldynamics.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-07-14",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "waleed@pallmill-trading.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-07-13",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "oguz.saglam@energo-cons.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-07-10",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -11974,7 +13131,10 @@
           "tutar": 1929.44,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0027",
@@ -12012,6 +13172,32 @@
           "aging_bucket": "1–30 gün",
           "tutar": 1438.91,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "einkauf-tr@bihl-wiedemann.de",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-06-25",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "alperalyaz@gmail.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-05-30",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "sgenc@bihl-wiedemann.de",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-23",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -12064,7 +13250,10 @@
           "tutar": 605.54,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0159",
@@ -12092,6 +13281,24 @@
           "aging_bucket": "90+ gün",
           "tutar": 1744.76,
           "temsilci": null
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "pratis@pratis.net",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-10",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "d.gunaydin@bilecikdemircelik.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-04",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -12124,7 +13331,10 @@
           "tutar": 1732.02,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0030",
@@ -12155,7 +13365,10 @@
           "tutar": 1650,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0113",
@@ -12184,7 +13397,8 @@
           "tutar": 1603.72,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0420",
@@ -12223,7 +13437,8 @@
           "tutar": 1481.99,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0010",
@@ -12252,7 +13467,8 @@
           "tutar": 1504.73,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4324",
@@ -12281,7 +13497,8 @@
           "tutar": 1414.96,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0866",
@@ -12310,14 +13527,16 @@
           "tutar": 1392.17,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0031",
       "firma_adi": "İLKE ÇELİK METAL SAN. VE TİC. A.Ş.",
       "email": "muhasebe@ilkecelik.com.tr",
       "email_adresleri": [
-        "muhasebe@ilkecelik.com.tr"
+        "muhasebe@ilkecelik.com.tr",
+        "oozel@ilkecelik.com.tr"
       ],
       "bakiye": 1274.37,
       "gecikmis_bakiye": 0.02,
@@ -12350,6 +13569,18 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 1274.35,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "oozel@ilkecelik.com.tr",
+          "kaynak": "Eski teklif + Gmail teklif talebi + Gmail yazışma thread’i",
+          "guven": "yuksek",
+          "adet": 3,
+          "son_tarih": "2026-06-23",
+          "eslesme_notu": null
         }
       ]
     },
@@ -12392,7 +13623,10 @@
           "tutar": 788.99,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4221",
@@ -12421,13 +13655,16 @@
           "tutar": 1204.9,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0407",
       "firma_adi": "ALSERA JEOTERMAL TARIM GIDA SAN.VE TİC.A.Ş.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "banu.erdem@altofarm.com.tr",
+      "email_adresleri": [
+        "banu.erdem@altofarm.com.tr"
+      ],
       "bakiye": 1196.91,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -12470,7 +13707,10 @@
           "tutar": 152.08,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_adaylari": [],
+      "email_kaynagi": "Gmail teklif talebi",
+      "email_guven": "yuksek"
     },
     {
       "cari_kod": "320.01.0576",
@@ -12498,6 +13738,40 @@
           "aging_bucket": "90+ gün",
           "tutar": 1143,
           "temsilci": null
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "satis@sbtech.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-02",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "sirkuler@uibsirkuler.org.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-05-22",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "digital@hidrel.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-04-16",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "news@email.trendyol.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-02-26",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -12530,7 +13804,10 @@
           "tutar": 1000.38,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0234",
@@ -12601,7 +13878,10 @@
           "tutar": 494.47,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0377",
@@ -12629,6 +13909,16 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 940.83,
           "temsilci": "AKAGÜNDÜZ"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "hasip.gonulkirmaz@ugurluotocam.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-03-13",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -12661,7 +13951,10 @@
           "tutar": 895.5,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0125",
@@ -12710,6 +14003,48 @@
           "tutar": 205.15,
           "temsilci": "İRİŞ"
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "hatice.turkmenoglu@modalife.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 2,
+          "son_tarih": "2026-05-06",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "didem.karci@modalife.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-17",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "comment-reply@wordpress.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-05-18",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "ilkera@gamateks.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-02-26",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "emirhan.tiftik@modalife.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-02-24",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -12749,6 +14084,16 @@
           "tutar": 548.8,
           "temsilci": null
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "satis@yeten.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-02-25",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -12777,6 +14122,48 @@
           "aging_bucket": "1–30 gün",
           "tutar": 779.99,
           "temsilci": "İRİŞ"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "egesaldik@sevalkablo.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 25,
+          "son_tarih": "2026-07-07",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "esatinalma@oyakcimento.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 10,
+          "son_tarih": "2026-05-20",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "nurhan.yildiz@karelkalip.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 8,
+          "son_tarih": "2026-07-07",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "gaye.basak@karelkalip.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 7,
+          "son_tarih": "2026-07-08",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "satinalma2@hd.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 6,
+          "son_tarih": "2026-07-08",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -12819,7 +14206,10 @@
           "tutar": 625.32,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0151",
@@ -12870,7 +14260,10 @@
           "tutar": 108.84,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0394",
@@ -12898,6 +14291,16 @@
           "aging_bucket": "31–60 gün",
           "tutar": 545.35,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "umit@pimecco.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-29",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -12930,13 +14333,18 @@
           "tutar": 525,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0986",
       "firma_adi": "AGT AĞAÇ SAN.VE TİC.A.Ş.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "cuneyt.ozcan@agt.com.tr",
+      "email_adresleri": [
+        "cuneyt.ozcan@agt.com.tr"
+      ],
       "bakiye": 516,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "60 GÜN",
@@ -12959,7 +14367,10 @@
           "tutar": 516,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Eski teklif",
+      "email_guven": "yuksek",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0170",
@@ -13000,7 +14411,10 @@
           "tutar": 192,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0372",
@@ -13041,7 +14455,10 @@
           "tutar": 326.59,
           "temsilci": "TUNÇER"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0597",
@@ -13069,6 +14486,16 @@
           "aging_bucket": "61–90 gün",
           "tutar": 352.87,
           "temsilci": "DURAN"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "tabriz.orujov@azertexnolayn.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-18",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -13109,7 +14536,8 @@
           "tutar": 246.72,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4368",
@@ -13138,7 +14566,8 @@
           "tutar": 309.76,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0381",
@@ -13167,7 +14596,8 @@
           "tutar": 302.89,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0254",
@@ -13208,7 +14638,10 @@
           "tutar": 295,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0326",
@@ -13236,6 +14669,16 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 266.57,
           "temsilci": "AKAGÜNDÜZ"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "ali.kecelioglu@hamburger-containerboard.com",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-08",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -13266,6 +14709,16 @@
           "tutar": 243.84,
           "temsilci": null
         }
+      ],
+      "email_adaylari": [
+        {
+          "email": "stok@logel.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-10",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        }
       ]
     },
     {
@@ -13295,7 +14748,8 @@
           "tutar": 224.94,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0126",
@@ -13336,7 +14790,10 @@
           "tutar": 70.28,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0215",
@@ -13367,7 +14824,10 @@
           "tutar": 193,
           "temsilci": null
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0556",
@@ -13395,6 +14855,24 @@
           "aging_bucket": "1–30 gün",
           "tutar": 156.71,
           "temsilci": null
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "cihangulenc@fercim.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-06-29",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+        },
+        {
+          "email": "aslisenol@lmcmakina.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-31",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -13425,7 +14903,8 @@
           "tutar": 149.51,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0559",
@@ -13454,7 +14933,8 @@
           "tutar": 144.15,
           "temsilci": null
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0065",
@@ -13485,7 +14965,10 @@
           "tutar": 129.92,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0331",
@@ -13514,14 +14997,16 @@
           "tutar": 128.84,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0602",
       "firma_adi": "CNT FİLTRE OTOMOTİV SAN. TİC. LTD.ŞTİ.",
       "email": "muhasebe@protechfilter.com",
       "email_adresleri": [
-        "muhasebe@protechfilter.com"
+        "muhasebe@protechfilter.com",
+        "info@protechfilter.com"
       ],
       "bakiye": 116.24,
       "gecikmis_bakiye": 0,
@@ -13554,6 +15039,18 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 116.22,
           "temsilci": "İRİŞ"
+        }
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "info@protechfilter.com",
+          "kaynak": "Servis kaydı",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": "2026-05-18",
+          "eslesme_notu": null
         }
       ]
     },
@@ -13596,7 +15093,10 @@
           "tutar": 103.98,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0073",
@@ -13624,6 +15124,16 @@
           "aging_bucket": "Vadesi gelmemiş",
           "tutar": 90.74,
           "temsilci": "İRİŞ"
+        }
+      ],
+      "email_adaylari": [
+        {
+          "email": "satinalma@crz.com.tr",
+          "kaynak": "Gmail teklif geçmişi",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": "2026-03-11",
+          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
         }
       ]
     },
@@ -13656,7 +15166,10 @@
           "tutar": 50,
           "temsilci": null
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0529",
@@ -13687,7 +15200,10 @@
           "tutar": 40.81,
           "temsilci": null
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0068",
@@ -13718,7 +15234,10 @@
           "tutar": 37.28,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0911",
@@ -13747,7 +15266,8 @@
           "tutar": 36.56,
           "temsilci": "AKAGÜNDÜZ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0884",
@@ -13776,7 +15296,8 @@
           "tutar": 9.9,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4363",
@@ -13805,7 +15326,8 @@
           "tutar": 5,
           "temsilci": "İRİŞ"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0041",
@@ -13836,7 +15358,10 @@
           "tutar": 1.92,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_kaynagi": "Mikro cari kartı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": []
     },
     {
       "cari_kod": "320.01.0587",
@@ -13865,7 +15390,8 @@
           "tutar": 1.67,
           "temsilci": null
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0337",
@@ -13894,7 +15420,8 @@
           "tutar": 1.25,
           "temsilci": "DURAN"
         }
-      ]
+      ],
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4242",
@@ -13923,7 +15450,18 @@
           "tutar": 1,
           "temsilci": null
         }
-      ]
+      ],
+      "email_adaylari": []
     }
-  ]
+  ],
+  "email_ozet": {
+    "toplam_cari": 210,
+    "gonderime_hazir": 113,
+    "adayli": 40,
+    "eksik": 57,
+    "gmail_tarandi": true,
+    "gmail_aday_sayisi": 100,
+    "gmail_kaynagi": "SS Supabase Gmail/IMAP geçmişi"
+  },
+  "email_enriched_at": "2026-07-14T14:07:51.930Z"
 }

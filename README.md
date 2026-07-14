@@ -36,6 +36,11 @@ Mutabakat bağlantıları 30 gün geçerli HMAC token ile korunur. “Fark / iti
 yazılı açıklama ve en fazla 4 MB PNG/JPG/WEBP ekran görüntüsü iletebilir; bildirim yapılandırılmış
 Hidroteknik iç adresine e-posta ve ek olarak gönderilir.
 
+Eksik e-posta adresleri `npm run enrich:emails` ile SS cari kartları, eski teklifler, servis
+kayıtları ve Gmail/IMAP'ten Supabase'e alınmış teklif yazışmalarından aranır. Cari koduna doğrudan
+bağlı kayıtlar gönderime hazır olabilir; yalnız firma adı/domain ile bulunan Gmail adresleri
+personel onayına kadar **aday** kalır.
+
 ## Giriş
 
 Uygulama `ss` ile aynı Supabase Auth projesini kullanır. Kullanıcı adı otomatik olarak

@@ -16,6 +16,7 @@ function normalize(c: CariBakiye): CariBakiye {
     firma_adi: c.firma_adi,
     email: c.email || null,
     email_adresleri: c.email_adresleri || (c.email ? [c.email] : []),
+    email_adaylari: c.email_adaylari || [],
     bakiye: Number(c.bakiye) || 0,
     gecikmis_bakiye: Number(c.gecikmis_bakiye) || 0,
     odeme_vadesi: c.odeme_vadesi,
