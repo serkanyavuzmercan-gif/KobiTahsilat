@@ -78,8 +78,8 @@ export default function CarilerClient({
                 <th className="px-3 py-3">Cari kod</th>
                 <th className="px-3 py-3">Firma</th>
                 <th className="px-3 py-3">Ödeme vadesi</th>
-                <th className="px-3 py-3 text-right">Gecikmiş</th>
                 <th className="px-3 py-3 text-right">Ort. gecikme</th>
+                <th className="px-3 py-3 text-right">Gecikmiş</th>
                 <th className="px-3 py-3 text-right">Bakiye (₺)</th>
               </tr>
             </thead>
@@ -113,11 +113,11 @@ export default function CarilerClient({
                       <span className="ml-1 text-xs text-slate-400">({c.vade_gun}g)</span>
                     ) : null}
                   </td>
-                  <td className="px-3 py-2 text-right font-medium tabular-nums text-red-700">
-                    {formatNumber(c.gecikmis_bakiye)}
-                  </td>
                   <td className="px-3 py-2 text-right tabular-nums text-slate-600">
                     {formatGecikmeGun(cariOrtalamaGecikmeGun(c))}
+                  </td>
+                  <td className="px-3 py-2 text-right font-medium tabular-nums text-red-700">
+                    {formatNumber(c.gecikmis_bakiye)}
                   </td>
                   <td className="px-3 py-2 text-right font-semibold tabular-nums text-slate-900">
                     {formatNumber(c.bakiye)}
@@ -135,13 +135,13 @@ export default function CarilerClient({
             {filtered.length > 0 && (
               <tfoot className="border-t border-slate-200 bg-slate-50 text-sm">
                 <tr>
-                  <td colSpan={5} className="px-3 py-3 text-right font-medium text-slate-600">
+                  <td colSpan={4} className="px-3 py-3 text-right font-medium text-slate-600">
                     Ortalama gecikme süresi
                   </td>
                   <td className="px-3 py-3 text-right font-semibold tabular-nums text-red-700">
                     {formatGecikmeGun(ortalamaGecikme)}
                   </td>
-                  <td className="px-3 py-3" />
+                  <td colSpan={2} className="px-3 py-3" />
                 </tr>
               </tfoot>
             )}

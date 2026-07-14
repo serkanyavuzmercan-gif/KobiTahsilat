@@ -75,8 +75,8 @@ export default function HomePage() {
                 <th className="px-2 py-2">Cari kod</th>
                 <th className="px-2 py-2">Firma</th>
                 <th className="px-2 py-2">Vade</th>
-                <th className="px-2 py-2 text-right">Gecikmiş</th>
                 <th className="px-2 py-2 text-right">Ort. gecikme</th>
+                <th className="px-2 py-2 text-right">Gecikmiş</th>
                 <th className="px-2 py-2 text-right">Bakiye</th>
               </tr>
             </thead>
@@ -90,11 +90,11 @@ export default function HomePage() {
                     </Link>
                   </td>
                   <td className="px-2 py-2 text-slate-600">{c.odeme_vadesi || '—'}</td>
-                  <td className="px-2 py-2 text-right font-medium tabular-nums text-red-700">
-                    {formatNumber(c.gecikmis_bakiye)}
-                  </td>
                   <td className="px-2 py-2 text-right tabular-nums text-slate-600">
                     {formatGecikmeGun(cariOrtalamaGecikmeGun(c))}
+                  </td>
+                  <td className="px-2 py-2 text-right font-medium tabular-nums text-red-700">
+                    {formatNumber(c.gecikmis_bakiye)}
                   </td>
                   <td className="px-2 py-2 text-right font-semibold tabular-nums">
                     {formatNumber(c.bakiye)}
@@ -104,13 +104,13 @@ export default function HomePage() {
             </tbody>
             <tfoot className="border-t border-slate-200 bg-slate-50 text-sm">
               <tr>
-                <td colSpan={4} className="px-2 py-3 text-right font-medium text-slate-600">
+                <td colSpan={3} className="px-2 py-3 text-right font-medium text-slate-600">
                   Ortalama gecikme süresi
                 </td>
                 <td className="px-2 py-3 text-right font-semibold tabular-nums text-red-700">
                   {formatGecikmeGun(ortalamaGecikme)}
                 </td>
-                <td className="px-2 py-3" />
+                <td colSpan={2} className="px-2 py-3" />
               </tr>
             </tfoot>
           </table>
