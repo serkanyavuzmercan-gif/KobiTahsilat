@@ -1,12 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { LoaderCircle, Mail, Plus, Star, Trash2 } from 'lucide-react'
+import { LoaderCircle, Mail, Plus, SlidersHorizontal, Star, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { MailSenderAccount } from '@/lib/types'
 
 export function MailSenderSettings() {
   const [senders, setSenders] = useState<MailSenderAccount[]>([])
+  const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [email, setEmail] = useState('')
@@ -117,18 +118,41 @@ export function MailSenderSettings() {
     }
   }
 
-  return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5">
-      <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-        <Mail size={16} className="text-brand-600" />
-        Gönderici e-posta adresleri
-      </div>
-      <p className="mt-1 text-xs text-slate-500">
-        Mutabakat e-postaları hangi adresten gitsin? Bağladığınız{' '}
-        <strong>@hidroteknik.com.tr</strong> adresi gönderici (From) olarak kullanılır.
-      </p>
+  const varsayilan = senders.find((s) => s.varsayilan) || senders[0]
+  const ozet = varsayilan
+    ? varsayilan.ad_soyad
+      ? `${varsayilan.ad_soyad} <${varsayilan.email}>`
+      : varsayilan.email
+    : null
 
-      <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
+  return (
+    <div className="rounded-xl border border-slate-200 bg-white p-4">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex min-w-0 items-center gap-2">
+          <Mail size={16} className="shrink-0 text-brand-600" />
+          <span className="shrink-0 text-sm font-medium text-slate-800">Gönderici e-posta</span>
+          <span className="truncate text-xs text-slate-500">
+            {loading ? 'yükleniyor…' : ozet ? `· ${ozet}` : '· bağlı değil'}
+          </span>
+        </div>
+        <Button
+          variant="secondary"
+          onClick={() => setOpen((value) => !value)}
+          className="shrink-0 px-2.5 py-1.5 text-xs"
+        >
+          <SlidersHorizontal size={14} />
+          {open ? 'Kapat' : 'Düzenle'}
+        </Button>
+      </div>
+
+      {!open ? null : (
+        <div className="mt-4 border-t border-slate-100 pt-4">
+          <p className="text-xs text-slate-500">
+            Mutabakat e-postaları hangi adresten gitsin? Bağladığınız{' '}
+            <strong>@hidroteknik.com.tr</strong> adresi gönderici (From) olarak kullanılır.
+          </p>
+
+          <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
         <input
           value={email}
           onChange={(event) => setEmail(event.target.value)}
@@ -224,7 +248,9 @@ export function MailSenderSettings() {
             ))}
           </div>
         )}
-      </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
