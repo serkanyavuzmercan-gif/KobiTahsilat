@@ -154,15 +154,6 @@ export function HatirlatmaClient({
                                 ? ` · ${cari.whatsapp_gonderim_sayisi} gönderim`
                                 : ''}
                             </p>
-                            {cari.whatsapp_gonderim_engelli &&
-                              cari.whatsapp_tekrar_gonderilebilir_at && (
-                                <p className="mt-1 max-w-36 text-xs font-medium text-amber-700">
-                                  Bekleme süresi ·{' '}
-                                  {new Date(cari.whatsapp_tekrar_gonderilebilir_at).toLocaleDateString(
-                                    'tr-TR'
-                                  )}
-                                </p>
-                              )}
                           </div>
                         </div>
                       ) : (

@@ -47,15 +47,6 @@ export async function POST(request: Request) {
         { status: 400 }
       )
     }
-    if (cari.whatsapp_gonderim_engelli) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Son gönderimden sonra bekleme süresi dolmadan tekrar gönderilemez.',
-        },
-        { status: 409 }
-      )
-    }
 
     const snapshot = loadSnapshot()
     const defaultMessage = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)

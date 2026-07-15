@@ -72,7 +72,6 @@ export function collectWhatsAppCandidates(
     const alici = cari.telefon ? formatPhoneDisplay(cari.telefon) : null
 
     if (!cari.telefon) engel = 'Kayıtlı cep telefonu yok'
-    else if (cari.whatsapp_gonderim_engelli) engel = 'WhatsApp bekleme süresi aktif'
 
     return [buildCandidate(cari, rule, ortalama!, alici, engel)]
   })

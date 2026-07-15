@@ -119,7 +119,6 @@ async function sendAutomationWhatsApp(
   const cari = cariler.find((item) => item.cari_kod === cariKod)
   if (!cari) throw new Error('Cari bulunamadı.')
   if (!cari.telefon) throw new Error('Telefon yok.')
-  if (cari.whatsapp_gonderim_engelli) throw new Error('WhatsApp bekleme süresi aktif.')
 
   const snapshot = loadSnapshot()
   const message = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)

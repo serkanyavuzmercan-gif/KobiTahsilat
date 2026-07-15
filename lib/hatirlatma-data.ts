@@ -1,6 +1,5 @@
 import 'server-only'
 import { loadSnapshot } from './data'
-import { addBusinessDays } from './business-days'
 import {
   HATIRLATMA_LOG_KAYNAK,
   WHATSAPP_PHONE_DISMISS_TIP,
@@ -14,11 +13,7 @@ import { createAdminClient } from './supabase/admin'
 export type HatirlatmaCari = CariBakiye & {
   whatsapp_son_gonderim: string | null
   whatsapp_gonderim_sayisi: number
-  whatsapp_tekrar_gonderilebilir_at: string | null
-  whatsapp_gonderim_engelli: boolean
 }
-
-const WHATSAPP_COOLDOWN_DAYS = 3
 
 export async function loadHatirlatmaCariler(): Promise<HatirlatmaCari[]> {
   const snapshot = loadSnapshot()
@@ -85,11 +80,6 @@ export async function loadHatirlatmaCariler(): Promise<HatirlatmaCari[]> {
       (candidate) =>
         !phoneNumbers.includes(candidate.telefon) && !hiddenCandidates.has(candidate.telefon)
     )
-    const nextSendAt = history[0]
-      ? addBusinessDays(history[0], WHATSAPP_COOLDOWN_DAYS).toISOString()
-      : null
-    const sendBlocked = nextSendAt ? new Date(nextSendAt).getTime() > Date.now() : false
-
     return {
       ...cari,
       telefon: phoneNumbers[0] || null,
@@ -103,8 +93,6 @@ export async function loadHatirlatmaCariler(): Promise<HatirlatmaCari[]> {
       telefon_adaylari: visibleCandidates,
       whatsapp_son_gonderim: history[0] || null,
       whatsapp_gonderim_sayisi: history.length,
-      whatsapp_tekrar_gonderilebilir_at: nextSendAt,
-      whatsapp_gonderim_engelli: sendBlocked,
     }
   })
 }

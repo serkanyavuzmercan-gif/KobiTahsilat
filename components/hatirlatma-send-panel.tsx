@@ -11,16 +11,12 @@ export function HatirlatmaSendPanel({
   cariKod,
   hasPhone,
   isMobile,
-  sendBlocked,
-  blockedUntil,
   sendEnabled,
   gonderimSayisi,
 }: {
   cariKod: string
   hasPhone: boolean
   isMobile: boolean
-  sendBlocked: boolean
-  blockedUntil: string | null
   sendEnabled: boolean
   gonderimSayisi: number
 }) {
@@ -30,7 +26,7 @@ export function HatirlatmaSendPanel({
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
 
-  const canSend = sendEnabled && hasPhone && isMobile && !sendBlocked && messageBody.trim().length > 0
+  const canSend = sendEnabled && hasPhone && isMobile && messageBody.trim().length > 0
 
   async function sendMessage() {
     setLoading(true)
@@ -88,11 +84,6 @@ export function HatirlatmaSendPanel({
       {hasPhone && !isMobile && (
         <p className="text-xs text-amber-700">
           WhatsApp için cep telefonu girin (05… ile başlamalı).
-        </p>
-      )}
-      {sendBlocked && blockedUntil && (
-        <p className="text-xs text-amber-700">
-          Tekrar gönderim: {new Date(blockedUntil).toLocaleDateString('tr-TR')}
         </p>
       )}
       {message && <p className="text-xs text-emerald-700">{message}</p>}

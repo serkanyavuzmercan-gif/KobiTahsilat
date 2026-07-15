@@ -87,8 +87,6 @@ export default async function HatirlatmaPreviewPage({
                   cariKod={cari.cari_kod}
                   hasPhone={Boolean(cari.telefon)}
                   isMobile={isMobileTurkey(cari.telefon)}
-                  sendBlocked={cari.whatsapp_gonderim_engelli}
-                  blockedUntil={cari.whatsapp_tekrar_gonderilebilir_at}
                   sendEnabled={sendEnabled}
                   gonderimSayisi={cari.whatsapp_gonderim_sayisi}
                 />
