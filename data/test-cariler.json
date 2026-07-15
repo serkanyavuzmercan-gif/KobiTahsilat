@@ -23,36 +23,36 @@
       "telefon_kaynagi": "Test cari tanımı",
       "telefon_guven": "dogrulanmis",
       "telefon_adaylari": [],
-      "bakiye": 15000,
-      "gecikmis_bakiye": 8000,
+      "bakiye": 1150000,
+      "gecikmis_bakiye": 1000000,
       "odeme_vadesi": "30 GÜN",
       "vade_gun": 30,
       "aging": {
-        "Vadesi gelmemiş": 7000,
-        "1–30 gün": 3000,
+        "Vadesi gelmemiş": 150000,
+        "1–30 gün": 0,
         "31–60 gün": 0,
-        "61–90 gün": 5000,
-        "90+ gün": 0
+        "61–90 gün": 0,
+        "90+ gün": 1000000
       },
       "acik_kalemler": [
         {
           "evrak_no": "TEST-001",
           "belge_no": "HT-TEST-0001",
-          "evrak_tarihi": "2026-04-15",
-          "vade_tarihi": "2026-05-15",
-          "gecikme_gun": 61,
-          "aging_bucket": "61–90 gün",
-          "tutar": 5000,
+          "evrak_tarihi": "2026-01-28",
+          "vade_tarihi": "2026-03-01",
+          "gecikme_gun": 136,
+          "aging_bucket": "90+ gün",
+          "tutar": 650000,
           "temsilci": "TEST"
         },
         {
           "evrak_no": "TEST-002",
           "belge_no": "HT-TEST-0002",
-          "evrak_tarihi": "2026-05-26",
-          "vade_tarihi": "2026-06-25",
-          "gecikme_gun": 20,
-          "aging_bucket": "1–30 gün",
-          "tutar": 3000,
+          "evrak_tarihi": "2026-03-02",
+          "vade_tarihi": "2026-04-01",
+          "gecikme_gun": 105,
+          "aging_bucket": "90+ gün",
+          "tutar": 350000,
           "temsilci": "TEST"
         },
         {
@@ -62,7 +62,7 @@
           "vade_tarihi": "2026-08-15",
           "gecikme_gun": -31,
           "aging_bucket": "Vadesi gelmemiş",
-          "tutar": 7000,
+          "tutar": 150000,
           "temsilci": "TEST"
         }
       ]
