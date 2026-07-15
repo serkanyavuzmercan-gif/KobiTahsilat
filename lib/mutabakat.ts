@@ -17,7 +17,10 @@ export function buildMutabakatEmail(
   options?: { onayUrl?: string; itirazUrl?: string }
 ): MutabakatEmail {
   const mutabakatTarihi = snapshotTarihi
-  const sonYanitTarihi = addBusinessDays(`${snapshotTarihi}T00:00:00Z`, 8)
+  // Yanıt süresi (TTK 8 iş günü) DAİMA gönderim gününden (bugün) hesaplanır; mutabakat
+  // tarihi geçmiş bir tarih olsa bile son yanıt tarihi asla geçmişte kalmaz.
+  const bugun = new Date().toISOString().slice(0, 10)
+  const sonYanitTarihi = addBusinessDays(`${bugun}T00:00:00Z`, 8)
     .toISOString()
     .slice(0, 10)
   const firma = escapeHtml(cari.firma_adi)

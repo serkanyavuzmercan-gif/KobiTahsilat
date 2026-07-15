@@ -160,7 +160,7 @@ export function MutabakatClient({
                     <td className="px-4 py-3 text-right align-top">
                       <PreviewLink href={`/mutabakat/${encodeURIComponent(cari.cari_kod)}`}>
                         <Eye size={15} />
-                        Önizle
+                        Mutabakat Yap
                       </PreviewLink>
                     </td>
                   </tr>

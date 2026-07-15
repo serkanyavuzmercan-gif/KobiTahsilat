@@ -14,7 +14,7 @@ const mainLinks = [
 
 const commLinks = [
   { href: '/mutabakat', label: 'Mutabakat', match: (path: string) => path.startsWith('/mutabakat') && !path.startsWith('/mutabakat/ayarlar') },
-  { href: '/hatirlatma', label: 'WhatsApp', match: (path: string) => path.startsWith('/hatirlatma') },
+  { href: '/hatirlatma', label: 'Ödeme Talebi Gönder', match: (path: string) => path.startsWith('/hatirlatma') },
 ]
 
 function NavItem({

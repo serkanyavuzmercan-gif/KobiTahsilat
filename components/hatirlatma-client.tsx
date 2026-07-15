@@ -1,20 +1,30 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { CalendarClock, CheckCircle2, Eye, MessageCircle, Phone, PhoneOff, Search } from 'lucide-react'
+import {
+  AlertTriangle,
+  CalendarClock,
+  Eye,
+  Mail,
+  MessageCircle,
+  Phone,
+  Search,
+} from 'lucide-react'
 import { PreviewLink } from '@/components/ui/button'
-import { HatirlatmaPhoneStatus } from '@/components/hatirlatma-send-panel'
+import { OdemeTalepActions } from '@/components/odeme-talep-actions'
 import {
   EmptyTableRow,
   FilterBar,
-  FilterSelect,
   SearchInput,
   StatusBadge,
   SummaryStat,
 } from '@/components/ui/summary-stat'
+import { cariOrtalamaGecikmeGun } from '@/lib/gecikme'
 import { formatPhoneDisplay } from '@/lib/phone'
 import type { HatirlatmaCari } from '@/lib/hatirlatma-data'
 import { formatTL } from '@/lib/types'
+
+const VARSAYILAN_ESIK = 20
 
 export function HatirlatmaClient({
   cariler,
@@ -26,34 +36,43 @@ export function HatirlatmaClient({
   sendEnabled: boolean
 }) {
   const [query, setQuery] = useState('')
-  const [phoneFilter, setPhoneFilter] = useState<'all' | 'ready' | 'candidate' | 'missing'>('all')
+  const [esik, setEsik] = useState(VARSAYILAN_ESIK)
+
+  // Her firma için tutar-ağırlıklı ortalama gecikme günü (bir kez hesapla).
+  const zenginCariler = useMemo(
+    () =>
+      cariler.map((cari) => ({
+        cari,
+        ortalamaGecikme: cariOrtalamaGecikmeGun(cari),
+      })),
+    [cariler]
+  )
 
   const filtered = useMemo(() => {
     const term = query.trim().toLocaleLowerCase('tr')
-    return cariler.filter((cari) => {
-      const phoneText = cari.telefon ? formatPhoneDisplay(cari.telefon).toLocaleLowerCase('tr') : ''
-      const matchesSearch =
-        !term ||
-        cari.firma_adi.toLocaleLowerCase('tr').includes(term) ||
-        cari.cari_kod.toLocaleLowerCase('tr').includes(term) ||
-        phoneText.includes(term) ||
-        cari.telefon_adaylari.some((aday) =>
-          formatPhoneDisplay(aday.telefon).toLocaleLowerCase('tr').includes(term)
+    const esikNum = Number.isFinite(esik) ? esik : 0
+    return zenginCariler
+      .filter(({ cari, ortalamaGecikme }) => {
+        // Ödeme talebi yalnızca vadesi geçmiş + eşik günü aşmış firmalara.
+        if (cari.gecikmis_bakiye <= 0.01) return false
+        if (ortalamaGecikme == null || ortalamaGecikme < esikNum) return false
+        if (!term) return true
+        const phoneText = cari.telefon
+          ? formatPhoneDisplay(cari.telefon).toLocaleLowerCase('tr')
+          : ''
+        return (
+          cari.firma_adi.toLocaleLowerCase('tr').includes(term) ||
+          cari.cari_kod.toLocaleLowerCase('tr').includes(term) ||
+          phoneText.includes(term)
         )
-      const matchesPhone =
-        phoneFilter === 'all' ||
-        (phoneFilter === 'ready' && Boolean(cari.telefon)) ||
-        (phoneFilter === 'candidate' && !cari.telefon && cari.telefon_adaylari.length > 0) ||
-        (phoneFilter === 'missing' && !cari.telefon && cari.telefon_adaylari.length === 0)
-      return matchesSearch && matchesPhone
-    })
-  }, [cariler, phoneFilter, query])
+      })
+      .sort((a, b) => (b.ortalamaGecikme || 0) - (a.ortalamaGecikme || 0))
+  }, [zenginCariler, esik, query])
 
-  const ready = cariler.filter((cari) => cari.telefon).length
-  const candidate = cariler.filter(
-    (cari) => !cari.telefon && cari.telefon_adaylari.length > 0
+  const toplamGecikmis = filtered.reduce((sum, { cari }) => sum + cari.gecikmis_bakiye, 0)
+  const kanalHazir = filtered.filter(
+    ({ cari }) => cari.telefon || cari.email_adresleri.length
   ).length
-  const missing = cariler.length - ready - candidate
 
   return (
     <div className="space-y-5">
@@ -61,25 +80,41 @@ export function HatirlatmaClient({
         <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-xl font-semibold">WhatsApp tahsilat hatırlatması</h2>
+              <h2 className="text-xl font-semibold">Ödeme Talebi Gönder</h2>
               <StatusBadge tone={sendEnabled ? 'ok' : 'warn'}>
                 {sendEnabled ? 'Gönderim açık' : 'Gönderim kapalı'}
               </StatusBadge>
             </div>
             <p className="mt-1 text-sm text-slate-500">
-              Dönem: {snapshotTarihi} · Kibar ödeme hatırlatması (mutabakat değil). Telefon
-              düzenleme yalnızca önizleme ekranında yapılır.
+              Dönem: {snapshotTarihi} · Ortalama vadesi{' '}
+              <strong className="text-slate-700">{esik} gün</strong> ve üzeri gecikmiş firmalara
+              WhatsApp, e-posta veya her ikisiyle ödeme talebi gönderin.
             </p>
           </div>
           <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3 lg:max-w-xl">
-            <SummaryStat icon={<CheckCircle2 size={18} />} label="Gönderime hazır" value={ready} tone="ok" />
-            <SummaryStat icon={<Phone size={18} />} label="Telefon adayı" value={candidate} tone="candidate" />
-            <SummaryStat icon={<PhoneOff size={18} />} label="Telefon eksik" value={missing} tone="missing" />
+            <SummaryStat
+              icon={<AlertTriangle size={18} />}
+              label={`Eşik (≥${esik}g) firma`}
+              value={filtered.length}
+              tone="missing"
+            />
+            <SummaryStat
+              icon={<CalendarClock size={18} />}
+              label="Toplam gecikmiş"
+              value={formatTL(toplamGecikmis)}
+              tone="candidate"
+            />
+            <SummaryStat
+              icon={<MessageCircle size={18} />}
+              label="Kanalı hazır"
+              value={kanalHazir}
+              tone="ok"
+            />
           </div>
         </div>
 
         <FilterBar
-          resultText={`${filtered.length} firma listeleniyor${filtered.length !== cariler.length ? ` (${cariler.length} toplam)` : ''}`}
+          resultText={`${filtered.length} firma · ortalama gecikme ≥ ${esik} gün`}
         >
           <SearchInput
             value={query}
@@ -87,84 +122,102 @@ export function HatirlatmaClient({
             placeholder="Firma, cari kod veya telefon ara…"
             icon={<Search size={17} />}
           />
-          <FilterSelect value={phoneFilter} onChange={(value) => setPhoneFilter(value as typeof phoneFilter)}>
-            <option value="all">Tüm firmalar</option>
-            <option value="ready">Telefonu hazır</option>
-            <option value="candidate">Telefon adayı var</option>
-            <option value="missing">Telefon eksik</option>
-          </FilterSelect>
+          <label className="flex items-center gap-2 text-sm text-slate-600">
+            <span className="whitespace-nowrap">Ortalama gecikme eşiği (gün)</span>
+            <input
+              type="number"
+              min={0}
+              max={365}
+              value={Number.isFinite(esik) ? esik : ''}
+              onChange={(event) => {
+                const value = Number(event.target.value)
+                setEsik(Number.isFinite(value) && value >= 0 ? value : 0)
+              }}
+              className="w-20 rounded-md border border-slate-300 px-2 py-1.5 text-sm outline-none focus:ring-2 focus:ring-brand-500"
+            />
+          </label>
         </FilterBar>
       </section>
 
       <section className="table-shell">
         <div className="overflow-x-auto">
-          <table className="min-w-[1000px] text-left text-sm">
+          <table className="min-w-[1040px] text-left text-sm">
             <thead>
               <tr>
                 <th className="px-4 py-3">Firma</th>
-                <th className="px-4 py-3">Telefon</th>
-                <th className="px-4 py-3 text-right">Bakiye</th>
+                <th className="px-4 py-3">İletişim</th>
+                <th className="px-4 py-3 text-right">Ort. gecikme</th>
                 <th className="px-4 py-3 text-right">Gecikmiş</th>
-                <th className="px-4 py-3">Son WhatsApp</th>
-                <th className="px-4 py-3 text-right">İşlem</th>
+                <th className="px-4 py-3">Son gönderim</th>
+                <th className="px-4 py-3 text-right">Ödeme talebi</th>
               </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
-                <EmptyTableRow colSpan={6} message="Arama veya filtreye uygun firma bulunamadı." />
+                <EmptyTableRow
+                  colSpan={6}
+                  message={`Ortalama gecikmesi ${esik} gün ve üzeri firma bulunamadı. Eşiği düşürerek daha fazla firma listeleyebilirsiniz.`}
+                />
               ) : (
-                filtered.map((cari) => (
+                filtered.map(({ cari, ortalamaGecikme }) => (
                   <tr key={cari.cari_kod}>
                     <td className="px-4 py-3">
                       <p className="font-medium">{cari.firma_adi}</p>
                       <p className="mt-0.5 font-mono text-xs text-slate-400">{cari.cari_kod}</p>
                     </td>
                     <td className="px-4 py-3 align-top">
-                      <HatirlatmaPhoneStatus
-                        telefon={cari.telefon}
-                        telefonKaynagi={cari.telefon_kaynagi}
-                        hasCandidate={cari.telefon_adaylari.length > 0}
-                      />
-                      {cari.telefon_adaylari[0] && !cari.telefon && (
-                        <p className="mt-1 text-xs text-amber-700">
-                          Aday: {formatPhoneDisplay(cari.telefon_adaylari[0].telefon)}
-                        </p>
-                      )}
-                    </td>
-                    <td className="px-4 py-3 text-right font-semibold tabular-nums">
-                      {formatTL(cari.bakiye)}
-                    </td>
-                    <td className="px-4 py-3 text-right font-medium tabular-nums text-red-700">
-                      {formatTL(cari.gecikmis_bakiye)}
-                    </td>
-                    <td className="px-4 py-3">
-                      {cari.whatsapp_son_gonderim ? (
-                        <div className="flex items-start gap-2 text-slate-700">
-                          <CalendarClock size={16} className="mt-0.5 shrink-0 text-emerald-600" />
-                          <div>
-                            <p className="whitespace-nowrap font-medium">
-                              {new Date(cari.whatsapp_son_gonderim).toLocaleDateString('tr-TR')}
-                            </p>
-                            <p className="text-xs text-slate-400">
-                              {new Date(cari.whatsapp_son_gonderim).toLocaleTimeString('tr-TR', {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              })}
-                              {cari.whatsapp_gonderim_sayisi > 0
-                                ? ` · ${cari.whatsapp_gonderim_sayisi} gönderim`
-                                : ''}
-                            </p>
-                          </div>
-                        </div>
-                      ) : (
-                        <span className="text-xs text-slate-400">Henüz gönderilmedi</span>
-                      )}
+                      <div className="flex items-center gap-1.5 text-xs">
+                        <Phone
+                          size={13}
+                          className={cari.telefon ? 'text-emerald-600' : 'text-slate-300'}
+                        />
+                        <span className={cari.telefon ? 'text-slate-700' : 'text-slate-400'}>
+                          {cari.telefon ? formatPhoneDisplay(cari.telefon) : 'Telefon yok'}
+                        </span>
+                      </div>
+                      <div className="mt-1 flex items-center gap-1.5 text-xs">
+                        <Mail
+                          size={13}
+                          className={
+                            cari.email_adresleri.length ? 'text-brand-600' : 'text-slate-300'
+                          }
+                        />
+                        <span
+                          className={
+                            cari.email_adresleri.length ? 'text-slate-700' : 'text-slate-400'
+                          }
+                        >
+                          {cari.email_adresleri[0] || 'E-posta yok'}
+                        </span>
+                      </div>
                     </td>
                     <td className="px-4 py-3 text-right align-top">
-                      <PreviewLink href={`/hatirlatma/${encodeURIComponent(cari.cari_kod)}`}>
-                        <Eye size={15} />
-                        Önizle
-                      </PreviewLink>
+                      <span className="inline-block rounded-full bg-red-50 px-2.5 py-1 font-semibold tabular-nums text-red-700">
+                        {ortalamaGecikme != null ? `${ortalamaGecikme} gün` : '—'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right align-top font-medium tabular-nums text-red-700">
+                      {formatTL(cari.gecikmis_bakiye)}
+                    </td>
+                    <td className="px-4 py-3 align-top">
+                      <SonGonderim
+                        whatsapp={cari.whatsapp_son_gonderim}
+                        email={cari.email_son_gonderim}
+                      />
+                    </td>
+                    <td className="px-4 py-3 text-right align-top">
+                      <OdemeTalepActions
+                        cariKod={cari.cari_kod}
+                        hasPhone={Boolean(cari.telefon)}
+                        hasEmail={cari.email_adresleri.length > 0}
+                        sendEnabled={sendEnabled}
+                      />
+                      <div className="mt-1.5">
+                        <PreviewLink href={`/hatirlatma/${encodeURIComponent(cari.cari_kod)}`}>
+                          <Eye size={13} />
+                          Önizle / telefon düzenle
+                        </PreviewLink>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -176,9 +229,38 @@ export function HatirlatmaClient({
 
       <p className="text-xs text-slate-500">
         <MessageCircle size={14} className="mr-1 inline text-emerald-600" />
-        WhatsApp gönderimi ss ile ortak Baileys ofis botu üzerinden yapılır: mesaj kuyruğa alınır,
-        ofis PC&apos;sindeki bot sırayla gönderir (Meta Cloud API kullanılmaz).
+        WhatsApp gönderimi ss ile ortak Baileys ofis botu üzerinden yapılır (Meta Cloud API
+        kullanılmaz); e-posta ise kurumsal Gmail kutusundan gider. Mesaj metni her iki kanalda da
+        önceden belirlenmiş ödeme talebidir.
       </p>
+    </div>
+  )
+}
+
+function SonGonderim({
+  whatsapp,
+  email,
+}: {
+  whatsapp: string | null
+  email: string | null
+}) {
+  if (!whatsapp && !email) {
+    return <span className="text-xs text-slate-400">Henüz gönderilmedi</span>
+  }
+  return (
+    <div className="space-y-1 text-xs">
+      {whatsapp && (
+        <div className="flex items-center gap-1.5 text-slate-700">
+          <MessageCircle size={13} className="text-emerald-600" />
+          <span>{new Date(whatsapp).toLocaleDateString('tr-TR')}</span>
+        </div>
+      )}
+      {email && (
+        <div className="flex items-center gap-1.5 text-slate-700">
+          <Mail size={13} className="text-brand-600" />
+          <span>{new Date(email).toLocaleDateString('tr-TR')}</span>
+        </div>
+      )}
     </div>
   )
 }

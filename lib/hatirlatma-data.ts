@@ -2,6 +2,7 @@ import 'server-only'
 import { loadSnapshot } from './data'
 import {
   HATIRLATMA_LOG_KAYNAK,
+  ODEME_TALEP_EMAIL_TIP,
   WHATSAPP_PHONE_DISMISS_TIP,
   WHATSAPP_PHONE_OVERRIDE_TIP,
   WHATSAPP_SEND_TIP,
@@ -13,6 +14,8 @@ import { createAdminClient } from './supabase/admin'
 export type HatirlatmaCari = CariBakiye & {
   whatsapp_son_gonderim: string | null
   whatsapp_gonderim_sayisi: number
+  email_son_gonderim: string | null
+  email_gonderim_sayisi: number
 }
 
 export async function loadHatirlatmaCariler(): Promise<HatirlatmaCari[]> {
@@ -28,6 +31,7 @@ export async function loadHatirlatmaCariler(): Promise<HatirlatmaCari[]> {
         .select('ilgili_id,ilgili_tip,mail_to,sent_at')
         .in('ilgili_tip', [
           WHATSAPP_SEND_TIP,
+          ODEME_TALEP_EMAIL_TIP,
           WHATSAPP_PHONE_OVERRIDE_TIP,
           WHATSAPP_PHONE_DISMISS_TIP,
         ])
@@ -43,6 +47,7 @@ export async function loadHatirlatmaCariler(): Promise<HatirlatmaCari[]> {
   )
   const overridePhone = new Map<string, string[]>()
   const sentHistory = new Map<string, string[]>()
+  const emailHistory = new Map<string, string[]>()
   const dismissedCandidates = new Map<string, Set<string>>()
 
   for (const row of logRows || []) {
@@ -55,6 +60,11 @@ export async function loadHatirlatmaCariler(): Promise<HatirlatmaCari[]> {
       const dates = sentHistory.get(code) || []
       dates.push(String(row.sent_at))
       sentHistory.set(code, dates)
+    }
+    if (row.ilgili_tip === ODEME_TALEP_EMAIL_TIP && row.sent_at) {
+      const dates = emailHistory.get(code) || []
+      dates.push(String(row.sent_at))
+      emailHistory.set(code, dates)
     }
     if (row.ilgili_tip === WHATSAPP_PHONE_DISMISS_TIP) {
       const dismissed = dismissedCandidates.get(code) || new Set<string>()
@@ -75,6 +85,7 @@ export async function loadHatirlatmaCariler(): Promise<HatirlatmaCari[]> {
       override !== undefined ? override : master.length ? master : snapshotPhones
     const phoneNumbers = effectivePhones.length ? effectivePhones : []
     const history = sentHistory.get(cari.cari_kod) || []
+    const emailDates = emailHistory.get(cari.cari_kod) || []
     const hiddenCandidates = dismissedCandidates.get(cari.cari_kod) || new Set<string>()
     const visibleCandidates = (cari.telefon_adaylari || []).filter(
       (candidate) =>
@@ -93,6 +104,8 @@ export async function loadHatirlatmaCariler(): Promise<HatirlatmaCari[]> {
       telefon_adaylari: visibleCandidates,
       whatsapp_son_gonderim: history[0] || null,
       whatsapp_gonderim_sayisi: history.length,
+      email_son_gonderim: emailDates[0] || null,
+      email_gonderim_sayisi: emailDates.length,
     }
   })
 }

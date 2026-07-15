@@ -15,6 +15,15 @@ function sendEnabled() {
   return process.env.MUTABAKAT_SEND_ENABLED !== 'false'
 }
 
+/** YYYY-MM-DD, gelecek olmayan (bugün veya geçmiş) geçerli tarih → aksi halde null. */
+function normalizeMutabakatTarihi(value: string | undefined): string | null {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null
+  const bugun = new Date().toISOString().slice(0, 10)
+  if (value > bugun) return null
+  if (Number(value.slice(0, 4)) < 2000) return null
+  return value
+}
+
 export async function POST(request: Request) {
   try {
     if (!sendEnabled()) {
@@ -25,7 +34,11 @@ export async function POST(request: Request) {
     }
 
     const user = await requireAuthUser()
-    const body = (await request.json()) as { cariKod?: string; senderId?: string }
+    const body = (await request.json()) as {
+      cariKod?: string
+      senderId?: string
+      mutabakatTarihi?: string
+    }
     const cariKod = String(body.cariKod || '').trim()
     if (!cariKod) {
       return NextResponse.json({ success: false, error: 'Cari kodu gerekli.' }, { status: 400 })
@@ -52,12 +65,14 @@ export async function POST(request: Request) {
     }
 
     const snapshot = await loadSnapshot()
-    const token = createMutabakatToken(cari.cari_kod, snapshot.snapshot_tarihi, cari.bakiye)
+    // Önizlemede seçilen tarih (geçmiş tarihli mutabakat) → token + e-posta aynı tarihi kullanır.
+    const secilenTarih = normalizeMutabakatTarihi(body.mutabakatTarihi) || snapshot.snapshot_tarihi
+    const token = createMutabakatToken(cari.cari_kod, secilenTarih, cari.bakiye)
     const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://kobi-tahsilat.vercel.app').replace(
       /\/$/,
       ''
     )
-    const email = buildMutabakatEmail(cari, snapshot.snapshot_tarihi, {
+    const email = buildMutabakatEmail(cari, secilenTarih, {
       onayUrl: `${baseUrl}/mutabakat/onay/${encodeURIComponent(token)}`,
       itirazUrl: `${baseUrl}/mutabakat/itiraz/${encodeURIComponent(token)}`,
     })

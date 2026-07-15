@@ -2,17 +2,21 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { LoaderCircle, Send } from 'lucide-react'
+import { CalendarDays, LoaderCircle, Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export function MutabakatSendPanel({
   cariKod,
+  mutabakatTarihi,
+  bugun,
   hasRecipient,
   sendBlocked,
   blockedUntil,
   sendEnabled,
 }: {
   cariKod: string
+  mutabakatTarihi: string
+  bugun: string
   hasRecipient: boolean
   sendBlocked: boolean
   blockedUntil: string | null
@@ -23,7 +27,14 @@ export function MutabakatSendPanel({
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
 
+  const gecmisTarih = mutabakatTarihi !== bugun
   const canSend = sendEnabled && hasRecipient && !sendBlocked
+
+  /** Tarihi URL'e yazar → sayfa yeniden render olur, önizleme + token seçilen tarihi kullanır. */
+  function setTarih(value: string) {
+    if (!value) return
+    router.replace(`/mutabakat/${encodeURIComponent(cariKod)}?d=${value}`)
+  }
 
   async function sendMutabakat() {
     setLoading(true)
@@ -33,13 +44,9 @@ export function MutabakatSendPanel({
       const response = await fetch('/api/mutabakat/gonder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cariKod }),
+        body: JSON.stringify({ cariKod, mutabakatTarihi }),
       })
-      const result = (await response.json()) as {
-        success?: boolean
-        error?: string
-        message?: string
-      }
+      const result = (await response.json()) as { success?: boolean; error?: string; message?: string }
       if (!response.ok || !result.success) throw new Error(result.error || 'Gönderilemedi.')
       setMessage(result.message || 'Mutabakat gönderildi.')
       router.refresh()
@@ -60,6 +67,37 @@ export function MutabakatSendPanel({
 
   return (
     <div className="space-y-3">
+      {/* Mutabakat tarihi seçimi */}
+      <div className="rounded-lg border border-slate-200 bg-white p-2.5">
+        <label className="flex items-center gap-1.5 text-xs font-medium text-slate-600">
+          <CalendarDays size={13} className="text-brand-600" />
+          Mutabakat tarihi
+        </label>
+        <div className="mt-1.5 flex items-center gap-2">
+          <input
+            type="date"
+            value={mutabakatTarihi}
+            max={bugun}
+            onChange={(event) => setTarih(event.target.value)}
+            className="flex-1 rounded-md border border-slate-300 px-2 py-1.5 text-sm outline-none focus:ring-2 focus:ring-brand-500"
+          />
+          {gecmisTarih && (
+            <button
+              type="button"
+              onClick={() => setTarih(bugun)}
+              className="shrink-0 text-xs font-medium text-brand-600 hover:underline"
+            >
+              Bugüne al
+            </button>
+          )}
+        </div>
+        <p className="mt-1 text-[11px] leading-tight text-slate-400">
+          {gecmisTarih
+            ? 'Geçmiş tarihli mutabakat — muhatabın işlemediği yeni faturalara takılmaz. Yanıt süresi yine bugünden 8 iş günü.'
+            : 'Bugün tarihli mutabakat. Geçmiş tarih için yukarıdan seçin.'}
+        </p>
+      </div>
+
       <Button
         onClick={sendMutabakat}
         disabled={!canSend || loading}
