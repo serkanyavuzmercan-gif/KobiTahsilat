@@ -10,6 +10,7 @@ import https from 'https'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { mergeTestCariler } from './lib/merge-test-cariler.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '..')
@@ -343,17 +344,20 @@ for (const entry of grouped.values()) {
 }
 cariler.sort((a, b) => b.bakiye - a.bakiye)
 
-const out = {
-  sourced_at: new Date().toISOString(),
-  source: `Mikro firma ${process.env.MIKRO_FIRMA_KODU}`,
-  snapshot_tarihi: snapshotTarihi,
-  note: 'MikRapor TL/vade + ss cari-net/FIFO kuralları. Bakiye>0 alacağımız; 128, ŞAHLAN ve AYGÜN hariç.',
-  cari_sayisi: cariler.length,
-  toplam_alacak: Math.round(cariler.reduce((s, c) => s + c.bakiye, 0) * 100) / 100,
-  toplam_gecikmis: money(cariler.reduce((s, c) => s + c.gecikmis_bakiye, 0)),
-  aging: toplamAging,
-  cariler,
-}
+const out = mergeTestCariler(
+  {
+    sourced_at: new Date().toISOString(),
+    source: `Mikro firma ${process.env.MIKRO_FIRMA_KODU}`,
+    snapshot_tarihi: snapshotTarihi,
+    note: 'MikRapor TL/vade + ss cari-net/FIFO kuralları. Bakiye>0 alacağımız; 128, ŞAHLAN ve AYGÜN hariç.',
+    cari_sayisi: cariler.length,
+    toplam_alacak: Math.round(cariler.reduce((s, c) => s + c.bakiye, 0) * 100) / 100,
+    toplam_gecikmis: money(cariler.reduce((s, c) => s + c.gecikmis_bakiye, 0)),
+    aging: toplamAging,
+    cariler,
+  },
+  root
+)
 
 const dest = path.join(root, 'data', 'tahsilat_snapshot.json')
 fs.writeFileSync(dest, JSON.stringify(out, null, 2))

@@ -1,0 +1,71 @@
+{
+  "note": "Test carileri Mikro senkronunda silinmez. E-posta ve telefonu test için buradan güncelleyin.",
+  "cariler": [
+    {
+      "cari_kod": "120.01.9999",
+      "firma_adi": "TEST CARİ — Kobitahsilat Deneme",
+      "email": "test.kobitahsilat@hidroteknik.com.tr",
+      "email_adresleri": ["test.kobitahsilat@hidroteknik.com.tr"],
+      "email_kaynagi": "Test cari tanımı",
+      "email_guven": "dogrulanmis",
+      "email_adaylari": [
+        {
+          "email": "aday.test@hidroteknik.com.tr",
+          "kaynak": "Test cari tanımı",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Aday e-posta seçimi testi için"
+        }
+      ],
+      "telefon": "+905551112233",
+      "telefon_numaralari": ["+905551112233"],
+      "telefon_kaynagi": "Test cari tanımı",
+      "telefon_guven": "dogrulanmis",
+      "telefon_adaylari": [],
+      "bakiye": 15000,
+      "gecikmis_bakiye": 8000,
+      "odeme_vadesi": "30 GÜN",
+      "vade_gun": 30,
+      "aging": {
+        "Vadesi gelmemiş": 7000,
+        "1–30 gün": 3000,
+        "31–60 gün": 0,
+        "61–90 gün": 5000,
+        "90+ gün": 0
+      },
+      "acik_kalemler": [
+        {
+          "evrak_no": "TEST-001",
+          "belge_no": "HT-TEST-0001",
+          "evrak_tarihi": "2026-04-15",
+          "vade_tarihi": "2026-05-15",
+          "gecikme_gun": 61,
+          "aging_bucket": "61–90 gün",
+          "tutar": 5000,
+          "temsilci": "TEST"
+        },
+        {
+          "evrak_no": "TEST-002",
+          "belge_no": "HT-TEST-0002",
+          "evrak_tarihi": "2026-05-26",
+          "vade_tarihi": "2026-06-25",
+          "gecikme_gun": 20,
+          "aging_bucket": "1–30 gün",
+          "tutar": 3000,
+          "temsilci": "TEST"
+        },
+        {
+          "evrak_no": "TEST-003",
+          "belge_no": "HT-TEST-0003",
+          "evrak_tarihi": "2026-07-16",
+          "vade_tarihi": "2026-08-15",
+          "gecikme_gun": -31,
+          "aging_bucket": "Vadesi gelmemiş",
+          "tutar": 7000,
+          "temsilci": "TEST"
+        }
+      ]
+    }
+  ]
+}

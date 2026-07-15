@@ -11,6 +11,7 @@ import crypto from 'crypto'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { mergeTestCariler } from './lib/merge-test-cariler.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '..')
@@ -212,7 +213,7 @@ snapshot.email_ozet = {
     : 'Yalnız Google Kişiler (Supabase yok)',
 }
 snapshot.email_enriched_at = new Date().toISOString()
-fs.writeFileSync(snapshotPath, JSON.stringify(snapshot, null, 2))
+fs.writeFileSync(snapshotPath, JSON.stringify(mergeTestCariler(snapshot, root), null, 2))
 
 console.log('E-posta zenginleştirme tamamlandı:', snapshot.email_ozet)
 

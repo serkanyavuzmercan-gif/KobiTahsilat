@@ -2,6 +2,7 @@ import { readFileSync } from 'fs'
 import path from 'path'
 import type { CariBakiye, TahsilatSnapshot } from './types'
 import { gunFromPlanAdi } from './types'
+import { mergeTestCariler } from './test-cariler'
 
 let cache: TahsilatSnapshot | null = null
 
@@ -33,13 +34,17 @@ export function loadSnapshot(): TahsilatSnapshot {
   if (cache) return cache
   const file = path.join(process.cwd(), 'data', 'tahsilat_snapshot.json')
   const raw = JSON.parse(readFileSync(file, 'utf8')) as TahsilatSnapshot
-  const cariler = (raw.cariler || []).map(normalize).sort((a, b) => b.bakiye - a.bakiye)
-  cache = {
+  const base = {
     ...raw,
-    cariler,
-    cari_sayisi: cariler.length,
-    toplam_alacak: Math.round(cariler.reduce((s, c) => s + c.bakiye, 0) * 100) / 100,
+    cariler: (raw.cariler || []).map(normalize),
   }
+  const merged = mergeTestCariler(base)
+  cache = {
+    ...merged,
+    cariler: merged.cariler.map(normalize).sort((a, b) => b.bakiye - a.bakiye),
+  }
+  cache.cari_sayisi = cache.cariler.length
+  cache.toplam_alacak = Math.round(cache.cariler.reduce((s, c) => s + c.bakiye, 0) * 100) / 100
   return cache
 }
 

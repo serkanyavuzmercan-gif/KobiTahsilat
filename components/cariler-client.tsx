@@ -13,6 +13,7 @@ import {
 import { EmptyTableRow, FilterBar, SearchInput } from '@/components/ui/summary-stat'
 import { formatNumber } from '@/lib/types'
 import type { CariBakiye, CariYanitOzet } from '@/lib/types'
+import { TEST_CARI_KODU } from '@/lib/constants'
 
 type SortKey = 'vade_gun' | 'ortalama_gecikme' | 'gecikmis' | 'bakiye'
 
@@ -200,6 +201,11 @@ export default function CarilerClient({
                         >
                           {c.firma_adi}
                         </Link>
+                        {c.cari_kod === TEST_CARI_KODU ? (
+                          <span className="ml-2 inline-flex rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-violet-700">
+                            Test
+                          </span>
+                        ) : null}
                         <p
                           className={`mt-0.5 text-xs ${
                             c.email

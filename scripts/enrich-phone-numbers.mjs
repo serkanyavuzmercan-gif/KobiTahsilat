@@ -5,6 +5,7 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { mergeTestCariler } from './lib/merge-test-cariler.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '..')
@@ -85,7 +86,7 @@ snapshot.telefon_ozet = {
 }
 snapshot.telefon_enriched_at = new Date().toISOString()
 
-fs.writeFileSync(snapshotPath, `${JSON.stringify(snapshot, null, 2)}\n`)
+fs.writeFileSync(snapshotPath, `${JSON.stringify(mergeTestCariler(snapshot, root), null, 2)}\n`)
 console.log(`Telefon zenginleştirme tamam: ${enriched} cari güncellendi, ${ready} hazır.`)
 
 async function restAll(table, select, filters = {}) {

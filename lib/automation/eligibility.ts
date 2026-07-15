@@ -4,6 +4,7 @@ import { loadSnapshot } from '../data'
 import type { HatirlatmaCari } from '../hatirlatma-data'
 import type { MutabakatCari } from '../mutabakat-data'
 import { formatPhoneDisplay } from '../phone'
+import { isTestCari } from '../test-cariler'
 import type { AutomationChannel, AutomationRule, AutomationRunCandidate } from './types'
 
 export function matchesDelayRule(
@@ -40,6 +41,7 @@ export function collectEmailCandidates(
   cariler: MutabakatCari[]
 ): AutomationRunCandidate[] {
   return cariler.flatMap((cari) => {
+    if (isTestCari(cari.cari_kod)) return []
     const ortalama = cariOrtalamaGecikmeGun(cari)
     if (!matchesDelayRule(ortalama, rule.min_ortalama_gecikme_gun, cari.gecikmis_bakiye)) {
       return []
@@ -60,6 +62,7 @@ export function collectWhatsAppCandidates(
   cariler: HatirlatmaCari[]
 ): AutomationRunCandidate[] {
   return cariler.flatMap((cari) => {
+    if (isTestCari(cari.cari_kod)) return []
     const ortalama = cariOrtalamaGecikmeGun(cari)
     if (!matchesDelayRule(ortalama, rule.min_ortalama_gecikme_gun, cari.gecikmis_bakiye)) {
       return []
