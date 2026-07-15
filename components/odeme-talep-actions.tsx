@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { CheckCircle2, LoaderCircle, Mail, MessageCircle, Send, X } from 'lucide-react'
-import { buildHatirlatmaMessage } from '@/lib/hatirlatma'
+import { CheckCircle2, FileText, LoaderCircle, Mail, MessageCircle, Send, X } from 'lucide-react'
+import { buildOdemeTalepMesaj } from '@/lib/odeme-talep-mesaj'
 import { formatPhoneDisplay } from '@/lib/phone'
 import type { HatirlatmaCari } from '@/lib/hatirlatma-data'
 
@@ -29,10 +29,12 @@ async function postGonder(url: string, cariKod: string, messageBody: string): Pr
 export function OdemeTalepActions({
   cari,
   snapshotTarihi,
+  pdfUrl,
   sendEnabled,
 }: {
   cari: HatirlatmaCari
   snapshotTarihi: string
+  pdfUrl: string
   sendEnabled: boolean
 }) {
   const router = useRouter()
@@ -49,7 +51,7 @@ export function OdemeTalepActions({
   function acPencere(secilenKanal: Kanal) {
     setError('')
     setDone('')
-    setBody(buildHatirlatmaMessage(cari, snapshotTarihi).body)
+    setBody(buildOdemeTalepMesaj(cari, snapshotTarihi, pdfUrl).body)
     setKanal(secilenKanal)
   }
 
@@ -182,6 +184,25 @@ export function OdemeTalepActions({
                   </p>
                 )}
               </div>
+
+              {pdfUrl && (
+                <div className="flex items-center justify-between rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-xs">
+                  <span className="flex items-center gap-1.5 text-brand-700">
+                    <FileText size={14} />
+                    Fatura dökümü PDF{showEmail && ' — e-postaya ek olarak gider'}
+                    {showEmail && showWhatsApp && ', '}
+                    {showWhatsApp && (showEmail ? 'WhatsApp mesajında link olarak' : ' — WhatsApp mesajında link olarak')}
+                  </span>
+                  <a
+                    href={pdfUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0 font-medium text-brand-700 underline hover:text-brand-800"
+                  >
+                    PDF&apos;i önizle
+                  </a>
+                </div>
+              )}
 
               <div>
                 <label className="mb-1 block text-xs font-medium text-slate-600">

@@ -30,10 +30,12 @@ export function HatirlatmaClient({
   cariler,
   snapshotTarihi,
   sendEnabled,
+  pdfUrls,
 }: {
   cariler: HatirlatmaCari[]
   snapshotTarihi: string
   sendEnabled: boolean
+  pdfUrls: Record<string, string>
 }) {
   const [query, setQuery] = useState('')
   const [esik, setEsik] = useState(VARSAYILAN_ESIK)
@@ -214,6 +216,7 @@ export function HatirlatmaClient({
                       <OdemeTalepActions
                         cari={cari}
                         snapshotTarihi={snapshotTarihi}
+                        pdfUrl={pdfUrls[cari.cari_kod] || ''}
                         sendEnabled={sendEnabled}
                       />
                       <div className="mt-1.5">

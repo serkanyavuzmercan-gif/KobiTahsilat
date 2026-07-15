@@ -7,6 +7,7 @@ import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
 import { HATIRLATMA_LOG_KAYNAK, ODEME_TALEP_EMAIL_TIP } from '@/lib/hatirlatma-log'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
 import { sendMail } from '@/lib/mail'
+import { renderOdemeTalepPdf } from '@/lib/odeme-talep-pdf'
 
 export const dynamic = 'force-dynamic'
 
@@ -54,11 +55,28 @@ export async function POST(request: Request) {
     const from = process.env.GMAIL_SENDER || process.env.MAIL_FROM || 'Hidroteknik A.Ş.'
     const sentAt = new Date().toISOString()
 
+    // Vadesi geçmiş fatura dökümünü PDF olarak ekle.
+    let attachments: Array<{ filename: string; content: string; contentType: string }> | undefined
+    try {
+      const pdfBytes = await renderOdemeTalepPdf(cari, snapshot.snapshot_tarihi)
+      attachments = [
+        {
+          filename: `odeme-talebi-${cari.cari_kod}.pdf`,
+          content: Buffer.from(pdfBytes).toString('base64'),
+          contentType: 'application/pdf',
+        },
+      ]
+    } catch (pdfError) {
+      // PDF üretilemezse e-postayı ek olmadan yine de gönder (metin + link mevcut).
+      console.error('[hatirlatma-email-pdf]', pdfError)
+    }
+
     const result = await sendMail({
       to: cari.email_adresleri,
       subject: email.subject,
       html: email.html,
       text: email.text,
+      attachments,
     })
 
     const logResult = await insertMailGonderimLog({
