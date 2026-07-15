@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     }
 
     const user = await requireAuthUser()
-    const body = (await request.json()) as { cariKod?: string }
+    const body = (await request.json()) as { cariKod?: string; messageBody?: string }
     const cariKod = String(body.cariKod || '').trim()
     if (!cariKod) {
       return NextResponse.json({ success: false, error: 'Cari kodu gerekli.' }, { status: 400 })
@@ -57,19 +57,32 @@ export async function POST(request: Request) {
     }
 
     const snapshot = loadSnapshot()
-    const message = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
+    const defaultMessage = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
+    const customBody = typeof body.messageBody === 'string' ? body.messageBody.trim() : ''
+    const messageBody = customBody || defaultMessage.body
+
+    if (messageBody.length === 0) {
+      return NextResponse.json({ success: false, error: 'Mesaj metni boş olamaz.' }, { status: 400 })
+    }
+    if (messageBody.length > 4096) {
+      return NextResponse.json(
+        { success: false, error: 'Mesaj en fazla 4096 karakter olabilir.' },
+        { status: 400 }
+      )
+    }
+
     const sentAt = new Date().toISOString()
 
     const result = await sendWhatsApp({
       to: formatPhoneWhatsApp(cari.telefon),
-      body: message.body,
+      body: messageBody,
     })
 
     const admin = createAdminClient()
     const { error: logError } = await admin.from('mail_gonderim_log').insert({
       mail_to: cari.telefon,
-      subject: message.ozet,
-      body_preview: message.body.slice(0, 240),
+      subject: defaultMessage.ozet,
+      body_preview: messageBody.slice(0, 240),
       kaynak: HATIRLATMA_LOG_KAYNAK,
       ilgili_id: cari.cari_kod,
       ilgili_tip: WHATSAPP_SEND_TIP,

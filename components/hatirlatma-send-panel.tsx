@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { LoaderCircle, Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useHatirlatmaMessage } from '@/components/hatirlatma-message-context'
 import { formatPhoneDisplay } from '@/lib/phone'
 
 export function HatirlatmaSendPanel({
@@ -24,11 +25,12 @@ export function HatirlatmaSendPanel({
   gonderimSayisi: number
 }) {
   const router = useRouter()
+  const { body: messageBody } = useHatirlatmaMessage()
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
 
-  const canSend = sendEnabled && hasPhone && isMobile && !sendBlocked
+  const canSend = sendEnabled && hasPhone && isMobile && !sendBlocked && messageBody.trim().length > 0
 
   async function sendMessage() {
     setLoading(true)
@@ -38,7 +40,7 @@ export function HatirlatmaSendPanel({
       const response = await fetch('/api/hatirlatma/whatsapp-gonder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cariKod }),
+        body: JSON.stringify({ cariKod, messageBody: messageBody.trim() }),
       })
       const result = (await response.json()) as {
         success?: boolean
@@ -80,6 +82,9 @@ export function HatirlatmaSendPanel({
       </Button>
 
       {!hasPhone && <p className="text-xs text-red-600">Gönderim için cep telefonu gerekli.</p>}
+      {hasPhone && messageBody.trim().length === 0 && (
+        <p className="text-xs text-red-600">Mesaj metni boş olamaz.</p>
+      )}
       {hasPhone && !isMobile && (
         <p className="text-xs text-amber-700">
           WhatsApp için cep telefonu girin (05… ile başlamalı).
