@@ -13,8 +13,8 @@ export function AppFooter({ minimal = false }: { minimal?: boolean }) {
     <footer className="mt-auto border-t border-slate-200 bg-white/90">
       <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="font-medium text-slate-700">KobiTahsilat</p>
-          <p className="mt-0.5">Hidroteknik A.Ş. tahsilat takip platformu</p>
+          <p className="font-medium text-slate-700">Hidroteknik Mutabakat ve Tahsilat Sistemi</p>
+          <p className="mt-0.5">Hidroteknik A.Ş.</p>
         </div>
         <div className="sm:text-right">
           <p>© {year} Hidroteknik A.Ş. Tüm hakları saklıdır.</p>

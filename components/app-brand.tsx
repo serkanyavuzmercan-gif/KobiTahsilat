@@ -23,11 +23,11 @@ export function AppBrand({
       />
       <span className="min-w-0 border-l border-slate-200 pl-3.5">
         <span
-          className={`block font-semibold tracking-tight text-brand-700 transition group-hover:text-brand-800 ${
-            compact ? 'text-base' : 'text-lg'
+          className={`block font-semibold leading-tight tracking-tight text-brand-700 transition group-hover:text-brand-800 ${
+            compact ? 'text-sm' : 'text-[15px] sm:text-base'
           }`}
         >
-          KobiTahsilat
+          Mutabakat ve Tahsilat Sistemi
         </span>
         <span className="mt-0.5 block text-xs leading-tight text-slate-500">
           Açık alacaklarınızı tek ekrandan yönetin

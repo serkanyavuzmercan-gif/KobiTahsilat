@@ -3,8 +3,8 @@ import { AppShell } from '@/components/app-shell'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'KobiTahsilat | Tahsilat Takip',
-  description: 'Hidroteknik cari tahsilat takip programı',
+  title: 'Hidroteknik Mutabakat ve Tahsilat Sistemi',
+  description: 'Hidroteknik cari hesap mutabakatı ve tahsilat takip sistemi',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

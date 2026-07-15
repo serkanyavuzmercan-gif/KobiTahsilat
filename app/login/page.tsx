@@ -88,7 +88,7 @@ export default function LoginPage() {
             />
           </div>
           <h1 className="login-title">
-            <span className="gradient-text">KobiTahsilat</span>
+            <span className="gradient-text">Mutabakat ve Tahsilat Sistemi</span>
           </h1>
           <p className="login-subtitle">Açık alacaklarınızı tek ekrandan yönetin</p>
         </div>
