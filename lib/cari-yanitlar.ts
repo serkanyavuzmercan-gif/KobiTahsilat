@@ -6,7 +6,6 @@ import {
   CARI_YANIT_LOG_KAYNAK,
   CARI_YANIT_OKUNDU_TIP,
 } from './cari-yanit-log'
-import { formatPhoneDisplay, formatPhoneWhatsApp, normalizePhone, parsePhones } from './phone'
 import { createAdminClient } from './supabase/admin'
 import type { CariYanitKayit, CariYanitOzet } from './types'
 
@@ -190,55 +189,3 @@ export async function logEmailYanit(options: {
   if (error) console.error('[cari-email-yanit-log]', error.message)
 }
 
-export async function logWhatsAppYanit(options: {
-  cariKod: string
-  telefon: string
-  mesaj: string
-}) {
-  const admin = createAdminClient()
-  const sentAt = new Date().toISOString()
-  const display = formatPhoneDisplay(options.telefon)
-  const { error } = await admin.from('mail_gonderim_log').insert({
-    ilgili_id: options.cariKod,
-    ilgili_tip: CARI_WHATSAPP_YANIT_TIP,
-    mail_to: options.telefon,
-    subject: `WhatsApp yanıt · ${display}`,
-    body_preview: JSON.stringify({ mesaj: options.mesaj }),
-    kaynak: CARI_YANIT_LOG_KAYNAK,
-    sent_at: sentAt,
-  })
-  if (error) console.error('[cari-whatsapp-yanit-log]', error.message)
-}
-
-export async function buildPhoneToCariMap() {
-  const snapshot = await loadSnapshot()
-  const admin = createAdminClient()
-  const codes = snapshot.cariler.map((c) => c.cari_kod)
-  const { data } = await admin.from('cariler').select('cari_kod,telefon').in('cari_kod', codes)
-
-  const masterPhone = new Map(
-    (data || []).map((row) => [String(row.cari_kod), parsePhones(row.telefon)])
-  )
-
-  const phoneToCari = new Map<string, string>()
-
-  for (const cari of snapshot.cariler) {
-    const phones = [
-      ...(masterPhone.get(cari.cari_kod) || []),
-      ...cari.telefon_numaralari,
-      ...(cari.telefon ? [cari.telefon] : []),
-    ]
-    for (const phone of phones) {
-      phoneToCari.set(formatPhoneWhatsApp(phone), cari.cari_kod)
-    }
-  }
-
-  return phoneToCari
-}
-
-export async function findCariKodByWhatsAppPhone(from: string) {
-  const normalized = normalizePhone(from.startsWith('+') ? from : `+${from.replace(/\D/g, '')}`)
-  if (!normalized) return null
-  const map = await buildPhoneToCariMap()
-  return map.get(formatPhoneWhatsApp(normalized)) || null
-}
