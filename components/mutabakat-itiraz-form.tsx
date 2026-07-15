@@ -76,8 +76,11 @@ export function MutabakatItirazForm({
         <CheckCircle2 className="mx-auto text-emerald-600" size={52} />
         <h2 className="mt-4 text-2xl font-semibold">Bildiriminiz alındı</h2>
         <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
-          Fark/itiraz açıklamanız Hidroteknik ekibine iletildi. İnceleme sonrasında sizinle
-          iletişime geçilecektir.
+          Fark/itiraz açıklamanız <strong>Hidroteknik A.Ş.</strong> ekibine iletildi. İnceleme
+          sonrasında sizinle iletişime geçilecektir.
+        </p>
+        <p className="mx-auto mt-4 max-w-md text-sm text-slate-400">
+          Bu pencereyi güvenle kapatabilirsiniz.
         </p>
       </div>
     )
