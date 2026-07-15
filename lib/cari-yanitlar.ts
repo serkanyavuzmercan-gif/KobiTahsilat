@@ -160,7 +160,6 @@ export async function markYanitlarOkundu(userId: string, yanitIds: string[]) {
     body_preview: yanitId,
     kaynak: CARI_YANIT_LOG_KAYNAK,
     sent_at: sentAt,
-    gonderen_user_id: userId,
   }))
 
   const { error } = await admin.from('mail_gonderim_log').insert(rows)

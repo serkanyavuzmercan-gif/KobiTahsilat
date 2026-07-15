@@ -92,7 +92,6 @@ async function sendAutomationEmail(
     ilgili_id: cari.cari_kod,
     ilgili_tip: AUTOMATION_EMAIL_SEND_TIP,
     sent_at: sentAt,
-    gonderen_user_id: userId,
   })
 }
 
@@ -130,7 +129,6 @@ async function sendAutomationWhatsApp(
     ilgili_id: cari.cari_kod,
     ilgili_tip: AUTOMATION_WHATSAPP_SEND_TIP,
     sent_at: sentAt,
-    gonderen_user_id: userId,
   })
 }
 
