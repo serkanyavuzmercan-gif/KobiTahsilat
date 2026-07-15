@@ -1,7 +1,7 @@
 import 'server-only'
 import fs from 'fs'
 import path from 'path'
-import { PDFDocument, PDFFont, PDFPage, rgb } from 'pdf-lib'
+import { PDFDocument, PDFFont, PDFImage, PDFPage, rgb } from 'pdf-lib'
 import fontkit from '@pdf-lib/fontkit'
 import type { CariBakiye } from './types'
 import { buildOdemeTalepDokum } from './odeme-talep-dokum'
@@ -10,18 +10,22 @@ import { buildOdemeTalepDokum } from './odeme-talep-dokum'
 const PAGE_W = 595.28
 const PAGE_H = 841.89
 const MARGIN = 40
-const BODY_BOTTOM = 90 // toplamlar + dipnot için ayrılan alt boşluk
+const BODY_BOTTOM = 96
+const HEADER_H = 88
 
 const BRAND = rgb(0.06, 0.24, 0.39) // #0f3d64
+const BRAND_SOFT = rgb(0.72, 0.8, 0.88)
+const INK = rgb(0.1, 0.13, 0.16)
 const RED = rgb(0.72, 0.11, 0.09)
-const GREY = rgb(0.4, 0.45, 0.5)
-const LINE = rgb(0.85, 0.88, 0.91)
-const HEADBG = rgb(0.95, 0.97, 0.99)
+const RED_SOFT = rgb(0.99, 0.95, 0.95)
+const GREY = rgb(0.42, 0.47, 0.52)
+const LINE = rgb(0.86, 0.89, 0.92)
+const ZEBRA = rgb(0.97, 0.98, 0.99)
+const WHITE = rgb(1, 1, 1)
 
-// Sütun sağ kenarları (x). Kullanılabilir alan: MARGIN..PAGE_W-MARGIN
 const COL = {
-  sira: { left: MARGIN, right: MARGIN + 32 },
-  belge: { left: MARGIN + 32, right: MARGIN + 32 + 150 },
+  sira: { left: MARGIN, right: MARGIN + 30 },
+  belge: { left: MARGIN + 30, right: MARGIN + 30 + 152 },
   faturaTarih: { left: MARGIN + 182, right: MARGIN + 182 + 82 },
   vadeTarih: { left: MARGIN + 264, right: MARGIN + 264 + 82 },
   gecikme: { left: MARGIN + 346, right: MARGIN + 346 + 60 },
@@ -30,16 +34,19 @@ const COL = {
 
 let regularBytes: Buffer | null = null
 let boldBytes: Buffer | null = null
-function loadFontBytes() {
-  if (!regularBytes) {
-    regularBytes = fs.readFileSync(
-      path.join(process.cwd(), 'assets/fonts/LiberationSans-Regular.ttf')
-    )
+let logoBytes: Buffer | null = null
+function loadAssets() {
+  const root = process.cwd()
+  if (!regularBytes) regularBytes = fs.readFileSync(path.join(root, 'assets/fonts/LiberationSans-Regular.ttf'))
+  if (!boldBytes) boldBytes = fs.readFileSync(path.join(root, 'assets/fonts/LiberationSans-Bold.ttf'))
+  if (!logoBytes) {
+    try {
+      logoBytes = fs.readFileSync(path.join(root, 'assets/hidroteknik-logo.png'))
+    } catch {
+      logoBytes = null
+    }
   }
-  if (!boldBytes) {
-    boldBytes = fs.readFileSync(path.join(process.cwd(), 'assets/fonts/LiberationSans-Bold.ttf'))
-  }
-  return { regularBytes, boldBytes }
+  return { regularBytes, boldBytes, logoBytes }
 }
 
 function trDate(iso: string | null): string {
@@ -56,7 +63,6 @@ function money(n: number): string {
   return `${s} TL`
 }
 
-/** Metni sütun genişliğine sığacak şekilde kısaltır. */
 function fit(font: PDFFont, text: string, size: number, maxWidth: number): string {
   if (font.widthOfTextAtSize(text, size) <= maxWidth) return text
   let cut = text
@@ -74,143 +80,211 @@ export async function renderOdemeTalepPdf(
 
   const pdf = await PDFDocument.create()
   pdf.registerFontkit(fontkit)
-  const { regularBytes: reg, boldBytes: bld } = loadFontBytes()
+  const { regularBytes: reg, boldBytes: bld, logoBytes: logoBuf } = loadAssets()
   const font = await pdf.embedFont(reg, { subset: true })
   const bold = await pdf.embedFont(bld, { subset: true })
+  let logo: PDFImage | null = null
+  if (logoBuf) {
+    try {
+      logo = await pdf.embedPng(logoBuf)
+    } catch {
+      logo = null
+    }
+  }
 
   let page = pdf.addPage([PAGE_W, PAGE_H])
-  let y = PAGE_H - MARGIN
+  let y = 0
 
-  const rightText = (p: PDFPage, text: string, rightX: number, yy: number, size: number, f: PDFFont, color = rgb(0.1, 0.13, 0.16)) => {
+  const rightText = (
+    p: PDFPage,
+    text: string,
+    rightX: number,
+    yy: number,
+    size: number,
+    f: PDFFont,
+    color = INK
+  ) => {
     const w = f.widthOfTextAtSize(text, size)
     p.drawText(text, { x: rightX - w, y: yy, size, font: f, color })
   }
 
-  // ---- Başlık ----
-  page.drawText('HİDROTEKNİK A.Ş.', { x: MARGIN, y: y - 6, size: 16, font: bold, color: BRAND })
-  rightText(page, trDate(snapshotTarihi), PAGE_W - MARGIN, y - 6, 10, font, GREY)
-  y -= 26
-  page.drawText('Vadesi Geçmiş Fatura Dökümü / Ödeme Talebi', {
+  // ---- Markalı üst bant ----
+  const drawHeaderBand = (p: PDFPage) => {
+    p.drawRectangle({ x: 0, y: PAGE_H - HEADER_H, width: PAGE_W, height: HEADER_H, color: BRAND })
+    p.drawText('Cari Hesap Ödeme Talebi', {
+      x: MARGIN,
+      y: PAGE_H - 40,
+      size: 19,
+      font: bold,
+      color: WHITE,
+    })
+    p.drawText('Vadesi geçmiş fatura dökümü', {
+      x: MARGIN,
+      y: PAGE_H - 60,
+      size: 10,
+      font,
+      color: BRAND_SOFT,
+    })
+    if (logo) {
+      // Logo şeffaf zeminli ve koyu → beyaz kutu üstünde göster.
+      const logoH = 30
+      const logoW = (logo.width / logo.height) * logoH
+      const boxW = logoW + 20
+      const boxH = logoH + 16
+      const boxX = PAGE_W - MARGIN - boxW
+      const boxY = PAGE_H - 20 - boxH
+      p.drawRectangle({ x: boxX, y: boxY, width: boxW, height: boxH, color: WHITE })
+      p.drawImage(logo, { x: boxX + 10, y: boxY + 8, width: logoW, height: logoH })
+    }
+  }
+
+  drawHeaderBand(page)
+  y = PAGE_H - HEADER_H - 26
+
+  // ---- Firma + tarih ----
+  page.drawText(fit(bold, cari.firma_adi.trim(), 13, PAGE_W - 2 * MARGIN - 120), {
     x: MARGIN,
-    y: y - 6,
-    size: 12,
+    y,
+    size: 13,
     font: bold,
-    color: rgb(0.1, 0.13, 0.16),
+    color: INK,
   })
-  y -= 24
-  page.drawText(fit(bold, cari.firma_adi.trim(), 12, PAGE_W - 2 * MARGIN), {
-    x: MARGIN,
-    y: y - 6,
-    size: 12,
-    font: bold,
-    color: rgb(0.1, 0.13, 0.16),
-  })
-  y -= 16
-  page.drawText(`Cari kod: ${cari.cari_kod}`, { x: MARGIN, y: y - 6, size: 9, font, color: GREY })
+  rightText(page, trDate(snapshotTarihi), PAGE_W - MARGIN, y, 10, font, GREY)
+  y -= 15
+  page.drawText(`Cari kod: ${cari.cari_kod}`, { x: MARGIN, y, size: 9, font, color: GREY })
   y -= 22
 
+  page.drawText(
+    'Sayın yetkili, kayıtlarımıza göre vadesi geçmiş faturalarınızın dökümü aşağıdadır.',
+    { x: MARGIN, y, size: 9.5, font, color: rgb(0.3, 0.34, 0.38) }
+  )
+  y -= 20
+
   // ---- Tablo başlığı ----
-  const drawTableHead = () => {
-    page.drawRectangle({
+  const drawTableHead = (p: PDFPage) => {
+    p.drawRectangle({
       x: MARGIN,
-      y: y - 16,
+      y: y - 18,
       width: PAGE_W - 2 * MARGIN,
-      height: 18,
-      color: HEADBG,
+      height: 20,
+      color: BRAND,
     })
-    const hy = y - 12
+    const hy = y - 12.5
     const hs = 8.5
-    page.drawText('#', { x: COL.sira.left + 3, y: hy, size: hs, font: bold, color: GREY })
-    page.drawText('Fatura No', { x: COL.belge.left + 3, y: hy, size: hs, font: bold, color: GREY })
-    page.drawText('Fatura Tar.', { x: COL.faturaTarih.left + 3, y: hy, size: hs, font: bold, color: GREY })
-    page.drawText('Vade Tar.', { x: COL.vadeTarih.left + 3, y: hy, size: hs, font: bold, color: GREY })
-    rightText(page, 'Gecikme', COL.gecikme.right - 3, hy, hs, bold, GREY)
-    rightText(page, 'Tutar', COL.tutar.right - 3, hy, hs, bold, GREY)
-    y -= 20
+    p.drawText('#', { x: COL.sira.left + 5, y: hy, size: hs, font: bold, color: WHITE })
+    p.drawText('Fatura No', { x: COL.belge.left + 4, y: hy, size: hs, font: bold, color: WHITE })
+    p.drawText('Fatura Tar.', { x: COL.faturaTarih.left + 4, y: hy, size: hs, font: bold, color: WHITE })
+    p.drawText('Vade Tar.', { x: COL.vadeTarih.left + 4, y: hy, size: hs, font: bold, color: WHITE })
+    rightText(p, 'Gecikme', COL.gecikme.right - 4, hy, hs, bold, WHITE)
+    rightText(p, 'Tutar', COL.tutar.right - 4, hy, hs, bold, WHITE)
+    y -= 22
   }
 
   const newPage = () => {
     page = pdf.addPage([PAGE_W, PAGE_H])
     y = PAGE_H - MARGIN
-    drawTableHead()
+    drawTableHead(page)
   }
 
-  drawTableHead()
+  drawTableHead(page)
 
-  // ---- Satırlar ----
-  const rowH = 15
+  // ---- Satırlar (zebra) ----
+  const rowH = 16
   const rs = 8.5
   let sira = 0
   for (const f of dokum.faturalar) {
     if (y - rowH < BODY_BOTTOM) newPage()
     sira += 1
-    const ty = y - 10
-    page.drawText(String(sira), { x: COL.sira.left + 3, y: ty, size: rs, font, color: GREY })
-    page.drawText(fit(font, f.belge_no, rs, COL.belge.right - COL.belge.left - 6), {
-      x: COL.belge.left + 3,
+    if (sira % 2 === 0) {
+      page.drawRectangle({
+        x: MARGIN,
+        y: y - rowH + 2,
+        width: PAGE_W - 2 * MARGIN,
+        height: rowH,
+        color: ZEBRA,
+      })
+    }
+    const ty = y - 11
+    page.drawText(String(sira), { x: COL.sira.left + 5, y: ty, size: rs, font, color: GREY })
+    page.drawText(fit(font, f.belge_no, rs, COL.belge.right - COL.belge.left - 8), {
+      x: COL.belge.left + 4,
       y: ty,
       size: rs,
       font,
-      color: rgb(0.1, 0.13, 0.16),
+      color: INK,
     })
-    page.drawText(trDate(f.fatura_tarihi), { x: COL.faturaTarih.left + 3, y: ty, size: rs, font, color: rgb(0.1, 0.13, 0.16) })
-    page.drawText(trDate(f.vade_tarihi), { x: COL.vadeTarih.left + 3, y: ty, size: rs, font, color: rgb(0.1, 0.13, 0.16) })
-    rightText(page, `${f.gecikme_gun} gün`, COL.gecikme.right - 3, ty, rs, font, RED)
-    rightText(page, money(f.tutar), COL.tutar.right - 3, ty, rs, font, rgb(0.1, 0.13, 0.16))
-    page.drawLine({
-      start: { x: MARGIN, y: y - rowH },
-      end: { x: PAGE_W - MARGIN, y: y - rowH },
-      thickness: 0.5,
-      color: LINE,
-    })
+    page.drawText(trDate(f.fatura_tarihi), { x: COL.faturaTarih.left + 4, y: ty, size: rs, font, color: INK })
+    page.drawText(trDate(f.vade_tarihi), { x: COL.vadeTarih.left + 4, y: ty, size: rs, font, color: INK })
+    rightText(page, `${f.gecikme_gun} gün`, COL.gecikme.right - 4, ty, rs, bold, RED)
+    rightText(page, money(f.tutar), COL.tutar.right - 4, ty, rs, font, INK)
     y -= rowH
   }
 
-  // ---- Devir/Diğer satırı ----
+  // ---- Devir/Diğer ----
   if (dokum.diger_toplam > 0) {
     if (y - rowH < BODY_BOTTOM) newPage()
-    const ty = y - 10
-    page.drawText(
-      `Devir / diğer kalemler (${dokum.diger_adet} adet)`,
-      { x: COL.belge.left + 3, y: ty, size: rs, font, color: GREY }
-    )
-    rightText(page, money(dokum.diger_toplam), COL.tutar.right - 3, ty, rs, font, rgb(0.1, 0.13, 0.16))
-    page.drawLine({
-      start: { x: MARGIN, y: y - rowH },
-      end: { x: PAGE_W - MARGIN, y: y - rowH },
-      thickness: 0.5,
-      color: LINE,
+    const ty = y - 11
+    page.drawText(`Devir / diğer kalemler (${dokum.diger_adet} adet)`, {
+      x: COL.belge.left + 4,
+      y: ty,
+      size: rs,
+      font,
+      color: GREY,
     })
+    rightText(page, money(dokum.diger_toplam), COL.tutar.right - 4, ty, rs, font, INK)
     y -= rowH
   }
 
+  // tablo alt çizgisi
+  page.drawLine({
+    start: { x: MARGIN, y: y + 1 },
+    end: { x: PAGE_W - MARGIN, y: y + 1 },
+    thickness: 0.7,
+    color: LINE,
+  })
+
   // ---- Toplamlar ----
-  y -= 12
+  if (y - 70 < 60) newPage()
+  y -= 16
+  const boxH = 54
   const boxTop = y
-  const boxH = 46
+  // Vadesi dolan (kırmızı vurgulu)
   page.drawRectangle({
     x: MARGIN,
     y: boxTop - boxH,
     width: PAGE_W - 2 * MARGIN,
     height: boxH,
-    color: HEADBG,
+    color: WHITE,
     borderColor: LINE,
-    borderWidth: 0.5,
+    borderWidth: 0.8,
   })
-  page.drawText('Vadesi dolan toplam', { x: MARGIN + 12, y: boxTop - 18, size: 10, font, color: GREY })
-  rightText(page, money(dokum.vadesi_gecen_toplam), PAGE_W - MARGIN - 12, boxTop - 18, 12, bold, RED)
-  page.drawText('Genel bakiye (vadesi gelmemişler dahil)', { x: MARGIN + 12, y: boxTop - 36, size: 10, font, color: GREY })
-  rightText(page, money(dokum.genel_bakiye), PAGE_W - MARGIN - 12, boxTop - 36, 12, bold, BRAND)
-  y = boxTop - boxH - 20
+  page.drawRectangle({ x: MARGIN, y: boxTop - boxH, width: 4, height: boxH, color: RED })
+  page.drawRectangle({
+    x: MARGIN,
+    y: boxTop - 27,
+    width: PAGE_W - 2 * MARGIN,
+    height: 27,
+    color: RED_SOFT,
+  })
+  page.drawText('Vadesi dolan toplam', { x: MARGIN + 14, y: boxTop - 19, size: 10.5, font: bold, color: RED })
+  rightText(page, money(dokum.vadesi_gecen_toplam), PAGE_W - MARGIN - 14, boxTop - 19, 13, bold, RED)
+  page.drawText('Genel bakiye (vadesi gelmemişler dahil)', {
+    x: MARGIN + 14,
+    y: boxTop - 44,
+    size: 10,
+    font,
+    color: GREY,
+  })
+  rightText(page, money(dokum.genel_bakiye), PAGE_W - MARGIN - 14, boxTop - 44, 12, bold, BRAND)
+  y = boxTop - boxH - 22
 
   // ---- Dipnot ----
   const notu =
-    'Yukarıdaki tutarlar kayıtlarımıza göre vadesi geçmiş açık faturalarınızdır. ' +
-    'Ödeme yaptıysanız veya bir hata olduğunu düşünüyorsanız lütfen bizimle iletişime geçin.'
-  const words = notu.split(' ')
+    'Yukarıdaki tutarlar kayıtlarımıza göre vadesi geçmiş açık faturalarınızdır. Ödeme yaptıysanız ' +
+    'veya bir hata olduğunu düşünüyorsanız lütfen bizimle iletişime geçiniz. İlginiz için teşekkür ederiz.'
   let line = ''
-  let ny = Math.max(y, 60)
-  for (const w of words) {
+  let ny = Math.max(y, 66)
+  for (const w of notu.split(' ')) {
     const test = line ? `${line} ${w}` : w
     if (font.widthOfTextAtSize(test, 8.5) > PAGE_W - 2 * MARGIN) {
       page.drawText(line, { x: MARGIN, y: ny, size: 8.5, font, color: GREY })
@@ -221,13 +295,23 @@ export async function renderOdemeTalepPdf(
     }
   }
   if (line) page.drawText(line, { x: MARGIN, y: ny, size: 8.5, font, color: GREY })
-  page.drawText('Hidroteknik A.Ş. · info@hidroteknik.com.tr · +90 258 251 40 60', {
-    x: MARGIN,
-    y: ny - 16,
-    size: 8.5,
-    font,
+
+  page.drawLine({
+    start: { x: MARGIN, y: ny - 12 },
+    end: { x: PAGE_W - MARGIN, y: ny - 12 },
+    thickness: 0.7,
     color: BRAND,
   })
+  page.drawText('Hidroteknik A.Ş.', { x: MARGIN, y: ny - 26, size: 9, font: bold, color: BRAND })
+  rightText(
+    page,
+    'info@hidroteknik.com.tr · +90 258 251 40 60',
+    PAGE_W - MARGIN,
+    ny - 26,
+    8.5,
+    font,
+    GREY
+  )
 
   return pdf.save()
 }
