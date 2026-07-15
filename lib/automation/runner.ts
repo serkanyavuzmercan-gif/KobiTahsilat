@@ -75,8 +75,10 @@ async function sendAutomationEmail(
   const from = process.env.GMAIL_SENDER || process.env.MAIL_FROM || 'Hidroteknik A.Ş.'
   const sentAt = new Date().toISOString()
 
+  // Otomasyonda da ASLA tüm adreslere birden gitme; yalnız varsayılan (ilk) adres.
+  const otoAlicilar = cari.email_adresleri.slice(0, 1)
   await sendMail({
-    to: cari.email_adresleri,
+    to: otoAlicilar,
     subject: email.subject,
     html: email.html,
     text: email.text,
@@ -84,7 +86,7 @@ async function sendAutomationEmail(
 
   const admin = createAdminClient()
   await admin.from('mail_gonderim_log').insert({
-    mail_to: cari.email_adresleri.join(';'),
+    mail_to: otoAlicilar.join(';'),
     mail_from: from,
     subject: email.subject,
     body_preview: email.text.slice(0, 240),

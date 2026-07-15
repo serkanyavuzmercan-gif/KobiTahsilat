@@ -38,6 +38,7 @@ export async function POST(request: Request) {
       cariKod?: string
       senderId?: string
       mutabakatTarihi?: string
+      recipients?: string[]
     }
     const cariKod = String(body.cariKod || '').trim()
     if (!cariKod) {
@@ -54,6 +55,11 @@ export async function POST(request: Request) {
         { status: 400 }
       )
     }
+    // ASLA tüm adreslere birden gönderme. Kullanıcının seçtiği (email_adresleri alt kümesi)
+    // adreslere; seçim yoksa yalnız VARSAYILAN (ilk) adrese gider.
+    const istenenAlicilar = Array.isArray(body.recipients) ? body.recipients.map(String) : []
+    const secilenAlicilar = istenenAlicilar.filter((e) => cari.email_adresleri.includes(e))
+    const alicilar = secilenAlicilar.length ? secilenAlicilar : [cari.email_adresleri[0]]
     if (cari.mutabakat_gonderim_engelli) {
       return NextResponse.json(
         {
@@ -81,14 +87,14 @@ export async function POST(request: Request) {
     const sentAt = new Date().toISOString()
 
     const result = await sendMail({
-      to: cari.email_adresleri,
+      to: alicilar,
       subject: email.subject,
       html: email.html,
       text: email.text,
     })
 
     const logResult = await insertMailGonderimLog({
-      mail_to: cari.email_adresleri.join('; '),
+      mail_to: alicilar.join('; '),
       mail_from: from,
       subject: email.subject,
       body_preview: `${cari.firma_adi} mutabakatı gönderildi`,
@@ -104,7 +110,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: `Mutabakat e-postası ${cari.email_adresleri.join(', ')} adresine gönderildi.`,
+      message: `Mutabakat e-postası ${alicilar.join(', ')} adresine gönderildi.`,
       sentAt,
       from,
       providerId: result?.id || null,

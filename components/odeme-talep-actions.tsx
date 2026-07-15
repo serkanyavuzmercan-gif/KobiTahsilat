@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { CheckCircle2, FileText, LoaderCircle, Mail, MessageCircle, Send, X } from 'lucide-react'
 import { buildOdemeTalepMesaj } from '@/lib/odeme-talep-mesaj'
 import { formatPhoneDisplay } from '@/lib/phone'
+import { RecipientPicker } from '@/components/recipient-picker'
 import type { HatirlatmaCari } from '@/lib/hatirlatma-data'
 
 type Kanal = 'whatsapp' | 'email' | 'her-ikisi'
@@ -15,11 +16,16 @@ const KANAL_ETIKET: Record<Kanal, string> = {
   'her-ikisi': 'WhatsApp + E-posta',
 }
 
-async function postGonder(url: string, cariKod: string, messageBody: string): Promise<string> {
+async function postGonder(
+  url: string,
+  cariKod: string,
+  messageBody: string,
+  recipients?: string[]
+): Promise<string> {
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ cariKod, messageBody }),
+    body: JSON.stringify({ cariKod, messageBody, recipients }),
   })
   const result = (await response.json()) as { success?: boolean; error?: string; message?: string }
   if (!response.ok || !result.success) throw new Error(result.error || 'Gönderilemedi.')
@@ -43,6 +49,8 @@ export function OdemeTalepActions({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [done, setDone] = useState('')
+  // Varsayılan: yalnız ilk (birincil) e-posta seçili. Hepsine birden ASLA gitmez.
+  const [alicilar, setAlicilar] = useState<string[]>(cari.email_adresleri.slice(0, 1))
 
   const hasPhone = Boolean(cari.telefon)
   const hasEmail = cari.email_adresleri.length > 0
@@ -51,6 +59,7 @@ export function OdemeTalepActions({
   function acPencere(secilenKanal: Kanal) {
     setError('')
     setDone('')
+    setAlicilar(cari.email_adresleri.slice(0, 1))
     setBody(buildOdemeTalepMesaj(cari, snapshotTarihi, pdfUrl).body)
     setKanal(secilenKanal)
   }
@@ -76,7 +85,8 @@ export function OdemeTalepActions({
         mesajlar.push(await postGonder('/api/hatirlatma/whatsapp-gonder', cari.cari_kod, metin))
       }
       if (kanal === 'email' || kanal === 'her-ikisi') {
-        mesajlar.push(await postGonder('/api/hatirlatma/email-gonder', cari.cari_kod, metin))
+        if (!alicilar.length) throw new Error('En az bir e-posta alıcısı seçin.')
+        mesajlar.push(await postGonder('/api/hatirlatma/email-gonder', cari.cari_kod, metin, alicilar))
       }
       setDone(mesajlar.join(' '))
       setKanal(null)
@@ -168,7 +178,7 @@ export function OdemeTalepActions({
             </div>
 
             <div className="space-y-3 px-5 py-4 text-left">
-              <div className="space-y-1 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-600">
+              <div className="space-y-2 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-600">
                 {showWhatsApp && (
                   <p className="flex items-center gap-1.5">
                     <MessageCircle size={13} className="text-emerald-600" />
@@ -177,11 +187,11 @@ export function OdemeTalepActions({
                   </p>
                 )}
                 {showEmail && (
-                  <p className="flex items-center gap-1.5">
-                    <Mail size={13} className="text-brand-600" />
-                    <span className="font-medium">E-posta:</span>{' '}
-                    {cari.email_adresleri.join(', ') || '—'}
-                  </p>
+                  <RecipientPicker
+                    addresses={cari.email_adresleri}
+                    selected={alicilar}
+                    onChange={setAlicilar}
+                  />
                 )}
               </div>
 

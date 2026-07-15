@@ -4,12 +4,14 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CalendarDays, LoaderCircle, Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { RecipientPicker } from '@/components/recipient-picker'
 
 export function MutabakatSendPanel({
   cariKod,
   mutabakatTarihi,
   bugun,
   hasRecipient,
+  emailAdresleri,
   sendBlocked,
   blockedUntil,
   sendEnabled,
@@ -18,6 +20,7 @@ export function MutabakatSendPanel({
   mutabakatTarihi: string
   bugun: string
   hasRecipient: boolean
+  emailAdresleri: string[]
   sendBlocked: boolean
   blockedUntil: string | null
   sendEnabled: boolean
@@ -26,9 +29,11 @@ export function MutabakatSendPanel({
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  // Varsayılan: yalnız ilk (birincil) adres seçili. Hepsine birden ASLA gitmez.
+  const [alicilar, setAlicilar] = useState<string[]>(emailAdresleri.slice(0, 1))
 
   const gecmisTarih = mutabakatTarihi !== bugun
-  const canSend = sendEnabled && hasRecipient && !sendBlocked
+  const canSend = sendEnabled && hasRecipient && !sendBlocked && alicilar.length > 0
 
   /** Tarihi URL'e yazar → sayfa yeniden render olur, önizleme + token seçilen tarihi kullanır. */
   function setTarih(value: string) {
@@ -44,7 +49,7 @@ export function MutabakatSendPanel({
       const response = await fetch('/api/mutabakat/gonder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cariKod, mutabakatTarihi }),
+        body: JSON.stringify({ cariKod, mutabakatTarihi, recipients: alicilar }),
       })
       const result = (await response.json()) as { success?: boolean; error?: string; message?: string }
       if (!response.ok || !result.success) throw new Error(result.error || 'Gönderilemedi.')
@@ -97,6 +102,12 @@ export function MutabakatSendPanel({
             : 'Bugün tarihli mutabakat. Geçmiş tarih için yukarıdan seçin.'}
         </p>
       </div>
+
+      {emailAdresleri.length > 0 && (
+        <div className="rounded-lg border border-slate-200 bg-white p-2.5">
+          <RecipientPicker addresses={emailAdresleri} selected={alicilar} onChange={setAlicilar} />
+        </div>
+      )}
 
       <Button
         onClick={sendMutabakat}

@@ -25,7 +25,11 @@ export async function POST(request: Request) {
     }
 
     const user = await requireAuthUser()
-    const body = (await request.json()) as { cariKod?: string; messageBody?: string }
+    const body = (await request.json()) as {
+      cariKod?: string
+      messageBody?: string
+      recipients?: string[]
+    }
     const cariKod = String(body.cariKod || '').trim()
     if (!cariKod) {
       return NextResponse.json({ success: false, error: 'Cari kodu gerekli.' }, { status: 400 })
@@ -48,6 +52,10 @@ export async function POST(request: Request) {
         { status: 400 }
       )
     }
+    // ASLA tüm adreslere birden gönderme. Seçilen alt küme; seçim yoksa yalnız VARSAYILAN (ilk) adres.
+    const istenenAlicilar = Array.isArray(body.recipients) ? body.recipients.map(String) : []
+    const secilenAlicilar = istenenAlicilar.filter((e) => cari.email_adresleri.includes(e))
+    const alicilar = secilenAlicilar.length ? secilenAlicilar : [cari.email_adresleri[0]]
 
     const snapshot = await loadSnapshot()
     const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi, customBody)
@@ -72,7 +80,7 @@ export async function POST(request: Request) {
     }
 
     const result = await sendMail({
-      to: cari.email_adresleri,
+      to: alicilar,
       subject: email.subject,
       html: email.html,
       text: email.text,
@@ -80,7 +88,7 @@ export async function POST(request: Request) {
     })
 
     const logResult = await insertMailGonderimLog({
-      mail_to: cari.email_adresleri.join('; '),
+      mail_to: alicilar.join('; '),
       mail_from: from,
       subject: email.subject,
       body_preview: `${cari.firma_adi} ödeme talebi (e-posta) gönderildi`,
@@ -96,7 +104,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: `Ödeme talebi e-postası ${cari.email_adresleri.join(', ')} adresine gönderildi.`,
+      message: `Ödeme talebi e-postası ${alicilar.join(', ')} adresine gönderildi.`,
       sentAt,
       from,
       providerId: result?.id || null,

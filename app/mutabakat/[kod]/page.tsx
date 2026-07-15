@@ -150,6 +150,7 @@ export default async function MutabakatPreviewPage({
                 mutabakatTarihi={secilenTarih}
                 bugun={snapshot.snapshot_tarihi}
                 hasRecipient={Boolean(cari.email)}
+                emailAdresleri={cari.email_adresleri}
                 sendBlocked={cari.mutabakat_gonderim_engelli}
                 blockedUntil={cari.mutabakat_tekrar_gonderilebilir_at}
                 sendEnabled={canSend}
