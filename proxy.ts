@@ -15,7 +15,9 @@ export async function proxy(request: NextRequest) {
   // Müşteri yanıt sayfaları yalnız HMAC imzalı, süreli token ile çalışır.
   const isPublicMutabakatResponse =
     request.nextUrl.pathname.startsWith('/mutabakat/itiraz/') ||
-    request.nextUrl.pathname === '/api/mutabakat/itiraz'
+    request.nextUrl.pathname.startsWith('/mutabakat/onay/') ||
+    request.nextUrl.pathname === '/api/mutabakat/itiraz' ||
+    request.nextUrl.pathname === '/api/mutabakat/onay'
   const isCronRoute = request.nextUrl.pathname.startsWith('/api/cron/')
   const isWebhookRoute = request.nextUrl.pathname.startsWith('/api/webhooks/')
   if (isPublicMutabakatResponse || isCronRoute || isWebhookRoute) return NextResponse.next()

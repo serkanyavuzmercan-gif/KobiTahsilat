@@ -58,6 +58,7 @@ export async function POST(request: Request) {
       ''
     )
     const email = buildMutabakatEmail(cari, snapshot.snapshot_tarihi, {
+      onayUrl: `${baseUrl}/mutabakat/onay/${encodeURIComponent(token)}`,
       itirazUrl: `${baseUrl}/mutabakat/itiraz/${encodeURIComponent(token)}`,
     })
     // Gönderen sabit: Gmail (GMAIL_SENDER = serkan.mercan@). Yanıtlar da aynı kutuya döner.

@@ -12,7 +12,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return <>{children}</>
   }
 
-  const customerPage = pathname.startsWith('/mutabakat/itiraz/')
+  const customerPage =
+    pathname.startsWith('/mutabakat/itiraz/') || pathname.startsWith('/mutabakat/onay/')
 
   if (customerPage) {
     return (
