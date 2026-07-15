@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CheckCircle2, FileText, LoaderCircle, Mail, MessageCircle, Send, X } from 'lucide-react'
 import { buildOdemeTalepMesaj } from '@/lib/odeme-talep-mesaj'
-import { formatPhoneDisplay } from '@/lib/phone'
+import { formatPhoneDisplay, isMobileTurkey } from '@/lib/phone'
 import { RecipientPicker } from '@/components/recipient-picker'
 import type { HatirlatmaCari } from '@/lib/hatirlatma-data'
 
@@ -20,12 +20,12 @@ async function postGonder(
   url: string,
   cariKod: string,
   messageBody: string,
-  recipients?: string[]
+  extra?: Record<string, unknown>
 ): Promise<string> {
   const response = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ cariKod, messageBody, recipients }),
+    body: JSON.stringify({ cariKod, messageBody, ...extra }),
   })
   const result = (await response.json()) as { success?: boolean; error?: string; message?: string }
   if (!response.ok || !result.success) throw new Error(result.error || 'Gönderilemedi.')
@@ -49,10 +49,13 @@ export function OdemeTalepActions({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [done, setDone] = useState('')
-  // Varsayılan: yalnız ilk (birincil) e-posta seçili. Hepsine birden ASLA gitmez.
+  // WhatsApp yalnız cep (mobil) numaralara gider.
+  const mobilNumaralar = cari.telefon_numaralari.filter(isMobileTurkey)
+  // Varsayılan: yalnız ilk (birincil) e-posta / numara seçili. Hepsine birden ASLA gitmez.
   const [alicilar, setAlicilar] = useState<string[]>(cari.email_adresleri.slice(0, 1))
+  const [numaralar, setNumaralar] = useState<string[]>(mobilNumaralar.slice(0, 1))
 
-  const hasPhone = Boolean(cari.telefon)
+  const hasPhone = mobilNumaralar.length > 0
   const hasEmail = cari.email_adresleri.length > 0
 
   /** Butona basınca hemen göndermez; önizleme penceresini açar. */
@@ -60,6 +63,7 @@ export function OdemeTalepActions({
     setError('')
     setDone('')
     setAlicilar(cari.email_adresleri.slice(0, 1))
+    setNumaralar(mobilNumaralar.slice(0, 1))
     setBody(buildOdemeTalepMesaj(cari, snapshotTarihi, pdfUrl).body)
     setKanal(secilenKanal)
   }
@@ -82,11 +86,20 @@ export function OdemeTalepActions({
     try {
       const mesajlar: string[] = []
       if (kanal === 'whatsapp' || kanal === 'her-ikisi') {
-        mesajlar.push(await postGonder('/api/hatirlatma/whatsapp-gonder', cari.cari_kod, metin))
+        if (!numaralar.length) throw new Error('En az bir cep numarası seçin.')
+        mesajlar.push(
+          await postGonder('/api/hatirlatma/whatsapp-gonder', cari.cari_kod, metin, {
+            phones: numaralar,
+          })
+        )
       }
       if (kanal === 'email' || kanal === 'her-ikisi') {
         if (!alicilar.length) throw new Error('En az bir e-posta alıcısı seçin.')
-        mesajlar.push(await postGonder('/api/hatirlatma/email-gonder', cari.cari_kod, metin, alicilar))
+        mesajlar.push(
+          await postGonder('/api/hatirlatma/email-gonder', cari.cari_kod, metin, {
+            recipients: alicilar,
+          })
+        )
       }
       setDone(mesajlar.join(' '))
       setKanal(null)
@@ -180,11 +193,13 @@ export function OdemeTalepActions({
             <div className="space-y-3 px-5 py-4 text-left">
               <div className="space-y-2 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-600">
                 {showWhatsApp && (
-                  <p className="flex items-center gap-1.5">
-                    <MessageCircle size={13} className="text-emerald-600" />
-                    <span className="font-medium">WhatsApp:</span>{' '}
-                    {cari.telefon ? formatPhoneDisplay(cari.telefon) : '—'}
-                  </p>
+                  <RecipientPicker
+                    kind="phone"
+                    addresses={mobilNumaralar}
+                    selected={numaralar}
+                    onChange={setNumaralar}
+                    format={formatPhoneDisplay}
+                  />
                 )}
                 {showEmail && (
                   <RecipientPicker

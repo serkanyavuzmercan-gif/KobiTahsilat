@@ -1,29 +1,36 @@
 'use client'
 
-import { Mail } from 'lucide-react'
+import { Mail, MessageCircle } from 'lucide-react'
 
 /**
- * Alıcı e-posta seçici. Cari'de keşfedilen tüm adresleri listeler; VARSAYILAN olarak
- * yalnız ilki (birincil) seçilidir. Kullanıcı bilerek birden fazla seçebilir ama sistem
- * ASLA hepsine birden otomatik göndermez — yalnız seçili olanlara gider.
+ * Alıcı seçici (e-posta veya telefon). Cari'de keşfedilen tüm adresleri/numaraları listeler;
+ * VARSAYILAN olarak yalnız ilki (birincil) seçilidir. Kullanıcı bilerek birden fazla seçebilir
+ * ama sistem ASLA hepsine birden otomatik göndermez — yalnız seçili olanlara gider.
  */
 export function RecipientPicker({
   addresses,
   selected,
   onChange,
+  kind = 'email',
+  format = (v) => v,
 }: {
   addresses: string[]
   selected: string[]
   onChange: (next: string[]) => void
+  kind?: 'email' | 'phone'
+  format?: (v: string) => string
 }) {
   if (addresses.length === 0) return null
+  const Icon = kind === 'phone' ? MessageCircle : Mail
+  const iconClass = kind === 'phone' ? 'text-emerald-600' : 'text-brand-600'
+  const noun = kind === 'phone' ? 'Numara' : 'Alıcı'
 
   // Tek adres varsa seçim gereksiz; sadece göster.
   if (addresses.length === 1) {
     return (
       <div className="flex items-center gap-1.5 text-xs text-slate-600">
-        <Mail size={13} className="text-brand-600" />
-        <span className="font-medium">{addresses[0]}</span>
+        <Icon size={13} className={iconClass} />
+        <span className="font-medium">{format(addresses[0])}</span>
       </div>
     )
   }
@@ -39,7 +46,7 @@ export function RecipientPicker({
   return (
     <div className="space-y-1">
       <p className="text-xs font-medium text-slate-600">
-        Alıcı ({selected.length} seçili) — yalnız seçili adrese(lere) gider
+        {noun} ({selected.length} seçili) — yalnız seçili{kind === 'phone' ? ' numaraya' : ' adrese'}(lere) gider
       </p>
       <div className="max-h-36 space-y-0.5 overflow-y-auto rounded-md border border-slate-200 bg-white p-1.5">
         {addresses.map((addr, index) => (
@@ -54,7 +61,7 @@ export function RecipientPicker({
               className="h-3.5 w-3.5 shrink-0 accent-brand-600"
             />
             <span className={selected.includes(addr) ? 'text-slate-800' : 'text-slate-500'}>
-              {addr}
+              {format(addr)}
             </span>
             {index === 0 && (
               <span className="ml-auto shrink-0 rounded bg-brand-50 px-1.5 py-0.5 text-[10px] font-medium text-brand-600">
