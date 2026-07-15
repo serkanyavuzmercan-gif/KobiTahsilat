@@ -47,12 +47,22 @@ export async function sendWhatsApp(options: { to: string; body: string }): Promi
 
   const result = (await response.json()) as {
     messages?: Array<{ id: string }>
-    error?: { message?: string }
+    error?: { message?: string; code?: number; error_subcode?: number }
   }
 
   if (!response.ok) {
-    throw new Error(result.error?.message || 'WhatsApp mesajı gönderilemedi.')
+    const detail = [
+      result.error?.message,
+      result.error?.error_subcode ? `kod: ${result.error.error_subcode}` : null,
+    ]
+      .filter(Boolean)
+      .join(' — ')
+    throw new Error(detail || 'WhatsApp mesajı gönderilemedi.')
   }
 
-  return { id: result.messages?.[0]?.id || null }
+  if (!result.messages?.[0]?.id) {
+    throw new Error('WhatsApp API yanıt verdi ancak mesaj kimliği dönmedi.')
+  }
+
+  return { id: result.messages[0].id }
 }

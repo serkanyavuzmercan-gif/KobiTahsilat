@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAuthUser } from '@/lib/auth'
 import { toErrorMessage } from '@/lib/errors'
 import { MAIL_LOG_KAYNAK } from '@/lib/mutabakat-log'
+import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
 import { loadSnapshot } from '@/lib/data'
 import { sendMail } from '@/lib/mail'
 import {
@@ -13,7 +14,6 @@ import {
 import { buildMutabakatEmail } from '@/lib/mutabakat'
 import { loadMutabakatCari } from '@/lib/mutabakat-data'
 import { createMutabakatToken } from '@/lib/mutabakat-token'
-import { createAdminClient } from '@/lib/supabase/admin'
 
 export const dynamic = 'force-dynamic'
 
@@ -88,8 +88,7 @@ export async function POST(request: Request) {
       replyTo: user.email || undefined,
     })
 
-    const admin = createAdminClient()
-    const logRow: Record<string, unknown> = {
+    const logResult = await insertMailGonderimLog({
       mail_to: cari.email_adresleri.join('; '),
       mail_from: from,
       subject: email.subject,
@@ -99,12 +98,9 @@ export async function POST(request: Request) {
       ilgili_tip: 'mutabakat',
       sent_at: sentAt,
       gonderen_user_id: user.id,
-    }
-
-    const { error: logError } = await admin.from('mail_gonderim_log').insert(logRow)
-    if (logError) {
-      console.error('[mutabakat-gonder-log]', logError.message)
-      // Gönderim başarılı olsa bile log hatasını yumuşat; istemciye başarı döneriz.
+    })
+    if (!logResult.ok) {
+      console.error('[mutabakat-gonder-log]', logResult.error)
     }
 
     return NextResponse.json({

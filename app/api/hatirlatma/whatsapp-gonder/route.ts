@@ -7,6 +7,7 @@ import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
 import { HATIRLATMA_LOG_KAYNAK, WHATSAPP_SEND_TIP } from '@/lib/hatirlatma-log'
 import { formatPhoneDisplay, formatPhoneWhatsApp, isMobileTurkey } from '@/lib/phone'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
 import { sendWhatsApp, whatsAppSendEnabled } from '@/lib/whatsapp'
 
 export const dynamic = 'force-dynamic'
@@ -78,8 +79,7 @@ export async function POST(request: Request) {
       body: messageBody,
     })
 
-    const admin = createAdminClient()
-    const { error: logError } = await admin.from('mail_gonderim_log').insert({
+    const logResult = await insertMailGonderimLog({
       mail_to: cari.telefon,
       subject: defaultMessage.ozet,
       body_preview: messageBody.slice(0, 240),
@@ -89,14 +89,21 @@ export async function POST(request: Request) {
       sent_at: sentAt,
       gonderen_user_id: user.id,
     })
-    if (logError) console.error('[hatirlatma-whatsapp-log]', logError.message)
+    if (!logResult.ok) {
+      console.error('[hatirlatma-whatsapp-log]', logResult.error)
+    }
+
+    const logWarning = logResult.ok
+      ? ''
+      : ' (Meta kabul etti; gönderim geçmişi kaydı yazılamadı.)'
 
     return NextResponse.json({
       success: true,
-      message: `WhatsApp mesajı ${formatPhoneDisplay(cari.telefon)} numarasına gönderildi.`,
+      message: `WhatsApp mesajı ${formatPhoneDisplay(cari.telefon)} numarasına gönderildi.${logWarning}`,
       sentAt,
       providerId: result.id,
-      gonderimSayisi: cari.whatsapp_gonderim_sayisi + 1,
+      gonderimSayisi: cari.whatsapp_gonderim_sayisi + (logResult.ok ? 1 : 0),
+      logKaydedildi: logResult.ok,
     })
   } catch (cause) {
     console.error('[hatirlatma-whatsapp-gonder]', cause)
