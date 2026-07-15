@@ -1,6 +1,6 @@
 import 'server-only'
 import { defaultSenderId, listMailSenders } from '../mail-senders'
-import { whatsAppSendEnabled } from '../whatsapp'
+import { whatsAppConfigured, whatsAppSendEnabled } from '../whatsapp'
 import {
   automationGloballyEnabled,
   loadAutomationSettings,
@@ -23,10 +23,7 @@ export async function loadAutomationConnectionsStatus(
     email_bagli: userSenders.length > 0 || Boolean(preferred),
     email_varsayilan: preferred?.email || null,
     whatsapp_kullanici: whatsappUser,
-    whatsapp_api_yapilandirildi: Boolean(
-      (process.env.WHATSAPP_ACCESS_TOKEN || process.env.WHATSAPP_TOKEN) &&
-        process.env.WHATSAPP_PHONE_NUMBER_ID
-    ),
+    whatsapp_api_yapilandirildi: whatsAppConfigured(),
     whatsapp_gonderim_acik: whatsAppSendEnabled(),
     mutabakat_gonderim_acik: process.env.MUTABAKAT_SEND_ENABLED !== 'false',
     otomasyon_global_acik: automationGloballyEnabled(),

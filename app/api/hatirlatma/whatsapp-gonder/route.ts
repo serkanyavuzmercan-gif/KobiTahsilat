@@ -8,7 +8,7 @@ import { HATIRLATMA_LOG_KAYNAK, WHATSAPP_SEND_TIP } from '@/lib/hatirlatma-log'
 import { formatPhoneDisplay, formatPhoneWhatsApp, isMobileTurkey } from '@/lib/phone'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
-import { sendWhatsApp, whatsAppSendEnabled } from '@/lib/whatsapp'
+import { sendWhatsApp, whatsAppSendEnabled, WHATSAPP_SENDER_LABEL } from '@/lib/whatsapp'
 
 export const dynamic = 'force-dynamic'
 
@@ -90,9 +90,10 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: `WhatsApp mesajı ${formatPhoneDisplay(cari.telefon)} numarasına gönderildi.${logWarning}`,
+      message: `WhatsApp mesajı ${formatPhoneDisplay(cari.telefon)} numarasına gönderildi. Gönderen: ${WHATSAPP_SENDER_LABEL}.${logWarning}`,
       sentAt,
       providerId: result.id,
+      messageStatus: result.messageStatus,
       gonderimSayisi: cari.whatsapp_gonderim_sayisi + (logResult.ok ? 1 : 0),
       logKaydedildi: logResult.ok,
     })

@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { LoaderCircle, Send } from 'lucide-react'
+import { CheckCircle2, LoaderCircle, Send, TriangleAlert } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useHatirlatmaMessage } from '@/components/hatirlatma-message-context'
+import { WHATSAPP_SENDER_LABEL } from '@/lib/whatsapp-constants'
 import { formatPhoneDisplay } from '@/lib/phone'
 
 export function HatirlatmaSendPanel({
@@ -23,31 +24,49 @@ export function HatirlatmaSendPanel({
   const router = useRouter()
   const { body: messageBody } = useHatirlatmaMessage()
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
+  const [sentCount, setSentCount] = useState(gonderimSayisi)
+  const [feedback, setFeedback] = useState<{
+    type: 'success' | 'error'
+    text: string
+    providerId?: string | null
+  } | null>(null)
 
   const canSend = sendEnabled && hasPhone && isMobile && messageBody.trim().length > 0
 
   async function sendMessage() {
     setLoading(true)
-    setMessage('')
-    setError('')
+    setFeedback(null)
     try {
       const response = await fetch('/api/hatirlatma/whatsapp-gonder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ cariKod, messageBody: messageBody.trim() }),
       })
-      const result = (await response.json()) as {
+      const raw = await response.text()
+      let result: {
         success?: boolean
         error?: string
         message?: string
+        providerId?: string | null
+      } = {}
+      try {
+        result = JSON.parse(raw) as typeof result
+      } catch {
+        throw new Error(`Sunucu yanıtı okunamadı (${response.status}). Oturum süreniz dolmuş olabilir.`)
       }
       if (!response.ok || !result.success) throw new Error(result.error || 'Gönderilemedi.')
-      setMessage(result.message || 'Mesaj gönderildi.')
+      setSentCount((count) => count + 1)
+      setFeedback({
+        type: 'success',
+        text: result.message || 'Mesaj gönderildi.',
+        providerId: result.providerId,
+      })
       router.refresh()
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Gönderilemedi.')
+      setFeedback({
+        type: 'error',
+        text: cause instanceof Error ? cause.message : 'Gönderilemedi.',
+      })
     } finally {
       setLoading(false)
     }
@@ -64,7 +83,10 @@ export function HatirlatmaSendPanel({
   return (
     <div className="space-y-3">
       <p className="text-xs text-slate-500">
-        Daha önce gönderilen: <strong>{gonderimSayisi}</strong> mesaj
+        Gönderen: <strong>{WHATSAPP_SENDER_LABEL}</strong>
+      </p>
+      <p className="text-xs text-slate-500">
+        Daha önce gönderilen: <strong>{sentCount}</strong> mesaj
       </p>
 
       <Button
@@ -86,8 +108,32 @@ export function HatirlatmaSendPanel({
           WhatsApp için cep telefonu girin (05… ile başlamalı).
         </p>
       )}
-      {message && <p className="text-xs text-emerald-700">{message}</p>}
-      {error && <p className="text-xs text-red-600">{error}</p>}
+      {feedback?.type === 'success' && (
+        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
+          <div className="flex items-start gap-2">
+            <CheckCircle2 className="mt-0.5 shrink-0" size={18} />
+            <div>
+              <p className="font-medium">{feedback.text}</p>
+              {feedback.providerId ? (
+                <p className="mt-1 break-all text-xs text-emerald-800">
+                  Meta mesaj kimliği: {feedback.providerId}
+                </p>
+              ) : null}
+              <p className="mt-2 text-xs text-emerald-800">
+                WhatsApp uygulamanızda <strong>Hidroteknik</strong> iş hattından gelen sohbeti kontrol edin.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      {feedback?.type === 'error' && (
+        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+          <div className="flex items-start gap-2">
+            <TriangleAlert className="mt-0.5 shrink-0" size={18} />
+            <p>{feedback.text}</p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
