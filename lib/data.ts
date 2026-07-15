@@ -375,6 +375,28 @@ async function fetchGizliEmails(
   return map
 }
 
+/** Kullanıcının "yanlış" diye gizlediği telefonlar (kaynak fark etmez, elenir). */
+async function fetchGizliTelefonlar(
+  admin: AdminClient,
+  cariKods: string[]
+): Promise<Map<string, Set<string>>> {
+  const map = new Map<string, Set<string>>()
+  if (!cariKods.length) return map
+  const rows = await selectInChunks<{ cari_kod: string; telefon: string | null }>(
+    cariKods,
+    (slice) => admin.from('cari_telefon_gizli').select('cari_kod,telefon').in('cari_kod', slice)
+  )
+  for (const r of rows) {
+    const kod = String(r.cari_kod)
+    const tel = String(r.telefon || '').trim()
+    if (!tel) continue
+    const set = map.get(kod) || new Set<string>()
+    set.add(tel)
+    map.set(kod, set)
+  }
+  return map
+}
+
 async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
   let admin: AdminClient
   try {
@@ -402,6 +424,7 @@ async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
   const adaylar = loadAdaylarOverlay()
   const iletisim = await fetchContactEnrichment(admin, [...cariMaster.values()])
   const gizliEmailler = await fetchGizliEmails(admin, [...grouped.keys()])
+  const gizliTelefonlar = await fetchGizliTelefonlar(admin, [...grouped.keys()])
 
   const cariler: CariBakiye[] = []
   for (const [cariKod, evraklar] of grouped) {
@@ -441,12 +464,15 @@ async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
     // Kullanıcının gizlediği ("yanlış" diye sildiği) e-postalar her kaynaktan elenir.
     const enr = iletisim.get(cariKod)
     const gizli = gizliEmailler.get(cariKod)
+    const gizliTel = gizliTelefonlar.get(cariKod)
     const masterEmails = parseEmails(master?.email).filter((e) => !gizli?.has(e))
-    const masterPhones = parsePhones(master?.telefon)
+    const masterPhones = parsePhones(master?.telefon).filter((p) => !gizliTel?.has(p))
     const emails = parseEmails([master?.email, ...(enr?.emails || [])].filter(Boolean).join(';')).filter(
       (e) => !gizli?.has(e)
     )
-    const phones = parsePhones([master?.telefon, ...(enr?.telefonlar || [])].filter(Boolean).join(';'))
+    const phones = parsePhones(
+      [master?.telefon, ...(enr?.telefonlar || [])].filter(Boolean).join(';')
+    ).filter((p) => !gizliTel?.has(p))
     const odemeVadesi = master?.odeme_vadesi || master?.odeme_plani_adi || null
     const vadeGun =
       master?.vade_gun != null && master.vade_gun > 0

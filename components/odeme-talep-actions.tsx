@@ -50,11 +50,27 @@ export function OdemeTalepActions({
   const [error, setError] = useState('')
   const [done, setDone] = useState('')
   // WhatsApp yalnız cep (mobil) numaralara gider.
-  const mobilNumaralar = cari.telefon_numaralari.filter(isMobileTurkey)
   // Varsayılan: yalnız ilk (birincil) e-posta / numara seçili. Hepsine birden ASLA gitmez.
+  const [mobilNumaralar, setMobilNumaralar] = useState<string[]>(
+    cari.telefon_numaralari.filter(isMobileTurkey)
+  )
   const [emailAdresleri, setEmailAdresleri] = useState<string[]>(cari.email_adresleri)
   const [alicilar, setAlicilar] = useState<string[]>(cari.email_adresleri.slice(0, 1))
   const [numaralar, setNumaralar] = useState<string[]>(mobilNumaralar.slice(0, 1))
+
+  async function numaraSil(telefon: string) {
+    setMobilNumaralar((list) => list.filter((p) => p !== telefon))
+    setNumaralar((list) => list.filter((p) => p !== telefon))
+    try {
+      await fetch('/api/cari-telefon/gizle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cariKod: cari.cari_kod, telefon }),
+      })
+    } catch {
+      /* optimistik */
+    }
+  }
 
   async function adresSil(email: string) {
     setEmailAdresleri((list) => list.filter((e) => e !== email))
@@ -214,6 +230,7 @@ export function OdemeTalepActions({
                     selected={numaralar}
                     onChange={setNumaralar}
                     format={formatPhoneDisplay}
+                    onRemove={numaraSil}
                   />
                 )}
                 {showEmail && (

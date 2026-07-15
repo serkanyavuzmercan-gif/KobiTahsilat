@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation'
+import { Mail, Phone } from 'lucide-react'
 import { BackLink } from '@/components/ui/button'
 import { getCari, loadSnapshot } from '@/lib/data'
 import { cariOrtalamaGecikmeGun, formatGecikmeGun } from '@/lib/gecikme'
+import { formatPhoneDisplay } from '@/lib/phone'
 import { AGING_BUCKETS, formatTL, formatNumber } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -24,11 +26,51 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
       <section className="card p-6">
         <p className="font-mono text-xs text-slate-500">{cari.cari_kod}</p>
         <h2 className="mt-1 text-2xl font-semibold text-slate-900">{cari.firma_adi}</h2>
-        <p className={`mt-1 text-sm ${cari.email ? 'text-slate-500' : 'text-red-600'}`}>
-          {cari.email_adresleri.length
-            ? `E-posta: ${cari.email_adresleri.join(', ')} · ${cari.email_kaynagi || 'Mikro cari kartı'}`
-            : 'Mikro cari kartında e-posta adresi yok'}
-        </p>
+        {/* Bu cariye tanımlı iletişim bilgileri (tüm kaynaklardan birleşik) */}
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+            <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <Mail size={13} className="text-brand-600" /> E-posta ({cari.email_adresleri.length})
+            </p>
+            {cari.email_adresleri.length ? (
+              <ul className="mt-1.5 space-y-0.5">
+                {cari.email_adresleri.map((email, i) => (
+                  <li key={email} className="text-sm text-slate-700">
+                    {email}
+                    {i === 0 && (
+                      <span className="ml-1.5 rounded bg-brand-100 px-1.5 py-0.5 text-[10px] font-medium text-brand-700">
+                        varsayılan
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-1.5 text-sm text-red-600">Tanımlı e-posta yok</p>
+            )}
+          </div>
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+            <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <Phone size={13} className="text-emerald-600" /> Telefon ({cari.telefon_numaralari.length})
+            </p>
+            {cari.telefon_numaralari.length ? (
+              <ul className="mt-1.5 space-y-0.5">
+                {cari.telefon_numaralari.map((tel, i) => (
+                  <li key={tel} className="text-sm text-slate-700">
+                    {formatPhoneDisplay(tel)}
+                    {i === 0 && (
+                      <span className="ml-1.5 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700">
+                        varsayılan
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-1.5 text-sm text-red-600">Tanımlı telefon yok</p>
+            )}
+          </div>
+        </div>
         {!cari.email && cari.email_adaylari.length > 0 && (
           <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
             <strong>Onay bekleyen Gmail adayları:</strong>{' '}
