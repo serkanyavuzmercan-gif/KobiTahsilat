@@ -50,11 +50,14 @@ export type TelefonAday = {
 
 export type CariYanitKayit = {
   id: string
+  cari_kod: string
+  firma_adi: string
   kanal: 'email' | 'whatsapp'
   tarih: string
   gonderen: string | null
   ozet: string
   detay: string
+  okundu: boolean
 }
 
 export type CariYanitOzet = {
@@ -62,6 +65,8 @@ export type CariYanitOzet = {
   whatsapp: CariYanitKayit[]
   son_email: CariYanitKayit | null
   son_whatsapp: CariYanitKayit | null
+  okunmamis_email: number
+  okunmamis_whatsapp: number
 }
 
 export type CariBakiye = {

@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Search } from 'lucide-react'
-import { CariYanitCell } from '@/components/cari-yanit-cell'
+import { Mail, MessageCircle, Search } from 'lucide-react'
+import { CariYanitIcon } from '@/components/cari-yanit-icon'
 import { SortableTh } from '@/components/sortable-th'
 import {
   cariOrtalamaGecikmeGun,
@@ -45,11 +45,13 @@ export default function CarilerClient({
   toplam,
   sourcedAt,
   yanitlar,
+  onMarkedRead,
 }: {
   cariler: CariBakiye[]
   toplam: number
   sourcedAt: string
   yanitlar: Record<string, CariYanitOzet>
+  onMarkedRead?: (yanitIds: string[]) => void
 }) {
   const [q, setQ] = useState('')
   const [minBakiye, setMinBakiye] = useState('')
@@ -160,8 +162,18 @@ export default function CarilerClient({
                   onClick={() => handleSort('bakiye')}
                   align="right"
                 />
-                <th className="px-4 py-3">E-posta yanıt</th>
-                <th className="px-4 py-3">WhatsApp yanıt</th>
+                <th className="px-4 py-3 text-center">
+                  <span className="inline-flex items-center justify-center gap-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    <Mail size={14} />
+                    <span className="hidden sm:inline">E-posta</span>
+                  </span>
+                </th>
+                <th className="px-4 py-3 text-center">
+                  <span className="inline-flex items-center justify-center gap-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    <MessageCircle size={14} />
+                    <span className="hidden sm:inline">WhatsApp</span>
+                  </span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -174,6 +186,8 @@ export default function CarilerClient({
                     whatsapp: [],
                     son_email: null,
                     son_whatsapp: null,
+                    okunmamis_email: 0,
+                    okunmamis_whatsapp: 0,
                   }
                   return (
                     <tr key={c.cari_kod}>
@@ -217,18 +231,24 @@ export default function CarilerClient({
                       <td className="px-4 py-3 text-right font-semibold tabular-nums text-slate-900">
                         {formatNumber(c.bakiye)}
                       </td>
-                      <td className="px-4 py-3 align-top">
-                        <CariYanitCell
+                      <td className="px-4 py-3 text-center align-middle">
+                        <CariYanitIcon
                           kanal="email"
                           yanitlar={cariYanit.email}
-                          sonYanit={cariYanit.son_email}
+                          okunmamis={cariYanit.okunmamis_email}
+                          cariKod={c.cari_kod}
+                          firmaAdi={c.firma_adi}
+                          onMarkedRead={(ids) => onMarkedRead?.(ids)}
                         />
                       </td>
-                      <td className="px-4 py-3 align-top">
-                        <CariYanitCell
+                      <td className="px-4 py-3 text-center align-middle">
+                        <CariYanitIcon
                           kanal="whatsapp"
                           yanitlar={cariYanit.whatsapp}
-                          sonYanit={cariYanit.son_whatsapp}
+                          okunmamis={cariYanit.okunmamis_whatsapp}
+                          cariKod={c.cari_kod}
+                          firmaAdi={c.firma_adi}
+                          onMarkedRead={(ids) => onMarkedRead?.(ids)}
                         />
                       </td>
                     </tr>
@@ -253,8 +273,9 @@ export default function CarilerClient({
         </div>
         <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
           Ortalama gecikme, vadesi geçmiş açık kalemler üzerinden tutar ağırlıklı hesaplanır.
-          E-posta yanıtları mutabakat itirazlarından; WhatsApp yanıtları işletme hattına gelen
-          mesajlardan eşleştirilir.
+          E-posta ve WhatsApp sütunlarındaki simgelere tıklayarak yanıtları görüntüleyebilirsiniz.
+          Okunmamış yanıtlar kırmızı bildirim rozeti ile gösterilir. Tüm yanıtlar için{' '}
+          <strong>Yanıtlar</strong> sekmesine geçin.
         </p>
       </section>
     </div>
