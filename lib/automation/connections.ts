@@ -24,7 +24,8 @@ export async function loadAutomationConnectionsStatus(
     email_varsayilan: preferred?.email || null,
     whatsapp_kullanici: whatsappUser,
     whatsapp_api_yapilandirildi: Boolean(
-      process.env.WHATSAPP_ACCESS_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID
+      (process.env.WHATSAPP_ACCESS_TOKEN || process.env.WHATSAPP_TOKEN) &&
+        process.env.WHATSAPP_PHONE_NUMBER_ID
     ),
     whatsapp_gonderim_acik: whatsAppSendEnabled(),
     mutabakat_gonderim_acik: process.env.MUTABAKAT_SEND_ENABLED !== 'false',

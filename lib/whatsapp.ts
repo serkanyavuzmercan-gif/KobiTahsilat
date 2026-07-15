@@ -8,11 +8,21 @@ export function whatsAppSendEnabled() {
   return process.env.WHATSAPP_SEND_ENABLED !== 'false'
 }
 
+function whatsAppAccessToken() {
+  return process.env.WHATSAPP_ACCESS_TOKEN || process.env.WHATSAPP_TOKEN || ''
+}
+
+function whatsAppPhoneNumberId() {
+  return process.env.WHATSAPP_PHONE_NUMBER_ID || ''
+}
+
 export async function sendWhatsApp(options: { to: string; body: string }): Promise<WhatsAppSendResult> {
-  const token = process.env.WHATSAPP_ACCESS_TOKEN
-  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID
+  const token = whatsAppAccessToken()
+  const phoneNumberId = whatsAppPhoneNumberId()
   if (!token || !phoneNumberId) {
-    throw new Error('WhatsApp servisi yapılandırılmadı (WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID).')
+    throw new Error(
+      'WhatsApp servisi yapılandırılmadı (WHATSAPP_ACCESS_TOKEN veya WHATSAPP_TOKEN, WHATSAPP_PHONE_NUMBER_ID).'
+    )
   }
 
   const to = options.to.replace(/\D/g, '')
