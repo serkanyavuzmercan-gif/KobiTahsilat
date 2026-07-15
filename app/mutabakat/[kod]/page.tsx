@@ -36,12 +36,13 @@ export default async function MutabakatPreviewPage({
   })
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       <BackLink href="/mutabakat">Mutabakat listesine dön</BackLink>
 
-      <section className="card p-5">
-        <div className="flex flex-col justify-between gap-4 lg:flex-row lg:items-start">
-          <div>
+      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-4">
+        {/* Sol: firma başlığı + e-posta önizlemesi */}
+        <div className="space-y-4">
+          <section className="card p-5">
             <p className="font-mono text-xs text-slate-400">{cari.cari_kod}</p>
             <h2 className="mt-1 text-xl font-semibold">{cari.firma_adi}</h2>
             <div className="mt-3 flex flex-wrap gap-2 text-xs">
@@ -55,9 +56,51 @@ export default async function MutabakatPreviewPage({
                 Dönem: {formatDate(email.mutabakatTarihi)}
               </span>
             </div>
-          </div>
 
-          <div className="min-w-72 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm">
+            {!cari.email && (
+              <div className="mt-4 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+                <AlertTriangle size={18} className="mt-0.5 shrink-0" />
+                <div>
+                  <p>Bu firmanın doğrulanmış e-posta adresi bulunmuyor.</p>
+                  {cari.email_adaylari.length > 0 ? (
+                    <div className="mt-2">
+                      <p className="font-medium">Gmail/yazışma geçmişinden bulunan adaylar:</p>
+                      <ul className="mt-1 list-disc pl-5">
+                        {cari.email_adaylari.map((aday) => (
+                          <li key={aday.email}>
+                            {aday.email} <span className="text-amber-700">({aday.kaynak})</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="mt-1 text-xs">Personel onayı olmadan gönderime açılmaz.</p>
+                    </div>
+                  ) : (
+                    <p className="mt-1">Gönderimden önce adres eklenmelidir.</p>
+                  )}
+                </div>
+              </div>
+            )}
+          </section>
+
+          <section className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 shadow-sm">
+            <div className="border-b border-slate-300 bg-white px-4 py-3">
+              <p className="text-sm font-medium">Müşterinin göreceği e-posta</p>
+              <p className="text-xs text-slate-500">
+                Masaüstü ve mobil e-posta istemcileri için uyumlu HTML
+              </p>
+            </div>
+            <iframe
+              title={`${cari.firma_adi} mutabakat e-postası önizlemesi`}
+              srcDoc={email.html}
+              className="h-[820px] w-full bg-slate-100"
+              sandbox="allow-top-navigation-by-user-activation"
+            />
+          </section>
+        </div>
+
+        {/* Sağ: yapışkan gönderim paneli */}
+        <aside className="mt-4 lg:mt-0">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm lg:sticky lg:top-4">
             <div className="flex items-start gap-2">
               <Mail size={17} className="mt-0.5 text-brand-600" />
               <div className="w-full">
@@ -95,57 +138,19 @@ export default async function MutabakatPreviewPage({
                 sendEnabled={canSend}
               />
             </div>
+            {canSend ? (
+              <p className="mt-3 border-t border-slate-200 pt-3 text-xs text-slate-500">
+                Mutabakat <strong>{process.env.GMAIL_SENDER || 'Hidroteknik'}</strong> üzerinden
+                gönderilir; yanıtlar da aynı kutuya döner.
+              </p>
+            ) : (
+              <p className="mt-3 border-t border-amber-200 pt-3 text-xs text-amber-700">
+                Gönderim şu anda kapalı (`MUTABAKAT_SEND_ENABLED`).
+              </p>
+            )}
           </div>
-        </div>
-
-        {!cari.email && (
-          <div className="mt-4 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-            <AlertTriangle size={18} className="mt-0.5 shrink-0" />
-            <div>
-              <p>Bu firmanın doğrulanmış e-posta adresi bulunmuyor.</p>
-              {cari.email_adaylari.length > 0 ? (
-                <div className="mt-2">
-                  <p className="font-medium">Gmail/yazışma geçmişinden bulunan adaylar:</p>
-                  <ul className="mt-1 list-disc pl-5">
-                    {cari.email_adaylari.map((aday) => (
-                      <li key={aday.email}>
-                        {aday.email} <span className="text-amber-700">({aday.kaynak})</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="mt-1 text-xs">Personel onayı olmadan gönderime açılmaz.</p>
-                </div>
-              ) : (
-                <p className="mt-1">Gönderimden önce adres eklenmelidir.</p>
-              )}
-            </div>
-          </div>
-        )}
-
-        {canSend ? (
-          <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
-            Mutabakat <strong>{process.env.GMAIL_SENDER || 'Hidroteknik'}</strong> üzerinden
-            gönderilir; müşteri yanıtları da aynı kutuya döner.
-          </div>
-        ) : (
-          <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-            Gönderim şu anda kapalı. Yönetici `MUTABAKAT_SEND_ENABLED=true` ile etkinleştirebilir.
-          </div>
-        )}
-      </section>
-
-      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 shadow-sm">
-        <div className="border-b border-slate-300 bg-white px-4 py-3">
-          <p className="text-sm font-medium">Müşterinin göreceği e-posta</p>
-          <p className="text-xs text-slate-500">Masaüstü ve mobil e-posta istemcileri için uyumlu HTML</p>
-        </div>
-        <iframe
-          title={`${cari.firma_adi} mutabakat e-postası önizlemesi`}
-          srcDoc={email.html}
-          className="h-[900px] w-full bg-slate-100"
-          sandbox="allow-top-navigation-by-user-activation"
-        />
-      </section>
+        </aside>
+      </div>
     </div>
   )
 }
