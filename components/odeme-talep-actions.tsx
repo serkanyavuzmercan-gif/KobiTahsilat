@@ -37,12 +37,24 @@ export function OdemeTalepActions({
   snapshotTarihi,
   pdfUrl,
   sendEnabled,
+  telefonEtiket,
+  emailEtiket,
 }: {
   cari: HatirlatmaCari
   snapshotTarihi: string
   pdfUrl: string
   sendEnabled: boolean
+  telefonEtiket?: Record<string, string>
+  emailEtiket?: Record<string, string>
 }) {
+  const telFormat = (p: string) => {
+    const l = telefonEtiket?.[p]
+    return formatPhoneDisplay(p) + (l ? `  —  ${l}` : '')
+  }
+  const mailFormat = (e: string) => {
+    const l = emailEtiket?.[e]
+    return e + (l ? `  —  ${l}` : '')
+  }
   const router = useRouter()
   const [kanal, setKanal] = useState<Kanal | null>(null)
   const [body, setBody] = useState('')
@@ -229,7 +241,7 @@ export function OdemeTalepActions({
                     addresses={mobilNumaralar}
                     selected={numaralar}
                     onChange={setNumaralar}
-                    format={formatPhoneDisplay}
+                    format={telFormat}
                     onRemove={numaraSil}
                   />
                 )}
@@ -238,6 +250,7 @@ export function OdemeTalepActions({
                     addresses={emailAdresleri}
                     selected={alicilar}
                     onChange={setAlicilar}
+                    format={mailFormat}
                     onRemove={adresSil}
                   />
                 )}

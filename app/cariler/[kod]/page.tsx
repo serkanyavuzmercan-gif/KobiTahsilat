@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
-import { Mail, Phone } from 'lucide-react'
+import { Mail, Phone, Users } from 'lucide-react'
 import { BackLink } from '@/components/ui/button'
+import { CariKisilerEditor } from '@/components/cari-kisiler-editor'
+import { loadCariKisiler } from '@/lib/cari-kisiler'
 import { getCari, loadSnapshot } from '@/lib/data'
 import { cariOrtalamaGecikmeGun, formatGecikmeGun } from '@/lib/gecikme'
 import { formatPhoneDisplay } from '@/lib/phone'
@@ -15,6 +17,7 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
   if (!cari) notFound()
 
   const snap = await loadSnapshot()
+  const kisiler = await loadCariKisiler(cari.cari_kod)
   const sira = snap.cariler.findIndex((c) => c.cari_kod === cari.cari_kod) + 1
   const pay = snap.toplam_alacak > 0 ? (cari.bakiye / snap.toplam_alacak) * 100 : 0
   const ortalamaGecikme = cariOrtalamaGecikmeGun(cari)
@@ -106,6 +109,20 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
               <p className="mt-1 font-semibold tabular-nums">{formatTL(cari.aging[bucket] || 0)}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="card p-5">
+        <h3 className="flex items-center gap-2 font-semibold">
+          <Users size={18} className="text-brand-600" /> İletişim Kişileri
+          <span className="text-xs font-normal text-slate-400">({kisiler.length})</span>
+        </h3>
+        <p className="mt-0.5 text-xs text-slate-500">
+          Mikro yetkilileri + web/teklif kayıtları. Numara/e-posta yanındaki açıklamayı düzenleyebilir,
+          kişi ekleyip silebilirsiniz — değişiklik kalıcıdır.
+        </p>
+        <div className="mt-3">
+          <CariKisilerEditor cariKod={cari.cari_kod} kisiler={kisiler} />
         </div>
       </section>
 

@@ -4,6 +4,7 @@ import { BackLink } from '@/components/ui/button'
 import { CariEmailEditor } from '@/components/cari-email-editor'
 import { MutabakatSendPanel } from '@/components/mutabakat-send-panel'
 import { requireAuthUser } from '@/lib/auth'
+import { loadIletisimEtiketleri } from '@/lib/cari-kisiler'
 import { loadSnapshot } from '@/lib/data'
 import { buildMutabakatEmail, formatDate } from '@/lib/mutabakat'
 import { loadMutabakatCari } from '@/lib/mutabakat-data'
@@ -49,6 +50,10 @@ export default async function MutabakatPreviewPage({
     onayUrl: `${baseUrl}/mutabakat/onay/${encodeURIComponent(token)}`,
     itirazUrl: `${baseUrl}/mutabakat/itiraz/${encodeURIComponent(token)}`,
   })
+
+  // Alıcı e-postaları yanına yazılacak açıklamalar (ad + rol; cari_kisiler'den).
+  const etiketler = await loadIletisimEtiketleri([cari.cari_kod])
+  const emailEtiket = etiketler[cari.cari_kod]?.email
 
   return (
     <div className="space-y-4">
@@ -154,6 +159,7 @@ export default async function MutabakatPreviewPage({
                 sendBlocked={cari.mutabakat_gonderim_engelli}
                 blockedUntil={cari.mutabakat_tekrar_gonderilebilir_at}
                 sendEnabled={canSend}
+                emailEtiket={emailEtiket}
               />
             </div>
             {canSend ? (

@@ -1,4 +1,5 @@
 import { HatirlatmaClient } from '@/components/hatirlatma-client'
+import { loadIletisimEtiketleri } from '@/lib/cari-kisiler'
 import { loadSnapshot } from '@/lib/data'
 import { loadHatirlatmaCariler } from '@/lib/hatirlatma-data'
 import { createOdemeTalepToken } from '@/lib/odeme-talep-token'
@@ -21,12 +22,16 @@ export default async function HatirlatmaPage() {
     pdfUrls[cari.cari_kod] = `${baseUrl}/api/odeme-talebi/pdf?token=${encodeURIComponent(token)}`
   }
 
+  // Numara/e-posta yanına yazılacak açıklamalar (ad + rol; cari_kisiler'den).
+  const etiketler = await loadIletisimEtiketleri(cariler.map((c) => c.cari_kod))
+
   return (
     <HatirlatmaClient
       cariler={cariler}
       snapshotTarihi={snapshot.snapshot_tarihi}
       sendEnabled={whatsAppBotEnabled()}
       pdfUrls={pdfUrls}
+      etiketler={etiketler}
     />
   )
 }

@@ -31,11 +31,13 @@ export function HatirlatmaClient({
   snapshotTarihi,
   sendEnabled,
   pdfUrls,
+  etiketler,
 }: {
   cariler: HatirlatmaCari[]
   snapshotTarihi: string
   sendEnabled: boolean
   pdfUrls: Record<string, string>
+  etiketler?: Record<string, { telefon: Record<string, string>; email: Record<string, string> }>
 }) {
   const [query, setQuery] = useState('')
   const [esik, setEsik] = useState(VARSAYILAN_ESIK)
@@ -218,6 +220,8 @@ export function HatirlatmaClient({
                         snapshotTarihi={snapshotTarihi}
                         pdfUrl={pdfUrls[cari.cari_kod] || ''}
                         sendEnabled={sendEnabled}
+                        telefonEtiket={etiketler?.[cari.cari_kod]?.telefon}
+                        emailEtiket={etiketler?.[cari.cari_kod]?.email}
                       />
                       <div className="mt-1.5">
                         <PreviewLink href={`/hatirlatma/${encodeURIComponent(cari.cari_kod)}`}>

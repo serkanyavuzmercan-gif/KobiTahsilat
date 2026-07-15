@@ -15,6 +15,7 @@ export function MutabakatSendPanel({
   sendBlocked,
   blockedUntil,
   sendEnabled,
+  emailEtiket,
 }: {
   cariKod: string
   mutabakatTarihi: string
@@ -24,7 +25,12 @@ export function MutabakatSendPanel({
   sendBlocked: boolean
   blockedUntil: string | null
   sendEnabled: boolean
+  emailEtiket?: Record<string, string>
 }) {
+  const mailFormat = (e: string) => {
+    const l = emailEtiket?.[e]
+    return e + (l ? `  —  ${l}` : '')
+  }
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
@@ -124,6 +130,7 @@ export function MutabakatSendPanel({
             addresses={adresler}
             selected={alicilar}
             onChange={setAlicilar}
+            format={mailFormat}
             onRemove={adresSil}
           />
         </div>
