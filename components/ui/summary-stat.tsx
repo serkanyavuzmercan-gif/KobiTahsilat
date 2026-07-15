@@ -31,9 +31,11 @@ export function SummaryStat({
 export function StatusBadge({
   children,
   tone,
+  title,
 }: {
   children: React.ReactNode
   tone: 'ok' | 'warn' | 'neutral'
+  title?: string
 }) {
   const styles = {
     ok: 'bg-emerald-100 text-emerald-800',
@@ -42,7 +44,16 @@ export function StatusBadge({
   }[tone]
 
   return (
-    <span className={cn('rounded-full px-2.5 py-1 text-xs font-medium', styles)}>{children}</span>
+    <span
+      title={title}
+      className={cn(
+        'rounded-full px-2.5 py-1 text-xs font-medium',
+        title ? 'cursor-help' : undefined,
+        styles
+      )}
+    >
+      {children}
+    </span>
   )
 }
 

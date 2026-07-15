@@ -1,21 +1,13 @@
 import 'server-only'
 import { defaultSenderId, listMailSenders } from '../mail-senders'
 import { loadBotDurum, whatsAppBotEnabled } from '../whatsapp-kuyruk'
-import {
-  automationGloballyEnabled,
-  loadAutomationSettings,
-  loadWhatsAppUserConnection,
-} from './settings'
+import { automationGloballyEnabled, loadAutomationSettings } from './settings'
 import type { AutomationConnectionsStatus } from './types'
 
 export async function loadAutomationConnectionsStatus(
   userId: string
 ): Promise<AutomationConnectionsStatus> {
-  const [senders, whatsappUser, botDurum] = await Promise.all([
-    listMailSenders(userId),
-    loadWhatsAppUserConnection(userId),
-    loadBotDurum(),
-  ])
+  const [senders, botDurum] = await Promise.all([listMailSenders(userId), loadBotDurum()])
 
   const preferred = senders.find((sender) => sender.varsayilan) || senders[0]
   const userSenders = senders.filter((sender) => !sender.sistem)
@@ -23,7 +15,6 @@ export async function loadAutomationConnectionsStatus(
   return {
     email_bagli: userSenders.length > 0 || Boolean(preferred),
     email_varsayilan: preferred?.email || null,
-    whatsapp_kullanici: whatsappUser,
     // Baileys ofis botu heartbeat'i son 90 sn içinde geldiyse "bağlı".
     whatsapp_api_yapilandirildi: botDurum.cevrimici,
     whatsapp_gonderim_acik: whatsAppBotEnabled(),
@@ -44,9 +35,6 @@ export async function assertAutomationReady(userId: string) {
   }
   if (!connections.email_bagli) {
     issues.push('E-posta gönderici bağlantısı gerekli.')
-  }
-  if (!connections.whatsapp_kullanici.telefon) {
-    issues.push('WhatsApp iletişim numaranızı bağlayın.')
   }
   if (!connections.whatsapp_api_yapilandirildi) {
     issues.push('Ofis WhatsApp botu çevrimiçi değil (son heartbeat yok). Bot PC\'sini kontrol edin.')

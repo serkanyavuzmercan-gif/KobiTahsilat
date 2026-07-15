@@ -21,16 +21,9 @@ export type AutomationSettings = {
   updated_at: string
 }
 
-export type WhatsAppUserConnection = {
-  telefon: string | null
-  display: string | null
-  baglandi_at: string | null
-}
-
 export type AutomationConnectionsStatus = {
   email_bagli: boolean
   email_varsayilan: string | null
-  whatsapp_kullanici: WhatsAppUserConnection
   whatsapp_api_yapilandirildi: boolean
   whatsapp_gonderim_acik: boolean
   mutabakat_gonderim_acik: boolean

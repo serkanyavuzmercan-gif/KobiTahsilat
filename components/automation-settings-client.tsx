@@ -8,7 +8,6 @@ import {
   LoaderCircle,
   Mail,
   MessageCircle,
-  Phone,
   Play,
   Plus,
   Save,
@@ -24,9 +23,7 @@ import type {
   AutomationRule,
   AutomationRunResult,
   AutomationSettings,
-  WhatsAppUserConnection,
 } from '@/lib/automation/types'
-import { PHONE_INPUT_HINT, PHONE_INPUT_PLACEHOLDER } from '@/lib/phone'
 
 function newRuleId() {
   return `kural-${Date.now().toString(36)}`
@@ -38,9 +35,6 @@ export function AutomationSettingsClient() {
   const [running, setRunning] = useState(false)
   const [settings, setSettings] = useState<AutomationSettings | null>(null)
   const [connections, setConnections] = useState<AutomationConnectionsStatus | null>(null)
-  const [whatsapp, setWhatsapp] = useState<WhatsAppUserConnection | null>(null)
-  const [whatsappInput, setWhatsappInput] = useState('')
-  const [whatsappSaving, setWhatsappSaving] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [lastRun, setLastRun] = useState<AutomationRunResult | null>(null)
@@ -49,33 +43,20 @@ export function AutomationSettingsClient() {
     setLoading(true)
     setError('')
     try {
-      const [settingsRes, whatsappRes] = await Promise.all([
-        fetch('/api/otomasyon/ayarlar'),
-        fetch('/api/otomasyon/whatsapp'),
-      ])
+      const settingsRes = await fetch('/api/otomasyon/ayarlar')
       const settingsJson = (await settingsRes.json()) as {
         success?: boolean
         settings?: AutomationSettings
         connections?: AutomationConnectionsStatus
         error?: string
       }
-      const whatsappJson = (await whatsappRes.json()) as {
-        success?: boolean
-        connection?: WhatsAppUserConnection
-        error?: string
-      }
 
       if (!settingsRes.ok || !settingsJson.success || !settingsJson.settings) {
         throw new Error(settingsJson.error || 'Ayarlar yüklenemedi.')
       }
-      if (!whatsappRes.ok || !whatsappJson.success) {
-        throw new Error(whatsappJson.error || 'WhatsApp bağlantısı yüklenemedi.')
-      }
 
       setSettings(settingsJson.settings)
       setConnections(settingsJson.connections || null)
-      setWhatsapp(whatsappJson.connection || null)
-      setWhatsappInput(whatsappJson.connection?.display || '')
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Ayarlar yüklenemedi.')
     } finally {
@@ -112,33 +93,6 @@ export function AutomationSettingsClient() {
       setError(cause instanceof Error ? cause.message : 'Kaydedilemedi.')
     } finally {
       setSaving(false)
-    }
-  }
-
-  async function saveWhatsapp() {
-    setWhatsappSaving(true)
-    setMessage('')
-    setError('')
-    try {
-      const response = await fetch('/api/otomasyon/whatsapp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ telefon: whatsappInput }),
-      })
-      const result = (await response.json()) as {
-        success?: boolean
-        connection?: WhatsAppUserConnection
-        error?: string
-        message?: string
-      }
-      if (!response.ok || !result.success) throw new Error(result.error || 'Kaydedilemedi.')
-      setWhatsapp(result.connection || null)
-      setWhatsappInput(result.connection?.display || whatsappInput)
-      setMessage(result.message || 'WhatsApp numarası kaydedildi.')
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Kaydedilemedi.')
-    } finally {
-      setWhatsappSaving(false)
     }
   }
 
@@ -225,14 +179,23 @@ export function AutomationSettingsClient() {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <StatusBadge tone={settings.otomasyon_aktif ? 'ok' : 'neutral'}>
+            <StatusBadge
+              tone={settings.otomasyon_aktif ? 'ok' : 'neutral'}
+              title="Bu kullanıcı için otomasyon ana anahtarı. Aşağıdaki “Otomasyonu etkinleştir” kutusuyla açılır/kapanır. Kapalıyken hatırlatmalar zamanlanmaz."
+            >
               {settings.otomasyon_aktif ? 'Otomasyon açık' : 'Otomasyon kapalı'}
             </StatusBadge>
-            <StatusBadge tone={settings.taslak_mod ? 'warn' : 'ok'}>
+            <StatusBadge
+              tone={settings.taslak_mod ? 'warn' : 'ok'}
+              title="Taslak mod: çalıştırınca gerçek gönderim YAPILMAZ, yalnızca uygun cariler listelenir (güvenli deneme). Kapatınca gerçekten e-posta/WhatsApp gider."
+            >
               {settings.taslak_mod ? 'Taslak mod' : 'Canlı gönderim'}
             </StatusBadge>
             {connections && (
-              <StatusBadge tone={connections.otomasyon_global_acik ? 'ok' : 'warn'}>
+              <StatusBadge
+                tone={connections.otomasyon_global_acik ? 'ok' : 'warn'}
+                title="Sunucu düzeyinde ana emniyet: OTOMATIK_TAHSILAT_ENABLED=true (+ CRON_SECRET) tanımlı değilse zamanlanmış canlı gönderim tüm sistemde kapalıdır. Manuel taslak/canlı çalıştırma yine denenebilir."
+              >
                 {connections.otomasyon_global_acik ? 'Sistem aktif' : 'Sistem beklemede'}
               </StatusBadge>
             )}
@@ -257,18 +220,12 @@ export function AutomationSettingsClient() {
           <Settings2 size={18} className="text-brand-600" />
           Bağlantı durumu
         </h3>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           <ConnectionCard
             icon={<Mail size={18} />}
             title="E-posta"
             ok={connections?.email_bagli}
             detail={connections?.email_varsayilan || 'Gönderici bağlı değil'}
-          />
-          <ConnectionCard
-            icon={<Phone size={18} />}
-            title="WhatsApp numaranız"
-            ok={Boolean(whatsapp?.telefon)}
-            detail={whatsapp?.display || 'Numara bağlı değil'}
           />
           <ConnectionCard
             icon={<MessageCircle size={18} />}
@@ -289,30 +246,6 @@ export function AutomationSettingsClient() {
             detail={`${settings.calisma_saati} · ${settings.sadece_is_gunu ? 'iş günleri' : 'her gün'}`}
           />
         </div>
-      </section>
-
-      <section id="whatsapp" className="card p-6">
-        <h3 className="flex items-center gap-2 font-semibold">
-          <MessageCircle size={18} className="text-emerald-600" />
-          WhatsApp bağlantısı
-        </h3>
-        <p className="mt-1 text-sm text-slate-500">
-          Otomasyon sorumlusu olarak iletişim numaranızı kaydedin. Mesajlar ss ile ortak Baileys
-          ofis botu üzerinden WhatsApp kuyruğuna alınıp gönderilir (Meta Cloud API kullanılmaz).
-        </p>
-        <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-          <input
-            value={whatsappInput}
-            onChange={(event) => setWhatsappInput(event.target.value)}
-            placeholder={PHONE_INPUT_PLACEHOLDER}
-            className="input-field flex-1"
-          />
-          <Button onClick={saveWhatsapp} disabled={whatsappSaving || !whatsappInput.trim()}>
-            {whatsappSaving ? <LoaderCircle className="animate-spin" size={16} /> : <Save size={16} />}
-            Numarayı bağla
-          </Button>
-        </div>
-        <p className="mt-2 text-xs text-slate-500">{PHONE_INPUT_HINT}</p>
       </section>
 
       <section id="eposta">

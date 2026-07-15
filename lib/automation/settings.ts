@@ -1,13 +1,7 @@
 import 'server-only'
 import { createDefaultAutomationSettings } from './defaults'
 import type { AutomationRule, AutomationSettings } from './types'
-import {
-  AUTOMATION_LOG_KAYNAK,
-  AUTOMATION_SETTINGS_TIP,
-  AUTOMATION_WHATSAPP_TIP,
-} from '../automation-log'
-import { normalizePhone, formatPhoneDisplay, isMobileTurkey } from '../phone'
-import type { WhatsAppUserConnection } from './types'
+import { AUTOMATION_LOG_KAYNAK, AUTOMATION_SETTINGS_TIP } from '../automation-log'
 import { createAdminClient } from '../supabase/admin'
 
 function parseSettings(value: unknown): AutomationSettings {
@@ -82,55 +76,6 @@ export async function saveAutomationSettings(userId: string, settings: Automatio
   })
   if (error) throw error
   return normalized
-}
-
-export async function loadWhatsAppUserConnection(userId: string): Promise<WhatsAppUserConnection> {
-  const admin = createAdminClient()
-  const { data, error } = await admin
-    .from('mail_gonderim_log')
-    .select('mail_to,sent_at')
-    .eq('ilgili_tip', AUTOMATION_WHATSAPP_TIP)
-    .eq('ilgili_id', userId)
-    .order('sent_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-
-  if (error) throw error
-  if (!data?.mail_to) {
-    return { telefon: null, display: null, baglandi_at: null }
-  }
-
-  const telefon = String(data.mail_to)
-  return {
-    telefon,
-    display: formatPhoneDisplay(telefon),
-    baglandi_at: String(data.sent_at || null),
-  }
-}
-
-export async function saveWhatsAppUserConnection(userId: string, rawPhone: string) {
-  const telefon = normalizePhone(rawPhone)
-  if (!telefon || !isMobileTurkey(telefon)) {
-    throw new Error('Geçerli bir cep telefonu girin (05… ile başlamalı).')
-  }
-
-  const admin = createAdminClient()
-  const { error } = await admin.from('mail_gonderim_log').insert({
-    ilgili_id: userId,
-    ilgili_tip: AUTOMATION_WHATSAPP_TIP,
-    mail_to: telefon,
-    subject: 'WhatsApp bağlantısı',
-    body_preview: formatPhoneDisplay(telefon),
-    kaynak: AUTOMATION_LOG_KAYNAK,
-    sent_at: new Date().toISOString(),
-  })
-  if (error) throw error
-
-  return {
-    telefon,
-    display: formatPhoneDisplay(telefon),
-    baglandi_at: new Date().toISOString(),
-  } satisfies WhatsAppUserConnection
 }
 
 export async function listAutomationUserIds(): Promise<string[]> {
