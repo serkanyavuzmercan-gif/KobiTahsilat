@@ -42,7 +42,10 @@ export function HatirlatmaMessageEditor() {
           aria-label="WhatsApp mesaj metni"
         />
         <div className="mt-2 flex flex-col gap-1 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>Gönderimden önce metni burada düzenleyebilirsiniz.</p>
+          <p>
+            Gönderimden önce metni burada düzenleyebilirsiniz. WhatsApp kalın yazı için{' '}
+            <code className="rounded bg-slate-100 px-1 py-0.5">*metin*</code> kullanın.
+          </p>
           <p className={body.trim().length === 0 ? 'text-red-600' : ''}>
             {body.length.toLocaleString('tr-TR')} / {MAX_LENGTH.toLocaleString('tr-TR')} karakter
           </p>
