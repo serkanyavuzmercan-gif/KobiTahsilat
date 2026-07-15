@@ -17,7 +17,8 @@ export async function proxy(request: NextRequest) {
     request.nextUrl.pathname.startsWith('/mutabakat/itiraz/') ||
     request.nextUrl.pathname === '/api/mutabakat/itiraz'
   const isCronRoute = request.nextUrl.pathname.startsWith('/api/cron/')
-  if (isPublicMutabakatResponse || isCronRoute) return NextResponse.next()
+  const isWebhookRoute = request.nextUrl.pathname.startsWith('/api/webhooks/')
+  if (isPublicMutabakatResponse || isCronRoute || isWebhookRoute) return NextResponse.next()
 
   let response = NextResponse.next({ request })
   const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {

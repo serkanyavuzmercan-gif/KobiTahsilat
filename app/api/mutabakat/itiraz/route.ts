@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getCari } from '@/lib/data'
+import { logEmailYanit } from '@/lib/cari-yanitlar'
 import { sendMail } from '@/lib/mail'
 import { formatDate } from '@/lib/mutabakat'
 import { verifyMutabakatToken } from '@/lib/mutabakat-token'
@@ -90,6 +91,14 @@ Açıklama:
 ${aciklama}`
 
     await sendMail({ to: recipients, subject, html, text, attachments })
+
+    await logEmailYanit({
+      cariKod: cari.cari_kod,
+      aciklama,
+      iletisim: iletisim || null,
+      konu: subject,
+    })
+
     return NextResponse.json({ success: true })
   } catch (cause) {
     console.error('[mutabakat-itiraz]', cause instanceof Error ? cause.message : cause)

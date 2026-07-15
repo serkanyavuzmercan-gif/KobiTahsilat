@@ -3,6 +3,8 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { Search } from 'lucide-react'
+import { CariYanitCell } from '@/components/cari-yanit-cell'
+import { SortableTh } from '@/components/sortable-th'
 import {
   cariOrtalamaGecikmeGun,
   formatGecikmeGun,
@@ -10,19 +12,49 @@ import {
 } from '@/lib/gecikme'
 import { EmptyTableRow, FilterBar, SearchInput } from '@/components/ui/summary-stat'
 import { formatNumber } from '@/lib/types'
-import type { CariBakiye } from '@/lib/types'
+import type { CariBakiye, CariYanitOzet } from '@/lib/types'
+
+type SortKey = 'vade_gun' | 'ortalama_gecikme' | 'gecikmis' | 'bakiye'
+
+function nextSortDirection(
+  currentKey: SortKey | null,
+  currentDir: 'asc' | 'desc' | null,
+  key: SortKey
+): { key: SortKey; dir: 'asc' | 'desc' } {
+  if (currentKey !== key || !currentDir) return { key, dir: 'desc' }
+  return { key, dir: currentDir === 'desc' ? 'asc' : 'desc' }
+}
+
+function sortValue(cari: CariBakiye, key: SortKey): number | null {
+  switch (key) {
+    case 'vade_gun':
+      return cari.vade_gun ?? null
+    case 'ortalama_gecikme':
+      return cariOrtalamaGecikmeGun(cari)
+    case 'gecikmis':
+      return cari.gecikmis_bakiye
+    case 'bakiye':
+      return cari.bakiye
+    default:
+      return null
+  }
+}
 
 export default function CarilerClient({
   cariler,
   toplam,
   sourcedAt,
+  yanitlar,
 }: {
   cariler: CariBakiye[]
   toplam: number
   sourcedAt: string
+  yanitlar: Record<string, CariYanitOzet>
 }) {
   const [q, setQ] = useState('')
   const [minBakiye, setMinBakiye] = useState('')
+  const [sortKey, setSortKey] = useState<SortKey | null>(null)
+  const [sortDir, setSortDir] = useState<'asc' | 'desc' | null>(null)
 
   const filtered = useMemo(() => {
     const term = q.trim().toLocaleLowerCase('tr')
@@ -37,11 +69,33 @@ export default function CarilerClient({
     })
   }, [cariler, q, minBakiye])
 
-  const filtToplam = filtered.reduce((s, c) => s + c.bakiye, 0)
+  const sorted = useMemo(() => {
+    if (!sortKey || !sortDir) return filtered
+
+    return [...filtered].sort((a, b) => {
+      const aVal = sortValue(a, sortKey)
+      const bVal = sortValue(b, sortKey)
+
+      if (aVal == null && bVal == null) return a.firma_adi.localeCompare(b.firma_adi, 'tr')
+      if (aVal == null) return 1
+      if (bVal == null) return -1
+
+      const diff = aVal - bVal
+      return sortDir === 'desc' ? -diff : diff
+    })
+  }, [filtered, sortKey, sortDir])
+
+  const filtToplam = sorted.reduce((s, c) => s + c.bakiye, 0)
   const ortalamaGecikme = useMemo(
-    () => portfoyOrtalamaGecikmeGun(filtered),
-    [filtered]
+    () => portfoyOrtalamaGecikmeGun(sorted),
+    [sorted]
   )
+
+  function handleSort(key: SortKey) {
+    const next = nextSortDirection(sortKey, sortDir, key)
+    setSortKey(next.key)
+    setSortDir(next.dir)
+  }
 
   return (
     <div className="space-y-4">
@@ -52,7 +106,7 @@ export default function CarilerClient({
           {new Date(sourcedAt).toLocaleString('tr-TR')}
         </p>
         <FilterBar
-          resultText={`Filtre sonucu: ${filtered.length} cari · ${formatNumber(filtToplam)} ₺${
+          resultText={`Filtre sonucu: ${sorted.length} cari · ${formatNumber(filtToplam)} ₺${
             ortalamaGecikme != null ? ` · Ortalama gecikme: ${formatGecikmeGun(ortalamaGecikme)}` : ''
           }`}
         >
@@ -73,69 +127,116 @@ export default function CarilerClient({
 
       <section className="table-shell">
         <div className="overflow-x-auto">
-          <table className="min-w-full text-left text-sm">
+          <table className="min-w-[1100px] w-full text-left text-sm">
             <thead>
               <tr>
                 <th className="px-4 py-3">#</th>
                 <th className="px-4 py-3">Cari kod</th>
                 <th className="px-4 py-3">Firma</th>
-                <th className="px-4 py-3">Ödeme vadesi</th>
-                <th className="px-4 py-3 text-right">Ort. gecikme</th>
-                <th className="px-4 py-3 text-right">Gecikmiş</th>
-                <th className="px-4 py-3 text-right">Bakiye (₺)</th>
+                <SortableTh
+                  label="Ödeme vadesi"
+                  active={sortKey === 'vade_gun'}
+                  direction={sortKey === 'vade_gun' ? sortDir : null}
+                  onClick={() => handleSort('vade_gun')}
+                />
+                <SortableTh
+                  label="Ort. gecikme"
+                  active={sortKey === 'ortalama_gecikme'}
+                  direction={sortKey === 'ortalama_gecikme' ? sortDir : null}
+                  onClick={() => handleSort('ortalama_gecikme')}
+                  align="right"
+                />
+                <SortableTh
+                  label="Gecikmiş (₺)"
+                  active={sortKey === 'gecikmis'}
+                  direction={sortKey === 'gecikmis' ? sortDir : null}
+                  onClick={() => handleSort('gecikmis')}
+                  align="right"
+                />
+                <SortableTh
+                  label="Bakiye (₺)"
+                  active={sortKey === 'bakiye'}
+                  direction={sortKey === 'bakiye' ? sortDir : null}
+                  onClick={() => handleSort('bakiye')}
+                  align="right"
+                />
+                <th className="px-4 py-3">E-posta yanıt</th>
+                <th className="px-4 py-3">WhatsApp yanıt</th>
               </tr>
             </thead>
             <tbody>
-              {filtered.length === 0 ? (
-                <EmptyTableRow colSpan={7} message="Eşleşen cari bulunamadı." />
+              {sorted.length === 0 ? (
+                <EmptyTableRow colSpan={9} message="Eşleşen cari bulunamadı." />
               ) : (
-                filtered.map((c, i) => (
-                  <tr key={c.cari_kod}>
-                    <td className="px-4 py-3 text-slate-400">{i + 1}</td>
-                    <td className="px-4 py-3 font-mono text-xs text-slate-600">{c.cari_kod}</td>
-                    <td className="px-4 py-3">
-                      <Link
-                        href={`/cariler/${encodeURIComponent(c.cari_kod)}`}
-                        className="font-medium text-slate-900 hover:text-brand-700"
-                      >
-                        {c.firma_adi}
-                      </Link>
-                      <p
-                        className={`mt-0.5 text-xs ${
-                          c.email
-                            ? 'text-slate-500'
+                sorted.map((c, i) => {
+                  const cariYanit = yanitlar[c.cari_kod] || {
+                    email: [],
+                    whatsapp: [],
+                    son_email: null,
+                    son_whatsapp: null,
+                  }
+                  return (
+                    <tr key={c.cari_kod}>
+                      <td className="px-4 py-3 text-slate-400">{i + 1}</td>
+                      <td className="px-4 py-3 font-mono text-xs text-slate-600">{c.cari_kod}</td>
+                      <td className="px-4 py-3">
+                        <Link
+                          href={`/cariler/${encodeURIComponent(c.cari_kod)}`}
+                          className="font-medium text-slate-900 hover:text-brand-700"
+                        >
+                          {c.firma_adi}
+                        </Link>
+                        <p
+                          className={`mt-0.5 text-xs ${
+                            c.email
+                              ? 'text-slate-500'
+                              : c.email_adaylari.length
+                                ? 'text-amber-600'
+                                : 'text-red-500'
+                          }`}
+                        >
+                          {c.email_adresleri.length
+                            ? c.email_adresleri.join(', ')
                             : c.email_adaylari.length
-                              ? 'text-amber-600'
-                              : 'text-red-500'
-                        }`}
-                      >
-                        {c.email_adresleri.length
-                          ? c.email_adresleri.join(', ')
-                          : c.email_adaylari.length
-                            ? `Gmail adayı: ${c.email_adaylari[0].email}`
-                            : 'E-posta adresi yok'}
-                      </p>
-                    </td>
-                    <td className="px-4 py-3 text-slate-600">
-                      {c.odeme_vadesi || '—'}
-                      {c.vade_gun != null ? (
-                        <span className="ml-1 text-xs text-slate-400">({c.vade_gun}g)</span>
-                      ) : null}
-                    </td>
-                    <td className="px-4 py-3 text-right tabular-nums text-slate-600">
-                      {formatGecikmeGun(cariOrtalamaGecikmeGun(c))}
-                    </td>
-                    <td className="px-4 py-3 text-right font-medium tabular-nums text-red-700">
-                      {formatNumber(c.gecikmis_bakiye)}
-                    </td>
-                    <td className="px-4 py-3 text-right font-semibold tabular-nums text-slate-900">
-                      {formatNumber(c.bakiye)}
-                    </td>
-                  </tr>
-                ))
+                              ? `Gmail adayı: ${c.email_adaylari[0].email}`
+                              : 'E-posta adresi yok'}
+                        </p>
+                      </td>
+                      <td className="px-4 py-3 text-slate-600">
+                        {c.odeme_vadesi || '—'}
+                        {c.vade_gun != null ? (
+                          <span className="ml-1 text-xs text-slate-400">({c.vade_gun}g)</span>
+                        ) : null}
+                      </td>
+                      <td className="px-4 py-3 text-right tabular-nums text-slate-600">
+                        {formatGecikmeGun(cariOrtalamaGecikmeGun(c))}
+                      </td>
+                      <td className="px-4 py-3 text-right font-medium tabular-nums text-red-700">
+                        {formatNumber(c.gecikmis_bakiye)}
+                      </td>
+                      <td className="px-4 py-3 text-right font-semibold tabular-nums text-slate-900">
+                        {formatNumber(c.bakiye)}
+                      </td>
+                      <td className="px-4 py-3 align-top">
+                        <CariYanitCell
+                          kanal="email"
+                          yanitlar={cariYanit.email}
+                          sonYanit={cariYanit.son_email}
+                        />
+                      </td>
+                      <td className="px-4 py-3 align-top">
+                        <CariYanitCell
+                          kanal="whatsapp"
+                          yanitlar={cariYanit.whatsapp}
+                          sonYanit={cariYanit.son_whatsapp}
+                        />
+                      </td>
+                    </tr>
+                  )
+                })
               )}
             </tbody>
-            {filtered.length > 0 && (
+            {sorted.length > 0 && (
               <tfoot className="border-t border-slate-200 bg-slate-50 text-sm">
                 <tr>
                   <td colSpan={4} className="px-4 py-3 text-right font-medium text-slate-600">
@@ -144,7 +245,7 @@ export default function CarilerClient({
                   <td className="px-4 py-3 text-right font-semibold tabular-nums text-red-700">
                     {formatGecikmeGun(ortalamaGecikme)}
                   </td>
-                  <td colSpan={2} className="px-4 py-3" />
+                  <td colSpan={4} className="px-4 py-3" />
                 </tr>
               </tfoot>
             )}
@@ -152,6 +253,8 @@ export default function CarilerClient({
         </div>
         <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
           Ortalama gecikme, vadesi geçmiş açık kalemler üzerinden tutar ağırlıklı hesaplanır.
+          E-posta yanıtları mutabakat itirazlarından; WhatsApp yanıtları işletme hattına gelen
+          mesajlardan eşleştirilir.
         </p>
       </section>
     </div>

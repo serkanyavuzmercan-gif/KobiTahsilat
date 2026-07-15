@@ -48,6 +48,22 @@ export type TelefonAday = {
   eslesme_notu: string | null
 }
 
+export type CariYanitKayit = {
+  id: string
+  kanal: 'email' | 'whatsapp'
+  tarih: string
+  gonderen: string | null
+  ozet: string
+  detay: string
+}
+
+export type CariYanitOzet = {
+  email: CariYanitKayit[]
+  whatsapp: CariYanitKayit[]
+  son_email: CariYanitKayit | null
+  son_whatsapp: CariYanitKayit | null
+}
+
 export type CariBakiye = {
   cari_kod: string
   firma_adi: string
