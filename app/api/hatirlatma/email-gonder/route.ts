@@ -24,10 +24,17 @@ export async function POST(request: Request) {
     }
 
     const user = await requireAuthUser()
-    const body = (await request.json()) as { cariKod?: string }
+    const body = (await request.json()) as { cariKod?: string; messageBody?: string }
     const cariKod = String(body.cariKod || '').trim()
     if (!cariKod) {
       return NextResponse.json({ success: false, error: 'Cari kodu gerekli.' }, { status: 400 })
+    }
+    const customBody = typeof body.messageBody === 'string' ? body.messageBody.trim() : ''
+    if (customBody.length > 8000) {
+      return NextResponse.json(
+        { success: false, error: 'Mesaj metni çok uzun.' },
+        { status: 400 }
+      )
     }
 
     const cari = await loadHatirlatmaCari(cariKod)
@@ -42,7 +49,7 @@ export async function POST(request: Request) {
     }
 
     const snapshot = await loadSnapshot()
-    const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi)
+    const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi, customBody)
     // Gönderen sabit: Gmail (GMAIL_SENDER = serkan.mercan@). Yanıtlar da aynı kutuya döner.
     const from = process.env.GMAIL_SENDER || process.env.MAIL_FROM || 'Hidroteknik A.Ş.'
     const sentAt = new Date().toISOString()

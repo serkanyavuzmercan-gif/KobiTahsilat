@@ -212,9 +212,8 @@ export function HatirlatmaClient({
                     </td>
                     <td className="px-3 py-3 text-right align-top">
                       <OdemeTalepActions
-                        cariKod={cari.cari_kod}
-                        hasPhone={Boolean(cari.telefon)}
-                        hasEmail={cari.email_adresleri.length > 0}
+                        cari={cari}
+                        snapshotTarihi={snapshotTarihi}
                         sendEnabled={sendEnabled}
                       />
                       <div className="mt-1.5">
