@@ -141,71 +141,76 @@ export function HatirlatmaClient({
 
       <section className="table-shell">
         <div className="overflow-x-auto">
-          <table className="min-w-[1040px] text-left text-sm">
+          <table className="w-full min-w-[820px] text-left text-sm">
             <thead>
               <tr>
-                <th className="px-4 py-3">Firma</th>
-                <th className="px-4 py-3">İletişim</th>
-                <th className="px-4 py-3 text-right">Ort. gecikme</th>
-                <th className="px-4 py-3 text-right">Gecikmiş</th>
-                <th className="px-4 py-3">Son gönderim</th>
-                <th className="px-4 py-3 text-right">Ödeme talebi</th>
+                <th className="px-3 py-3">Firma</th>
+                <th className="px-3 py-3 text-right">Ort. gecikme</th>
+                <th className="px-3 py-3 text-right">Gecikmiş</th>
+                <th className="px-3 py-3">Son gönderim</th>
+                <th className="px-3 py-3 text-right">Ödeme talebi gönder</th>
               </tr>
             </thead>
             <tbody>
               {filtered.length === 0 ? (
                 <EmptyTableRow
-                  colSpan={6}
+                  colSpan={5}
                   message={`Ortalama gecikmesi ${esik} gün ve üzeri firma bulunamadı. Eşiği düşürerek daha fazla firma listeleyebilirsiniz.`}
                 />
               ) : (
                 filtered.map(({ cari, ortalamaGecikme }) => (
                   <tr key={cari.cari_kod}>
-                    <td className="px-4 py-3">
-                      <p className="font-medium">{cari.firma_adi}</p>
+                    <td className="px-3 py-3 align-top">
+                      <p className="font-medium leading-tight">{cari.firma_adi}</p>
                       <p className="mt-0.5 font-mono text-xs text-slate-400">{cari.cari_kod}</p>
-                    </td>
-                    <td className="px-4 py-3 align-top">
-                      <div className="flex items-center gap-1.5 text-xs">
-                        <Phone
-                          size={13}
-                          className={cari.telefon ? 'text-emerald-600' : 'text-slate-300'}
-                        />
-                        <span className={cari.telefon ? 'text-slate-700' : 'text-slate-400'}>
-                          {cari.telefon ? formatPhoneDisplay(cari.telefon) : 'Telefon yok'}
-                        </span>
-                      </div>
-                      <div className="mt-1 flex items-center gap-1.5 text-xs">
-                        <Mail
-                          size={13}
-                          className={
-                            cari.email_adresleri.length ? 'text-brand-600' : 'text-slate-300'
-                          }
-                        />
+                      <div className="mt-1 flex items-center gap-2">
                         <span
-                          className={
-                            cari.email_adresleri.length ? 'text-slate-700' : 'text-slate-400'
-                          }
+                          title={cari.telefon ? formatPhoneDisplay(cari.telefon) : 'Telefon yok'}
+                          className="inline-flex items-center gap-1 text-[11px]"
                         >
-                          {cari.email_adresleri[0] || 'E-posta yok'}
+                          <Phone
+                            size={12}
+                            className={cari.telefon ? 'text-emerald-600' : 'text-slate-300'}
+                          />
+                          <span className={cari.telefon ? 'text-slate-600' : 'text-slate-400'}>
+                            {cari.telefon ? 'Tel var' : 'Tel yok'}
+                          </span>
+                        </span>
+                        <span
+                          title={cari.email_adresleri[0] || 'E-posta yok'}
+                          className="inline-flex items-center gap-1 text-[11px]"
+                        >
+                          <Mail
+                            size={12}
+                            className={
+                              cari.email_adresleri.length ? 'text-brand-600' : 'text-slate-300'
+                            }
+                          />
+                          <span
+                            className={
+                              cari.email_adresleri.length ? 'text-slate-600' : 'text-slate-400'
+                            }
+                          >
+                            {cari.email_adresleri.length ? 'E-posta var' : 'E-posta yok'}
+                          </span>
                         </span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-right align-top">
+                    <td className="px-3 py-3 text-right align-top">
                       <span className="inline-block rounded-full bg-red-50 px-2.5 py-1 font-semibold tabular-nums text-red-700">
                         {ortalamaGecikme != null ? `${ortalamaGecikme} gün` : '—'}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right align-top font-medium tabular-nums text-red-700">
+                    <td className="px-3 py-3 text-right align-top font-medium tabular-nums text-red-700">
                       {formatTL(cari.gecikmis_bakiye)}
                     </td>
-                    <td className="px-4 py-3 align-top">
+                    <td className="px-3 py-3 align-top">
                       <SonGonderim
                         whatsapp={cari.whatsapp_son_gonderim}
                         email={cari.email_son_gonderim}
                       />
                     </td>
-                    <td className="px-4 py-3 text-right align-top">
+                    <td className="px-3 py-3 text-right align-top">
                       <OdemeTalepActions
                         cariKod={cari.cari_kod}
                         hasPhone={Boolean(cari.telefon)}
@@ -215,7 +220,7 @@ export function HatirlatmaClient({
                       <div className="mt-1.5">
                         <PreviewLink href={`/hatirlatma/${encodeURIComponent(cari.cari_kod)}`}>
                           <Eye size={13} />
-                          Önizle / telefon düzenle
+                          Önizle / düzenle
                         </PreviewLink>
                       </div>
                     </td>

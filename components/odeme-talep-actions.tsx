@@ -60,11 +60,11 @@ export function OdemeTalepActions({
 
   const busy = loading !== null
   const btnBase =
-    'inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40'
+    'inline-flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-1.5 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40'
 
   return (
     <div className="flex flex-col items-end gap-1.5">
-      <div className="flex items-center gap-1.5">
+      <div className="flex flex-nowrap items-center justify-end gap-1">
         <button
           type="button"
           onClick={() => gonder('whatsapp')}

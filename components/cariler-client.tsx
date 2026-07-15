@@ -2,8 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { Mail, MessageCircle, Search } from 'lucide-react'
-import { CariYanitIcon } from '@/components/cari-yanit-icon'
+import { ChevronRight, Search } from 'lucide-react'
 import { SortableTh } from '@/components/sortable-th'
 import {
   cariOrtalamaGecikmeGun,
@@ -163,33 +162,18 @@ export default function CarilerClient({
                   onClick={() => handleSort('bakiye')}
                   align="right"
                 />
-                <th className="px-4 py-3 text-center">
-                  <span className="inline-flex items-center justify-center gap-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    <Mail size={14} />
-                    <span className="hidden sm:inline">E-posta</span>
-                  </span>
-                </th>
-                <th className="px-4 py-3 text-center">
-                  <span className="inline-flex items-center justify-center gap-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    <MessageCircle size={14} />
-                    <span className="hidden sm:inline">WhatsApp</span>
+                <th className="px-4 py-3 text-right">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    Ayrıntılar
                   </span>
                 </th>
               </tr>
             </thead>
             <tbody>
               {sorted.length === 0 ? (
-                <EmptyTableRow colSpan={9} message="Eşleşen cari bulunamadı." />
+                <EmptyTableRow colSpan={8} message="Eşleşen cari bulunamadı." />
               ) : (
                 sorted.map((c, i) => {
-                  const cariYanit = yanitlar[c.cari_kod] || {
-                    email: [],
-                    whatsapp: [],
-                    son_email: null,
-                    son_whatsapp: null,
-                    okunmamis_email: 0,
-                    okunmamis_whatsapp: 0,
-                  }
                   return (
                     <tr key={c.cari_kod}>
                       <td className="px-4 py-3 text-slate-400">{i + 1}</td>
@@ -237,25 +221,14 @@ export default function CarilerClient({
                       <td className="px-4 py-3 text-right font-semibold tabular-nums text-slate-900">
                         {formatNumber(c.bakiye)}
                       </td>
-                      <td className="px-4 py-3 text-center align-middle">
-                        <CariYanitIcon
-                          kanal="email"
-                          yanitlar={cariYanit.email}
-                          okunmamis={cariYanit.okunmamis_email}
-                          cariKod={c.cari_kod}
-                          firmaAdi={c.firma_adi}
-                          onMarkedRead={(ids) => onMarkedRead?.(ids)}
-                        />
-                      </td>
-                      <td className="px-4 py-3 text-center align-middle">
-                        <CariYanitIcon
-                          kanal="whatsapp"
-                          yanitlar={cariYanit.whatsapp}
-                          okunmamis={cariYanit.okunmamis_whatsapp}
-                          cariKod={c.cari_kod}
-                          firmaAdi={c.firma_adi}
-                          onMarkedRead={(ids) => onMarkedRead?.(ids)}
-                        />
+                      <td className="px-4 py-3 text-right align-middle">
+                        <Link
+                          href={`/cariler/${encodeURIComponent(c.cari_kod)}`}
+                          className="inline-flex items-center gap-1 rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-xs font-semibold text-brand-700 transition-colors hover:border-brand-300 hover:bg-brand-100"
+                        >
+                          Ayrıntılar
+                          <ChevronRight size={14} />
+                        </Link>
                       </td>
                     </tr>
                   )
@@ -271,7 +244,7 @@ export default function CarilerClient({
                   <td className="px-4 py-3 text-right font-semibold tabular-nums text-red-700">
                     {formatGecikmeGun(ortalamaGecikme)}
                   </td>
-                  <td colSpan={4} className="px-4 py-3" />
+                  <td colSpan={3} className="px-4 py-3" />
                 </tr>
               </tfoot>
             )}
@@ -279,9 +252,9 @@ export default function CarilerClient({
         </div>
         <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
           Ortalama gecikme, vadesi geçmiş açık kalemler üzerinden tutar ağırlıklı hesaplanır.
-          E-posta ve WhatsApp sütunlarındaki simgelere tıklayarak yanıtları görüntüleyebilirsiniz.
-          Okunmamış yanıtlar kırmızı bildirim rozeti ile gösterilir. Tüm yanıtlar için{' '}
-          <strong>Yanıtlar</strong> sekmesine geçin.
+          Bir firmanın açık kalem dökümü, aging tablosu ve iletişim bilgileri için satırdaki{' '}
+          <strong>Ayrıntılar</strong> butonuna (veya firma adına) tıklayın. Müşteri onay/itiraz ve
+          yanıtları için <strong>Yanıtlar</strong> sekmesine geçin.
         </p>
       </section>
     </div>
