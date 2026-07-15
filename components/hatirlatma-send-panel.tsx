@@ -2,21 +2,22 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { CheckCircle2, LoaderCircle, Send, TriangleAlert } from 'lucide-react'
+import { CheckCircle2, Clock, LoaderCircle, Send, TriangleAlert, Wifi, WifiOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useHatirlatmaMessage } from '@/components/hatirlatma-message-context'
-import { WHATSAPP_SENDER_LABEL, ssWhatsAppBusinessLink } from '@/lib/whatsapp-constants'
+import { WHATSAPP_SENDER_LABEL } from '@/lib/whatsapp-constants'
 import { formatPhoneDisplay } from '@/lib/phone'
 
 type HatirlatmaWhatsAppContext = {
-  pencereAcik: boolean
-  ssOturumVar: boolean
-  ssPencereAcik: boolean
-  templateConfigured: boolean
-  templateName: string | null
-  templateLanguage: string | null
-  gonderimModu: 'text' | 'template' | 'blocked'
+  botEnabled: boolean
+  botCevrimici: boolean
+  sonPoll: string | null
+  sonGonderim: string | null
 }
+
+type KuyrukDurum = 'bekliyor' | 'gonderiliyor' | 'gonderildi' | 'hata' | 'bilinmiyor'
+
+const uyku = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export function HatirlatmaSendPanel({
   cariKod,
@@ -37,21 +38,37 @@ export function HatirlatmaSendPanel({
   const { body: messageBody } = useHatirlatmaMessage()
   const [loading, setLoading] = useState(false)
   const [sentCount, setSentCount] = useState(gonderimSayisi)
-  const [feedback, setFeedback] = useState<{
-    type: 'success' | 'error'
-    text: string
-    providerId?: string | null
-    deliveryHint?: string | null
-    sendMode?: 'text' | 'template' | null
-  } | null>(null)
+  const [queue, setQueue] = useState<{ durum: KuyrukDurum; hata: string | null } | null>(null)
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
 
-  const blocked = whatsappContext?.gonderimModu === 'blocked'
-  const canSend =
-    sendEnabled && hasPhone && isMobile && messageBody.trim().length > 0 && !blocked
+  const canSend = sendEnabled && hasPhone && isMobile && messageBody.trim().length > 0
+
+  /** Enqueue sonrası kuyruk durumunu yoklar (bekliyor → gonderildi/hata). */
+  async function pollDurum(kuyrukId: string) {
+    for (let deneme = 0; deneme < 20; deneme++) {
+      await uyku(3000)
+      try {
+        const response = await fetch(
+          `/api/hatirlatma/whatsapp-durum?ids=${encodeURIComponent(kuyrukId)}`
+        )
+        const result = (await response.json()) as {
+          durumlar?: Array<{ durum: KuyrukDurum; hata: string | null }>
+        }
+        const kayit = result.durumlar?.[0]
+        if (kayit) {
+          setQueue({ durum: kayit.durum, hata: kayit.hata })
+          if (kayit.durum === 'gonderildi' || kayit.durum === 'hata') return
+        }
+      } catch {
+        // geçici okuma hatası → sonraki turda yeniden dene
+      }
+    }
+  }
 
   async function sendMessage() {
     setLoading(true)
     setFeedback(null)
+    setQueue(null)
     try {
       const response = await fetch('/api/hatirlatma/whatsapp-gonder', {
         method: 'POST',
@@ -59,14 +76,7 @@ export function HatirlatmaSendPanel({
         body: JSON.stringify({ cariKod, messageBody: messageBody.trim() }),
       })
       const raw = await response.text()
-      let result: {
-        success?: boolean
-        error?: string
-        message?: string
-        providerId?: string | null
-        deliveryHint?: string | null
-        sendMode?: 'text' | 'template' | null
-      } = {}
+      let result: { success?: boolean; error?: string; message?: string; kuyrukId?: string } = {}
       try {
         result = JSON.parse(raw) as typeof result
       } catch {
@@ -74,14 +84,10 @@ export function HatirlatmaSendPanel({
       }
       if (!response.ok || !result.success) throw new Error(result.error || 'Gönderilemedi.')
       setSentCount((count) => count + 1)
-      setFeedback({
-        type: 'success',
-        text: result.message || 'Meta isteği iletildi.',
-        providerId: result.providerId,
-        deliveryHint: result.deliveryHint,
-        sendMode: result.sendMode,
-      })
+      setFeedback({ type: 'success', text: result.message || 'WhatsApp mesajı kuyruğa alındı.' })
+      setQueue({ durum: 'bekliyor', hata: null })
       router.refresh()
+      if (result.kuyrukId) void pollDurum(result.kuyrukId)
     } catch (cause) {
       setFeedback({
         type: 'error',
@@ -111,40 +117,28 @@ export function HatirlatmaSendPanel({
 
       {whatsappContext ? (
         <div className="rounded-lg border border-slate-200 bg-white p-3 text-xs text-slate-600">
-          <p className="font-medium text-slate-800">SS sohbet durumu</p>
-          <ul className="mt-2 space-y-1">
-            <li>
-              {whatsappContext.ssOturumVar
-                ? '✓ Bu numara SS/tawkto sohbetinde kayıtlı'
-                : '✗ Bu numara hiç Hidroteknik WhatsApp hattına yazmamış'}
-            </li>
-            <li>
-              {whatsappContext.pencereAcik
-                ? '✓ 24 saat penceresi açık → serbest metin (SS gibi)'
-                : '✗ 24 saat penceresi kapalı → Meta şablonu gerekir'}
-            </li>
-            <li>
-              {whatsappContext.templateConfigured
-                ? `✓ Şablon: ${whatsappContext.templateName} (${whatsappContext.templateLanguage})`
-                : '✗ WHATSAPP_HATIRLATMA_TEMPLATE tanımlı değil'}
-            </li>
-          </ul>
-          {blocked ? (
-            <p className="mt-2 text-amber-800">
-              SS yalnızca müşteri yazdıktan sonra yanıt gönderir. Soğuk hatırlatma için Meta
-              Business Manager&apos;da şablon onaylatın veya müşteriyi önce iş hattına yazmaya
-              yönlendirin.
+          <div className="flex items-center gap-2">
+            {whatsappContext.botCevrimici ? (
+              <>
+                <Wifi size={14} className="text-emerald-600" />
+                <span className="font-medium text-emerald-700">Ofis WhatsApp botu çevrimiçi</span>
+              </>
+            ) : (
+              <>
+                <WifiOff size={14} className="text-amber-600" />
+                <span className="font-medium text-amber-700">Bot çevrimdışı</span>
+              </>
+            )}
+          </div>
+          <p className="mt-1.5 text-slate-500">
+            {whatsappContext.botCevrimici
+              ? 'Mesaj kuyruğa alınır alınmaz bot sırayla gönderir.'
+              : 'Mesaj kuyrukta bekler; bot PC\'si açılınca otomatik gönderilir.'}
+          </p>
+          {whatsappContext.sonGonderim ? (
+            <p className="mt-1 text-slate-400">
+              Botun son gönderimi: {new Date(whatsappContext.sonGonderim).toLocaleString('tr-TR')}
             </p>
-          ) : null}
-          {!whatsappContext.pencereAcik ? (
-            <a
-              href={ssWhatsAppBusinessLink('Merhaba, cari hesabım hakkında bilgi almak istiyorum.')}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-2 inline-block text-emerald-700 underline"
-            >
-              Müşteri için WhatsApp başlatma linki
-            </a>
           ) : null}
         </div>
       ) : null}
@@ -156,7 +150,7 @@ export function HatirlatmaSendPanel({
         className="w-full"
       >
         {loading ? <LoaderCircle className="animate-spin" size={18} /> : <Send size={18} />}
-        WhatsApp gönder
+        WhatsApp kuyruğuna gönder
       </Button>
 
       {!hasPhone && <p className="text-xs text-red-600">Gönderim için cep telefonu gerekli.</p>}
@@ -168,38 +162,48 @@ export function HatirlatmaSendPanel({
           WhatsApp için cep telefonu girin (05… ile başlamalı).
         </p>
       )}
-      {feedback?.type === 'success' && (
+
+      {/* Kuyruk durum takibi */}
+      {queue?.durum === 'bekliyor' || queue?.durum === 'gonderiliyor' ? (
+        <div className="rounded-lg border border-sky-200 bg-sky-50 p-3 text-sm text-sky-900">
+          <div className="flex items-center gap-2">
+            <Clock className="shrink-0 animate-pulse" size={18} />
+            <p>
+              {queue.durum === 'gonderiliyor'
+                ? 'Bot gönderiyor…'
+                : 'Kuyrukta bekliyor — bot birazdan gönderecek…'}
+            </p>
+          </div>
+        </div>
+      ) : null}
+      {queue?.durum === 'gonderildi' ? (
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="shrink-0" size={18} />
+            <p className="font-medium">WhatsApp mesajı gönderildi ✓</p>
+          </div>
+        </div>
+      ) : null}
+      {queue?.durum === 'hata' ? (
+        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
           <div className="flex items-start gap-2">
-            <CheckCircle2 className="mt-0.5 shrink-0" size={18} />
+            <TriangleAlert className="mt-0.5 shrink-0" size={18} />
             <div>
-              <p className="font-medium">{feedback.text}</p>
-              {feedback.deliveryHint ? (
-                <p className="mt-1 text-xs text-emerald-800">{feedback.deliveryHint}</p>
-              ) : null}
-              {feedback.providerId ? (
-                <p className="mt-1 break-all text-xs text-emerald-800">
-                  Meta mesaj kimliği: {feedback.providerId}
-                </p>
-              ) : null}
-              <p className="mt-2 text-xs text-emerald-800">
-                {feedback.sendMode === 'template' ? (
-                  <>
-                    İlk temas veya uzun süredir yazışma yoksa yalnızca <strong>onaylı şablon</strong>{' '}
-                    teslim edilir. Telefonda görünmüyorsa Meta Business Manager&apos;da şablonun{' '}
-                    <strong>APPROVED</strong> olduğunu kontrol edin.
-                  </>
-                ) : (
-                  <>
-                    WhatsApp uygulamanızda <strong>Hidroteknik</strong> iş hattından gelen sohbeti
-                    kontrol edin.
-                  </>
-                )}
-              </p>
+              <p className="font-medium">Bot gönderemedi.</p>
+              {queue.hata ? <p className="mt-0.5 text-xs">{queue.hata}</p> : null}
             </div>
           </div>
         </div>
-      )}
+      ) : null}
+
+      {feedback?.type === 'success' && !queue ? (
+        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
+          <div className="flex items-start gap-2">
+            <CheckCircle2 className="mt-0.5 shrink-0" size={18} />
+            <p className="font-medium">{feedback.text}</p>
+          </div>
+        </div>
+      ) : null}
       {feedback?.type === 'error' && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
           <div className="flex items-start gap-2">

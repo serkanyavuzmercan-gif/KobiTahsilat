@@ -76,9 +76,11 @@ Gönderimi kapatmak için `MUTABAKAT_SEND_ENABLED=false` tanımlayın.
 
 **WhatsApp hatırlatma** (`/hatirlatma`): Mutabakat değil, kibar ödeme hatırlatması.
 Telefonlar Mikro/SS cari kartından veya manuel girişle gelir. Gönderim geçmişi tarih ve
-sayım olarak tutulur. Canlı gönderim için Meta WhatsApp Cloud API gerekir:
-`WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_SEND_ENABLED=true`.
-Telefon zenginleştirme: `npm run enrich:phones`
+sayım olarak tutulur. **Gönderim, ss ile ORTAK Baileys ofis botu üzerindendir** (Meta Cloud
+API değil): mesaj ortak `whatsapp_kuyruk` tablosuna DM olarak yazılır, ofis PC'sindeki bot
+(`ss/tools/whatsapp-bot`) çekip gönderir; UI durumu (`bekliyor → gönderildi/hata`) canlı takip
+eder. Ayrıntı: [`docs/WHATSAPP-BAILEYS-KUYRUK.md`](docs/WHATSAPP-BAILEYS-KUYRUK.md). Enqueue'yu
+kapatmak için `WHATSAPP_SEND_ENABLED=false`. Telefon zenginleştirme: `npm run enrich:phones`
 
 Mutabakat bağlantıları 30 gün geçerli HMAC token ile korunur. “Fark / itiraz” yanıtında müşteri
 yazılı açıklama ve en fazla 4 MB PNG/JPG/WEBP ekran görüntüsü iletebilir; bildirim yapılandırılmış

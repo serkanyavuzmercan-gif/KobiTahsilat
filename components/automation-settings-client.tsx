@@ -272,10 +272,14 @@ export function AutomationSettingsClient() {
           />
           <ConnectionCard
             icon={<MessageCircle size={18} />}
-            title="WhatsApp API"
+            title="Ofis WhatsApp botu"
             ok={connections?.whatsapp_api_yapilandirildi}
             detail={
-              connections?.whatsapp_gonderim_acik ? 'Gönderim açık' : 'Gönderim kapalı (env)'
+              connections?.whatsapp_api_yapilandirildi
+                ? connections?.whatsapp_gonderim_acik
+                  ? 'Bot çevrimiçi · gönderim açık'
+                  : 'Bot çevrimiçi · gönderim kapalı (env)'
+                : 'Bot çevrimdışı (heartbeat yok)'
             }
           />
           <ConnectionCard
@@ -293,8 +297,8 @@ export function AutomationSettingsClient() {
           WhatsApp bağlantısı
         </h3>
         <p className="mt-1 text-sm text-slate-500">
-          Otomasyon sorumlusu olarak iletişim numaranızı kaydedin. Mesajlar Meta işletme hattından
-          gider; API anahtarları sunucu ortamında tanımlıdır.
+          Otomasyon sorumlusu olarak iletişim numaranızı kaydedin. Mesajlar ss ile ortak Baileys
+          ofis botu üzerinden WhatsApp kuyruğuna alınıp gönderilir (Meta Cloud API kullanılmaz).
         </p>
         <div className="mt-4 flex flex-col gap-3 sm:flex-row">
           <input

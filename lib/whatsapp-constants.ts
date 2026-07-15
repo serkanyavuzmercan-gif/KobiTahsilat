@@ -1,5 +1,5 @@
-/** WhatsApp iş hattı — Meta doğrulanmış gönderen. */
-export const WHATSAPP_SENDER_LABEL = 'Hidroteknik (+90 258 251 40 60)'
+/** WhatsApp gönderen — ss ile ortak Baileys ofis botu hattı (Meta değil). */
+export const WHATSAPP_SENDER_LABEL = 'Hidroteknik WhatsApp (ofis botu)'
 
 /** SS iş hattı — müşteriyi sohbet başlatmaya yönlendirmek için */
 export function ssWhatsAppBusinessLink(prefill?: string) {

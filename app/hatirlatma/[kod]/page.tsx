@@ -11,7 +11,7 @@ import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
 import { loadHatirlatmaWhatsAppContext } from '@/lib/hatirlatma-whatsapp'
 import { formatPhoneDisplay, isMobileTurkey } from '@/lib/phone'
 import { formatTL } from '@/lib/types'
-import { whatsAppSendEnabled } from '@/lib/whatsapp'
+import { whatsAppBotEnabled } from '@/lib/whatsapp-kuyruk'
 
 export const dynamic = 'force-dynamic'
 
@@ -26,7 +26,7 @@ export default async function HatirlatmaPreviewPage({
 
   const snapshot = await loadSnapshot()
   const message = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
-  const sendEnabled = whatsAppSendEnabled()
+  const sendEnabled = whatsAppBotEnabled()
   const whatsappContext = await loadHatirlatmaWhatsAppContext(cari.telefon, cari.cari_kod)
 
   return (

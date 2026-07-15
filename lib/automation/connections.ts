@@ -1,7 +1,6 @@
 import 'server-only'
 import { defaultSenderId, listMailSenders } from '../mail-senders'
-import { hatirlatmaTemplateConfigured } from '../hatirlatma-whatsapp'
-import { whatsAppConfigured, whatsAppSendEnabled } from '../whatsapp'
+import { loadBotDurum, whatsAppBotEnabled } from '../whatsapp-kuyruk'
 import {
   automationGloballyEnabled,
   loadAutomationSettings,
@@ -12,9 +11,10 @@ import type { AutomationConnectionsStatus } from './types'
 export async function loadAutomationConnectionsStatus(
   userId: string
 ): Promise<AutomationConnectionsStatus> {
-  const [senders, whatsappUser] = await Promise.all([
+  const [senders, whatsappUser, botDurum] = await Promise.all([
     listMailSenders(userId),
     loadWhatsAppUserConnection(userId),
+    loadBotDurum(),
   ])
 
   const preferred = senders.find((sender) => sender.varsayilan) || senders[0]
@@ -24,8 +24,9 @@ export async function loadAutomationConnectionsStatus(
     email_bagli: userSenders.length > 0 || Boolean(preferred),
     email_varsayilan: preferred?.email || null,
     whatsapp_kullanici: whatsappUser,
-    whatsapp_api_yapilandirildi: whatsAppConfigured(),
-    whatsapp_gonderim_acik: whatsAppSendEnabled(),
+    // Baileys ofis botu heartbeat'i son 90 sn içinde geldiyse "bağlı".
+    whatsapp_api_yapilandirildi: botDurum.cevrimici,
+    whatsapp_gonderim_acik: whatsAppBotEnabled(),
     mutabakat_gonderim_acik: process.env.MUTABAKAT_SEND_ENABLED !== 'false',
     otomasyon_global_acik: automationGloballyEnabled(),
   }
@@ -48,12 +49,7 @@ export async function assertAutomationReady(userId: string) {
     issues.push('WhatsApp iletişim numaranızı bağlayın.')
   }
   if (!connections.whatsapp_api_yapilandirildi) {
-    issues.push('WhatsApp API (WHATSAPP_ACCESS_TOKEN) yapılandırılmalıdır.')
-  }
-  if (!hatirlatmaTemplateConfigured()) {
-    issues.push(
-      'Soğuk WhatsApp hatırlatması için WHATSAPP_HATIRLATMA_TEMPLATE (Meta onaylı şablon) ayarlanmalıdır.'
-    )
+    issues.push('Ofis WhatsApp botu çevrimiçi değil (son heartbeat yok). Bot PC\'sini kontrol edin.')
   }
 
   const activeRules = settings.kurallar.filter((rule) => rule.aktif)

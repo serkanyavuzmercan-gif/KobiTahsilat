@@ -176,8 +176,8 @@ export function HatirlatmaClient({
 
       <p className="text-xs text-slate-500">
         <MessageCircle size={14} className="mr-1 inline text-emerald-600" />
-        WhatsApp gönderimi Meta Cloud API üzerinden yapılır. Canlı gönderim için işletme hesabı ve
-        onaylı numara gerekir.
+        WhatsApp gönderimi ss ile ortak Baileys ofis botu üzerinden yapılır: mesaj kuyruğa alınır,
+        ofis PC&apos;sindeki bot sırayla gönderir (Meta Cloud API kullanılmaz).
       </p>
     </div>
   )

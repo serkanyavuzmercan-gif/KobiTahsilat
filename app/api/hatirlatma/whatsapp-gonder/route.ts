@@ -6,19 +6,16 @@ import { buildHatirlatmaMessage } from '@/lib/hatirlatma'
 import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
 import { HATIRLATMA_LOG_KAYNAK, WHATSAPP_SEND_TIP } from '@/lib/hatirlatma-log'
 import { formatPhoneDisplay, formatPhoneWhatsApp, isMobileTurkey } from '@/lib/phone'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
-import {
-  hatirlatmaDeliveryHint,
-  sendHatirlatmaWhatsApp,
-} from '@/lib/hatirlatma-whatsapp'
-import { whatsAppSendEnabled, WHATSAPP_SENDER_LABEL } from '@/lib/whatsapp'
+import { hatirlatmaDeliveryHint, sendHatirlatmaWhatsApp } from '@/lib/hatirlatma-whatsapp'
+import { whatsAppBotEnabled } from '@/lib/whatsapp-kuyruk'
+import { WHATSAPP_SENDER_LABEL } from '@/lib/whatsapp-constants'
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: Request) {
   try {
-    if (!whatsAppSendEnabled()) {
+    if (!whatsAppBotEnabled()) {
       return NextResponse.json(
         { success: false, error: 'WhatsApp gönderimi şu anda kapalı.' },
         { status: 403 }
@@ -69,6 +66,7 @@ export async function POST(request: Request) {
 
     const sentAt = new Date().toISOString()
 
+    // Baileys kuyruğuna DM olarak ekle (ofis botu gönderir).
     const result = await sendHatirlatmaWhatsApp({
       to: formatPhoneWhatsApp(cari.telefon),
       cariKod: cari.cari_kod,
@@ -76,10 +74,11 @@ export async function POST(request: Request) {
       cari,
     })
 
+    // Gönderim geçmişi: kuyruk id'sini body_preview'a JSON olarak sakla (durum korelasyonu için).
     const logResult = await insertMailGonderimLog({
       mail_to: cari.telefon,
       subject: defaultMessage.ozet,
-      body_preview: messageBody.slice(0, 240),
+      body_preview: JSON.stringify({ kuyruk_id: result.kuyrukId, mesaj: messageBody.slice(0, 200) }),
       kaynak: HATIRLATMA_LOG_KAYNAK,
       ilgili_id: cari.cari_kod,
       ilgili_tip: WHATSAPP_SEND_TIP,
@@ -92,22 +91,15 @@ export async function POST(request: Request) {
 
     const logWarning = logResult.ok
       ? ''
-      : ' (Meta kabul etti; gönderim geçmişi kaydı yazılamadı.)'
-
-    const modeLabel =
-      result.mode === 'template'
-        ? `Meta onaylı şablon (${result.templateName}/${result.templateLanguage})`
-        : 'serbest metin (24 saat penceresi)'
+      : ' (Kuyruğa alındı; gönderim geçmişi kaydı yazılamadı.)'
 
     return NextResponse.json({
       success: true,
-      message: `WhatsApp isteği ${formatPhoneDisplay(cari.telefon)} numarasına iletildi (${modeLabel}). Gönderen: ${WHATSAPP_SENDER_LABEL}.${logWarning}`,
+      message: `WhatsApp mesajı kuyruğa alındı → ${formatPhoneDisplay(cari.telefon)}. Gönderen: ${WHATSAPP_SENDER_LABEL}.${logWarning}`,
       sentAt,
-      providerId: result.id,
-      messageStatus: result.messageStatus,
-      sendMode: result.mode,
-      templateName: result.templateName || null,
-      deliveryHint: hatirlatmaDeliveryHint(result.mode),
+      kuyrukId: result.kuyrukId,
+      jid: result.jid,
+      deliveryHint: hatirlatmaDeliveryHint(),
       gonderimSayisi: cari.whatsapp_gonderim_sayisi + (logResult.ok ? 1 : 0),
       logKaydedildi: logResult.ok,
     })

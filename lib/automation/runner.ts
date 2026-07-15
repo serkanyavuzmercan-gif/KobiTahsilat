@@ -13,7 +13,7 @@ import { loadHatirlatmaCariler } from '../hatirlatma-data'
 import { loadMutabakatCariler } from '../mutabakat-data'
 import { formatPhoneWhatsApp } from '../phone'
 import { sendHatirlatmaWhatsApp } from '../hatirlatma-whatsapp'
-import { whatsAppSendEnabled } from '../whatsapp'
+import { whatsAppBotEnabled } from '../whatsapp-kuyruk'
 import {
   AUTOMATION_EMAIL_SEND_TIP,
   AUTOMATION_LOG_KAYNAK,
@@ -114,7 +114,7 @@ async function sendAutomationWhatsApp(
   cariKod: string,
   taslakMod: boolean
 ): Promise<void> {
-  if (!whatsAppSendEnabled()) throw new Error('WhatsApp gönderimi kapalı.')
+  if (!whatsAppBotEnabled()) throw new Error('WhatsApp gönderimi kapalı.')
 
   const cariler = await loadHatirlatmaCariler()
   const cari = cariler.find((item) => item.cari_kod === cariKod)
@@ -127,7 +127,7 @@ async function sendAutomationWhatsApp(
   if (taslakMod) return
 
   const sentAt = new Date().toISOString()
-  await sendHatirlatmaWhatsApp({
+  const kuyruk = await sendHatirlatmaWhatsApp({
     to: formatPhoneWhatsApp(cari.telefon),
     cariKod: cari.cari_kod,
     body: message.body,
@@ -138,7 +138,7 @@ async function sendAutomationWhatsApp(
   await admin.from('mail_gonderim_log').insert({
     mail_to: cari.telefon,
     subject: message.ozet,
-    body_preview: message.body.slice(0, 240),
+    body_preview: JSON.stringify({ kuyruk_id: kuyruk.kuyrukId, mesaj: message.body.slice(0, 200) }),
     kaynak: AUTOMATION_LOG_KAYNAK,
     ilgili_id: cari.cari_kod,
     ilgili_tip: AUTOMATION_WHATSAPP_SEND_TIP,

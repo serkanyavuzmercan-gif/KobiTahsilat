@@ -1,7 +1,7 @@
 import { HatirlatmaClient } from '@/components/hatirlatma-client'
 import { loadSnapshot } from '@/lib/data'
 import { loadHatirlatmaCariler } from '@/lib/hatirlatma-data'
-import { whatsAppSendEnabled } from '@/lib/whatsapp'
+import { whatsAppBotEnabled } from '@/lib/whatsapp-kuyruk'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,7 +12,7 @@ export default async function HatirlatmaPage() {
     <HatirlatmaClient
       cariler={cariler}
       snapshotTarihi={snapshot.snapshot_tarihi}
-      sendEnabled={whatsAppSendEnabled()}
+      sendEnabled={whatsAppBotEnabled()}
     />
   )
 }
