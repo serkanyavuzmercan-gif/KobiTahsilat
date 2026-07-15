@@ -20,8 +20,9 @@ import { parsePhones } from './phone'
  *   - `vade_takip_tahsilat`  → açık alacak evrakları (günlük snapshot, Mikro sync)
  *   - `cariler`              → firma adı, e-posta, telefon, ödeme vadesi
  *
- * İşaret kuralı ss ile aynı: bakiye>0 = alacağımız (tahsilat). 128, ŞAHLAN ve AYGÜN
- * hariç tutulması Mikro sync tarafında yapıldığı için bu tabloda zaten uygulanmıştır.
+ * İşaret kuralı ss ile aynı: bakiye>0 = alacağımız (tahsilat). Yalnızca 120* müşteriler dahil;
+ * 320* tedarikçiler (fazla ödeme yüzünden borçlu görünebilir) hem Mikro sync'te hem okuma
+ * tarafında hariç tutulur. ŞAHLAN (120.01.0001) ve AYGÜN SARI (120.01.4249) normal müşteridir, dahildir.
  *
  * Supabase erişilemezse (servis rolü tanımlı değil / sorgu boş) `data/tahsilat_snapshot.json`
  * yedeğine düşülür; böylece yerelde anahtarsız `npm run dev` de çalışır.
@@ -177,6 +178,9 @@ async function fetchTahsilatRows(admin: AdminClient, tarih: string): Promise<Tah
       .from('vade_takip_tahsilat')
       .select('cari_kod,firma_adi,evrak_no,belge_no,evrak_tarihi,vade_tarihi,tutar,temsilci')
       .eq('snapshot_tarihi', tarih)
+      // 320* = tedarikçiler (Satıcılar). Fazla ödeme yaptığımızda bize borçlu görünüp
+      // yanlışlıkla tahsilat listesine düşerler; okuma tarafında da hariç tutulur.
+      .not('cari_kod', 'ilike', '320%')
       .order('id', { ascending: true })
       .range(from, from + PAGE - 1)
     if (error) throw error
@@ -315,7 +319,7 @@ async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
     sourced_at: new Date().toISOString(),
     source: 'Supabase · vade_takip_tahsilat (canlı)',
     snapshot_tarihi: snapshotTarihi,
-    note: 'Canlı Supabase: vade_takip_tahsilat açık alacak evrakları + cariler kartı. Bakiye>0 alacağımız; 128/ŞAHLAN/AYGÜN Mikro sync tarafında hariç.',
+    note: 'Canlı Supabase: vade_takip_tahsilat açık alacak evrakları + cariler kartı. Bakiye>0 alacağımız; yalnızca 120* müşteriler, 320* tedarikçiler hariç. ŞAHLAN/AYGÜN dahil.',
     cari_sayisi: cariler.length,
     toplam_alacak: 0,
     toplam_gecikmis: 0,
