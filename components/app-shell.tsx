@@ -6,10 +6,15 @@ import { AppNav } from './app-nav'
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const customerPage = pathname.startsWith('/mutabakat/itiraz/')
-  const barePage = customerPage || pathname === '/login'
 
-  if (barePage) {
+  // Login sayfası kendi tam ekran (ss ile aynı) tasarımını yönetir; sarmalama yok.
+  if (pathname === '/login') {
+    return <>{children}</>
+  }
+
+  const customerPage = pathname.startsWith('/mutabakat/itiraz/')
+
+  if (customerPage) {
     return (
       <div className="flex min-h-screen flex-col bg-slate-50">
         <main className="flex-1 px-4 py-6">{children}</main>

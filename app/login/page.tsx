@@ -1,10 +1,9 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
-import { Eye, EyeOff, LoaderCircle, LockKeyhole } from 'lucide-react'
-import { AppBrand } from '@/components/app-brand'
-import { Button } from '@/components/ui/button'
+import { AlertTriangle, Eye, EyeOff, KeyRound, Lock, User } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import './login.css'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
@@ -35,6 +34,7 @@ export default function LoginPage() {
             ? 'Geçersiz kullanıcı adı veya şifre.'
             : loginError?.message || 'Giriş yapılamadı.'
         )
+        setLoading(false)
         return
       }
 
@@ -48,85 +48,105 @@ export default function LoginPage() {
       if (personelError || !personel) {
         await supabase.auth.signOut()
         setError('Personel kaydı bulunamadı.')
+        setLoading(false)
         return
       }
 
       if (!personel.aktif || !personel.erisim_servis) {
         await supabase.auth.signOut()
         setError('Bu sisteme erişim yetkiniz yok.')
+        setLoading(false)
         return
       }
 
       window.location.href = '/'
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Giriş sırasında hata oluştu.')
-    } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-md items-center">
-      <section className="card w-full p-7 shadow-lg">
-        <div className="mb-6 flex flex-col items-center text-center">
-          <AppBrand href="/login" />
-          <div className="mx-auto mt-4 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 text-brand-700">
-            <LockKeyhole size={20} />
+    <div className="login-container">
+      {/* Animated background elements */}
+      <div className="floating-shapes">
+        <div className="shape shape-1"></div>
+        <div className="shape shape-2"></div>
+        <div className="shape shape-3"></div>
+        <div className="shape shape-4"></div>
+      </div>
+
+      <div className="login-card">
+        {/* Header with logo */}
+        <div className="login-header">
+          <div className="logo-container">
+            <div className="logo-glow"></div>
+            <img
+              src="https://files.cdn-files-a.com/uploads/5644137/400_6865986816fbc.png"
+              alt="Hidroteknik Logo"
+              className="logo"
+            />
           </div>
-          <p className="mt-3 text-sm text-slate-500">
-            Hidroteknik hesabınızla güvenli giriş yapın
-          </p>
+          <h1 className="login-title">
+            <span className="gradient-text">KobiTahsilat</span>
+          </h1>
+          <p className="login-subtitle">Açık alacaklarınızı tek ekrandan yönetin</p>
         </div>
 
+        {/* Error message */}
         {error && (
-          <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-            {error}
+          <div className="error-message" style={{ display: 'flex' }}>
+            <AlertTriangle size={18} />
+            <span>{error}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="username" className="mb-1 block text-sm font-medium text-slate-700">
-              Kullanıcı adı
+        {/* Login form */}
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label htmlFor="username" className="form-label">
+              <User size={14} />
+              Kullanıcı Adı
             </label>
-            <div className="flex rounded-lg border border-slate-300 bg-white focus-within:ring-2 focus-within:ring-brand-500">
+            <div className="input-wrapper">
               <input
+                type="text"
                 id="username"
+                name="username"
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
+                required
                 autoComplete="username"
                 autoCapitalize="none"
-                required
-                className="min-w-0 flex-1 rounded-l-lg px-3 py-2.5 text-sm outline-none"
+                autoCorrect="off"
                 placeholder="kullanici.adi"
               />
               {!username.includes('@') && (
-                <span className="flex items-center border-l border-slate-200 px-2 text-xs text-slate-400">
-                  @hidroteknik.com.tr
-                </span>
+                <span className="domain-suffix">@hidroteknik.com.tr</span>
               )}
             </div>
           </div>
 
-          <div>
-            <label htmlFor="password" className="mb-1 block text-sm font-medium text-slate-700">
+          <div className="form-group">
+            <label htmlFor="password" className="form-label">
+              <Lock size={14} />
               Şifre
             </label>
-            <div className="flex rounded-lg border border-slate-300 bg-white focus-within:ring-2 focus-within:ring-brand-500">
+            <div className="input-wrapper">
               <input
-                id="password"
                 type={showPassword ? 'text' : 'password'}
+                id="password"
+                name="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                autoComplete="current-password"
                 required
-                className="min-w-0 flex-1 rounded-l-lg px-3 py-2.5 text-sm outline-none"
-                placeholder="Şifreniz"
+                autoComplete="current-password"
+                placeholder="Şifrenizi girin"
               />
               <button
                 type="button"
+                className="password-toggle"
                 onClick={() => setShowPassword((value) => !value)}
-                className="px-3 text-slate-500 hover:text-slate-800"
                 aria-label={showPassword ? 'Şifreyi gizle' : 'Şifreyi göster'}
               >
                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -134,15 +154,42 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <Button type="submit" disabled={loading} className="w-full">
-            {loading ? <LoaderCircle className="animate-spin" size={20} /> : 'Giriş Yap'}
-          </Button>
+          <button type="submit" className="login-btn" disabled={loading}>
+            <span className="btn-text" style={{ opacity: loading ? 0 : 1 }}>
+              Giriş Yap
+            </span>
+            {loading && (
+              <div className="btn-loader">
+                <div className="spinner"></div>
+              </div>
+            )}
+          </button>
+
+          <p className="text-xs text-gray-400 mt-2 text-center">
+            Oturumunuz 30 gün süreyle saklanır.
+          </p>
+
+          {/* Forgot Password Link */}
+          <div className="forgot-password">
+            <button
+              type="button"
+              className="forgot-password-link"
+              onClick={() => {
+                window.open('https://crm.hidroteknik.com.tr', '_blank')
+              }}
+            >
+              <KeyRound size={14} />
+              Şifremi Unuttum
+            </button>
+          </div>
         </form>
 
-        <p className="mt-5 text-center text-xs text-slate-400">
-          ss ile aynı Supabase Auth ve personel yetkileri kullanılır.
-        </p>
-      </section>
+        {/* Footer */}
+        <div className="login-footer">
+          <p>ss ile aynı Supabase Auth ve personel yetkileri kullanılır.</p>
+          <p style={{ marginTop: 6 }}>Hidroteknik A.Ş. © 2026</p>
+        </div>
+      </div>
     </div>
   )
 }
