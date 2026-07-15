@@ -1,7 +1,7 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import CarilerClient from '@/components/cariler-client'
 import { YanitlarPanel } from '@/components/yanitlar-panel'
 import type { CariBakiye, CariYanitKayit, CariYanitOzet } from '@/lib/types'
@@ -19,9 +19,10 @@ export function CarilerPageClient({
   yanitlar: Record<string, CariYanitOzet>
   inbox: CariYanitKayit[]
 }) {
-  const router = useRouter()
   const searchParams = useSearchParams()
-  const tab = searchParams.get('tab') === 'yanitlar' ? 'yanitlar' : 'liste'
+  const [tab, setTabState] = useState<'liste' | 'yanitlar'>(
+    searchParams.get('tab') === 'yanitlar' ? 'yanitlar' : 'liste'
+  )
 
   const [yanitState, setYanitState] = useState({ yanitlar, inbox })
 
@@ -34,18 +35,21 @@ export function CarilerPageClient({
     [yanitState.inbox]
   )
 
-  const refreshYanitlar = useCallback(() => {
-    router.refresh()
-  }, [router])
-
+  // Sekme geçişi tamamen client-side: sunucuyu yeniden tetiklemez (hızlı). URL yalnız
+  // history ile güncellenir (paylaşılabilirlik korunur, Next navigasyonu tetiklenmez).
   function setTab(next: 'liste' | 'yanitlar') {
-    const params = new URLSearchParams(searchParams.toString())
-    if (next === 'yanitlar') params.set('tab', 'yanitlar')
-    else params.delete('tab')
-    const query = params.toString()
-    router.replace(query ? `/cariler?${query}` : '/cariler')
+    setTabState(next)
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      if (next === 'yanitlar') params.set('tab', 'yanitlar')
+      else params.delete('tab')
+      const query = params.toString()
+      window.history.replaceState(null, '', query ? `/cariler?${query}` : '/cariler')
+    }
   }
 
+  // Okundu işaretleme yalnız optimistik yapılır; router.refresh YOK (aksi halde sunucu
+  // tüm veriyi baştan çeker ve rozet eski sayıya geri döner). Kalıcı kayıt DB'ye yazılır.
   function handleMarkedRead(yanitIds: string[]) {
     const idSet = new Set(yanitIds)
     setYanitState((current) => {
@@ -72,7 +76,6 @@ export function CarilerPageClient({
       )
       return { inbox, yanitlar }
     })
-    refreshYanitlar()
   }
 
   return (
