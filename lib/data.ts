@@ -341,7 +341,38 @@ async function fetchContactEnrichment(
     }
   }
 
+  // 5) cari_email_web (cari_kod) — internetten (Tavily) bulunan e-postalar
+  if (cariKods.length) {
+    const web = await selectInChunks<{ cari_kod: string; email: string | null }>(
+      cariKods,
+      (slice) => admin.from('cari_email_web').select('cari_kod,email').in('cari_kod', slice)
+    )
+    for (const r of web) addEmail(String(r.cari_kod), r.email)
+  }
+
   return result
+}
+
+/** Kullanıcının "yanlış" diye gizlediği e-postalar (kaynak fark etmez, elenir). */
+async function fetchGizliEmails(
+  admin: AdminClient,
+  cariKods: string[]
+): Promise<Map<string, Set<string>>> {
+  const map = new Map<string, Set<string>>()
+  if (!cariKods.length) return map
+  const rows = await selectInChunks<{ cari_kod: string; email: string | null }>(
+    cariKods,
+    (slice) => admin.from('cari_email_gizli').select('cari_kod,email').in('cari_kod', slice)
+  )
+  for (const r of rows) {
+    const kod = String(r.cari_kod)
+    const email = String(r.email || '').trim().toLowerCase()
+    if (!email) continue
+    const set = map.get(kod) || new Set<string>()
+    set.add(email)
+    map.set(kod, set)
+  }
+  return map
 }
 
 async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
@@ -370,6 +401,7 @@ async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
   const cariMaster = await fetchCariMaster(admin, [...grouped.keys()])
   const adaylar = loadAdaylarOverlay()
   const iletisim = await fetchContactEnrichment(admin, [...cariMaster.values()])
+  const gizliEmailler = await fetchGizliEmails(admin, [...grouped.keys()])
 
   const cariler: CariBakiye[] = []
   for (const [cariKod, evraklar] of grouped) {
@@ -405,11 +437,15 @@ async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
       (a.vade_tarihi || '9999').localeCompare(b.vade_tarihi || '9999')
     )
 
-    // Master (cari kartı) önce; eksikleri Faz-1 zenginleştirme kaynaklarıyla tamamla.
+    // Master (cari kartı) önce; eksikleri Faz-1 + web zenginleştirme kaynaklarıyla tamamla.
+    // Kullanıcının gizlediği ("yanlış" diye sildiği) e-postalar her kaynaktan elenir.
     const enr = iletisim.get(cariKod)
-    const masterEmails = parseEmails(master?.email)
+    const gizli = gizliEmailler.get(cariKod)
+    const masterEmails = parseEmails(master?.email).filter((e) => !gizli?.has(e))
     const masterPhones = parsePhones(master?.telefon)
-    const emails = parseEmails([master?.email, ...(enr?.emails || [])].filter(Boolean).join(';'))
+    const emails = parseEmails([master?.email, ...(enr?.emails || [])].filter(Boolean).join(';')).filter(
+      (e) => !gizli?.has(e)
+    )
     const phones = parsePhones([master?.telefon, ...(enr?.telefonlar || [])].filter(Boolean).join(';'))
     const odemeVadesi = master?.odeme_vadesi || master?.odeme_plani_adi || null
     const vadeGun =

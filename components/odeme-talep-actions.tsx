@@ -52,8 +52,23 @@ export function OdemeTalepActions({
   // WhatsApp yalnız cep (mobil) numaralara gider.
   const mobilNumaralar = cari.telefon_numaralari.filter(isMobileTurkey)
   // Varsayılan: yalnız ilk (birincil) e-posta / numara seçili. Hepsine birden ASLA gitmez.
+  const [emailAdresleri, setEmailAdresleri] = useState<string[]>(cari.email_adresleri)
   const [alicilar, setAlicilar] = useState<string[]>(cari.email_adresleri.slice(0, 1))
   const [numaralar, setNumaralar] = useState<string[]>(mobilNumaralar.slice(0, 1))
+
+  async function adresSil(email: string) {
+    setEmailAdresleri((list) => list.filter((e) => e !== email))
+    setAlicilar((list) => list.filter((e) => e !== email))
+    try {
+      await fetch('/api/cari-email/gizle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cariKod: cari.cari_kod, email }),
+      })
+    } catch {
+      /* optimistik */
+    }
+  }
 
   const hasPhone = mobilNumaralar.length > 0
   const hasEmail = cari.email_adresleri.length > 0
@@ -62,7 +77,7 @@ export function OdemeTalepActions({
   function acPencere(secilenKanal: Kanal) {
     setError('')
     setDone('')
-    setAlicilar(cari.email_adresleri.slice(0, 1))
+    setAlicilar(emailAdresleri.slice(0, 1))
     setNumaralar(mobilNumaralar.slice(0, 1))
     setBody(buildOdemeTalepMesaj(cari, snapshotTarihi, pdfUrl).body)
     setKanal(secilenKanal)
@@ -203,9 +218,10 @@ export function OdemeTalepActions({
                 )}
                 {showEmail && (
                   <RecipientPicker
-                    addresses={cari.email_adresleri}
+                    addresses={emailAdresleri}
                     selected={alicilar}
                     onChange={setAlicilar}
+                    onRemove={adresSil}
                   />
                 )}
               </div>

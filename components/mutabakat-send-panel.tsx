@@ -29,8 +29,23 @@ export function MutabakatSendPanel({
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const [adresler, setAdresler] = useState<string[]>(emailAdresleri)
   // Varsayılan: yalnız ilk (birincil) adres seçili. Hepsine birden ASLA gitmez.
   const [alicilar, setAlicilar] = useState<string[]>(emailAdresleri.slice(0, 1))
+
+  async function adresSil(email: string) {
+    setAdresler((list) => list.filter((e) => e !== email))
+    setAlicilar((list) => list.filter((e) => e !== email))
+    try {
+      await fetch('/api/cari-email/gizle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cariKod, email }),
+      })
+    } catch {
+      /* optimistik; sonraki yüklemede zaten elenir */
+    }
+  }
 
   const gecmisTarih = mutabakatTarihi !== bugun
   const canSend = sendEnabled && hasRecipient && !sendBlocked && alicilar.length > 0
@@ -103,9 +118,14 @@ export function MutabakatSendPanel({
         </p>
       </div>
 
-      {emailAdresleri.length > 0 && (
+      {adresler.length > 0 && (
         <div className="rounded-lg border border-slate-200 bg-white p-2.5">
-          <RecipientPicker addresses={emailAdresleri} selected={alicilar} onChange={setAlicilar} />
+          <RecipientPicker
+            addresses={adresler}
+            selected={alicilar}
+            onChange={setAlicilar}
+            onRemove={adresSil}
+          />
         </div>
       )}
 

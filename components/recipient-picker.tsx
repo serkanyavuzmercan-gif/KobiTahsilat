@@ -1,6 +1,6 @@
 'use client'
 
-import { Mail, MessageCircle } from 'lucide-react'
+import { Mail, MessageCircle, X } from 'lucide-react'
 
 /**
  * Alıcı seçici (e-posta veya telefon). Cari'de keşfedilen tüm adresleri/numaraları listeler;
@@ -13,24 +13,36 @@ export function RecipientPicker({
   onChange,
   kind = 'email',
   format = (v) => v,
+  onRemove,
 }: {
   addresses: string[]
   selected: string[]
   onChange: (next: string[]) => void
   kind?: 'email' | 'phone'
   format?: (v: string) => string
+  onRemove?: (addr: string) => void
 }) {
   if (addresses.length === 0) return null
   const Icon = kind === 'phone' ? MessageCircle : Mail
   const iconClass = kind === 'phone' ? 'text-emerald-600' : 'text-brand-600'
   const noun = kind === 'phone' ? 'Numara' : 'Alıcı'
 
-  // Tek adres varsa seçim gereksiz; sadece göster.
+  // Tek adres varsa seçim gereksiz; sadece göster (silme yine mümkün).
   if (addresses.length === 1) {
     return (
       <div className="flex items-center gap-1.5 text-xs text-slate-600">
         <Icon size={13} className={iconClass} />
         <span className="font-medium">{format(addresses[0])}</span>
+        {onRemove && (
+          <button
+            type="button"
+            onClick={() => onRemove(addresses[0])}
+            title="Bu adresi kalıcı olarak sil"
+            className="ml-auto rounded p-0.5 text-slate-300 hover:bg-red-50 hover:text-red-600"
+          >
+            <X size={13} />
+          </button>
+        )}
       </div>
     )
   }
@@ -67,6 +79,19 @@ export function RecipientPicker({
               <span className="ml-auto shrink-0 rounded bg-brand-50 px-1.5 py-0.5 text-[10px] font-medium text-brand-600">
                 varsayılan
               </span>
+            )}
+            {onRemove && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault()
+                  onRemove(addr)
+                }}
+                title="Bu adresi kalıcı olarak sil"
+                className={`${index === 0 ? '' : 'ml-auto'} shrink-0 rounded p-0.5 text-slate-300 hover:bg-red-50 hover:text-red-600`}
+              >
+                <X size={13} />
+              </button>
             )}
           </label>
         ))}
