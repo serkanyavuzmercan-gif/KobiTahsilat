@@ -8,6 +8,7 @@ import { HatirlatmaSendPanel } from '@/components/hatirlatma-send-panel'
 import { loadSnapshot } from '@/lib/data'
 import { buildHatirlatmaMessage } from '@/lib/hatirlatma'
 import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
+import { loadHatirlatmaWhatsAppContext } from '@/lib/hatirlatma-whatsapp'
 import { formatPhoneDisplay, isMobileTurkey } from '@/lib/phone'
 import { formatTL } from '@/lib/types'
 import { whatsAppSendEnabled } from '@/lib/whatsapp'
@@ -26,6 +27,7 @@ export default async function HatirlatmaPreviewPage({
   const snapshot = loadSnapshot()
   const message = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
   const sendEnabled = whatsAppSendEnabled()
+  const whatsappContext = await loadHatirlatmaWhatsAppContext(cari.telefon, cari.cari_kod)
 
   return (
     <HatirlatmaMessageProvider defaultBody={message.body}>
@@ -89,6 +91,7 @@ export default async function HatirlatmaPreviewPage({
                   isMobile={isMobileTurkey(cari.telefon)}
                   sendEnabled={sendEnabled}
                   gonderimSayisi={cari.whatsapp_gonderim_sayisi}
+                  whatsappContext={whatsappContext}
                 />
               </div>
             </div>

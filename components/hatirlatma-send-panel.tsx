@@ -5,8 +5,18 @@ import { useRouter } from 'next/navigation'
 import { CheckCircle2, LoaderCircle, Send, TriangleAlert } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useHatirlatmaMessage } from '@/components/hatirlatma-message-context'
-import { WHATSAPP_SENDER_LABEL } from '@/lib/whatsapp-constants'
+import { WHATSAPP_SENDER_LABEL, ssWhatsAppBusinessLink } from '@/lib/whatsapp-constants'
 import { formatPhoneDisplay } from '@/lib/phone'
+
+type HatirlatmaWhatsAppContext = {
+  pencereAcik: boolean
+  ssOturumVar: boolean
+  ssPencereAcik: boolean
+  templateConfigured: boolean
+  templateName: string | null
+  templateLanguage: string | null
+  gonderimModu: 'text' | 'template' | 'blocked'
+}
 
 export function HatirlatmaSendPanel({
   cariKod,
@@ -14,12 +24,14 @@ export function HatirlatmaSendPanel({
   isMobile,
   sendEnabled,
   gonderimSayisi,
+  whatsappContext,
 }: {
   cariKod: string
   hasPhone: boolean
   isMobile: boolean
   sendEnabled: boolean
   gonderimSayisi: number
+  whatsappContext?: HatirlatmaWhatsAppContext
 }) {
   const router = useRouter()
   const { body: messageBody } = useHatirlatmaMessage()
@@ -33,7 +45,9 @@ export function HatirlatmaSendPanel({
     sendMode?: 'text' | 'template' | null
   } | null>(null)
 
-  const canSend = sendEnabled && hasPhone && isMobile && messageBody.trim().length > 0
+  const blocked = whatsappContext?.gonderimModu === 'blocked'
+  const canSend =
+    sendEnabled && hasPhone && isMobile && messageBody.trim().length > 0 && !blocked
 
   async function sendMessage() {
     setLoading(true)
@@ -94,6 +108,46 @@ export function HatirlatmaSendPanel({
       <p className="text-xs text-slate-500">
         Daha önce gönderilen: <strong>{sentCount}</strong> mesaj
       </p>
+
+      {whatsappContext ? (
+        <div className="rounded-lg border border-slate-200 bg-white p-3 text-xs text-slate-600">
+          <p className="font-medium text-slate-800">SS sohbet durumu</p>
+          <ul className="mt-2 space-y-1">
+            <li>
+              {whatsappContext.ssOturumVar
+                ? '✓ Bu numara SS/tawkto sohbetinde kayıtlı'
+                : '✗ Bu numara hiç Hidroteknik WhatsApp hattına yazmamış'}
+            </li>
+            <li>
+              {whatsappContext.pencereAcik
+                ? '✓ 24 saat penceresi açık → serbest metin (SS gibi)'
+                : '✗ 24 saat penceresi kapalı → Meta şablonu gerekir'}
+            </li>
+            <li>
+              {whatsappContext.templateConfigured
+                ? `✓ Şablon: ${whatsappContext.templateName} (${whatsappContext.templateLanguage})`
+                : '✗ WHATSAPP_HATIRLATMA_TEMPLATE tanımlı değil'}
+            </li>
+          </ul>
+          {blocked ? (
+            <p className="mt-2 text-amber-800">
+              SS yalnızca müşteri yazdıktan sonra yanıt gönderir. Soğuk hatırlatma için Meta
+              Business Manager&apos;da şablon onaylatın veya müşteriyi önce iş hattına yazmaya
+              yönlendirin.
+            </p>
+          ) : null}
+          {!whatsappContext.pencereAcik ? (
+            <a
+              href={ssWhatsAppBusinessLink('Merhaba, cari hesabım hakkında bilgi almak istiyorum.')}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 inline-block text-emerald-700 underline"
+            >
+              Müşteri için WhatsApp başlatma linki
+            </a>
+          ) : null}
+        </div>
+      ) : null}
 
       <Button
         variant="success"

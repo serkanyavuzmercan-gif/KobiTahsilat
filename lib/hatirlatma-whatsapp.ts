@@ -5,6 +5,7 @@ import type { CariBakiye } from './types'
 import { formatTL } from './types'
 import { formatPhoneWhatsApp } from './phone'
 import { createAdminClient } from './supabase/admin'
+import { loadSsWhatsAppSession } from './whatsapp-ss'
 import {
   sendWhatsApp,
   sendWhatsAppTemplate,
@@ -63,6 +64,7 @@ export function hatirlatmaTemplateConfigured() {
 /** Müşteri son 24 saatte WhatsApp'tan yazdıysa serbest metin gönderilebilir. */
 export async function hasWhatsAppConversationWindow(
   cariKod: string,
+  phone?: string | null,
   now = new Date()
 ): Promise<boolean> {
   const admin = createAdminClient()
@@ -76,7 +78,30 @@ export async function hasWhatsAppConversationWindow(
     .limit(1)
 
   if (error) throw error
-  return (data?.length ?? 0) > 0
+  if ((data?.length ?? 0) > 0) return true
+
+  if (!phone) return false
+
+  const ssSession = await loadSsWhatsAppSession(phone, now)
+  return ssSession.pencereAcik
+}
+
+export async function loadHatirlatmaWhatsAppContext(phone: string | null, cariKod: string) {
+  const templateConfigured = hatirlatmaTemplateConfigured()
+  const templateName = hatirlatmaTemplateName()
+  const templateLanguage = hatirlatmaTemplateLanguage()
+  const ssSession = phone ? await loadSsWhatsAppSession(phone) : null
+  const pencereAcik = await hasWhatsAppConversationWindow(cariKod, phone)
+
+  return {
+    pencereAcik,
+    ssOturumVar: ssSession?.oturumVar ?? false,
+    ssPencereAcik: ssSession?.pencereAcik ?? false,
+    templateConfigured,
+    templateName: templateConfigured ? templateName : null,
+    templateLanguage: templateConfigured ? templateLanguage : null,
+    gonderimModu: pencereAcik ? ('text' as const) : templateConfigured ? ('template' as const) : ('blocked' as const),
+  }
 }
 
 function buildTemplateComponents(params: string[]): WhatsAppTemplateComponent[] {
@@ -98,7 +123,7 @@ export async function sendHatirlatmaWhatsApp(options: {
   const body = options.body.trim()
   if (!body) throw new Error('Mesaj metni boş olamaz.')
 
-  const inWindow = await hasWhatsAppConversationWindow(options.cariKod)
+  const inWindow = await hasWhatsAppConversationWindow(options.cariKod, options.to)
   if (inWindow) {
     const result = await sendWhatsApp({ to, body })
     return { ...result, mode: 'text' }
@@ -107,7 +132,7 @@ export async function sendHatirlatmaWhatsApp(options: {
   const templateName = hatirlatmaTemplateName()
   if (!templateName) {
     throw new Error(
-      'Alıcı son 24 saatte WhatsApp yazmadığı için serbest metin teslim edilmez. Meta Business Manager\'da onaylı bir hatırlatma şablonu oluşturup WHATSAPP_HATIRLATMA_TEMPLATE ortam değişkenine şablon adını yazın.'
+      'Bu numara SS sohbetinde yok ve son 24 saatte yazmadı. SS/tawkto gibi serbest metin yalnızca müşteri önce yazınca gider; soğuk hatırlatma için Meta onaylı şablon gerekir (WHATSAPP_HATIRLATMA_TEMPLATE).'
     )
   }
 
@@ -130,7 +155,7 @@ export async function sendHatirlatmaWhatsApp(options: {
 
 export function hatirlatmaDeliveryHint(mode: HatirlatmaWhatsAppSendMode) {
   if (mode === 'text') {
-    return 'Müşteri son 24 saatte yazdığı için serbest metin gönderildi.'
+    return 'Müşteri son 24 saatte yazdığı için SS ile aynı şekilde serbest metin gönderildi.'
   }
-  return 'İlk temas veya 24 saatten uzun süre geçtiği için Meta onaylı şablon kullanıldı.'
+  return 'Müşteri henüz yazmadığı için Meta onaylı şablon kullanıldı (SS soğuk mesaj göndermez).'
 }
