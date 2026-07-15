@@ -1,6 +1,6 @@
 'use client'
 
-import { Mail, MessageCircle, X } from 'lucide-react'
+import { Check, Mail, MessageCircle, X } from 'lucide-react'
 
 /**
  * Alıcı seçici (e-posta veya telefon). Cari'de keşfedilen tüm adresleri/numaraları listeler;
@@ -60,41 +60,50 @@ export function RecipientPicker({
       <p className="text-xs font-medium text-slate-600">
         {noun} ({selected.length} seçili) — yalnız seçili{kind === 'phone' ? ' numaraya' : ' adrese'}(lere) gider
       </p>
-      <div className="max-h-36 space-y-0.5 overflow-y-auto rounded-md border border-slate-200 bg-white p-1.5">
-        {addresses.map((addr, index) => (
-          <label
-            key={addr}
-            className="flex cursor-pointer items-center gap-2 rounded px-1.5 py-1 text-xs hover:bg-slate-50"
-          >
-            <input
-              type="checkbox"
-              checked={selected.includes(addr)}
-              onChange={() => toggle(addr)}
-              className="h-3.5 w-3.5 shrink-0 accent-brand-600"
-            />
-            <span className={selected.includes(addr) ? 'text-slate-800' : 'text-slate-500'}>
-              {format(addr)}
-            </span>
-            {index === 0 && (
-              <span className="ml-auto shrink-0 rounded bg-brand-50 px-1.5 py-0.5 text-[10px] font-medium text-brand-600">
-                varsayılan
-              </span>
-            )}
-            {onRemove && (
+      <div className="max-h-40 space-y-0.5 overflow-y-auto rounded-md border border-slate-200 bg-white p-1.5">
+        {addresses.map((addr, index) => {
+          const isSel = selected.includes(addr)
+          return (
+            <div
+              key={addr}
+              className="flex items-center gap-2 rounded px-1.5 py-1 text-xs hover:bg-slate-50"
+            >
               <button
                 type="button"
-                onClick={(e) => {
-                  e.preventDefault()
-                  onRemove(addr)
-                }}
-                title="Bu adresi kalıcı olarak sil"
-                className={`${index === 0 ? '' : 'ml-auto'} shrink-0 rounded p-0.5 text-slate-300 hover:bg-red-50 hover:text-red-600`}
+                onClick={() => toggle(addr)}
+                className="flex min-w-0 flex-1 items-center gap-2 text-left"
               >
-                <X size={13} />
+                <span
+                  className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${
+                    isSel
+                      ? 'border-brand-600 bg-brand-600 text-white'
+                      : 'border-slate-300 bg-white'
+                  }`}
+                >
+                  {isSel && <Check size={11} strokeWidth={3} />}
+                </span>
+                <span className={`truncate ${isSel ? 'text-slate-800' : 'text-slate-500'}`}>
+                  {format(addr)}
+                </span>
+                {index === 0 && (
+                  <span className="shrink-0 rounded bg-brand-50 px-1.5 py-0.5 text-[10px] font-medium text-brand-600">
+                    varsayılan
+                  </span>
+                )}
               </button>
-            )}
-          </label>
-        ))}
+              {onRemove && (
+                <button
+                  type="button"
+                  onClick={() => onRemove(addr)}
+                  title="Bu adresi kalıcı olarak sil"
+                  className="shrink-0 rounded p-0.5 text-slate-300 hover:bg-red-50 hover:text-red-600"
+                >
+                  <X size={13} />
+                </button>
+              )}
+            </div>
+          )
+        })}
       </div>
     </div>
   )
