@@ -17,18 +17,17 @@ const root = path.join(__dirname, '..')
 
 loadEnv()
 
-const required = ['NEXT_PUBLIC_SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY']
-for (const key of required) {
-  if (!process.env[key]) {
-    console.error(`Eksik env: ${key}`)
-    process.exit(1)
-  }
+const hasSupabase = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY)
+if (!hasSupabase) {
+  console.warn('Supabase env eksik; SS/Gmail kaynakları atlanacak, yalnız Google Kişiler işlenecek.')
 }
 
 const snapshotPath = path.join(root, 'data', 'tahsilat_snapshot.json')
+const googleContactsPath = path.join(root, 'data', 'google-contacts.csv')
 const snapshot = JSON.parse(fs.readFileSync(snapshotPath, 'utf8'))
 const currentByCode = new Map(snapshot.cariler.map((cari) => [cari.cari_kod, cari]))
 const evidence = new Map()
+const googleContacts = loadGoogleContacts(googleContactsPath)
 
 function addEvidence(cariKod, rawEmail, kaynak, guven, tarih = null) {
   if (!currentByCode.has(cariKod)) return
@@ -50,14 +49,16 @@ function addEvidence(cariKod, rawEmail, kaynak, guven, tarih = null) {
   }
 }
 
-const [cariler, teklifler, services, mailboxes, talepler, mailThreads] = await Promise.all([
-  restAll('cariler', 'id,cari_kod,firma_adi,email'),
-  restAll('yurtici_teklif', 'teklif_no,cari_kod,cari_unvan,musteri_mail,teklif_tarihi'),
-  restAll('services', 'cari_id,customer_email,scheduled_date'),
-  restAll('teklif_talep_imap_accounts', 'email,aktif', { aktif: 'eq.true' }),
-  restAll('teklif_talep', 'id,teklif_no,mail_from,mail_subject,mail_body_preview,mail_received_at,silindi'),
-  restAll('teklif_talep_mail_thread', 'teklif_talep_id,mail_from,mail_subject,mail_body,mail_received_at,yon'),
-])
+const [cariler, teklifler, services, mailboxes, talepler, mailThreads] = hasSupabase
+  ? await Promise.all([
+      restAll('cariler', 'id,cari_kod,firma_adi,email'),
+      restAll('yurtici_teklif', 'teklif_no,cari_kod,cari_unvan,musteri_mail,teklif_tarihi'),
+      restAll('services', 'cari_id,customer_email,scheduled_date'),
+      restAll('teklif_talep_imap_accounts', 'email,aktif', { aktif: 'eq.true' }),
+      restAll('teklif_talep', 'id,teklif_no,mail_from,mail_subject,mail_body_preview,mail_received_at,silindi'),
+      restAll('teklif_talep_mail_thread', 'teklif_talep_id,mail_from,mail_subject,mail_body,mail_received_at,yon'),
+    ])
+  : [[], [], [], [], [], []]
 
 const codeByCariId = new Map()
 for (const row of cariler) {
@@ -127,6 +128,37 @@ for (const cari of snapshot.cariler) {
 const missingBeforeGmail = snapshot.cariler.filter((cari) => !cari.email)
 let gmailScanned = talepler.length > 0
 let gmailCandidateCount = 0
+let googleContactsMatched = 0
+let googleContactsPrimary = 0
+
+const googleMatches = matchGoogleContactsCandidates(googleContacts, snapshot.cariler)
+for (const [cariKod, candidates] of googleMatches) {
+  const cari = currentByCode.get(cariKod)
+  if (!cari) continue
+  const existing = new Set((cari.email_adaylari || []).map((item) => item.email))
+  const sorted = candidates.sort(sortEvidence)
+
+  for (const candidate of sorted.slice(0, 5)) {
+    if (existing.has(candidate.email)) continue
+    if (!cari.email && candidate.guven === 'yuksek' && candidate === sorted[0]) {
+      cari.email = candidate.email
+      cari.email_kaynagi = 'Google Kişiler'
+      cari.email_guven = 'yuksek'
+      googleContactsPrimary++
+    } else if (candidate.email !== cari.email) {
+      cari.email_adaylari.push(toPublicEvidence(candidate))
+      googleContactsMatched++
+    }
+    existing.add(candidate.email)
+  }
+
+  if (cari.email) {
+    const merged = new Set(cari.email_adresleri || [])
+    merged.add(cari.email)
+    for (const candidate of sorted) merged.add(candidate.email)
+    cari.email_adresleri = [...merged]
+  }
+}
 
 // Cari koduna bağlanamamış Gmail teklif taleplerinden yalnız isim/domain kanıtı güçlü olanları
 // aday üretir; otomatik ana e-posta yapmaz.
@@ -143,7 +175,7 @@ for (const [cariKod, candidates] of historicalCandidates) {
   }
 }
 
-if (process.env.GOOGLE_SA_KEY_B64 && mailboxes.length && missingBeforeGmail.length) {
+if (process.env.GOOGLE_SA_KEY_B64 && mailboxes.length && missingBeforeGmail.length && hasSupabase) {
   gmailScanned = true
   const subjects = mailboxes.map((row) => clean(row.email)).filter(Boolean)
   const gmailCandidates = await scanGmailCandidates(subjects, missingBeforeGmail)
@@ -166,11 +198,18 @@ snapshot.email_ozet = {
   gonderime_hazir: snapshot.cariler.filter((cari) => cari.email).length,
   adayli: snapshot.cariler.filter((cari) => !cari.email && cari.email_adaylari?.length).length,
   eksik: snapshot.cariler.filter((cari) => !cari.email && !cari.email_adaylari?.length).length,
+  google_kisiler: {
+    kayit: googleContacts.length,
+    eslesen_aday: googleContactsMatched,
+    yeni_ana_eposta: googleContactsPrimary,
+  },
   gmail_tarandi: gmailScanned,
   gmail_aday_sayisi: gmailCandidateCount,
-  gmail_kaynagi: process.env.GOOGLE_SA_KEY_B64
-    ? 'SS geçmiş yazışmaları + Gmail readonly'
-    : 'SS Supabase Gmail/IMAP geçmişi',
+  gmail_kaynagi: hasSupabase
+    ? process.env.GOOGLE_SA_KEY_B64
+      ? 'SS geçmiş yazışmaları + Gmail readonly'
+      : 'SS Supabase Gmail/IMAP geçmişi'
+    : 'Yalnız Google Kişiler (Supabase yok)',
 }
 snapshot.email_enriched_at = new Date().toISOString()
 fs.writeFileSync(snapshotPath, JSON.stringify(snapshot, null, 2))
@@ -217,6 +256,80 @@ async function scanGmailCandidates(subjects, missingCariler) {
         console.warn(`Gmail araması atlandı (${cari.cari_kod}/${subject}):`, error instanceof Error ? error.message : error)
       }
     }
+  }
+  return result
+}
+
+function loadGoogleContacts(filePath) {
+  if (!fs.existsSync(filePath)) return []
+  const lines = fs.readFileSync(filePath, 'utf8').split(/\r?\n/).filter(Boolean)
+  const contacts = []
+  for (let index = 1; index < lines.length; index++) {
+    const parts = lines[index].split(',')
+    if (parts.length < 5) continue
+    parts.pop()
+    const email = clean(parts.pop()).toLowerCase()
+    const familyName = parts.pop() || ''
+    const givenName = parts.pop() || ''
+    const name = parts.join(',')
+    if (!validEmail(email) || isInternal(email) || isNoise(email)) continue
+    contacts.push({ name: clean(name), givenName: clean(givenName), familyName: clean(familyName), email })
+  }
+  return contacts
+}
+
+function contactDisplayNames(contact) {
+  const names = []
+  if (contact.name) {
+    for (const part of contact.name.split(/[|;]/)) {
+      const cleaned = clean(part)
+      if (cleaned) names.push(cleaned)
+    }
+    const dashParts = contact.name.split(' - ').map(clean).filter(Boolean)
+    if (dashParts.length >= 2) names.push(...dashParts)
+  }
+  const person = [contact.givenName, contact.familyName].filter(Boolean).join(' ')
+  if (person) names.push(person)
+  return [...new Set(names.filter(Boolean))]
+}
+
+function contactMatchScore(firmaAdi, contact) {
+  const address = { email: contact.email, display: contactDisplayNames(contact)[0] || '' }
+  let best = candidateScore(firmaAdi, address)
+  for (const name of contactDisplayNames(contact)) {
+    best = Math.max(best, candidateScore(firmaAdi, { email: contact.email, display: name }))
+  }
+  return best
+}
+
+function matchGoogleContactsCandidates(contacts, cariler) {
+  const result = new Map()
+  for (const contact of contacts) {
+    const ranked = cariler
+      .map((cari) => ({ cari, score: contactMatchScore(cari.firma_adi, contact) }))
+      .filter((item) => item.score >= 2)
+      .sort((a, b) => b.score - a.score)
+    if (!ranked.length || (ranked[1] && ranked[0].score === ranked[1].score)) continue
+
+    const winner = ranked[0].cari
+    const list = result.get(winner.cari_kod) || []
+    let candidate = list.find((item) => item.email === contact.email)
+    if (!candidate) {
+      candidate = {
+        email: contact.email,
+        kaynaklar: ['Google Kişiler'],
+        guven: ranked[0].score >= 3 ? 'yuksek' : 'aday',
+        adet: 0,
+        son_tarih: null,
+        eslesme_notu:
+          ranked[0].score >= 3
+            ? 'Google Kişiler rehberinde firma adı/domain ile eşleşti'
+            : 'Google Kişiler rehberinde olası eşleşme; personel onayı gerekli',
+      }
+      list.push(candidate)
+    }
+    candidate.adet++
+    result.set(winner.cari_kod, list)
   }
   return result
 }
@@ -347,12 +460,16 @@ function externalAddresses(headers) {
 function candidateScore(companyName, address) {
   const companyTokens = meaningfulTokens(companyName)
   const displayTokens = meaningfulTokens(address.display)
-  const domainTokens = meaningfulTokens(address.email.split('@')[1]?.split('.')[0] || '')
+  const domainHost = address.email.split('@')[1]?.split('.')[0] || ''
+  const domainTokens = meaningfulTokens(domainHost)
+  const normalizedDomain = normalize(domainHost)
   const addressTokens = [...new Set([...displayTokens, ...domainTokens])]
   const overlap = companyTokens.filter((token) => addressTokens.includes(token))
   if (overlap.length >= 2) return 3
   if (overlap.some((token) => token.length >= 5 && domainTokens.includes(token))) return 2
   if (overlap.some((token) => token.length >= 7 && displayTokens.includes(token))) return 2
+  if (companyTokens.some((token) => token.length >= 4 && normalizedDomain.includes(token))) return 2
+  if (domainTokens.some((token) => token.length >= 5 && normalize(companyName).includes(token))) return 2
   return 0
 }
 

@@ -19,7 +19,9 @@
       "firma_adi": "HİDROBARSAN MERMER MAKİNALARI SAN. VE TİC. LTD.ŞTİ.",
       "email": "info@hidrobarsan.com.tr",
       "email_adresleri": [
-        "info@hidrobarsan.com.tr"
+        "info@hidrobarsan.com.tr",
+        "satinalma@hidrobarsan.com.tr",
+        "info@hidrobarsan.com"
       ],
       "bakiye": 880903.65,
       "gecikmis_bakiye": 449475.97,
@@ -416,7 +418,24 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "satinalma@hidrobarsan.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@hidrobarsan.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0032",
@@ -516,16 +535,7 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "satinalma@elteksmak.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 7,
-          "son_tarih": "2026-06-23",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0099",
@@ -716,7 +726,9 @@
       "firma_adi": "BERKAND MAKİNA SAN. VE TİC. LTD.ŞTİ.",
       "email": "muhasebe@berkandmakina.com.tr",
       "email_adresleri": [
-        "muhasebe@berkandmakina.com.tr"
+        "muhasebe@berkandmakina.com.tr",
+        "info@berkandmakina.com.tr",
+        "uretim@berkandmakina.com.tr"
       ],
       "bakiye": 353297.45,
       "gecikmis_bakiye": 4760.09,
@@ -803,7 +815,24 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "info@berkandmakina.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        },
+        {
+          "email": "uretim@berkandmakina.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.4126",
@@ -1667,31 +1696,16 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": [
-        {
-          "email": "elifgul.onur@dentaskagit.com.tr",
-          "kaynak": "Eski teklif + Gmail teklif talebi + Gmail yazışma thread’i",
-          "guven": "yuksek",
-          "adet": 11,
-          "son_tarih": "2026-06-30",
-          "eslesme_notu": null
-        },
-        {
-          "email": "hatice.demirer@dentaskagit.com.tr",
-          "kaynak": "Eski teklif + Gmail teklif talebi",
-          "guven": "yuksek",
-          "adet": 5,
-          "son_tarih": "2026-07-07",
-          "eslesme_notu": null
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0778",
       "firma_adi": "EGE TEK MÜHENDİSLİK SAN. VE TİC. A.Ş.",
       "email": "info@ege-tek.com",
       "email_adresleri": [
-        "info@ege-tek.com"
+        "info@ege-tek.com",
+        "enes@ege-tek.com",
+        "kamil@ege-tek.com"
       ],
       "bakiye": 215245.49,
       "gecikmis_bakiye": 0,
@@ -1718,7 +1732,24 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "enes@ege-tek.com",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        },
+        {
+          "email": "kamil@ege-tek.com",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0012",
@@ -1726,7 +1757,10 @@
       "email": "berkcan.guenindi@europtec.com",
       "email_adresleri": [
         "berkcan.guenindi@europtec.com",
-        "etrfinans@europtec.com"
+        "etrfinans@europtec.com",
+        "etrmutabakat@europtec.com",
+        "n.yilmaz@europtec.com",
+        "engin.yuenek@europtec.com"
       ],
       "bakiye": 170729.72,
       "gecikmis_bakiye": 0,
@@ -1915,12 +1949,28 @@
       "email_guven": "dogrulanmis",
       "email_adaylari": [
         {
-          "email": "etrfinans@europtec.com",
-          "kaynak": "SS cari kartı",
-          "guven": "dogrulanmis",
+          "email": "etrmutabakat@europtec.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
           "adet": 1,
           "son_tarih": null,
-          "eslesme_notu": null
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "n.yilmaz@europtec.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "engin.yuenek@europtec.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -1930,7 +1980,9 @@
       "email": "ozden.cel@hamburger.com",
       "email_adresleri": [
         "ozden.cel@hamburger.com",
-        "ali.kecelioglu@hamburger-containerboard.com"
+        "ali.kecelioglu@hamburger-containerboard.com",
+        "cagdas.sarilgan@hamburger-containerboard.com",
+        "asuman.yukal@hamburger-containerboard.com"
       ],
       "bakiye": 137407.54,
       "gecikmis_bakiye": 0,
@@ -2079,12 +2131,28 @@
       "email_guven": "dogrulanmis",
       "email_adaylari": [
         {
+          "email": "cagdas.sarilgan@hamburger-containerboard.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "asuman.yukal@hamburger-containerboard.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
           "email": "ali.kecelioglu@hamburger-containerboard.com",
-          "kaynak": "Eski teklif + Gmail teklif talebi + Gmail yazışma thread’i",
-          "guven": "yuksek",
-          "adet": 33,
-          "son_tarih": "2026-07-13",
-          "eslesme_notu": null
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -2093,7 +2161,8 @@
       "firma_adi": "ŞAFAK TEMİZLİK İNŞAAT SAN. VE TİC. A.Ş.",
       "email": "safaktemizlikdenizli@outlook.com",
       "email_adresleri": [
-        "safaktemizlikdenizli@outlook.com"
+        "safaktemizlikdenizli@outlook.com",
+        "safaksan@safaksan.com"
       ],
       "bakiye": 127080.82,
       "gecikmis_bakiye": 7963.2,
@@ -2550,7 +2619,16 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "safaksan@safaksan.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0049",
@@ -2972,11 +3050,11 @@
       "email_adaylari": [
         {
           "email": "info@tcmmakina.com.tr",
-          "kaynak": "Servis kaydı",
+          "kaynak": "Google Kişiler",
           "guven": "yuksek",
           "adet": 1,
-          "son_tarih": "2026-06-25",
-          "eslesme_notu": null
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
         }
       ]
     },
@@ -3236,7 +3314,48 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "info@greeneco.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ecemyogurtcu@greeneco.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "omerfarukcetin@greeneco.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "satinalma@greeneco.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ugurkahraman@greeneco.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "320.01.0093",
@@ -3244,7 +3363,47 @@
       "email": "sinaner@hattat.com.tr",
       "email_adresleri": [
         "sinaner@hattat.com.tr",
-        "siparis@hattat.com.tr"
+        "siparis@hattat.com.tr",
+        "enginturan@hattat.com.tr",
+        "ercangurel@hattat.com.tr",
+        "hikmetbasat@hattat.com.tr",
+        "cemcoskun@hattat.com.tr",
+        "maliislermutabakat@hattat.com.tr",
+        "aynurkoc@hattat.com.tr",
+        "iremsucoskun@hattat.com.tr",
+        "hacerbuyuk@hattat.com.tr",
+        "habibaydin@hattat.com.tr",
+        "kaancengiz@hattat.com.tr",
+        "onurtezoglu@hattat.com.tr",
+        "hilmiulku@hattat.com.tr",
+        "gurkanuskuplu@hattat.com.tr",
+        "ilkerguven@hattat.com.tr",
+        "ruhancaliskan@hattat.com.tr",
+        "mustafaozcelik@hattat.com.tr",
+        "asimbedir@hattat.com.tr",
+        "deryainan@hattat.com.tr",
+        "keremusta@hattat.com.tr",
+        "davutozcan@hattat.com.tr",
+        "ersinesen@hattat.com.tr",
+        "tayfunsagdic@hattat.com.tr",
+        "fatihpar@hattat.com.tr",
+        "leventvarlik@hattat.com.tr",
+        "serefgumus@hattat.com.tr",
+        "feyzagok@hattat.com.tr",
+        "cagdassahin@hattat.com.tr",
+        "mustafaunal@hattat.com.tr",
+        "sefaulusoy@hattat.com.tr",
+        "atakancesur@hattat.com.tr",
+        "serhaterel@hattat.com.tr",
+        "yunusgudul@hattat.com.tr",
+        "egemenyengin@hattat.com.tr",
+        "oznurkebeli@hattat.com.tr",
+        "esracakay@hattat.com.tr",
+        "dincerkarsi@hattat.com.tr",
+        "hamdikorkmazlar@hattat.com.tr",
+        "earsiv@hattat.com.tr",
+        "berkayeser@hattat.com.tr",
+        "seydakaymaz@hattat.com.tr"
       ],
       "bakiye": 83275.09,
       "gecikmis_bakiye": 0,
@@ -3283,12 +3442,36 @@
       "email_guven": "dogrulanmis",
       "email_adaylari": [
         {
-          "email": "siparis@hattat.com.tr",
-          "kaynak": "SS cari kartı",
-          "guven": "dogrulanmis",
+          "email": "enginturan@hattat.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
           "adet": 1,
           "son_tarih": null,
-          "eslesme_notu": null
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ercangurel@hattat.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "hikmetbasat@hattat.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "cemcoskun@hattat.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -3331,7 +3514,8 @@
       "firma_adi": "BİODEN ENERJİ ÜRETİM SAN. VE TİC. A.Ş.",
       "email": "fatma.kaplica@biodenenerji.com.tr",
       "email_adresleri": [
-        "fatma.kaplica@biodenenerji.com.tr"
+        "fatma.kaplica@biodenenerji.com.tr",
+        "burak.ersoz@biodengubre.com"
       ],
       "bakiye": 73298.18,
       "gecikmis_bakiye": 0.01,
@@ -3378,14 +3562,25 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "burak.ersoz@biodengubre.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0418",
       "firma_adi": "EFARGE MAKİNA İMALAT SAN. VE TİC. A.Ş.",
       "email": "satinalma@efarge.com",
       "email_adresleri": [
-        "satinalma@efarge.com"
+        "satinalma@efarge.com",
+        "arge@efarge.com",
+        "export@efarge.com"
       ],
       "bakiye": 68024.62,
       "gecikmis_bakiye": 41150.27,
@@ -3472,14 +3667,41 @@
       ],
       "email_kaynagi": "Servis kaydı",
       "email_guven": "yuksek",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "arge@efarge.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "export@efarge.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0058",
       "firma_adi": "ALINDAIR SOĞUTMA SİSTEMLERİ SAN. VE TİC. A.Ş.",
       "email": "info@alindair.com.tr",
       "email_adresleri": [
-        "info@alindair.com.tr"
+        "info@alindair.com.tr",
+        "muhasebestajyer@alindair.com.tr",
+        "muhasebe2@alindair.com.tr",
+        "satinalma@alindair.com.tr",
+        "sudeakis@alindair.com.tr",
+        "ccitakoglu@alindair.com.tr",
+        "idogrul@alindair.com.tr",
+        "bkabel@alindair.com.tr",
+        "okabel@alindair.com.tr",
+        "agunduz@alindair.com.tr",
+        "muhasebe@alindair.com.tr"
       ],
       "bakiye": 65738.9,
       "gecikmis_bakiye": 15523.54,
@@ -3556,7 +3778,48 @@
       ],
       "email_kaynagi": "Servis kaydı",
       "email_guven": "yuksek",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "muhasebestajyer@alindair.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe2@alindair.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "satinalma@alindair.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "sudeakis@alindair.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ccitakoglu@alindair.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0018",
@@ -3565,7 +3828,8 @@
       "email_adresleri": [
         "muhasebe@um.com.tr",
         "uretim@um.com.tr",
-        "info@um.com.tr"
+        "info@um.com.tr",
+        "satinalma@um.com.tr"
       ],
       "bakiye": 64133.2,
       "gecikmis_bakiye": 40857.27,
@@ -3634,20 +3898,12 @@
       "email_guven": "dogrulanmis",
       "email_adaylari": [
         {
-          "email": "uretim@um.com.tr",
-          "kaynak": "Servis kaydı",
-          "guven": "yuksek",
-          "adet": 7,
-          "son_tarih": "2026-06-03",
-          "eslesme_notu": null
-        },
-        {
-          "email": "info@um.com.tr",
-          "kaynak": "Servis kaydı",
+          "email": "satinalma@um.com.tr",
+          "kaynak": "Google Kişiler",
           "guven": "yuksek",
           "adet": 1,
-          "son_tarih": "2026-01-29",
-          "eslesme_notu": null
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
         }
       ]
     },
@@ -3744,8 +4000,10 @@
     {
       "cari_kod": "120.01.0038",
       "firma_adi": "BMS BAHÇELİ MAKİNA SAN. VE TİC. LTD.ŞTİ.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "info@bahcelimakina.com",
+      "email_adresleri": [
+        "info@bahcelimakina.com"
+      ],
       "bakiye": 63792.87,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": null,
@@ -3879,7 +4137,9 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [],
+      "email_kaynagi": "Google Kişiler",
+      "email_guven": "yuksek"
     },
     {
       "cari_kod": "120.01.0145",
@@ -3947,7 +4207,9 @@
       "email": "maliisler@abalioglu.com.tr",
       "email_adresleri": [
         "maliisler@abalioglu.com.tr",
-        "sinan.kilic@filidea.com.tr"
+        "sinan.kilic@filidea.com.tr",
+        "ulak@filidea.com.tr",
+        "nedimcan.halicioglu@filidea.com.tr"
       ],
       "bakiye": 51857.11,
       "gecikmis_bakiye": 15829.22,
@@ -4026,12 +4288,28 @@
       "email_guven": "dogrulanmis",
       "email_adaylari": [
         {
+          "email": "ulak@filidea.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
           "email": "sinan.kilic@filidea.com.tr",
-          "kaynak": "Gmail teklif talebi + Gmail yazışma thread’i",
-          "guven": "yuksek",
-          "adet": 2,
-          "son_tarih": "2026-07-14",
-          "eslesme_notu": null
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "nedimcan.halicioglu@filidea.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -4128,16 +4406,7 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": [
-        {
-          "email": "hasip.gonulkirmaz@ugurluotocam.com.tr",
-          "kaynak": "Eski teklif + Gmail teklif talebi",
-          "guven": "yuksek",
-          "adet": 7,
-          "son_tarih": "2026-07-13",
-          "eslesme_notu": null
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0072",
@@ -4282,16 +4551,7 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": [
-        {
-          "email": "ekiz.sinan@gmail.com",
-          "kaynak": "Eski teklif + Gmail teklif talebi",
-          "guven": "yuksek",
-          "adet": 2,
-          "son_tarih": "2026-07-06",
-          "eslesme_notu": null
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0307",
@@ -4566,8 +4826,10 @@
     {
       "cari_kod": "120.01.0048",
       "firma_adi": "GÜÇSAN MAKİNA DOĞALGAZ MADENCİLİK GIDA SAN. VE TİC. LTD.ŞTİ.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "gucsanmakina@gucsanmakina.com.tr",
+      "email_adresleri": [
+        "gucsanmakina@gucsanmakina.com.tr"
+      ],
       "bakiye": 45787.52,
       "gecikmis_bakiye": 6162.85,
       "odeme_vadesi": "60 GÜN",
@@ -4671,16 +4933,9 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": [
-        {
-          "email": "gucsanmakina@gucsanmakina.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 1,
-          "son_tarih": "2026-05-14",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        }
-      ]
+      "email_adaylari": [],
+      "email_kaynagi": "Google Kişiler",
+      "email_guven": "yuksek"
     },
     {
       "cari_kod": "120.02.000D",
@@ -4772,28 +5027,20 @@
       ],
       "email_adaylari": [
         {
-          "email": "musteridestek@a101.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-05-08",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "musteridestek@sabancidx.com",
-          "kaynak": "Gmail teklif geçmişi",
+          "email": "muhasebe@hortummarket.com",
+          "kaynak": "Google Kişiler",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-06-09",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         },
         {
-          "email": "musteri@natro.com",
-          "kaynak": "Gmail teklif geçmişi",
+          "email": "info@hortummarket.com",
+          "kaynak": "Google Kişiler",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-03-03",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -4803,7 +5050,21 @@
       "email": "aysan@aysanraf.com.tr",
       "email_adresleri": [
         "aysan@aysanraf.com.tr",
-        "satinalma@aysanraf.com.tr"
+        "satinalma@aysanraf.com.tr",
+        "ozkan.eksi@aysanraf.com.tr",
+        "onur.simsek@aysanraf.com.tr",
+        "ibrahim.baysal@aysanraf.com.tr",
+        "demet.gozuacik@aysanraf.com.tr",
+        "bakimmekanik@aysanraf.com.tr",
+        "depo@aysanraf.com.tr",
+        "mertali.bayrak@aysanraf.com.tr",
+        "sertac.akmanli@aysanraf.com.tr",
+        "tarik.galiba@aysanraf.com.tr",
+        "cagatay.tin@aysanraf.com.tr",
+        "ismail.kocakaya@aysanraf.com.tr",
+        "bakimelektrik@aysanraf.com.tr",
+        "planlama@aysanraf.com.tr",
+        "batuhan.tin@aysanraf.com.tr"
       ],
       "bakiye": 43959.57,
       "gecikmis_bakiye": 14841.7,
@@ -4973,11 +5234,43 @@
       "email_adaylari": [
         {
           "email": "satinalma@aysanraf.com.tr",
-          "kaynak": "Servis kaydı",
-          "guven": "yuksek",
-          "adet": 2,
-          "son_tarih": "2026-03-05",
-          "eslesme_notu": null
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ozkan.eksi@aysanraf.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "onur.simsek@aysanraf.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ibrahim.baysal@aysanraf.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "demet.gozuacik@aysanraf.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -5039,7 +5332,48 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "k.erboga@demsanelektrik.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@biltekelektrik.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "aytac@tetraelektromekanik.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "emre.basaran@basaranelektronik.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "sibel@zcnelektronik.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.4131",
@@ -5163,7 +5497,48 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "funda.sabah@akca.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "umran.erkoyun@akca.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "sefa.isim@akca.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "halil.karabuga@akca.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "halil.karababa@akca.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.4147",
@@ -5687,7 +6062,32 @@
           "temsilci": "TUNÇER"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "g.kurgan@dresselhauscetin.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "satinalma@cetingil.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "fabrika@cetingil.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0198",
@@ -5748,7 +6148,9 @@
       "firma_adi": "MUZAFFER AKDEMİR",
       "email": "akdemirkaucuk@outlook.com.tr",
       "email_adresleri": [
-        "akdemirkaucuk@outlook.com.tr"
+        "akdemirkaucuk@outlook.com.tr",
+        "bulent.akdemir@hotmail.com",
+        "mdemirci@pakkens.com.tr"
       ],
       "bakiye": 32555.7,
       "gecikmis_bakiye": 8085.93,
@@ -6015,7 +6417,24 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "bulent.akdemir@hotmail.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "mdemirci@pakkens.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0050",
@@ -6229,14 +6648,32 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "info@hidroyon.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0029",
       "firma_adi": "GEDİK TAVUKÇULUK VE TARIM ÜRÜNLERİ TİC.SAN A.Ş.",
       "email": "satinalma@gedikpilic.com",
       "email_adresleri": [
-        "satinalma@gedikpilic.com"
+        "satinalma@gedikpilic.com",
+        "isg@gedikpilic.com",
+        "serkan.cumen@gedikpilic.com",
+        "kolankayateknikdepo@gedikpilic.com",
+        "ahmet.yildirim@gedikpilic.com",
+        "okan.basturk@gedikpilic.com",
+        "mertcan.yarci@gedikpilic.com",
+        "aykan.gulgor@gedikpilic.com",
+        "info@gedikpilic.com",
+        "ahmet.yildiri.@gedikpilic.com"
       ],
       "bakiye": 27015.22,
       "gecikmis_bakiye": 0,
@@ -6283,14 +6720,77 @@
       ],
       "email_kaynagi": "Eski teklif",
       "email_guven": "yuksek",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "isg@gedikpilic.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "serkan.cumen@gedikpilic.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "kolankayateknikdepo@gedikpilic.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ahmet.yildirim@gedikpilic.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0028",
       "firma_adi": "NEXANS TÜRKİYE ENDÜSTRİ VE TİC. A.Ş.",
       "email": "serdar.ercan@nexans.com",
       "email_adresleri": [
-        "serdar.ercan@nexans.com"
+        "serdar.ercan@nexans.com",
+        "tarik.aydin@nexans.com",
+        "sena.karabayir-ext@nexans.com",
+        "mikail.karadag@nexans.com",
+        "yusuf.kafa@nexans.com.tr",
+        "yusuf.kafa@nexans.com",
+        "emin@eminendustri.com",
+        "gamze.yilmazli@nexans.com",
+        "haydar.mentes@nexans.com",
+        "beyza.kurtulus@nexans.com",
+        "info.turkey@nexans.com",
+        "info@ystendustri.com",
+        "pazarlama@ystendustri.com",
+        "elmas@dorukendustri.com",
+        "canberk@dorukendustri.com",
+        "demet.guzel@essaendustri.com",
+        "satis@ckendustri.com.tr",
+        "baris.demirag@nexans.com",
+        "sunduz.aydogan@nexans.com",
+        "info@endustritool.com",
+        "megaendustri@megaendustri.com.tr",
+        "info@toprakendustri.com",
+        "mesut.aslan@nexans.com",
+        "irfan.yagci@nexans.com",
+        "tekiner.demirel@nexans.com",
+        "burak.calhan@nexans.com",
+        "koksal.ilhan@nexans.com",
+        "aykut.kaytan@nexans.com",
+        "fatih.oztekin@nexans.com",
+        "emrekarakulak@kartasendustri.com.tr",
+        "nazli.cor-ext@nexans.com"
       ],
       "bakiye": 26718.52,
       "gecikmis_bakiye": 0.04,
@@ -6347,14 +6847,56 @@
       ],
       "email_kaynagi": "Eski teklif + Servis kaydı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "tarik.aydin@nexans.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "sena.karabayir-ext@nexans.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "mikail.karadag@nexans.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "yusuf.kafa@nexans.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "yusuf.kafa@nexans.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0146",
       "firma_adi": "ASYA İŞ MAKİNALARI SERVİS BAKIM ONARIM TİC.VE SAN. LTD.ŞTİ.",
       "email": "asyaismakinalari07@gmail.com",
       "email_adresleri": [
-        "asyaismakinalari07@gmail.com"
+        "asyaismakinalari07@gmail.com",
+        "turgut.doven@amasyaseker.com.tr"
       ],
       "bakiye": 26653.8,
       "gecikmis_bakiye": 0,
@@ -6381,14 +6923,29 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "turgut.doven@amasyaseker.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0009",
       "firma_adi": "FİLTORQ FİLTRE İTHALAT İHRACAT SAN. VE TİC. A.Ş.",
       "email": "defaultpk@filtorg.com.tr",
       "email_adresleri": [
-        "defaultpk@filtorg.com.tr"
+        "defaultpk@filtorg.com.tr",
+        "zeynep.seren@filtorq.com.tr",
+        "muhasebe@filtorq.com.tr",
+        "ersan.mohan@filtorq.com.tr",
+        "onurahmet.caliskan@filtorq.com.tr",
+        "satinalma@filtorq.com.tr",
+        "mehmet@filtorq.com.tr"
       ],
       "bakiye": 26536.64,
       "gecikmis_bakiye": 0.01,
@@ -6435,14 +6992,79 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "zeynep.seren@filtorq.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe@filtorq.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ersan.mohan@filtorq.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        },
+        {
+          "email": "onurahmet.caliskan@filtorq.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "satinalma@filtorq.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0746",
       "firma_adi": "OYAK ÇİMENTO FABRİKALARI A.Ş.",
       "email": "carihesaplar@oyakcimento.com",
       "email_adresleri": [
-        "carihesaplar@oyakcimento.com"
+        "carihesaplar@oyakcimento.com",
+        "ssdogan@oyakcimneto.com",
+        "ssdogan@oyakcimento.com",
+        "atemur@oyakcimento.com",
+        "ergun.duran@ascimento.com.tr",
+        "murat.tok@marmaracimento.com",
+        "ozlem.demir@marmaracimento.com",
+        "akif.ceylan@marmaracimento.com",
+        "busra.kaynarpinar@marmaracimento.com",
+        "satinalma@marmaracimento.com",
+        "berkay.erdogan@marmaracimento.com",
+        "itepeeri@oyakcimento.com",
+        "mehmet.balgay@vcimentos.com",
+        "ismail.demir@ascimento.com.tr",
+        "omer.seven@askalecimento.com.tr",
+        "mustafa.dogan@askalecimento.com.tr",
+        "ibrahim.yontem@ascimento.com.tr",
+        "aziz.gumus@ascimento.com.tr",
+        "satinalma@ascimento.com.tr",
+        "duygu.unal@marmaracimento.com",
+        "sercan.simsek@marmaracimento.com",
+        "kural@oyakcimento.com",
+        "nsiret@oyakcimento.com",
+        "eaygunduz@oyakcimento.com",
+        "iletisim@oyakcimento.com"
       ],
       "bakiye": 26243.6,
       "gecikmis_bakiye": 0,
@@ -6479,7 +7101,48 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "ssdogan@oyakcimneto.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ssdogan@oyakcimento.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "atemur@oyakcimento.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ergun.duran@ascimento.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "murat.tok@marmaracimento.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0102",
@@ -6760,7 +7423,8 @@
       "firma_adi": "ENŞAH ENERJİ, MAKİNA, MÜHENDİSLİK, İNŞAAT, TAAHHÜT, İMALAT SAN. VE TİC. LTD.ŞTİ.",
       "email": "info@ensah.com.tr",
       "email_adresleri": [
-        "info@ensah.com.tr"
+        "info@ensah.com.tr",
+        "satinalma@ensah.com.tr"
       ],
       "bakiye": 22400,
       "gecikmis_bakiye": 0,
@@ -6797,7 +7461,16 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "satinalma@ensah.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.4371",
@@ -6866,16 +7539,7 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": [
-        {
-          "email": "yildirayi@cinarboru.com",
-          "kaynak": "Eski teklif + Gmail teklif talebi",
-          "guven": "yuksek",
-          "adet": 3,
-          "son_tarih": "2026-06-30",
-          "eslesme_notu": null
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4179",
@@ -6915,7 +7579,16 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "satinalma@dekordogaltas.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.4330",
@@ -6945,7 +7618,24 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "muhasebe@gendeskhasil.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe@gendekshasil.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0095",
@@ -7086,7 +7776,11 @@
       "firma_adi": "KÜÇÜKER TEKS. SAN.VE TİC.A.Ş.",
       "email": "udemircan@kucuker.com",
       "email_adresleri": [
-        "udemircan@kucuker.com"
+        "udemircan@kucuker.com",
+        "dkeder@kucuker.com",
+        "kckr.madencilik@kucuker.com",
+        "osimsek@kucuker.com",
+        "info@kucuker.com"
       ],
       "bakiye": 18258.1,
       "gecikmis_bakiye": 0,
@@ -7133,14 +7827,48 @@
       ],
       "email_kaynagi": "Eski teklif",
       "email_guven": "yuksek",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "dkeder@kucuker.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "kckr.madencilik@kucuker.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "osimsek@kucuker.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@kucuker.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0070",
       "firma_adi": "SİDE İPLİK  SAN. VE TİC. LTD.ŞTİ.",
       "email": "info@sideiplik.com",
       "email_adresleri": [
-        "info@sideiplik.com"
+        "info@sideiplik.com",
+        "info@hazariplik.com"
       ],
       "bakiye": 18211.52,
       "gecikmis_bakiye": 0,
@@ -7187,7 +7915,16 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "info@hazariplik.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0045",
@@ -7363,24 +8100,7 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": [
-        {
-          "email": "satinalma2@bozdemir.co",
-          "kaynak": "Eski teklif + Gmail teklif talebi",
-          "guven": "yuksek",
-          "adet": 2,
-          "son_tarih": "2026-07-09",
-          "eslesme_notu": null
-        },
-        {
-          "email": "satinalma1@bozdemir.co",
-          "kaynak": "Eski teklif + Gmail teklif talebi",
-          "guven": "yuksek",
-          "adet": 2,
-          "son_tarih": "2026-07-09",
-          "eslesme_notu": null
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0194",
@@ -7714,14 +8434,26 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "bilmak@bil-mak.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0617",
       "firma_adi": "ÇAMELİ BELEDİYE BAŞKANLIĞI",
       "email": "camelibld.destekhizmetleri@outlook.com",
       "email_adresleri": [
-        "camelibld.destekhizmetleri@outlook.com"
+        "camelibld.destekhizmetleri@outlook.com",
+        "malihizmetler@cameli.bel.tr",
+        "destekhizmetler@cameli.bel.tr",
+        "info@cameli.bel.tr"
       ],
       "bakiye": 17214.48,
       "gecikmis_bakiye": 17214.48,
@@ -7758,7 +8490,32 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "malihizmetler@cameli.bel.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "destekhizmetler@cameli.bel.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@cameli.bel.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0033",
@@ -7823,16 +8580,7 @@
       ],
       "email_kaynagi": "Eski teklif",
       "email_guven": "yuksek",
-      "email_adaylari": [
-        {
-          "email": "berhankurgut@sevalkablo.com",
-          "kaynak": "Eski teklif + Gmail teklif talebi",
-          "guven": "yuksek",
-          "adet": 4,
-          "son_tarih": "2026-07-01",
-          "eslesme_notu": null
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4306",
@@ -7889,7 +8637,8 @@
       "firma_adi": "AK-YA DENİZCİLİK VE SU ÜRÜNLERİ ÜRETİM TAŞIMACILIK SAN. VE TİC. LTD.ŞTİ.",
       "email": "info@ak-ya.com",
       "email_adresleri": [
-        "info@ak-ya.com"
+        "info@ak-ya.com",
+        "i.can@emirtasimacilik.com"
       ],
       "bakiye": 15768,
       "gecikmis_bakiye": 0,
@@ -7916,7 +8665,16 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "i.can@emirtasimacilik.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0119",
@@ -7973,7 +8731,13 @@
       "firma_adi": "ATA SANCAK ACIPAYAM TARIM İŞLETMESİ SAN.VE Tİ.C.A.Ş",
       "email": "m@atasancak.com.tr",
       "email_adresleri": [
-        "m@atasancak.com.tr"
+        "m@atasancak.com.tr",
+        "saydin@atasancak.com.tr",
+        "mgul@alsancakgrup.com.tr",
+        "ist.planning@sancakinflight.com.tr",
+        "obag@atasancak.com.tr",
+        "aaybakan@atasancak.com.tr",
+        "hyilmaz@atasancak.com.tr"
       ],
       "bakiye": 14639.93,
       "gecikmis_bakiye": 0,
@@ -8000,7 +8764,48 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "saydin@atasancak.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "mgul@alsancakgrup.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ist.planning@sancakinflight.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "obag@atasancak.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "aaybakan@atasancak.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0096",
@@ -8213,8 +9018,11 @@
     {
       "cari_kod": "320.01.0560",
       "firma_adi": "AVUKAT ESRA CAN MERCAN",
-      "email": null,
-      "email_adresleri": [],
+      "email": "esracanmercan@gmail.com",
+      "email_adresleri": [
+        "esracanmercan@gmail.com",
+        "esracan_mercan@hotmail.com"
+      ],
       "bakiye": 14268.31,
       "gecikmis_bakiye": 14268.31,
       "odeme_vadesi": null,
@@ -8278,7 +9086,18 @@
           "temsilci": null
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "esracan_mercan@hotmail.com",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        }
+      ],
+      "email_kaynagi": "Google Kişiler",
+      "email_guven": "yuksek"
     },
     {
       "cari_kod": "120.01.2895",
@@ -8325,7 +9144,9 @@
       "firma_adi": "STAR STİL MAKİNA TİC. LTD.ŞTİ.",
       "email": "muhammedbahsiti7@gmail.com",
       "email_adresleri": [
-        "muhammedbahsiti7@gmail.com"
+        "muhammedbahsiti7@gmail.com",
+        "satis@masstar.com.tr",
+        "mert@starmarinetr.com"
       ],
       "bakiye": 13283.52,
       "gecikmis_bakiye": 1141.72,
@@ -8462,14 +9283,35 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "satis@masstar.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "mert@starmarinetr.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0229",
       "firma_adi": "HÜSEYİN DÖNMEZ",
       "email": "etbdemirci@gmail.com",
       "email_adresleri": [
-        "etbdemirci@gmail.com"
+        "etbdemirci@gmail.com",
+        "huseyin.usul@isbank.com.tr",
+        "hucar@platinum-ms.com",
+        "huseyinmurat.guler@zorlu.com",
+        "huseyin.dogan@smstork.com"
       ],
       "bakiye": 13139.26,
       "gecikmis_bakiye": 13139.26,
@@ -8526,7 +9368,40 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "huseyin.usul@isbank.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "hucar@platinum-ms.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "huseyinmurat.guler@zorlu.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "huseyin.dogan@smstork.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0105",
@@ -8665,16 +9540,7 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": [
-        {
-          "email": "denizliemin@hotmail.com",
-          "kaynak": "SS cari kartı",
-          "guven": "dogrulanmis",
-          "adet": 1,
-          "son_tarih": null,
-          "eslesme_notu": null
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0006",
@@ -8818,7 +9684,32 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "ereconciliationchs@celebiaviation.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "chs.mutabakat@celebiavation.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "destek@celebi.pro",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0518",
@@ -8888,7 +9779,24 @@
           "temsilci": "TUNÇER"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "satinalma04@jnrmensucat.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "toprak@toprakmensucat.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0376",
@@ -8935,7 +9843,8 @@
       "firma_adi": "IŞIK ELEKTRİK  MÜH.SAN VE TİC. LTD.ŞTİ.",
       "email": "ahmetn@isik.info",
       "email_adresleri": [
-        "ahmetn@isik.info"
+        "ahmetn@isik.info",
+        "f.ertem@umitbisiklet.com.tr"
       ],
       "bakiye": 12000.05,
       "gecikmis_bakiye": 7406.85,
@@ -8982,14 +9891,26 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "f.ertem@umitbisiklet.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0219",
       "firma_adi": "SEYRAN GIDA SAN. VE TİC. A.Ş.",
       "email": "muhasebe@seyran.com.tr",
       "email_adresleri": [
-        "muhasebe@seyran.com.tr"
+        "muhasebe@seyran.com.tr",
+        "muhammedo@seyran.com.tr",
+        "mustafao@seyran.com.tr",
+        "bakim@seyran.com.tr"
       ],
       "bakiye": 11829.82,
       "gecikmis_bakiye": 7687.5,
@@ -9056,7 +9977,32 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "muhammedo@seyran.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "mustafao@seyran.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "bakim@seyran.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0017",
@@ -9064,7 +10010,25 @@
       "email": "ahmet.tuncel@abaliogluyem.com.tr",
       "email_adresleri": [
         "ahmet.tuncel@abaliogluyem.com.tr",
-        "ertugrul.oner@abaliogluyem.com.tr"
+        "ertugrul.oner@abaliogluyem.com.tr",
+        "mustafa.oncu@abaliogluyem.com.tr",
+        "maliisler@abalioglu.com.tr",
+        "kilicarslan.yasar@abalioglu.com.tr",
+        "hikmet.tutuncuoglu@abalioglu.com.tr",
+        "tarik.ayan@abaliogluyem.com.tr",
+        "berkay.ozten@abaliogluyem.com.tr",
+        "omer.demircan@abaliogluyem.com.tr",
+        "mustafa.cetin@abaliogluyem.com.tr",
+        "arifsami.ozguven@abaliogluyem.com.tr",
+        "cihat.sari@abaliogluyem.com.tr",
+        "abdullah.gurkan@abaliogluyem.com.tr",
+        "aykut.unal@abaliogluyem.com.tr",
+        "yusuf.sayar@abaliogluyem.com.tr",
+        "mustafa.uzanti@abaliogluyem.com.tr",
+        "mehmet.totan@abaliogluyem.com.tr",
+        "bulent.calci@abaliogluyem.com.tr",
+        "sefa.kocagoz@abaliogluyem.com.tr",
+        "ozkan.sekerci@abaliogluteknoloji.com.tr"
       ],
       "bakiye": 11528,
       "gecikmis_bakiye": 0,
@@ -9113,12 +10077,44 @@
       "email_guven": "dogrulanmis",
       "email_adaylari": [
         {
+          "email": "mustafa.oncu@abaliogluyem.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "maliisler@abalioglu.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "kilicarslan.yasar@abalioglu.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "hikmet.tutuncuoglu@abalioglu.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
           "email": "ertugrul.oner@abaliogluyem.com.tr",
-          "kaynak": "Eski teklif + Gmail teklif talebi",
-          "guven": "yuksek",
-          "adet": 6,
-          "son_tarih": "2026-07-14",
-          "eslesme_notu": null
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -9234,7 +10230,24 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "info@tetisantesisat.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe@sea-insaat.com",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0160",
@@ -9335,7 +10348,10 @@
       "firma_adi": "GÜNEŞPAN ISI SİSTEMLERİ SAN. VE TİC. A.Ş.",
       "email": "aysan.bag@gunespan.com",
       "email_adresleri": [
-        "aysan.bag@gunespan.com"
+        "aysan.bag@gunespan.com",
+        "rasit.caliskan@gunespan.com",
+        "muhasebe@gunespan.com",
+        "idris.akbulut@gunespan.com"
       ],
       "bakiye": 10890.96,
       "gecikmis_bakiye": 0,
@@ -9392,7 +10408,32 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "rasit.caliskan@gunespan.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe@gunespan.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "idris.akbulut@gunespan.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.4146",
@@ -9494,7 +10535,9 @@
       "email": "info@ayha.com.tr",
       "email_adresleri": [
         "info@ayha.com.tr",
-        "niliferkaya@ayha.com.tr"
+        "niliferkaya@ayha.com.tr",
+        "tahsinerkan@sanelasansor.com",
+        "orhanozkan@kayhanertugrul.com.tr"
       ],
       "bakiye": 9581.66,
       "gecikmis_bakiye": 7222.03,
@@ -9573,12 +10616,28 @@
       "email_guven": "dogrulanmis",
       "email_adaylari": [
         {
-          "email": "niliferkaya@ayha.com.tr",
-          "kaynak": "SS cari kartı",
-          "guven": "dogrulanmis",
+          "email": "tahsinerkan@sanelasansor.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
           "adet": 1,
           "son_tarih": null,
-          "eslesme_notu": null
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "orhanozkan@kayhanertugrul.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "niliferkaya@ayha.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -9640,7 +10699,16 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "iletisim@ozkaynaktorna.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.3978",
@@ -10236,7 +11304,16 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "cardak@sodas.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.2106",
@@ -10397,7 +11474,9 @@
       "firma_adi": "BRETON MAKİNA SAN. VE TİC. A.Ş.",
       "email": "muhasebe@ionbreton.com",
       "email_adresleri": [
-        "muhasebe@ionbreton.com"
+        "muhasebe@ionbreton.com",
+        "satinalma@ionbreton.com",
+        "mkaraman@ionbreton.com"
       ],
       "bakiye": 6971.38,
       "gecikmis_bakiye": 52.84,
@@ -10444,7 +11523,24 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "satinalma@ionbreton.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "mkaraman@ionbreton.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0267",
@@ -10494,7 +11590,48 @@
           "temsilci": "TUNÇER"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "samih@gokhan.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ceylan.cetin@gokhan.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "onurn@gokhan.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "vedatb@gokhan.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "erhana@gokhan.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.4094",
@@ -10541,7 +11678,23 @@
       "firma_adi": "ER-BAKIR ELEKTROLİTİK BAKIR MAMULLERİ A.Ş.",
       "email": "kozbulbul@erbakir.com.tr",
       "email_adresleri": [
-        "kozbulbul@erbakir.com.tr"
+        "kozbulbul@erbakir.com.tr",
+        "uturkbay@erbakir.com.tr",
+        "ebarim@erbakir.com.tr",
+        "mkilic@erbakir.com.tr",
+        "baydemir@erbakir.com.tr",
+        "odedeoglu@erbakir.com.tr",
+        "nyapar@erbakir.com.tr",
+        "ssoluk@erbakir.com.tr",
+        "mgunbey@erbakir.com.tr",
+        "ambar@erbakir.com.tr",
+        "erbakir@erbakir.com.tr",
+        "merih.yucel@etibakir.com.tr",
+        "bgokcen@erbakir.com.tr",
+        "hkesmez@erbakir.com.tr",
+        "satinalma@ersatel.com",
+        "afidan@erbakir.com.tr",
+        "caglar.onen@etibakir.com.tr"
       ],
       "bakiye": 6787.55,
       "gecikmis_bakiye": 2081.25,
@@ -10586,7 +11739,48 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": [],
+      "email_adaylari": [
+        {
+          "email": "uturkbay@erbakir.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        },
+        {
+          "email": "ebarim@erbakir.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        },
+        {
+          "email": "mkilic@erbakir.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "baydemir@erbakir.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "odedeoglu@erbakir.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ],
       "email_kaynagi": "Gmail teklif talebi",
       "email_guven": "yuksek"
     },
@@ -10596,7 +11790,9 @@
       "email": "ibrahimunlu@yongamobilya.com",
       "email_adresleri": [
         "ibrahimunlu@yongamobilya.com",
-        "mustafa@yongamobilya.com"
+        "mustafa@yongamobilya.com",
+        "cansel.naslica@yongamobilya.com",
+        "yongamobilya@yongamobilya.com"
       ],
       "bakiye": 6746.94,
       "gecikmis_bakiye": 0,
@@ -10625,12 +11821,28 @@
       "email_guven": "dogrulanmis",
       "email_adaylari": [
         {
-          "email": "mustafa@yongamobilya.com",
-          "kaynak": "Servis kaydı",
-          "guven": "yuksek",
+          "email": "cansel.naslica@yongamobilya.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-01-28",
-          "eslesme_notu": null
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "mustafa@yongamobilya.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "yongamobilya@yongamobilya.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -10682,7 +11894,48 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "halil.zeybek@goknur.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "mustafa.kilic@goknur.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "fatih.gunes@goknur.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "dinar.satinalma@goknur.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe@goknur.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.4350",
@@ -10712,7 +11965,32 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "ysahinturk@aquakraft.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "egurbuz@aquakraft.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "faltin@aquakraft.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "320.01.0355",
@@ -10754,20 +12032,36 @@
       ],
       "email_adaylari": [
         {
-          "email": "muhammetsezen@ecogreenenerji.com",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-06-15",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "muhammetural@hattat.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
+          "email": "info@yildizkirtasiye.com.tr",
+          "kaynak": "Google Kişiler",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-03-11",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "mustafa.uysal@yildizentegre.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "salih.sahin@yildizentegre.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "taha.beyaz@yildizentegre.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -10859,14 +12153,57 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "dgunes@denizli.bel.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muammer.hatipoglu@denizbank.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe@denizlimuhasebe.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "yakup@denizligroup.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "adem@denizligroup.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "320.01.0127",
       "firma_adi": "METROPOL DİJİTAL TELEVİZYON RADYO YAYINCILIK SAN. VE TİC.A.Ş",
       "email": "arifzor@denizlimetropol.com",
       "email_adresleri": [
-        "arifzor@denizlimetropol.com"
+        "arifzor@denizlimetropol.com",
+        "cansu.karsli@metropolcard.com",
+        "esra.dinc@metropolcard.com"
       ],
       "bakiye": 5180,
       "gecikmis_bakiye": 5180,
@@ -10893,7 +12230,24 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "cansu.karsli@metropolcard.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "esra.dinc@metropolcard.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0496",
@@ -11121,7 +12475,32 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "bahar.kesmen@fatihkalem.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@fatihkalem.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe3@fatihkalem.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0062",
@@ -11186,16 +12565,7 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": [
-        {
-          "email": "fatmakaratas@menderes.com",
-          "kaynak": "Eski teklif",
-          "guven": "yuksek",
-          "adet": 1,
-          "son_tarih": "2026-06-05",
-          "eslesme_notu": null
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0202",
@@ -11326,7 +12696,8 @@
       "firma_adi": "FUTURE GARAGE MAKİNA SAN. VE TİC. LTD.ŞTİ.",
       "email": "info@futuregarage.com.tr",
       "email_adresleri": [
-        "info@futuregarage.com.tr"
+        "info@futuregarage.com.tr",
+        "oselcuk@futuregarage.com.tr"
       ],
       "bakiye": 3943.73,
       "gecikmis_bakiye": 0,
@@ -11353,14 +12724,24 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "oselcuk@futuregarage.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0293",
       "firma_adi": "CAN KARDEŞLER OTOMOTİV SAN. VE TİCLTD.ŞTİ.",
       "email": "cankardesler@man.com.tr",
       "email_adresleri": [
-        "cankardesler@man.com.tr"
+        "cankardesler@man.com.tr",
+        "bilgi@ademkardesler.com.tr"
       ],
       "bakiye": 3862.32,
       "gecikmis_bakiye": 1680,
@@ -11397,7 +12778,16 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "bilgi@ademkardesler.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0089",
@@ -11447,7 +12837,48 @@
           "temsilci": "TUNÇER"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "maliisler@abaliciftligi.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "emre.turhan@abaliciftligi.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ali.ulutas@abaliciftligi.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "selin.cagdas@abaliciftligi.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "dilara.ucum@abaliciftligi.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0724",
@@ -11553,20 +12984,20 @@
       ],
       "email_adaylari": [
         {
-          "email": "ramazan.bengin@celiklerholding.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 3,
-          "son_tarih": "2026-06-15",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
-        },
-        {
-          "email": "auysal@sefine.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
+          "email": "adamuhasebe20@gmail.com",
+          "kaynak": "Google Kişiler",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-03-02",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ramazan.akyildiz@zorlu.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -11618,7 +13049,16 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "info@tikiroglu.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0019",
@@ -11787,23 +13227,16 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": [
-        {
-          "email": "akifsozer_kiraz@hotmail.com",
-          "kaynak": "SS cari kartı",
-          "guven": "dogrulanmis",
-          "adet": 1,
-          "son_tarih": null,
-          "eslesme_notu": null
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0022",
       "firma_adi": "ERSOY METAL HADDECİLİK VE NAKLİYAT SAN.TİC. LTD.ŞTİ.",
       "email": "info@ersoymetal.com",
       "email_adresleri": [
-        "info@ersoymetal.com"
+        "info@ersoymetal.com",
+        "satinalma@ersoydokum.com.tr",
+        "info@ersoydokum.com.tr"
       ],
       "bakiye": 3059.04,
       "gecikmis_bakiye": 0,
@@ -11830,7 +13263,24 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "satinalma@ersoydokum.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@ersoydokum.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "320.01.0195",
@@ -12288,7 +13738,48 @@
           "temsilci": null
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "bilgi@turkiyehayatemeklilik.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "syasar@albarakaturk.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "burdursatinalma@turkseker.gov.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@editurk.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "kagan.tiryakioglu@cpturkiye.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.1064",
@@ -12397,7 +13888,15 @@
       "firma_adi": "ALKİM ALKALİ KİMYA A.Ş.",
       "email": "koralkimmutabakat@alkim.com",
       "email_adresleri": [
-        "koralkimmutabakat@alkim.com"
+        "koralkimmutabakat@alkim.com",
+        "ali.yildirim@alkim.com",
+        "unal.arik@alkim.com",
+        "yasin.cegiz@alkim.com",
+        "abdullah.korkmaz@alkim.com",
+        "alptekin.kuru@alkim.com",
+        "ali.kaynak@alkim.com",
+        "kadir.kutluay@alkim.com",
+        "fatih.bahce@alkim.com"
       ],
       "bakiye": 2290.31,
       "gecikmis_bakiye": 1774.31,
@@ -12444,7 +13943,40 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "ali.yildirim@alkim.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "unal.arik@alkim.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "yasin.cegiz@alkim.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "abdullah.korkmaz@alkim.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0878",
@@ -12504,7 +14036,16 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "maun@maun.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0285",
@@ -12613,8 +14154,14 @@
     {
       "cari_kod": "120.01.0027",
       "firma_adi": "BIHL VE WIEDEMANN OTOMASYON SAN. VE TİC. LTD.ŞTİ.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "mcengiz@bihl-wiedemann.de",
+      "email_adresleri": [
+        "mcengiz@bihl-wiedemann.de",
+        "gumrukcu@bihl-wiedemann.de",
+        "sgenc@bihl-wiedemann.de",
+        "einkauf-tr@bihl-wiedemann.de",
+        "lojistik@bihl-wiedemann.de"
+      ],
       "bakiye": 1883.73,
       "gecikmis_bakiye": 1883.73,
       "odeme_vadesi": null,
@@ -12650,22 +14197,40 @@
       ],
       "email_adaylari": [
         {
-          "email": "einkauf-tr@bihl-wiedemann.de",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
-          "adet": 6,
-          "son_tarih": "2026-07-07",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "email": "gumrukcu@bihl-wiedemann.de",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
         },
         {
           "email": "sgenc@bihl-wiedemann.de",
-          "kaynak": "Gmail teklif geçmişi",
-          "guven": "aday",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
           "adet": 1,
-          "son_tarih": "2026-03-23",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        },
+        {
+          "email": "einkauf-tr@bihl-wiedemann.de",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        },
+        {
+          "email": "lojistik@bihl-wiedemann.de",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
         }
-      ]
+      ],
+      "email_kaynagi": "Google Kişiler",
+      "email_guven": "yuksek"
     },
     {
       "cari_kod": "120.01.0084",
@@ -12751,12 +14316,44 @@
       ],
       "email_adaylari": [
         {
-          "email": "duyuru@mert-celik.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
+          "email": "muhasebe@tacettindemir.com",
+          "kaynak": "Google Kişiler",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-05-04",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe@askondemir.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@yorukogludemir.com",
+          "kaynak": "Google Kişiler",
+          "guven": "yuksek",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde firma adı/domain ile eşleşti"
+        },
+        {
+          "email": "falageyik@askondemir.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "satinalma@askondemir.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -12799,7 +14396,8 @@
       "firma_adi": "DEBAK DENİZLİ BAGALİT KALIP SAN. VE TİC. A.Ş.",
       "email": "info@debak.com.tr",
       "email_adresleri": [
-        "info@debak.com.tr"
+        "info@debak.com.tr",
+        "hasan.tekelioglu@debak.com.tr"
       ],
       "bakiye": 1650,
       "gecikmis_bakiye": 0,
@@ -12826,7 +14424,16 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "hasan.tekelioglu@debak.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0113",
@@ -12856,7 +14463,16 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "info@altintop.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0420",
@@ -12926,7 +14542,24 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "muhasebe@danta.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ozgurberber@danta.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.4324",
@@ -12956,13 +14589,32 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "korkuthamdi.elmali@modernkarton.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "zeynep.onal@modernkarton.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0866",
       "firma_adi": "AYDEM YENİLENEBİLİR ENERJİ A.Ş.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "satinalmayenilenebilir@aydemenerji.com.tr",
+      "email_adresleri": [
+        "satinalmayenilenebilir@aydemenerji.com.tr"
+      ],
       "bakiye": 1392.17,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -12986,7 +14638,9 @@
           "temsilci": "TUNÇER"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [],
+      "email_kaynagi": "Google Kişiler",
+      "email_guven": "yuksek"
     },
     {
       "cari_kod": "120.01.0031",
@@ -13031,16 +14685,7 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": [
-        {
-          "email": "oozel@ilkecelik.com.tr",
-          "kaynak": "Eski teklif + Gmail teklif talebi + Gmail yazışma thread’i",
-          "guven": "yuksek",
-          "adet": 3,
-          "son_tarih": "2026-06-23",
-          "eslesme_notu": null
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.0309",
@@ -13198,7 +14843,16 @@
           "temsilci": null
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "harun.efeler@eruslusaglik.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0166",
@@ -13311,8 +14965,11 @@
     {
       "cari_kod": "120.01.0377",
       "firma_adi": "KALKANLAR OTO YEDEK PARÇA LASTİK JANT SAN. VE TİC. LTD.ŞTİ.",
-      "email": null,
-      "email_adresleri": [],
+      "email": "lytkarino_yedek_parca_satinalma@rencons.com",
+      "email_adresleri": [
+        "lytkarino_yedek_parca_satinalma@rencons.com",
+        "satinalma@arisanlastik.com.tr"
+      ],
       "bakiye": 940.83,
       "gecikmis_bakiye": 0,
       "odeme_vadesi": "30 GÜN",
@@ -13336,7 +14993,18 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "satinalma@arisanlastik.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ],
+      "email_kaynagi": "Google Kişiler",
+      "email_guven": "yuksek"
     },
     {
       "cari_kod": "120.01.0114",
@@ -13460,7 +15128,16 @@
           "temsilci": null
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "d.kalayci@crystal.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0930",
@@ -13625,7 +15302,8 @@
       "firma_adi": "DEVLET HAVA MEYDANLARI İŞLETMESİ GENEL MÜD.",
       "email": "murattugkan.dagarslan@dhmi.gov.tr",
       "email_adresleri": [
-        "murattugkan.dagarslan@dhmi.gov.tr"
+        "murattugkan.dagarslan@dhmi.gov.tr",
+        "uretim3@enghavacilik.com"
       ],
       "bakiye": 525,
       "gecikmis_bakiye": 525,
@@ -13652,7 +15330,16 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "uretim3@enghavacilik.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0986",
@@ -13806,20 +15493,44 @@
       ],
       "email_adaylari": [
         {
-          "email": "tabriz.orujov@azertexnolayn.com",
-          "kaynak": "Gmail teklif geçmişi",
+          "email": "tural.ibrahimov@azertexnolayn.com",
+          "kaynak": "Google Kişiler",
           "guven": "aday",
-          "adet": 2,
-          "son_tarih": "2026-06-18",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "semender.iskenderov@azertexnolayn.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "tabriz.orujov@azertexnolayn.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         },
         {
           "email": "alkhan.jafarov@azertexnolayn.com",
-          "kaynak": "Gmail teklif geçmişi",
+          "kaynak": "Google Kişiler",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-03-31",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "jafar.isayev@azertexnolayn.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -13861,7 +15572,16 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "info@gokdelen.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.4368",
@@ -13921,7 +15641,48 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "office@kayminmarble.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "satinalma@cobanlarmarble.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "mujgan.kos@ecemarble.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@ecemarble.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "hasanmermer@almesmarble.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0254",
@@ -14055,14 +15816,43 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "muhasebe02@devrimekinci.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe02@devrimekinci.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0126",
       "firma_adi": "ATİK TEL MAKİNA SAN. VE TİC. LTD.ŞTİ.",
       "email": "info@atiktel.com",
       "email_adresleri": [
-        "info@atiktel.com"
+        "info@atiktel.com",
+        "info@teknomatik.com",
+        "muhasebe@sematik.tr",
+        "semakmatik@semakmatik.com",
+        "info@beysuatikyonetimi.com",
+        "muhasebe@isimatik.com",
+        "sematik@sematik.tr",
+        "ayse.urgancio@osmanliatikyonetimi.com",
+        "akuloglu@batikipas.com.tr",
+        "mbilgic@batikipas.com.tr",
+        "hale.senses@beysuatikyonetimi.com",
+        "satinalma@batikipas.com.tr",
+        "cizim@atiktel.com"
       ],
       "bakiye": 218.49,
       "gecikmis_bakiye": 148.21,
@@ -14099,7 +15889,48 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "info@teknomatik.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe@sematik.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "semakmatik@semakmatik.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@beysuatikyonetimi.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "muhasebe@isimatik.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0215",
@@ -14165,12 +15996,28 @@
       ],
       "email_adaylari": [
         {
-          "email": "belgin.kilic@saffatlojistik.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
+          "email": "muhasebe@portsan.com",
+          "kaynak": "Google Kişiler",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-02-24",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "menderes.urhan@sgairport.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@akinexport.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -14234,20 +16081,28 @@
       ],
       "email_adaylari": [
         {
-          "email": "mehmet@hasmak.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
+          "email": "satis@hasmak.com.tr",
+          "kaynak": "Google Kişiler",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-03-05",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         },
         {
-          "email": "ubozkaya@hasmak.com.tr",
-          "kaynak": "Gmail teklif geçmişi",
+          "email": "hasmak@hasmak.com.tr",
+          "kaynak": "Google Kişiler",
           "guven": "aday",
           "adet": 1,
-          "son_tarih": "2026-02-24",
-          "eslesme_notu": "Firma adı/domain ile eşleşti; personel onayı gerekli"
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "mehmet@hasmak.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
         }
       ]
     },
@@ -14313,7 +16168,32 @@
           "temsilci": "AKAGÜNDÜZ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "info@dktraverten.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "murats@gamatraverten.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@travertendepo.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0602",
@@ -14358,16 +16238,7 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": [
-        {
-          "email": "info@protechfilter.com",
-          "kaynak": "Servis kaydı",
-          "guven": "yuksek",
-          "adet": 1,
-          "son_tarih": "2026-05-18",
-          "eslesme_notu": null
-        }
-      ]
+      "email_adaylari": []
     },
     {
       "cari_kod": "120.01.4219",
@@ -14441,14 +16312,25 @@
           "temsilci": "İRİŞ"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "info@ucler.net",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "320.01.0137",
       "firma_adi": "İSTANBUL PNÖMATİK VEOTOMASYON SİSTEMLERİ TİC. LTD.ŞTİ",
       "email": "info@istanbulpnomatik.com",
       "email_adresleri": [
-        "info@istanbulpnomatik.com"
+        "info@istanbulpnomatik.com",
+        "abdurrahman@istanbuldynamics.com.tr",
+        "yaser@istanbuldynamics.com.tr"
       ],
       "bakiye": 50,
       "gecikmis_bakiye": 50,
@@ -14475,7 +16357,24 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "abdurrahman@istanbuldynamics.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "yaser@istanbuldynamics.com.tr",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.0529",
@@ -14603,7 +16502,48 @@
           "temsilci": "DURAN"
         }
       ],
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "muhasebe@beyzarulman.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@tugrarulman.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@akdalrulman.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "info@izmirlioglurulman.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "lrs@lrsrulman.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "120.01.4363",
@@ -14640,7 +16580,9 @@
       "firma_adi": "İBRAHİM SOLCAN",
       "email": "solcanhidrolik@gmail.com",
       "email_adresleri": [
-        "solcanhidrolik@gmail.com"
+        "solcanhidrolik@gmail.com",
+        "ibrahimturan@ekobord.com",
+        "ibrahimkafes@gmail.com"
       ],
       "bakiye": 1.92,
       "gecikmis_bakiye": 1.92,
@@ -14667,7 +16609,24 @@
       ],
       "email_kaynagi": "Mikro cari kartı",
       "email_guven": "dogrulanmis",
-      "email_adaylari": []
+      "email_adaylari": [
+        {
+          "email": "ibrahimturan@ekobord.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        },
+        {
+          "email": "ibrahimkafes@gmail.com",
+          "kaynak": "Google Kişiler",
+          "guven": "aday",
+          "adet": 1,
+          "son_tarih": null,
+          "eslesme_notu": "Google Kişiler rehberinde olası eşleşme; personel onayı gerekli"
+        }
+      ]
     },
     {
       "cari_kod": "320.01.0587",
@@ -14762,12 +16721,17 @@
   ],
   "email_ozet": {
     "toplam_cari": 210,
-    "gonderime_hazir": 113,
-    "adayli": 10,
-    "eksik": 87,
-    "gmail_tarandi": true,
-    "gmail_aday_sayisi": 17,
-    "gmail_kaynagi": "SS Supabase Gmail/IMAP geçmişi"
+    "gonderime_hazir": 119,
+    "adayli": 40,
+    "eksik": 51,
+    "google_kisiler": {
+      "kayit": 2571,
+      "eslesen_aday": 243,
+      "yeni_ana_eposta": 6
+    },
+    "gmail_tarandi": false,
+    "gmail_aday_sayisi": 0,
+    "gmail_kaynagi": "Yalnız Google Kişiler (Supabase yok)"
   },
-  "email_enriched_at": "2026-07-14T18:23:15.143Z"
+  "email_enriched_at": "2026-07-15T09:39:14.819Z"
 }
