@@ -16,7 +16,7 @@ export type HatirlatmaCari = CariBakiye & {
 }
 
 export async function loadHatirlatmaCariler(): Promise<HatirlatmaCari[]> {
-  const snapshot = loadSnapshot()
+  const snapshot = await loadSnapshot()
   const admin = createAdminClient()
   const codes = snapshot.cariler.map((cari) => cari.cari_kod)
 

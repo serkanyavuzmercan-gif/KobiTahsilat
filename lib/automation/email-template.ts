@@ -28,8 +28,8 @@ export function buildHatirlatmaEmail(cari: CariBakiye, snapshotTarihi: string) {
   }
 }
 
-export function loadAutomationSnapshotContext() {
-  const snapshot = loadSnapshot()
+export async function loadAutomationSnapshotContext() {
+  const snapshot = await loadSnapshot()
   return {
     snapshot,
     snapshotTarihi: snapshot.snapshot_tarihi,

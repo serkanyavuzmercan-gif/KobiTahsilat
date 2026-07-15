@@ -9,8 +9,8 @@ import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 
-export default function HomePage() {
-  const snap = loadSnapshot()
+export default async function HomePage() {
+  const snap = await loadSnapshot()
   const top = snap.cariler.slice(0, 10)
   const ort = snap.cari_sayisi ? snap.toplam_alacak / snap.cari_sayisi : 0
   const ortalamaGecikme = portfoyOrtalamaGecikmeGun(snap.cariler)

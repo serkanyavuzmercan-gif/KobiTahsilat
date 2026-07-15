@@ -52,7 +52,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const snapshot = loadSnapshot()
+    const snapshot = await loadSnapshot()
     const defaultMessage = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
     const customBody = typeof body.messageBody === 'string' ? body.messageBody.trim() : ''
     const messageBody = customBody || defaultMessage.body

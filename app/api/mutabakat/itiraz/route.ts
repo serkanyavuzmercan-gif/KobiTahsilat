@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Bağlantı geçersiz veya süresi dolmuş.' }, { status: 401 })
     }
 
-    const cari = getCari(payload.cariKod)
+    const cari = await getCari(payload.cariKod)
     if (!cari) {
       return NextResponse.json({ success: false, error: 'Cari kaydı bulunamadı.' }, { status: 404 })
     }

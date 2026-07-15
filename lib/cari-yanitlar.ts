@@ -23,8 +23,8 @@ function emptyOzet(): CariYanitOzet {
   }
 }
 
-function firmaAdiMap() {
-  const snapshot = loadSnapshot()
+async function firmaAdiMap() {
+  const snapshot = await loadSnapshot()
   return new Map(snapshot.cariler.map((cari) => [cari.cari_kod, cari.firma_adi]))
 }
 
@@ -113,7 +113,7 @@ export async function loadCariYanitlari(
   for (const kod of cariKodlari) result[kod] = emptyOzet()
   if (!cariKodlari.length) return result
 
-  const [okunan, firmaMap] = await Promise.all([loadOkunanYanitIds(userId), Promise.resolve(firmaAdiMap())])
+  const [okunan, firmaMap] = await Promise.all([loadOkunanYanitIds(userId), firmaAdiMap()])
 
   const admin = createAdminClient()
   const { data, error } = await admin
@@ -138,7 +138,7 @@ export async function loadCariYanitlari(
 }
 
 export async function loadYanitInbox(userId: string): Promise<CariYanitKayit[]> {
-  const snapshot = loadSnapshot()
+  const snapshot = await loadSnapshot()
   const kodlar = snapshot.cariler.map((cari) => cari.cari_kod)
   const grouped = await loadCariYanitlari(userId, kodlar)
   return Object.values(grouped)
@@ -211,7 +211,7 @@ export async function logWhatsAppYanit(options: {
 }
 
 export async function buildPhoneToCariMap() {
-  const snapshot = loadSnapshot()
+  const snapshot = await loadSnapshot()
   const admin = createAdminClient()
   const codes = snapshot.cariler.map((c) => c.cari_kod)
   const { data } = await admin.from('cariler').select('cari_kod,telefon').in('cari_kod', codes)

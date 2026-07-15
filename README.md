@@ -50,10 +50,18 @@ Geliştirme için Vercel deploy şart değil; yerelde `npm run dev` yeterli. Can
 | `/hatirlatma/[kod]` | Mesaj önizleme, telefon düzenleme ve gönderim |
 | `/api/cariler?q=` | JSON API |
 
-Canlı snapshot: `data/tahsilat_snapshot.json` (Mikro firma **26**).
+**Veri kaynağı: canlı Supabase.** Bakiye, açık evrak ve yaşlandırma doğrudan
+`vade_takip_tahsilat` (açık alacak evrakları, günlük Mikro sync) + `cariler` (firma,
+e-posta, telefon, vade) tablolarından okunur (`lib/data.ts`). En güncel `snapshot_tarihi`
+otomatik seçilir; sonuç 60 sn bellek önbelleğinde tutulur. Servis rolü anahtarı tanımlı
+değilse veya sorgu boş dönerse `data/tahsilat_snapshot.json` yedeğine düşülür (anahtarsız
+yerel `npm run dev` de çalışsın diye). `npm run sync:mikro` bu yedeği tazeler; canlı
+tabloları ise ss reposundaki Mikro sync cron'u besler.
 
 Vade ve yaşlandırma motoru MikRapor'daki doğrulanmış kuralları kullanır:
-`cha_vade → ödeme planı → evrak tarihi`; açık kalemler FIFO ile hesaplanır.
+`cha_vade → ödeme planı → evrak tarihi`; açık kalemler FIFO ile hesaplanır. Bakiye>0 =
+alacağımız; `128.*`, ŞAHLAN (`120.01.0001`) ve AYGÜN SARI (`120.01.4249`) Mikro sync
+tarafında hariç tutulur.
 
 Mikro `CARI_HESAPLAR.cari_EMail` alanındaki adresler cari koduyla eşleştirilir.
 Mutabakat modülü Resend üzerinden gönderim yapar. Kullanıcılar `/mutabakat/ayarlar`

@@ -6,7 +6,7 @@ import { whatsAppSendEnabled } from '@/lib/whatsapp'
 export const dynamic = 'force-dynamic'
 
 export default async function HatirlatmaPage() {
-  const snapshot = loadSnapshot()
+  const snapshot = await loadSnapshot()
   const cariler = await loadHatirlatmaCariler()
   return (
     <HatirlatmaClient

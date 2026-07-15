@@ -40,10 +40,22 @@ ss `docs/VADE-TAKIP-SYNC.md` + `lib/mikro-api.ts` → `getVadeTakipAcikEvraklar`
 5. Hariç: `128.*`, HARIC_CARI = `120.01.0001` (ŞAHLAN), `120.01.4249` (AYGÜN SARI)
 6. `cha_vade` çoğu zaman boş → vade = evrak tarihi + ödeme planı günü (`ODEME_PLANLARI` / plan adı)
 
-## KobiTahsilat MVP kapsamı
+## KobiTahsilat veri beslemesi (güncel)
 
-İlk sürüm **cari net bakiyeleri** ile çalışır (snapshot JSON). Sonraki adımda ss'deki
-evrak kırılımı / yaşlandırma aynı SQL+FIFO mantığıyla eklenecek.
+Sistem **canlı Supabase** tablolarından beslenir (`lib/data.ts` → `buildFromSupabase`):
+
+- **Taban veri:** `vade_takip_tahsilat` — en güncel `snapshot_tarihi` için tüm açık alacak
+  evrakları (sayfalı çekilir). Cari başına gruplanır: `bakiye = Σ tutar`, her evrak bir
+  **açık kalem** (evrak/belge no, evrak+vade tarihi, gecikme, yaşlandırma kovası).
+  Yaşlandırma `snapshot_tarihi − vade_tarihi` ile hesaplanır; `gecikmis_bakiye` =
+  vadesi gelmemiş dışındaki kovaların toplamı.
+- **Cari kartı:** `cariler` — firma adı, e-posta, telefon, ödeme vadesi/`vade_gun`.
+- **Enrichment adayları:** e-posta/telefon önerileri `data/tahsilat_snapshot.json`'dan
+  cari koduna göre bindirilir (`npm run enrich:*` çıktısı); bakiyeler yine canlıdan gelir.
+- **Yedek:** servis rolü yoksa / sorgu boşsa JSON snapshot'a düşülür.
+
+`loadSnapshot()` artık **async**'tir ve sonucu 60 sn önbelleğe alır. Evrak kırılımı ve
+yaşlandırma ss'deki aynı SQL+FIFO mantığıyla (Mikro sync tarafında) üretilir.
 
 ## İlk canlı snapshot (örnek üst kalemler)
 

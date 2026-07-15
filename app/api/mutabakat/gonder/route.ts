@@ -67,7 +67,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const snapshot = loadSnapshot()
+    const snapshot = await loadSnapshot()
     const token = createMutabakatToken(cari.cari_kod, snapshot.snapshot_tarihi, cari.bakiye)
     const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://kobi-tahsilat.vercel.app').replace(
       /\/$/,

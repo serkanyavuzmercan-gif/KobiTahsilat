@@ -12,7 +12,7 @@ export type MutabakatCari = CariBakiye & {
 }
 
 export async function loadMutabakatCariler(): Promise<MutabakatCari[]> {
-  const snapshot = loadSnapshot()
+  const snapshot = await loadSnapshot()
   const admin = createAdminClient()
   const codes = snapshot.cariler.map((cari) => cari.cari_kod)
 

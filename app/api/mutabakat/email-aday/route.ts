@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const body = (await request.json()) as { cariKod?: string; email?: string }
     const cariKod = String(body.cariKod || '').trim()
     const email = parseEmails(body.email)[0]
-    const cari = getCari(cariKod)
+    const cari = await getCari(cariKod)
     if (!cari || !email) {
       return NextResponse.json({ success: false, error: 'Cari veya e-posta geçersiz.' }, { status: 400 })
     }

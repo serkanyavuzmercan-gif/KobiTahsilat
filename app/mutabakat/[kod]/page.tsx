@@ -32,7 +32,7 @@ export default async function MutabakatPreviewPage({
   const selectedSenderId = defaultSenderId(senders)
   const canSend = sendEnabled()
 
-  const snapshot = loadSnapshot()
+  const snapshot = await loadSnapshot()
   const token = createMutabakatToken(cari.cari_kod, snapshot.snapshot_tarihi, cari.bakiye)
   const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://kobi-tahsilat.vercel.app').replace(/\/$/, '')
   const email = buildMutabakatEmail(cari, snapshot.snapshot_tarihi, {

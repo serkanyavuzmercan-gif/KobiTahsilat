@@ -75,7 +75,7 @@ async function sendAutomationEmail(
     throw new Error('E-posta gönderimi kapalı.')
   }
 
-  const snapshot = loadSnapshot()
+  const snapshot = await loadSnapshot()
   const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi)
   const senderId = defaultSenderId(senders)
   const sender = senderId ? await getMailSenderById(userId, senderId) : null
@@ -121,7 +121,7 @@ async function sendAutomationWhatsApp(
   if (!cari) throw new Error('Cari bulunamadı.')
   if (!cari.telefon) throw new Error('Telefon yok.')
 
-  const snapshot = loadSnapshot()
+  const snapshot = await loadSnapshot()
   const message = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
 
   if (taslakMod) return

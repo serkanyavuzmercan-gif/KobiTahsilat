@@ -9,10 +9,10 @@ export const dynamic = 'force-dynamic'
 export default async function CariDetayPage({ params }: { params: Promise<{ kod: string }> }) {
   const { kod: encodedKod } = await params
   const kod = decodeURIComponent(encodedKod)
-  const cari = getCari(kod)
+  const cari = await getCari(kod)
   if (!cari) notFound()
 
-  const snap = loadSnapshot()
+  const snap = await loadSnapshot()
   const sira = snap.cariler.findIndex((c) => c.cari_kod === cari.cari_kod) + 1
   const pay = snap.toplam_alacak > 0 ? (cari.bakiye / snap.toplam_alacak) * 100 : 0
   const ortalamaGecikme = cariOrtalamaGecikmeGun(cari)

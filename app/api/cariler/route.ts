@@ -6,8 +6,8 @@ export const dynamic = 'force-dynamic'
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const q = searchParams.get('q') || ''
-  const snap = loadSnapshot()
-  const cariler = q ? searchCariler(q) : snap.cariler
+  const snap = await loadSnapshot()
+  const cariler = q ? await searchCariler(q) : snap.cariler
   return NextResponse.json({
     sourced_at: snap.sourced_at,
     source: snap.source,

@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as { cariKod?: string; emails?: string }
     const cariKod = String(body.cariKod || '').trim()
-    const cari = getCari(cariKod)
+    const cari = await getCari(cariKod)
     if (!cari) {
       return NextResponse.json({ success: false, error: 'Cari bulunamadı.' }, { status: 404 })
     }

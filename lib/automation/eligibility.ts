@@ -77,8 +77,8 @@ export function collectWhatsAppCandidates(
   })
 }
 
-export function listSnapshotDelaySummary() {
-  const snapshot = loadSnapshot()
+export async function listSnapshotDelaySummary() {
+  const snapshot = await loadSnapshot()
   return snapshot.cariler
     .map((cari) => ({
       cari_kod: cari.cari_kod,

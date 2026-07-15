@@ -24,7 +24,7 @@ export default async function HatirlatmaPreviewPage({
   const cari = await loadHatirlatmaCari(decodeURIComponent(encodedKod))
   if (!cari) notFound()
 
-  const snapshot = loadSnapshot()
+  const snapshot = await loadSnapshot()
   const message = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
   const sendEnabled = whatsAppSendEnabled()
   const whatsappContext = await loadHatirlatmaWhatsAppContext(cari.telefon, cari.cari_kod)

@@ -16,7 +16,7 @@ export default async function MutabakatItirazPage({
   const payload = verifyMutabakatToken(token)
   if (!payload) notFound()
 
-  const cari = getCari(payload.cariKod)
+  const cari = await getCari(payload.cariKod)
   if (!cari) notFound()
 
   return (

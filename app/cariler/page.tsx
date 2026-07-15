@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function CarilerPage() {
   const user = await requireAuthUser()
-  const snap = loadSnapshot()
+  const snap = await loadSnapshot()
   const kodlar = snap.cariler.map((cari) => cari.cari_kod)
   const [yanitlar, inbox] = await Promise.all([
     loadCariYanitlari(user.id, kodlar),

@@ -5,7 +5,7 @@ import { loadMutabakatCariler } from '@/lib/mutabakat-data'
 export const dynamic = 'force-dynamic'
 
 export default async function MutabakatPage() {
-  const snapshot = loadSnapshot()
+  const snapshot = await loadSnapshot()
   const cariler = await loadMutabakatCariler()
   const sendEnabled = process.env.MUTABAKAT_SEND_ENABLED !== 'false'
   return (
