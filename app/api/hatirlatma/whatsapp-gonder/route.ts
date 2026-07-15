@@ -8,7 +8,11 @@ import { HATIRLATMA_LOG_KAYNAK, WHATSAPP_SEND_TIP } from '@/lib/hatirlatma-log'
 import { formatPhoneDisplay, formatPhoneWhatsApp, isMobileTurkey } from '@/lib/phone'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
-import { sendWhatsApp, whatsAppSendEnabled, WHATSAPP_SENDER_LABEL } from '@/lib/whatsapp'
+import {
+  hatirlatmaDeliveryHint,
+  sendHatirlatmaWhatsApp,
+} from '@/lib/hatirlatma-whatsapp'
+import { whatsAppSendEnabled, WHATSAPP_SENDER_LABEL } from '@/lib/whatsapp'
 
 export const dynamic = 'force-dynamic'
 
@@ -65,9 +69,11 @@ export async function POST(request: Request) {
 
     const sentAt = new Date().toISOString()
 
-    const result = await sendWhatsApp({
+    const result = await sendHatirlatmaWhatsApp({
       to: formatPhoneWhatsApp(cari.telefon),
+      cariKod: cari.cari_kod,
       body: messageBody,
+      cari,
     })
 
     const logResult = await insertMailGonderimLog({
@@ -88,12 +94,20 @@ export async function POST(request: Request) {
       ? ''
       : ' (Meta kabul etti; gönderim geçmişi kaydı yazılamadı.)'
 
+    const modeLabel =
+      result.mode === 'template'
+        ? `Meta onaylı şablon (${result.templateName}/${result.templateLanguage})`
+        : 'serbest metin (24 saat penceresi)'
+
     return NextResponse.json({
       success: true,
-      message: `WhatsApp mesajı ${formatPhoneDisplay(cari.telefon)} numarasına gönderildi. Gönderen: ${WHATSAPP_SENDER_LABEL}.${logWarning}`,
+      message: `WhatsApp isteği ${formatPhoneDisplay(cari.telefon)} numarasına iletildi (${modeLabel}). Gönderen: ${WHATSAPP_SENDER_LABEL}.${logWarning}`,
       sentAt,
       providerId: result.id,
       messageStatus: result.messageStatus,
+      sendMode: result.mode,
+      templateName: result.templateName || null,
+      deliveryHint: hatirlatmaDeliveryHint(result.mode),
       gonderimSayisi: cari.whatsapp_gonderim_sayisi + (logResult.ok ? 1 : 0),
       logKaydedildi: logResult.ok,
     })

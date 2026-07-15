@@ -1,5 +1,6 @@
 import 'server-only'
 import { defaultSenderId, listMailSenders } from '../mail-senders'
+import { hatirlatmaTemplateConfigured } from '../hatirlatma-whatsapp'
 import { whatsAppConfigured, whatsAppSendEnabled } from '../whatsapp'
 import {
   automationGloballyEnabled,
@@ -48,6 +49,11 @@ export async function assertAutomationReady(userId: string) {
   }
   if (!connections.whatsapp_api_yapilandirildi) {
     issues.push('WhatsApp API (WHATSAPP_ACCESS_TOKEN) yapılandırılmalıdır.')
+  }
+  if (!hatirlatmaTemplateConfigured()) {
+    issues.push(
+      'Soğuk WhatsApp hatırlatması için WHATSAPP_HATIRLATMA_TEMPLATE (Meta onaylı şablon) ayarlanmalıdır.'
+    )
   }
 
   const activeRules = settings.kurallar.filter((rule) => rule.aktif)

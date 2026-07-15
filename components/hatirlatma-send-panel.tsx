@@ -29,6 +29,8 @@ export function HatirlatmaSendPanel({
     type: 'success' | 'error'
     text: string
     providerId?: string | null
+    deliveryHint?: string | null
+    sendMode?: 'text' | 'template' | null
   } | null>(null)
 
   const canSend = sendEnabled && hasPhone && isMobile && messageBody.trim().length > 0
@@ -48,6 +50,8 @@ export function HatirlatmaSendPanel({
         error?: string
         message?: string
         providerId?: string | null
+        deliveryHint?: string | null
+        sendMode?: 'text' | 'template' | null
       } = {}
       try {
         result = JSON.parse(raw) as typeof result
@@ -58,8 +62,10 @@ export function HatirlatmaSendPanel({
       setSentCount((count) => count + 1)
       setFeedback({
         type: 'success',
-        text: result.message || 'Mesaj gönderildi.',
+        text: result.message || 'Meta isteği iletildi.',
         providerId: result.providerId,
+        deliveryHint: result.deliveryHint,
+        sendMode: result.sendMode,
       })
       router.refresh()
     } catch (cause) {
@@ -114,13 +120,27 @@ export function HatirlatmaSendPanel({
             <CheckCircle2 className="mt-0.5 shrink-0" size={18} />
             <div>
               <p className="font-medium">{feedback.text}</p>
+              {feedback.deliveryHint ? (
+                <p className="mt-1 text-xs text-emerald-800">{feedback.deliveryHint}</p>
+              ) : null}
               {feedback.providerId ? (
                 <p className="mt-1 break-all text-xs text-emerald-800">
                   Meta mesaj kimliği: {feedback.providerId}
                 </p>
               ) : null}
               <p className="mt-2 text-xs text-emerald-800">
-                WhatsApp uygulamanızda <strong>Hidroteknik</strong> iş hattından gelen sohbeti kontrol edin.
+                {feedback.sendMode === 'template' ? (
+                  <>
+                    İlk temas veya uzun süredir yazışma yoksa yalnızca <strong>onaylı şablon</strong>{' '}
+                    teslim edilir. Telefonda görünmüyorsa Meta Business Manager&apos;da şablonun{' '}
+                    <strong>APPROVED</strong> olduğunu kontrol edin.
+                  </>
+                ) : (
+                  <>
+                    WhatsApp uygulamanızda <strong>Hidroteknik</strong> iş hattından gelen sohbeti
+                    kontrol edin.
+                  </>
+                )}
               </p>
             </div>
           </div>

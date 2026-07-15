@@ -12,7 +12,8 @@ import { buildHatirlatmaMessage } from '../hatirlatma'
 import { loadHatirlatmaCariler } from '../hatirlatma-data'
 import { loadMutabakatCariler } from '../mutabakat-data'
 import { formatPhoneWhatsApp } from '../phone'
-import { sendWhatsApp, whatsAppSendEnabled } from '../whatsapp'
+import { sendHatirlatmaWhatsApp } from '../hatirlatma-whatsapp'
+import { whatsAppSendEnabled } from '../whatsapp'
 import {
   AUTOMATION_EMAIL_SEND_TIP,
   AUTOMATION_LOG_KAYNAK,
@@ -126,9 +127,11 @@ async function sendAutomationWhatsApp(
   if (taslakMod) return
 
   const sentAt = new Date().toISOString()
-  await sendWhatsApp({
+  await sendHatirlatmaWhatsApp({
     to: formatPhoneWhatsApp(cari.telefon),
+    cariKod: cari.cari_kod,
     body: message.body,
+    cari,
   })
 
   const admin = createAdminClient()
