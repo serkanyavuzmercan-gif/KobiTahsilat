@@ -57,8 +57,8 @@ export function HatirlatmaClient({
     const esikNum = Number.isFinite(esik) ? esik : 0
     return zenginCariler
       .filter(({ cari, ortalamaGecikme }) => {
-        // Ödeme talebi yalnızca vadesi geçmiş + eşik günü aşmış firmalara.
-        if (cari.gecikmis_bakiye <= 0.01) return false
+        // Ödeme talebi yalnızca vadesi geçmiş + eşik günü aşmış + tutar anlamlı (min 50 TL) firmalara.
+        if (cari.gecikmis_bakiye < 50) return false
         if (ortalamaGecikme == null || ortalamaGecikme < esikNum) return false
         if (!term) return true
         const phoneText = cari.telefon
