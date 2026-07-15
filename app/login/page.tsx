@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from 'react'
 import { Eye, EyeOff, LoaderCircle, LockKeyhole } from 'lucide-react'
+import { AppBrand } from '@/components/app-brand'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 
@@ -67,12 +68,12 @@ export default function LoginPage() {
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-md items-center">
       <section className="card w-full p-7 shadow-lg">
-        <div className="mb-6 text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-700">
-            <LockKeyhole size={24} />
+        <div className="mb-6 flex flex-col items-center text-center">
+          <AppBrand href="/login" />
+          <div className="mx-auto mt-4 flex h-10 w-10 items-center justify-center rounded-xl bg-brand-100 text-brand-700">
+            <LockKeyhole size={20} />
           </div>
-          <h2 className="mt-4 text-2xl font-semibold">KobiTahsilat</h2>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-3 text-sm text-slate-500">
             Hidroteknik hesabınızla güvenli giriş yapın
           </p>
         </div>

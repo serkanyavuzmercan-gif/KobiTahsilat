@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { MessageCircle, Settings2 } from 'lucide-react'
+import { AppBrand } from '@/components/app-brand'
 import { AuthActions } from '@/components/auth-actions'
 import { cn } from '@/lib/utils'
 
@@ -50,14 +51,7 @@ export function AppNav() {
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
       <div className="mx-auto max-w-6xl px-4 py-3">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <Link href="/" className="group shrink-0">
-            <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">
-              KobiTahsilat
-            </p>
-            <h1 className="text-lg font-semibold text-slate-900 group-hover:text-brand-700">
-              Tahsilat Takip
-            </h1>
-          </Link>
+          <AppBrand />
 
           <nav className="flex flex-wrap items-center gap-1 sm:gap-1.5">
             {mainLinks.map((link) => (
