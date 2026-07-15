@@ -93,7 +93,7 @@ export default async function MutabakatPreviewPage({
               <div className="mb-2 flex items-center justify-between gap-2">
                 <p className="text-xs font-medium text-slate-500">Gönderim</p>
                 <Link
-                  href="/mutabakat/ayarlar"
+                  href="/ayarlar#eposta"
                   className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:underline"
                 >
                   <Settings size={13} />

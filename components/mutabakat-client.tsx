@@ -62,7 +62,7 @@ export function MutabakatClient({
             </div>
             <p className="mt-1 text-sm text-slate-500">
               Dönem: {snapshotTarihi} · Gönderici e-posta bağlantıları{' '}
-              <Link href="/mutabakat/ayarlar" className="font-medium text-brand-600 hover:underline">
+              <Link href="/ayarlar#eposta" className="font-medium text-brand-600 hover:underline">
                 ayarlardan
               </Link>{' '}
               yönetilir.

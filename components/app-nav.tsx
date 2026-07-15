@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Mail, MessageCircle } from 'lucide-react'
+import { MessageCircle, Settings2 } from 'lucide-react'
 import { AuthActions } from '@/components/auth-actions'
 import { cn } from '@/lib/utils'
 
@@ -86,10 +86,10 @@ export function AppNav() {
             ))}
 
             <NavItem
-              href="/mutabakat/ayarlar"
-              label="E-posta"
-              active={pathname.startsWith('/mutabakat/ayarlar')}
-              icon={<Mail size={15} className="opacity-90" />}
+              href="/ayarlar"
+              label="Ayarlar"
+              active={pathname.startsWith('/ayarlar') || pathname.startsWith('/mutabakat/ayarlar')}
+              icon={<Settings2 size={15} className="opacity-90" />}
             />
 
             <span className="mx-1 hidden h-5 w-px bg-slate-200 sm:inline" aria-hidden />

@@ -84,7 +84,7 @@ export function MutabakatSendPanel({
         ) : (
           <p className="mt-1 text-sm text-amber-700">
             Bağlı gönderici yok.{' '}
-            <a href="/mutabakat/ayarlar" className="font-medium underline">
+            <a href="/ayarlar#eposta" className="font-medium underline">
               Ayarlardan e-posta bağlayın
             </a>
             .
