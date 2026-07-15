@@ -118,98 +118,93 @@ export function MailSenderSettings() {
   }
 
   return (
-    <div className="space-y-5">
-      <section className="card p-6">
-        <div className="flex items-start gap-3">
-          <div className="rounded-xl bg-brand-50 p-3 text-brand-700">
-            <Mail size={22} />
-          </div>
-          <div>
-            <h2 className="text-xl font-semibold">Gönderici e-posta bağlantıları</h2>
-            <p className="mt-1 text-sm text-slate-500">
-              Mutabakat e-postalarının hangi adresten gönderileceğini burada bağlayın. Seçilen
-              gönderici önizleme ekranında kullanılır.
-            </p>
-            <div className="mt-3 rounded-lg border border-sky-200 bg-sky-50 p-3 text-xs text-sky-900">
-              <p className="font-medium">Gmail / Google Workspace nasıl çalışır?</p>
-              <p className="mt-1 leading-relaxed">
-                Bu ekranda Gmail hesabınıza doğrudan giriş yapılmaz. Gönderim{' '}
-                <strong>Resend</strong> servisi üzerinden yapılır; bağladığınız{' '}
-                <strong>@hidroteknik.com.tr</strong> adresi gönderici (From) olarak kullanılır.
-                Alan adının Resend panelinde DNS ile doğrulanmış olması gerekir (SPF/DKIM).
-                Yanıtlar oturum açtığınız e-posta adresine yönlendirilir.
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="rounded-xl border border-slate-200 bg-white p-5">
+      <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+        <Mail size={16} className="text-brand-600" />
+        Gönderici e-posta adresleri
+      </div>
+      <p className="mt-1 text-xs text-slate-500">
+        Mutabakat e-postaları hangi adresten gitsin? Bağladığınız{' '}
+        <strong>@hidroteknik.com.tr</strong> adresi gönderici (From) olarak kullanılır.
+      </p>
 
-        <div className="mt-5 grid gap-3 md:grid-cols-[1fr_1fr_auto]">
-          <input
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="ornek@hidroteknik.com.tr"
-            className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm outline-none focus:border-brand-300 focus:ring-2 focus:ring-brand-500/30"
-          />
-          <input
-            value={adSoyad}
-            onChange={(event) => setAdSoyad(event.target.value)}
-            placeholder="Görünen ad (opsiyonel)"
-            className="rounded-lg border border-slate-300 px-3 py-2.5 text-sm shadow-sm outline-none focus:border-brand-300 focus:ring-2 focus:ring-brand-500/30"
-          />
-          <Button
-            onClick={connectSender}
-            disabled={saving || !email.trim()}
-            className="md:self-end"
-          >
-            {saving ? <LoaderCircle className="animate-spin" size={16} /> : <Plus size={16} />}
-            Bağla
-          </Button>
-        </div>
+      <div className="mt-3 grid gap-2 sm:grid-cols-[1fr_1fr_auto]">
+        <input
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          placeholder="ornek@hidroteknik.com.tr"
+          className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-300 focus:ring-2 focus:ring-brand-500/30"
+        />
+        <input
+          value={adSoyad}
+          onChange={(event) => setAdSoyad(event.target.value)}
+          placeholder="Görünen ad (opsiyonel)"
+          className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-300 focus:ring-2 focus:ring-brand-500/30"
+        />
+        <Button onClick={connectSender} disabled={saving || !email.trim()}>
+          {saving ? <LoaderCircle className="animate-spin" size={16} /> : <Plus size={16} />}
+          Bağla
+        </Button>
+      </div>
 
-        {message && <p className="mt-3 text-sm text-emerald-700">{message}</p>}
-        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
-      </section>
+      <details className="group mt-2 text-xs">
+        <summary className="inline-flex cursor-pointer select-none items-center gap-1 text-brand-600 hover:underline">
+          Nasıl çalışır? (Resend · SPF/DKIM)
+        </summary>
+        <p className="mt-1.5 rounded-lg border border-sky-200 bg-sky-50 p-2.5 leading-relaxed text-sky-900">
+          Gmail hesabınıza giriş yapılmaz. Gönderim <strong>Resend</strong> servisi üzerinden yapılır;
+          alan adının Resend panelinde DNS ile doğrulanmış olması gerekir. Yanıtlar oturum açtığınız
+          e-posta adresine yönlendirilir.
+        </p>
+      </details>
 
-      <section className="table-shell">
-        <div className="border-b border-slate-200 px-5 py-4">
-          <h3 className="font-semibold">Bağlı göndericiler</h3>
-          <p className="mt-1 text-xs text-slate-500">
-            Sistem varsayılanı (MAIL_FROM) ve sizin bağladığınız adresler listelenir.
-          </p>
-        </div>
+      {message && <p className="mt-2 text-xs text-emerald-700">{message}</p>}
+      {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
 
+      <div className="mt-4 border-t border-slate-100 pt-3">
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          Bağlı göndericiler
+        </p>
         {loading ? (
-          <div className="flex items-center gap-2 px-5 py-8 text-sm text-slate-500">
-            <LoaderCircle className="animate-spin" size={18} />
+          <div className="flex items-center gap-2 py-4 text-sm text-slate-500">
+            <LoaderCircle className="animate-spin" size={16} />
             Yükleniyor…
           </div>
         ) : senders.length === 0 ? (
-          <p className="px-5 py-8 text-center text-sm text-slate-500">Henüz bağlı gönderici yok.</p>
+          <p className="py-4 text-sm text-slate-500">Henüz bağlı gönderici yok.</p>
         ) : (
-          <div className="divide-y divide-slate-100">
+          <div className="mt-2 divide-y divide-slate-100 overflow-hidden rounded-lg border border-slate-200">
             {senders.map((sender) => (
               <div
                 key={sender.id}
-                className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
+                className="flex flex-col gap-2 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between"
               >
-                <div>
-                  <p className="font-medium text-slate-900">
-                    {sender.ad_soyad ? `${sender.ad_soyad} <${sender.email}>` : sender.email}
-                  </p>
-                  <p className="mt-1 text-xs text-slate-500">
-                    {sender.sistem ? 'Sistem varsayılanı' : 'Kullanıcı bağlantısı'}
-                    {sender.varsayilan ? ' · Varsayılan gönderici' : ''}
+                <div className="min-w-0">
+                  <p className="flex flex-wrap items-center gap-1.5 text-sm font-medium text-slate-900">
+                    <span className="truncate">
+                      {sender.ad_soyad ? `${sender.ad_soyad} <${sender.email}>` : sender.email}
+                    </span>
+                    {sender.varsayilan && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700">
+                        <Star size={10} /> Varsayılan
+                      </span>
+                    )}
+                    {sender.sistem && (
+                      <span className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600">
+                        Sistem
+                      </span>
+                    )}
                   </p>
                 </div>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex shrink-0 items-center gap-1.5">
                   {!sender.varsayilan && (
                     <Button
                       variant="secondary"
                       onClick={() => makeDefault(sender.id)}
                       disabled={saving}
-                      className="px-3 py-2 text-xs"
+                      className="px-2 py-1 text-xs"
                     >
-                      <Star size={14} />
+                      <Star size={13} />
                       Varsayılan yap
                     </Button>
                   )}
@@ -218,9 +213,9 @@ export function MailSenderSettings() {
                       variant="danger"
                       onClick={() => removeSender(sender.id)}
                       disabled={saving}
-                      className="px-3 py-2 text-xs"
+                      className="px-2 py-1 text-xs"
                     >
-                      <Trash2 size={14} />
+                      <Trash2 size={13} />
                       Kaldır
                     </Button>
                   )}
@@ -229,7 +224,7 @@ export function MailSenderSettings() {
             ))}
           </div>
         )}
-      </section>
+      </div>
     </div>
   )
 }
