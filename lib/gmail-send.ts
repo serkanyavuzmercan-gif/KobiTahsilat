@@ -85,6 +85,11 @@ function wrap76(b64: string): string {
   return b64.replace(/.{1,76}/g, '$&\r\n').trimEnd()
 }
 
+/** Adresten CR/LF ve baş/son boşluğu temizler (header injection + bozuk env'e karşı). */
+function sanitizeAddr(value: string): string {
+  return value.replace(/[\r\n]+/g, ' ').trim()
+}
+
 /** "Ad <email>" veya "email" formatını ayrıştırır. */
 function parseFrom(from: string | undefined, fallbackAddress: string): { name: string; address: string } {
   if (from) {
@@ -109,17 +114,19 @@ export async function sendGmail(options: {
   replyTo?: string
   attachments?: Array<{ filename: string; content: string; contentType: string }>
 }): Promise<{ id: string | null }> {
-  const sender = (process.env.GMAIL_SENDER || '').trim()
+  const sender = sanitizeAddr(process.env.GMAIL_SENDER || '')
   if (!sender) throw new Error('GMAIL_SENDER tanımlı değil.')
-  if (!options.to.length) throw new Error('Alıcı yok.')
+  const toList = options.to.map(sanitizeAddr).filter(Boolean)
+  if (!toList.length) throw new Error('Geçerli alıcı yok.')
 
   // From: her zaman impersonate edilen kutu (Gmail farklı From adresini reddeder); görünen ad korunur.
   const parsed = parseFrom(options.from, sender)
   const displayName = parsed.name || 'Hidroteknik A.Ş.'
   const fromHeader = `${encodeHeaderWord(displayName)} <${sender}>`
   // Reply-To: açık replyTo, yoksa özgün From adresi (ör. finans@) → yanıtlar oraya gider.
-  const replyToAddr =
+  const replyToAddr = sanitizeAddr(
     options.replyTo || (parsed.address && parsed.address !== sender ? parsed.address : '')
+  )
 
   const boundaryAlt = 'alt_' + crypto.randomBytes(10).toString('hex')
   const altBody =
@@ -133,7 +140,7 @@ export async function sendGmail(options: {
 
   const headers = [
     `From: ${fromHeader}`,
-    `To: ${options.to.join(', ')}`,
+    `To: ${toList.join(', ')}`,
     ...(replyToAddr ? [`Reply-To: ${replyToAddr}`] : []),
     `Subject: ${encodeHeaderWord(options.subject)}`,
     'MIME-Version: 1.0',

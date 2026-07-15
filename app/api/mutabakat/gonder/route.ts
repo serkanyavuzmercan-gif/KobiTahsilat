@@ -5,12 +5,6 @@ import { MAIL_LOG_KAYNAK } from '@/lib/mutabakat-log'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
 import { loadSnapshot } from '@/lib/data'
 import { sendMail } from '@/lib/mail'
-import {
-  defaultSenderId,
-  formatMailFrom,
-  getMailSenderById,
-  listMailSenders,
-} from '@/lib/mail-senders'
 import { buildMutabakatEmail } from '@/lib/mutabakat'
 import { loadMutabakatCari } from '@/lib/mutabakat-data'
 import { createMutabakatToken } from '@/lib/mutabakat-token'
@@ -57,16 +51,6 @@ export async function POST(request: Request) {
       )
     }
 
-    const senders = await listMailSenders(user.id)
-    const senderId = body.senderId || defaultSenderId(senders)
-    const sender = senderId ? await getMailSenderById(user.id, senderId) : null
-    if (!sender) {
-      return NextResponse.json(
-        { success: false, error: 'Gönderici e-posta adresi seçilmedi. Önce ayarlardan bağlayın.' },
-        { status: 400 }
-      )
-    }
-
     const snapshot = await loadSnapshot()
     const token = createMutabakatToken(cari.cari_kod, snapshot.snapshot_tarihi, cari.bakiye)
     const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://kobi-tahsilat.vercel.app').replace(
@@ -76,16 +60,15 @@ export async function POST(request: Request) {
     const email = buildMutabakatEmail(cari, snapshot.snapshot_tarihi, {
       itirazUrl: `${baseUrl}/mutabakat/itiraz/${encodeURIComponent(token)}`,
     })
-    const from = formatMailFrom(sender.email, sender.ad_soyad)
+    // Gönderen sabit: Gmail (GMAIL_SENDER = serkan.mercan@). Yanıtlar da aynı kutuya döner.
+    const from = process.env.GMAIL_SENDER || process.env.MAIL_FROM || 'Hidroteknik A.Ş.'
     const sentAt = new Date().toISOString()
 
     const result = await sendMail({
-      from,
       to: cari.email_adresleri,
       subject: email.subject,
       html: email.html,
       text: email.text,
-      replyTo: user.email || undefined,
     })
 
     const logResult = await insertMailGonderimLog({

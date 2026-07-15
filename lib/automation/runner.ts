@@ -2,12 +2,6 @@ import 'server-only'
 import { isBusinessDay } from '../business-days'
 import { loadSnapshot } from '../data'
 import { sendMail } from '../mail'
-import {
-  defaultSenderId,
-  formatMailFrom,
-  getMailSenderById,
-  listMailSenders,
-} from '../mail-senders'
 import { buildHatirlatmaMessage } from '../hatirlatma'
 import { loadHatirlatmaCariler } from '../hatirlatma-data'
 import { loadMutabakatCariler } from '../mutabakat-data'
@@ -63,10 +57,7 @@ async function sendAutomationEmail(
   cariKod: string,
   taslakMod: boolean
 ): Promise<void> {
-  const [mutabakatCariler, senders] = await Promise.all([
-    loadMutabakatCariler(),
-    listMailSenders(userId),
-  ])
+  const mutabakatCariler = await loadMutabakatCariler()
   const cari = mutabakatCariler.find((item) => item.cari_kod === cariKod)
   if (!cari) throw new Error('Cari bulunamadı.')
   if (!cari.email) throw new Error('E-posta adresi yok.')
@@ -77,22 +68,18 @@ async function sendAutomationEmail(
 
   const snapshot = await loadSnapshot()
   const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi)
-  const senderId = defaultSenderId(senders)
-  const sender = senderId ? await getMailSenderById(userId, senderId) : null
-  if (!sender) throw new Error('Gönderici e-posta bağlı değil.')
 
   if (taslakMod) return
 
-  const from = formatMailFrom(sender.email, sender.ad_soyad)
+  // Gönderen sabit: Gmail (GMAIL_SENDER = serkan.mercan@). Yanıtlar aynı kutuya.
+  const from = process.env.GMAIL_SENDER || process.env.MAIL_FROM || 'Hidroteknik A.Ş.'
   const sentAt = new Date().toISOString()
 
   await sendMail({
-    from,
     to: cari.email_adresleri,
     subject: email.subject,
     html: email.html,
     text: email.text,
-    replyTo: sender.email,
   })
 
   const admin = createAdminClient()

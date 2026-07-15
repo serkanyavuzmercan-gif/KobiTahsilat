@@ -4,32 +4,26 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { LoaderCircle, Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import type { MailSenderAccount } from '@/lib/types'
 
 export function MutabakatSendPanel({
   cariKod,
-  senders,
-  defaultSenderId,
   hasRecipient,
   sendBlocked,
   blockedUntil,
   sendEnabled,
 }: {
   cariKod: string
-  senders: MailSenderAccount[]
-  defaultSenderId: string | null
   hasRecipient: boolean
   sendBlocked: boolean
   blockedUntil: string | null
   sendEnabled: boolean
 }) {
   const router = useRouter()
-  const [senderId, setSenderId] = useState(defaultSenderId || '')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
 
-  const canSend = sendEnabled && hasRecipient && !sendBlocked && Boolean(senderId) && senders.length > 0
+  const canSend = sendEnabled && hasRecipient && !sendBlocked
 
   async function sendMutabakat() {
     setLoading(true)
@@ -39,7 +33,7 @@ export function MutabakatSendPanel({
       const response = await fetch('/api/mutabakat/gonder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cariKod, senderId }),
+        body: JSON.stringify({ cariKod }),
       })
       const result = (await response.json()) as {
         success?: boolean
@@ -66,32 +60,6 @@ export function MutabakatSendPanel({
 
   return (
     <div className="space-y-3">
-      <div>
-        <label className="text-xs font-medium text-slate-500">Gönderici e-posta</label>
-        {senders.length > 0 ? (
-          <select
-            value={senderId}
-            onChange={(event) => setSenderId(event.target.value)}
-            className="mt-1 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500"
-          >
-            {senders.map((sender) => (
-              <option key={sender.id} value={sender.id}>
-                {sender.ad_soyad ? `${sender.ad_soyad} <${sender.email}>` : sender.email}
-                {sender.varsayilan ? ' · varsayılan' : ''}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <p className="mt-1 text-sm text-amber-700">
-            Bağlı gönderici yok.{' '}
-            <a href="/ayarlar#eposta" className="font-medium underline">
-              Ayarlardan e-posta bağlayın
-            </a>
-            .
-          </p>
-        )}
-      </div>
-
       <Button
         onClick={sendMutabakat}
         disabled={!canSend || loading}
@@ -100,9 +68,7 @@ export function MutabakatSendPanel({
             ? 'Alıcı e-postası gerekli'
             : sendBlocked
               ? '8 iş günü bekleme süresi aktif'
-              : !senderId
-                ? 'Gönderici seçin'
-                : undefined
+              : undefined
         }
         className="w-full"
       >

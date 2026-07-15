@@ -16,7 +16,6 @@ import {
   Trash2,
   Volume2,
 } from 'lucide-react'
-import { MailSenderSettings } from '@/components/mail-sender-settings'
 import { Button } from '@/components/ui/button'
 import { StatusBadge } from '@/components/ui/summary-stat'
 import type {
@@ -33,7 +32,6 @@ function newRuleId() {
 const NAV = [
   { id: 'genel', label: 'Genel', icon: Bot },
   { id: 'baglanti', label: 'Bağlantı durumu', icon: Settings2 },
-  { id: 'eposta', label: 'E-posta göndericileri', icon: Mail },
   { id: 'kurallar', label: 'Otomasyon kuralları', icon: ListChecks },
   { id: 'sesli', label: 'Sesli arama', icon: Volume2 },
 ]
@@ -315,9 +313,13 @@ export function AutomationSettingsClient() {
           <div className="mt-3 grid gap-2.5 sm:grid-cols-3">
             <ConnectionCard
               icon={<Mail size={16} />}
-              title="E-posta"
+              title="E-posta (Gmail)"
               ok={connections?.email_bagli}
-              detail={connections?.email_varsayilan || 'Gönderici bağlı değil'}
+              detail={
+                connections?.email_bagli
+                  ? connections?.email_varsayilan || 'Gmail hazır'
+                  : 'Gmail yapılandırılmadı'
+              }
             />
             <ConnectionCard
               icon={<MessageCircle size={16} />}
@@ -340,10 +342,6 @@ export function AutomationSettingsClient() {
           </div>
         </section>
 
-        {/* E-posta göndericileri */}
-        <section id="eposta" className="scroll-mt-4">
-          <MailSenderSettings />
-        </section>
 
         {/* Otomasyon kuralları */}
         <section

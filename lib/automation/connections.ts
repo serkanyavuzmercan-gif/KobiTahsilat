@@ -1,20 +1,21 @@
 import 'server-only'
-import { defaultSenderId, listMailSenders } from '../mail-senders'
+import { gmailSendConfigured } from '../gmail-send'
 import { loadBotDurum, whatsAppBotEnabled } from '../whatsapp-kuyruk'
 import { automationGloballyEnabled, loadAutomationSettings } from './settings'
 import type { AutomationConnectionsStatus } from './types'
 
 export async function loadAutomationConnectionsStatus(
-  userId: string
+  _userId: string
 ): Promise<AutomationConnectionsStatus> {
-  const [senders, botDurum] = await Promise.all([listMailSenders(userId), loadBotDurum()])
+  const botDurum = await loadBotDurum()
 
-  const preferred = senders.find((sender) => sender.varsayilan) || senders[0]
-  const userSenders = senders.filter((sender) => !sender.sistem)
+  // E-posta gönderimi sabit: Gmail (GMAIL_SENDER = serkan.mercan@) + servis hesabı.
+  const gmailReady = gmailSendConfigured()
+  const gmailSender = (process.env.GMAIL_SENDER || '').trim() || null
 
   return {
-    email_bagli: userSenders.length > 0 || Boolean(preferred),
-    email_varsayilan: preferred?.email || null,
+    email_bagli: gmailReady,
+    email_varsayilan: gmailSender,
     // Baileys ofis botu heartbeat'i son 90 sn içinde geldiyse "bağlı".
     whatsapp_api_yapilandirildi: botDurum.cevrimici,
     whatsapp_gonderim_acik: whatsAppBotEnabled(),
@@ -34,7 +35,7 @@ export async function assertAutomationReady(userId: string) {
     issues.push('Sistem yöneticisi OTOMATIK_TAHSILAT_ENABLED=true yapmalıdır.')
   }
   if (!connections.email_bagli) {
-    issues.push('E-posta gönderici bağlantısı gerekli.')
+    issues.push('Gmail gönderimi yapılandırılmadı (GOOGLE_SA_KEY_B64 + GMAIL_SENDER).')
   }
   if (!connections.whatsapp_api_yapilandirildi) {
     issues.push('Ofis WhatsApp botu çevrimiçi değil (son heartbeat yok). Bot PC\'sini kontrol edin.')
@@ -47,5 +48,3 @@ export async function assertAutomationReady(userId: string) {
 
   return { settings, connections, issues }
 }
-
-export { defaultSenderId }

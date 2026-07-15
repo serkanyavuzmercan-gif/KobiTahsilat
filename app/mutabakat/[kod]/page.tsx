@@ -1,12 +1,10 @@
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { AlertTriangle, CalendarClock, Mail, Settings } from 'lucide-react'
+import { AlertTriangle, CalendarClock, Mail } from 'lucide-react'
 import { BackLink } from '@/components/ui/button'
 import { CariEmailEditor } from '@/components/cari-email-editor'
 import { MutabakatSendPanel } from '@/components/mutabakat-send-panel'
 import { requireAuthUser } from '@/lib/auth'
 import { loadSnapshot } from '@/lib/data'
-import { defaultSenderId, listMailSenders } from '@/lib/mail-senders'
 import { buildMutabakatEmail, formatDate } from '@/lib/mutabakat'
 import { loadMutabakatCari } from '@/lib/mutabakat-data'
 import { createMutabakatToken } from '@/lib/mutabakat-token'
@@ -27,9 +25,7 @@ export default async function MutabakatPreviewPage({
   const cari = await loadMutabakatCari(decodeURIComponent(encodedKod))
   if (!cari) notFound()
 
-  const user = await requireAuthUser()
-  const senders = await listMailSenders(user.id)
-  const selectedSenderId = defaultSenderId(senders)
+  await requireAuthUser()
   const canSend = sendEnabled()
 
   const snapshot = await loadSnapshot()
@@ -90,20 +86,9 @@ export default async function MutabakatPreviewPage({
               </div>
             </div>
             <div className="mt-3 border-t border-slate-200 pt-3">
-              <div className="mb-2 flex items-center justify-between gap-2">
-                <p className="text-xs font-medium text-slate-500">Gönderim</p>
-                <Link
-                  href="/ayarlar#eposta"
-                  className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:underline"
-                >
-                  <Settings size={13} />
-                  Gönderici ayarları
-                </Link>
-              </div>
+              <p className="mb-2 text-xs font-medium text-slate-500">Gönderim</p>
               <MutabakatSendPanel
                 cariKod={cari.cari_kod}
-                senders={senders}
-                defaultSenderId={selectedSenderId}
                 hasRecipient={Boolean(cari.email)}
                 sendBlocked={cari.mutabakat_gonderim_engelli}
                 blockedUntil={cari.mutabakat_tekrar_gonderilebilir_at}
@@ -139,8 +124,8 @@ export default async function MutabakatPreviewPage({
 
         {canSend ? (
           <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm text-slate-600">
-            Gönderici adresini seçip mutabakatı gönderebilirsiniz. Yanıtlar oturum açtığınız
-            e-postaya yönlendirilebilir.
+            Mutabakat <strong>{process.env.GMAIL_SENDER || 'Hidroteknik'}</strong> üzerinden
+            gönderilir; müşteri yanıtları da aynı kutuya döner.
           </div>
         ) : (
           <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
