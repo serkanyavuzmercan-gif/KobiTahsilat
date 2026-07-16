@@ -91,17 +91,18 @@ export async function loadMutabakatCariler(): Promise<MutabakatCari[]> {
     const emailAddresses = effectiveEmails.length ? effectiveEmails : []
     // Seçim havuzu: keşfedilen tüm adresler (override + master + snapshot merge) — tekilleştirilmiş,
     // gizlenenler (kalıcı silinmiş) hariç.
-    const emailHavuzu = suz([
-      ...new Set(
-        [...(override ?? []), ...master, ...cari.email_adresleri].filter(Boolean)
-      ),
-    ])
     const history = sentHistory.get(cari.cari_kod) || []
     const hiddenCandidates = dismissedCandidates.get(cari.cari_kod) || new Set<string>()
-    const visibleCandidates = cari.email_adaylari.filter(
-      (candidate) =>
-        !emailAddresses.includes(candidate.email) && !hiddenCandidates.has(candidate.email)
-    )
+    // Onay mekanizması kaldırıldı (kullanıcı kararı): reddedilmemiş Gmail adayları da doğrudan
+    // normal e-posta havuzuna katılır; artık "onay bekleyen" ayrımı yok, elle seç/sil yeterli.
+    const adayEmails = cari.email_adaylari
+      .map((c) => c.email)
+      .filter((e) => !hiddenCandidates.has(e))
+    const emailHavuzu = suz([
+      ...new Set(
+        [...(override ?? []), ...master, ...cari.email_adresleri, ...adayEmails].filter(Boolean)
+      ),
+    ])
     const nextSendAt = history[0] ? addBusinessDays(history[0], 8).toISOString() : null
     const sendBlocked = nextSendAt ? new Date(nextSendAt).getTime() > Date.now() : false
     return {
@@ -114,7 +115,7 @@ export async function loadMutabakatCariler(): Promise<MutabakatCari[]> {
           ? 'SS cari kartı'
           : cari.email_kaynagi,
       email_guven: emailAddresses.length ? 'dogrulanmis' : cari.email_guven,
-      email_adaylari: visibleCandidates,
+      email_adaylari: [],
       email_havuzu: emailHavuzu,
       mutabakat_son_gonderim: history[0] || null,
       mutabakat_gonderim_sayisi: history.length,

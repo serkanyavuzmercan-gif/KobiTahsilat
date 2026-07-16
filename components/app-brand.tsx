@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { APP_VERSION } from '@/lib/app-version'
 
 export function AppBrand({
   compact = false,
@@ -29,8 +30,8 @@ export function AppBrand({
         >
           Mutabakat ve Tahsilat Sistemi
         </span>
-        <span className="mt-0.5 block text-xs leading-tight text-slate-500">
-          Açık alacaklarınızı tek ekrandan yönetin
+        <span className="mt-0.5 block font-mono text-xs leading-tight tracking-wide text-slate-400">
+          {APP_VERSION}
         </span>
       </span>
     </Link>

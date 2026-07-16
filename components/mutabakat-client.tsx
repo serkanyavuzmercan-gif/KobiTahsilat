@@ -37,7 +37,7 @@ export function MutabakatClient({
   sendEnabled: boolean
 }) {
   const [query, setQuery] = useState('')
-  const [emailFilter, setEmailFilter] = useState<'all' | 'ready' | 'candidate' | 'missing'>('all')
+  const [emailFilter, setEmailFilter] = useState<'all' | 'ready' | 'unselected' | 'missing'>('all')
   // Taban bakiye: altındaki cariler mutabakata gelmesin (kullanıcı incelerken belirler).
   const [tabanBakiye, setTabanBakiye] = useState(0)
 
@@ -54,20 +54,19 @@ export function MutabakatClient({
         !term ||
         cari.firma_adi.toLocaleLowerCase('tr').includes(term) ||
         cari.cari_kod.toLocaleLowerCase('tr').includes(term) ||
-        cari.email_adresleri.some((email) => email.includes(term)) ||
-        cari.email_adaylari.some((aday) => aday.email.includes(term))
+        cari.email_havuzu.some((email) => email.includes(term))
       const matchesEmail =
         emailFilter === 'all' ||
         (emailFilter === 'ready' && Boolean(cari.email)) ||
-        (emailFilter === 'candidate' && !cari.email && cari.email_adaylari.length > 0) ||
-        (emailFilter === 'missing' && !cari.email && cari.email_adaylari.length === 0)
+        (emailFilter === 'unselected' && !cari.email && cari.email_havuzu.length > 0) ||
+        (emailFilter === 'missing' && cari.email_havuzu.length === 0)
       return matchesSearch && matchesEmail
     })
   }, [kapsamdaki, emailFilter, query])
 
   const ready = kapsamdaki.filter((cari) => cari.email).length
-  const candidate = kapsamdaki.filter((cari) => !cari.email && cari.email_adaylari.length > 0).length
-  const missing = kapsamdaki.length - ready - candidate
+  const secilmemis = kapsamdaki.filter((cari) => !cari.email && cari.email_havuzu.length > 0).length
+  const epostaYok = kapsamdaki.filter((cari) => cari.email_havuzu.length === 0).length
 
   // Sayfalama: tüm kayıtları tek seferde basmak yavaş → 50'lik sayfalar.
   const [sayfa, setSayfa] = useState(1)
@@ -98,8 +97,8 @@ export function MutabakatClient({
           </div>
           <div className="grid w-full grid-cols-1 gap-2 sm:grid-cols-3 lg:max-w-xl">
             <SummaryStat icon={<CheckCircle2 size={18} />} label="Gönderime hazır" value={ready} tone="ok" />
-            <SummaryStat icon={<Mail size={18} />} label="Onay bekleyen" value={candidate} tone="candidate" />
-            <SummaryStat icon={<MailWarning size={18} />} label="E-posta eksik" value={missing} tone="missing" />
+            <SummaryStat icon={<Mail size={18} />} label="Alıcı seçilmemiş" value={secilmemis} tone="candidate" />
+            <SummaryStat icon={<MailWarning size={18} />} label="E-posta yok" value={epostaYok} tone="missing" />
           </div>
         </div>
 
@@ -132,9 +131,9 @@ export function MutabakatClient({
           </label>
           <FilterSelect value={emailFilter} onChange={(value) => setEmailFilter(value as typeof emailFilter)}>
             <option value="all">Tüm firmalar</option>
-            <option value="ready">E-postası hazır</option>
-            <option value="candidate">Gmail adayı var</option>
-            <option value="missing">E-posta eksik</option>
+            <option value="ready">Alıcı seçili (hazır)</option>
+            <option value="unselected">Alıcı seçilmemiş</option>
+            <option value="missing">E-posta yok</option>
           </FilterSelect>
         </FilterBar>
       </section>
@@ -166,7 +165,6 @@ export function MutabakatClient({
                       <MutabakatEmailSecici
                         cariKod={cari.cari_kod}
                         havuz={cari.email_havuzu}
-                        adaylar={cari.email_adaylari.map((aday) => aday.email)}
                         secili={cari.email_adresleri}
                       />
                     </td>

@@ -3,6 +3,7 @@
 import { FormEvent, useState } from 'react'
 import { AlertTriangle, Eye, EyeOff, KeyRound, Lock, User } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { APP_VERSION } from '@/lib/app-version'
 import './login.css'
 
 export default function LoginPage() {
@@ -90,7 +91,9 @@ export default function LoginPage() {
           <h1 className="login-title">
             <span className="gradient-text">Mutabakat ve Tahsilat Sistemi</span>
           </h1>
-          <p className="login-subtitle">Açık alacaklarınızı tek ekrandan yönetin</p>
+          <p className="login-subtitle" style={{ fontFamily: 'monospace', letterSpacing: '0.05em' }}>
+            {APP_VERSION}
+          </p>
         </div>
 
         {/* Error message */}
