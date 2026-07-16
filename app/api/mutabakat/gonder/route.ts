@@ -4,6 +4,7 @@ import { toErrorMessage } from '@/lib/errors'
 import { MAIL_LOG_KAYNAK } from '@/lib/mutabakat-log'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
 import { loadSnapshot } from '@/lib/data'
+import { normalizeEmail } from '@/lib/email'
 import { sendMail } from '@/lib/mail'
 import { buildMutabakatEmail } from '@/lib/mutabakat'
 import { loadMutabakatCari } from '@/lib/mutabakat-data'
@@ -55,11 +56,16 @@ export async function POST(request: Request) {
         { status: 400 }
       )
     }
-    // ASLA tüm adreslere birden gönderme. Kullanıcının seçtiği (email_adresleri alt kümesi)
-    // adreslere; seçim yoksa yalnız VARSAYILAN (ilk) adrese gider.
+    // ASLA tüm adreslere birden gönderme. Kullanıcının seçtiği adreslere gider; seçim yoksa
+    // yalnız VARSAYILAN (ilk) adres. Kayıtlı adresler VEYA elle girilen geçerli e-postalar kabul
+    // edilir (garbage elenir); böylece listede olmayan özel bir alıcıya da gönderilebilir.
     const istenenAlicilar = Array.isArray(body.recipients) ? body.recipients.map(String) : []
-    const secilenAlicilar = istenenAlicilar.filter((e) => cari.email_adresleri.includes(e))
-    const alicilar = secilenAlicilar.length ? secilenAlicilar : [cari.email_adresleri[0]]
+    const secilenAlicilar = istenenAlicilar
+      .map((e) => (cari.email_adresleri.includes(e) ? e : normalizeEmail(e)))
+      .filter((e): e is string => Boolean(e))
+    const alicilar = secilenAlicilar.length
+      ? [...new Set(secilenAlicilar)]
+      : [cari.email_adresleri[0]]
     if (cari.mutabakat_gonderim_engelli) {
       return NextResponse.json(
         {

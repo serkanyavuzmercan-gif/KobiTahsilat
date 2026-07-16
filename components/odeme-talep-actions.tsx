@@ -57,7 +57,9 @@ export function OdemeTalepActions({
   }
   const router = useRouter()
   const [kanal, setKanal] = useState<Kanal | null>(null)
-  const [body, setBody] = useState('')
+  // WhatsApp ve e-posta metinleri ayrı: "her ikisi"nde her kanal bağımsız düzenlenip önizlenir.
+  const [waBody, setWaBody] = useState('')
+  const [mailBody, setMailBody] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [done, setDone] = useState('')
@@ -84,6 +86,17 @@ export function OdemeTalepActions({
     }
   }
 
+  // Listede olmayan özel numara/e-posta ekle (yalnız bu gönderim için; seçili gelir).
+  function numaraEkle(telefon: string) {
+    setMobilNumaralar((list) => (list.includes(telefon) ? list : [...list, telefon]))
+    setNumaralar((list) => (list.includes(telefon) ? list : [...list, telefon]))
+  }
+
+  function adresEkle(email: string) {
+    setEmailAdresleri((list) => (list.includes(email) ? list : [...list, email]))
+    setAlicilar((list) => (list.includes(email) ? list : [...list, email]))
+  }
+
   async function adresSil(email: string) {
     setEmailAdresleri((list) => list.filter((e) => e !== email))
     setAlicilar((list) => list.filter((e) => e !== email))
@@ -107,7 +120,9 @@ export function OdemeTalepActions({
     setDone('')
     setAlicilar(emailAdresleri.slice(0, 1))
     setNumaralar(mobilNumaralar.slice(0, 1))
-    setBody(buildOdemeTalepMesaj(cari, snapshotTarihi, pdfUrl).body)
+    const varsayilan = buildOdemeTalepMesaj(cari, snapshotTarihi, pdfUrl).body
+    setWaBody(varsayilan)
+    setMailBody(varsayilan)
     setKanal(secilenKanal)
   }
 
@@ -119,9 +134,14 @@ export function OdemeTalepActions({
 
   async function gonder() {
     if (!kanal) return
-    const metin = body.trim()
-    if (!metin) {
-      setError('Mesaj metni boş olamaz.')
+    const waMetin = waBody.trim()
+    const mailMetin = mailBody.trim()
+    if ((kanal === 'whatsapp' || kanal === 'her-ikisi') && !waMetin) {
+      setError('WhatsApp mesajı boş olamaz.')
+      return
+    }
+    if ((kanal === 'email' || kanal === 'her-ikisi') && !mailMetin) {
+      setError('E-posta mesajı boş olamaz.')
       return
     }
     setLoading(true)
@@ -131,7 +151,7 @@ export function OdemeTalepActions({
       if (kanal === 'whatsapp' || kanal === 'her-ikisi') {
         if (!numaralar.length) throw new Error('En az bir cep numarası seçin.')
         mesajlar.push(
-          await postGonder('/api/hatirlatma/whatsapp-gonder', cari.cari_kod, metin, {
+          await postGonder('/api/hatirlatma/whatsapp-gonder', cari.cari_kod, waMetin, {
             phones: numaralar,
           })
         )
@@ -139,7 +159,7 @@ export function OdemeTalepActions({
       if (kanal === 'email' || kanal === 'her-ikisi') {
         if (!alicilar.length) throw new Error('En az bir e-posta alıcısı seçin.')
         mesajlar.push(
-          await postGonder('/api/hatirlatma/email-gonder', cari.cari_kod, metin, {
+          await postGonder('/api/hatirlatma/email-gonder', cari.cari_kod, mailMetin, {
             recipients: alicilar,
           })
         )
@@ -153,6 +173,14 @@ export function OdemeTalepActions({
       setLoading(false)
     }
   }
+
+  // Gönder butonu: ilgili kanal(lar)ın metni dolu olmalı.
+  const metinHazir =
+    kanal === 'whatsapp'
+      ? waBody.trim().length > 0
+      : kanal === 'email'
+        ? mailBody.trim().length > 0
+        : waBody.trim().length > 0 && mailBody.trim().length > 0
 
   if (!sendEnabled) {
     return <span className="text-xs text-amber-700">Gönderim kapalı</span>
@@ -233,29 +261,7 @@ export function OdemeTalepActions({
               </button>
             </div>
 
-            <div className="space-y-3 px-5 py-4 text-left">
-              <div className="space-y-2 rounded-lg bg-slate-50 px-3 py-2 text-xs text-slate-600">
-                {showWhatsApp && (
-                  <RecipientPicker
-                    kind="phone"
-                    addresses={mobilNumaralar}
-                    selected={numaralar}
-                    onChange={setNumaralar}
-                    format={telFormat}
-                    onRemove={numaraSil}
-                  />
-                )}
-                {showEmail && (
-                  <RecipientPicker
-                    addresses={emailAdresleri}
-                    selected={alicilar}
-                    onChange={setAlicilar}
-                    format={mailFormat}
-                    onRemove={adresSil}
-                  />
-                )}
-              </div>
-
+            <div className="max-h-[70vh] space-y-3 overflow-y-auto px-5 py-4 text-left">
               {pdfUrl && (
                 <div className="flex items-center justify-between rounded-lg border border-brand-200 bg-brand-50 px-3 py-2 text-xs">
                   <span className="flex items-center gap-1.5 text-brand-700">
@@ -275,22 +281,60 @@ export function OdemeTalepActions({
                 </div>
               )}
 
-              <div>
-                <label className="mb-1 block text-xs font-medium text-slate-600">
-                  Gidecek mesaj (göndermeden önce düzenleyebilirsiniz)
-                </label>
-                <textarea
-                  value={body}
-                  onChange={(event) => setBody(event.target.value)}
-                  rows={12}
-                  disabled={loading}
-                  className="w-full resize-y rounded-lg border border-slate-300 px-3 py-2 text-sm leading-relaxed text-slate-800 outline-none focus:border-brand-300 focus:ring-2 focus:ring-brand-500/30 disabled:bg-slate-50"
-                />
-                <p className="mt-1 text-[11px] text-slate-400">
-                  {body.length} karakter · *yıldız* arasındaki metin WhatsApp&apos;ta kalın görünür.
-                  {kanal === 'her-ikisi' && ' Aynı metin her iki kanala da gider.'}
-                </p>
-              </div>
+              {showWhatsApp && (
+                <div className="space-y-2 rounded-lg border border-emerald-100 bg-emerald-50/50 px-3 py-2.5">
+                  <p className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                    <MessageCircle size={14} />
+                    WhatsApp{kanal === 'her-ikisi' ? ' mesajı' : ''}
+                  </p>
+                  <RecipientPicker
+                    kind="phone"
+                    addresses={mobilNumaralar}
+                    selected={numaralar}
+                    onChange={setNumaralar}
+                    format={telFormat}
+                    onRemove={numaraSil}
+                    onAdd={numaraEkle}
+                  />
+                  <textarea
+                    value={waBody}
+                    onChange={(event) => setWaBody(event.target.value)}
+                    rows={kanal === 'her-ikisi' ? 8 : 12}
+                    disabled={loading}
+                    className="w-full resize-y rounded-lg border border-slate-300 px-3 py-2 text-sm leading-relaxed text-slate-800 outline-none focus:border-brand-300 focus:ring-2 focus:ring-brand-500/30 disabled:bg-slate-50"
+                  />
+                  <p className="text-[11px] text-slate-400">
+                    {waBody.length} karakter · *yıldız* arasındaki metin WhatsApp&apos;ta kalın görünür.
+                  </p>
+                </div>
+              )}
+
+              {showEmail && (
+                <div className="space-y-2 rounded-lg border border-brand-100 bg-brand-50/50 px-3 py-2.5">
+                  <p className="flex items-center gap-1.5 text-xs font-semibold text-brand-700">
+                    <Mail size={14} />
+                    E-posta{kanal === 'her-ikisi' ? ' mesajı' : ''}
+                  </p>
+                  <RecipientPicker
+                    addresses={emailAdresleri}
+                    selected={alicilar}
+                    onChange={setAlicilar}
+                    format={mailFormat}
+                    onRemove={adresSil}
+                    onAdd={adresEkle}
+                  />
+                  <textarea
+                    value={mailBody}
+                    onChange={(event) => setMailBody(event.target.value)}
+                    rows={kanal === 'her-ikisi' ? 8 : 12}
+                    disabled={loading}
+                    className="w-full resize-y rounded-lg border border-slate-300 px-3 py-2 text-sm leading-relaxed text-slate-800 outline-none focus:border-brand-300 focus:ring-2 focus:ring-brand-500/30 disabled:bg-slate-50"
+                  />
+                  <p className="text-[11px] text-slate-400">
+                    {mailBody.length} karakter · fatura dökümü PDF olarak eklenir.
+                  </p>
+                </div>
+              )}
 
               {error && <p className="text-xs text-red-600">{error}</p>}
             </div>
@@ -307,7 +351,7 @@ export function OdemeTalepActions({
               <button
                 type="button"
                 onClick={gonder}
-                disabled={loading || !body.trim()}
+                disabled={loading || !metinHazir}
                 className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading ? <LoaderCircle size={16} className="animate-spin" /> : <Send size={16} />}

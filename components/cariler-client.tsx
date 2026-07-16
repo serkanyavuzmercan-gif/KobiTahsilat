@@ -1,8 +1,8 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { ChevronRight, Search } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
 import { SortableTh } from '@/components/sortable-th'
 import {
   cariOrtalamaGecikmeGun,
@@ -11,10 +11,12 @@ import {
 } from '@/lib/gecikme'
 import { EmptyTableRow, FilterBar, SearchInput } from '@/components/ui/summary-stat'
 import { formatNumber } from '@/lib/types'
-import type { CariBakiye, CariYanitOzet } from '@/lib/types'
+import type { CariBakiye } from '@/lib/types'
 import { TEST_CARI_KODU } from '@/lib/constants'
 
 type SortKey = 'vade_gun' | 'ortalama_gecikme' | 'gecikmis' | 'bakiye'
+
+const SAYFA_BOYUTU = 50
 
 function nextSortDirection(
   currentKey: SortKey | null,
@@ -44,19 +46,16 @@ export default function CarilerClient({
   cariler,
   toplam,
   sourcedAt,
-  yanitlar,
-  onMarkedRead,
 }: {
   cariler: CariBakiye[]
   toplam: number
   sourcedAt: string
-  yanitlar: Record<string, CariYanitOzet>
-  onMarkedRead?: (yanitIds: string[]) => void
 }) {
   const [q, setQ] = useState('')
   const [minBakiye, setMinBakiye] = useState('')
   const [sortKey, setSortKey] = useState<SortKey | null>(null)
   const [sortDir, setSortDir] = useState<'asc' | 'desc' | null>(null)
+  const [sayfa, setSayfa] = useState(1)
 
   const filtered = useMemo(() => {
     const term = q.trim().toLocaleLowerCase('tr')
@@ -92,6 +91,16 @@ export default function CarilerClient({
     () => portfoyOrtalamaGecikmeGun(sorted),
     [sorted]
   )
+
+  // Sayfalama: filtre/sıralama değişince başa dön; görünen dilimi hesapla.
+  useEffect(() => {
+    setSayfa(1)
+  }, [q, minBakiye, sortKey, sortDir])
+
+  const toplamSayfa = Math.max(1, Math.ceil(sorted.length / SAYFA_BOYUTU))
+  const aktifSayfa = Math.min(sayfa, toplamSayfa)
+  const baslangic = (aktifSayfa - 1) * SAYFA_BOYUTU
+  const sayfaCariler = sorted.slice(baslangic, baslangic + SAYFA_BOYUTU)
 
   function handleSort(key: SortKey) {
     const next = nextSortDirection(sortKey, sortDir, key)
@@ -173,10 +182,10 @@ export default function CarilerClient({
               {sorted.length === 0 ? (
                 <EmptyTableRow colSpan={8} message="Eşleşen cari bulunamadı." />
               ) : (
-                sorted.map((c, i) => {
+                sayfaCariler.map((c, i) => {
                   return (
                     <tr key={c.cari_kod}>
-                      <td className="px-4 py-3 text-slate-400">{i + 1}</td>
+                      <td className="px-4 py-3 text-slate-400">{baslangic + i + 1}</td>
                       <td className="px-4 py-3 font-mono text-xs text-slate-600">{c.cari_kod}</td>
                       <td className="px-4 py-3">
                         <Link
@@ -250,11 +259,46 @@ export default function CarilerClient({
             )}
           </table>
         </div>
+
+        {sorted.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 px-4 py-3 text-sm">
+            <p className="text-xs text-slate-500">
+              {baslangic + 1}–{Math.min(baslangic + SAYFA_BOYUTU, sorted.length)} / {sorted.length}{' '}
+              cari gösteriliyor
+            </p>
+            {toplamSayfa > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setSayfa((p) => Math.max(1, p - 1))}
+                  disabled={aktifSayfa <= 1}
+                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <ChevronLeft size={14} />
+                  Önceki
+                </button>
+                <span className="px-2 text-xs font-medium tabular-nums text-slate-600">
+                  Sayfa {aktifSayfa} / {toplamSayfa}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setSayfa((p) => Math.min(toplamSayfa, p + 1))}
+                  disabled={aktifSayfa >= toplamSayfa}
+                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Sonraki
+                  <ChevronRight size={14} />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
           Ortalama gecikme, vadesi geçmiş açık kalemler üzerinden tutar ağırlıklı hesaplanır.
           Bir firmanın açık kalem dökümü, aging tablosu ve iletişim bilgileri için satırdaki{' '}
           <strong>Ayrıntılar</strong> butonuna (veya firma adına) tıklayın. Müşteri onay/itiraz ve
-          yanıtları için <strong>Yanıtlar</strong> sekmesine geçin.
+          yanıtları için <strong>Mutabakat</strong> sayfasındaki sonuçlara bakın.
         </p>
       </section>
     </div>

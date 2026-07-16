@@ -5,7 +5,7 @@ import { toErrorMessage } from '@/lib/errors'
 import { buildHatirlatmaMessage } from '@/lib/hatirlatma'
 import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
 import { HATIRLATMA_LOG_KAYNAK, WHATSAPP_SEND_TIP } from '@/lib/hatirlatma-log'
-import { formatPhoneDisplay, formatPhoneWhatsApp, isMobileTurkey } from '@/lib/phone'
+import { formatPhoneDisplay, formatPhoneWhatsApp, isMobileTurkey, normalizePhone } from '@/lib/phone'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
 import { hatirlatmaDeliveryHint, sendHatirlatmaWhatsApp } from '@/lib/hatirlatma-whatsapp'
 import { whatsAppBotEnabled } from '@/lib/whatsapp-kuyruk'
@@ -43,13 +43,20 @@ export async function POST(request: Request) {
         { status: 400 }
       )
     }
-    // ASLA tüm numaralara birden gönderme. Seçilenler (telefon_numaralari alt kümesi);
-    // seçim yoksa yalnız VARSAYILAN (ilk). Yalnız cep (mobil) numaralara WhatsApp gider.
+    // ASLA tüm numaralara birden gönderme. Seçilenler; seçim yoksa yalnız VARSAYILAN (ilk).
+    // Kayıtlı numaralar VEYA elle girilen geçerli cep numaraları kabul edilir (garbage elenir).
+    // Yalnız cep (mobil) numaralara WhatsApp gider.
     const istenenNumaralar = Array.isArray(body.phones) ? body.phones.map(String) : []
-    const secilenNumaralar = istenenNumaralar.filter((p) => cari.telefon_numaralari.includes(p))
-    const hedefNumaralar = (secilenNumaralar.length ? secilenNumaralar : [cari.telefon]).filter(
-      (p): p is string => Boolean(p) && isMobileTurkey(p)
-    )
+    const secilenNumaralar = istenenNumaralar
+      .map((p) => (cari.telefon_numaralari.includes(p) ? p : normalizePhone(p)))
+      .filter((p): p is string => Boolean(p))
+    const hedefNumaralar = [
+      ...new Set(
+        (secilenNumaralar.length ? secilenNumaralar : [cari.telefon]).filter(
+          (p): p is string => Boolean(p) && isMobileTurkey(p)
+        )
+      ),
+    ]
     if (!hedefNumaralar.length) {
       return NextResponse.json(
         {

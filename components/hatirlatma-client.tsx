@@ -25,6 +25,8 @@ import type { HatirlatmaCari } from '@/lib/hatirlatma-data'
 import { formatTL } from '@/lib/types'
 
 const VARSAYILAN_ESIK = 20
+// Küçük tutarlı gecikmeler (ör. 1 TL kuruş farkları) listede gürültü yapıyor; alt eşik.
+const MIN_GECIKMIS_TUTAR = 1000
 
 export function HatirlatmaClient({
   cariler,
@@ -57,8 +59,8 @@ export function HatirlatmaClient({
     const esikNum = Number.isFinite(esik) ? esik : 0
     return zenginCariler
       .filter(({ cari, ortalamaGecikme }) => {
-        // Ödeme talebi yalnızca vadesi geçmiş + eşik günü aşmış + tutar anlamlı (min 50 TL) firmalara.
-        if (cari.gecikmis_bakiye < 50) return false
+        // Ödeme talebi yalnızca vadesi geçmiş + eşik günü aşmış + tutar anlamlı firmalara.
+        if (cari.gecikmis_bakiye < MIN_GECIKMIS_TUTAR) return false
         if (ortalamaGecikme == null || ortalamaGecikme < esikNum) return false
         if (!term) return true
         const phoneText = cari.telefon
@@ -118,7 +120,7 @@ export function HatirlatmaClient({
         </div>
 
         <FilterBar
-          resultText={`${filtered.length} firma · ortalama gecikme ≥ ${esik} gün`}
+          resultText={`${filtered.length} firma · ortalama gecikme ≥ ${esik} gün · gecikmiş ≥ ${formatTL(MIN_GECIKMIS_TUTAR)}`}
         >
           <SearchInput
             value={query}

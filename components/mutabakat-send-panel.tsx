@@ -53,6 +53,12 @@ export function MutabakatSendPanel({
     }
   }
 
+  // Listede olmayan özel e-posta ekle (yalnız bu gönderim için; seçili gelir).
+  function adresEkle(email: string) {
+    setAdresler((list) => (list.includes(email) ? list : [...list, email]))
+    setAlicilar((list) => (list.includes(email) ? list : [...list, email]))
+  }
+
   const gecmisTarih = mutabakatTarihi !== bugun
   const canSend = sendEnabled && hasRecipient && !sendBlocked && alicilar.length > 0
 
@@ -132,6 +138,7 @@ export function MutabakatSendPanel({
             onChange={setAlicilar}
             format={mailFormat}
             onRemove={adresSil}
+            onAdd={adresEkle}
           />
         </div>
       )}

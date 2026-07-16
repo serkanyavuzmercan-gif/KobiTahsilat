@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAuthUser } from '@/lib/auth'
 import { loadSnapshot } from '@/lib/data'
+import { normalizeEmail } from '@/lib/email'
 import { toErrorMessage } from '@/lib/errors'
 import { buildHatirlatmaEmail } from '@/lib/automation/email-template'
 import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
@@ -53,9 +54,14 @@ export async function POST(request: Request) {
       )
     }
     // ASLA tüm adreslere birden gönderme. Seçilen alt küme; seçim yoksa yalnız VARSAYILAN (ilk) adres.
+    // Kayıtlı adresler VEYA elle girilen geçerli e-postalar kabul edilir (garbage elenir).
     const istenenAlicilar = Array.isArray(body.recipients) ? body.recipients.map(String) : []
-    const secilenAlicilar = istenenAlicilar.filter((e) => cari.email_adresleri.includes(e))
-    const alicilar = secilenAlicilar.length ? secilenAlicilar : [cari.email_adresleri[0]]
+    const secilenAlicilar = istenenAlicilar
+      .map((e) => (cari.email_adresleri.includes(e) ? e : normalizeEmail(e)))
+      .filter((e): e is string => Boolean(e))
+    const alicilar = secilenAlicilar.length
+      ? [...new Set(secilenAlicilar)]
+      : [cari.email_adresleri[0]]
 
     const snapshot = await loadSnapshot()
     const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi, customBody)
