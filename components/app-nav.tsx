@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { MessageCircle, Settings2 } from 'lucide-react'
+import { Handshake, MessageCircle, Settings2 } from 'lucide-react'
 import { AppBrand } from '@/components/app-brand'
 import { AuthActions } from '@/components/auth-actions'
 import { cn } from '@/lib/utils'
@@ -12,9 +12,24 @@ const mainLinks = [
   { href: '/cariler', label: 'Cariler', match: (path: string) => path.startsWith('/cariler') },
 ]
 
+// İki ana aksiyon: her biri kendi rengi + sembolüyle listeden ayrışır.
 const commLinks = [
-  { href: '/mutabakat', label: 'Mutabakat', match: (path: string) => path.startsWith('/mutabakat') && !path.startsWith('/mutabakat/ayarlar') },
-  { href: '/hatirlatma', label: 'Ödeme Talebi Gönder', match: (path: string) => path.startsWith('/hatirlatma') },
+  {
+    href: '/mutabakat',
+    label: 'Mutabakat Yap',
+    match: (path: string) => path.startsWith('/mutabakat') && !path.startsWith('/mutabakat/ayarlar'),
+    icon: <Handshake size={15} className="opacity-90" />,
+    idle: 'bg-violet-50 text-violet-700 hover:bg-violet-100',
+    activeCls: 'bg-violet-600 text-white shadow-sm',
+  },
+  {
+    href: '/hatirlatma',
+    label: 'Ödeme Talebi Gönder',
+    match: (path: string) => path.startsWith('/hatirlatma'),
+    icon: <MessageCircle size={15} className="opacity-90" />,
+    idle: 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100',
+    activeCls: 'bg-emerald-600 text-white shadow-sm',
+  },
 ]
 
 function NavItem({
@@ -22,11 +37,17 @@ function NavItem({
   label,
   active,
   icon,
+  idle,
+  activeCls,
 }: {
   href: string
   label: string
   active: boolean
   icon?: React.ReactNode
+  /** Aksiyon linkleri için özel arka plan (pasif). Verilmezse sade nav stili. */
+  idle?: string
+  /** Aksiyon linkleri için özel arka plan (aktif). */
+  activeCls?: string
 }) {
   return (
     <Link
@@ -34,8 +55,8 @@ function NavItem({
       className={cn(
         'inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-colors sm:px-3',
         active
-          ? 'bg-brand-600 text-white shadow-sm'
-          : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+          ? activeCls || 'bg-brand-600 text-white shadow-sm'
+          : idle || 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
       )}
     >
       {icon}
@@ -71,11 +92,9 @@ export function AppNav() {
                 href={link.href}
                 label={link.label}
                 active={link.match(pathname)}
-                icon={
-                  link.href === '/hatirlatma' ? (
-                    <MessageCircle size={15} className="opacity-90" />
-                  ) : undefined
-                }
+                icon={link.icon}
+                idle={link.idle}
+                activeCls={link.activeCls}
               />
             ))}
 
