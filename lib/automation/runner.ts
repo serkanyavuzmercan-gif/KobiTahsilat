@@ -115,18 +115,17 @@ async function sendAutomationWhatsApp(
   if (taslakMod) return
 
   const sentAt = new Date().toISOString()
-  const kuyruk = await sendHatirlatmaWhatsApp({
+  const gonderim = await sendHatirlatmaWhatsApp({
     to: formatPhoneWhatsApp(cari.telefon),
-    cariKod: cari.cari_kod,
-    body: message.body,
     cari,
+    snapshotTarihi: snapshot.snapshot_tarihi,
   })
 
   const admin = createAdminClient()
   await admin.from('mail_gonderim_log').insert({
     mail_to: cari.telefon,
     subject: message.ozet,
-    body_preview: JSON.stringify({ kuyruk_id: kuyruk.kuyrukId, mesaj: message.body.slice(0, 200) }),
+    body_preview: JSON.stringify({ wamid: gonderim.wamid, mesaj: message.ozet.slice(0, 200) }),
     kaynak: AUTOMATION_LOG_KAYNAK,
     ilgili_id: cari.cari_kod,
     ilgili_tip: AUTOMATION_WHATSAPP_SEND_TIP,

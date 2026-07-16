@@ -7,7 +7,7 @@ import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
 import { HATIRLATMA_LOG_KAYNAK, WHATSAPP_SEND_TIP } from '@/lib/hatirlatma-log'
 import { formatPhoneDisplay, formatPhoneWhatsApp, isMobileTurkey, normalizePhone } from '@/lib/phone'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
-import { hatirlatmaDeliveryHint, sendHatirlatmaWhatsApp } from '@/lib/hatirlatma-whatsapp'
+import { hatirlatmaDeliveryHint, ODEME_TALEP_TEMPLATE, sendHatirlatmaWhatsApp } from '@/lib/hatirlatma-whatsapp'
 import { whatsAppBotEnabled } from '@/lib/whatsapp-kuyruk'
 import { WHATSAPP_SENDER_LABEL } from '@/lib/whatsapp-constants'
 
@@ -69,37 +69,25 @@ export async function POST(request: Request) {
 
     const snapshot = await loadSnapshot()
     const defaultMessage = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
-    const customBody = typeof body.messageBody === 'string' ? body.messageBody.trim() : ''
-    const messageBody = customBody || defaultMessage.body
-
-    if (messageBody.length === 0) {
-      return NextResponse.json({ success: false, error: 'Mesaj metni boş olamaz.' }, { status: 400 })
-    }
-    if (messageBody.length > 4096) {
-      return NextResponse.json(
-        { success: false, error: 'Mesaj en fazla 4096 karakter olabilir.' },
-        { status: 400 }
-      )
-    }
-
     const sentAt = new Date().toISOString()
 
-    // Seçilen her cep numarasına ayrı DM olarak kuyruğa ekle (ofis botu gönderir).
-    const kuyrukIds: string[] = []
+    // Resmi WhatsApp Cloud API — proaktif ödeme talebi onaylı şablonla gider (serbest metin
+    // 24 saat penceresi dışında Meta tarafından reddedilir). Şablon değişkenleri firma / vadesi
+    // geçen tutar / PDF döküm linki cari'den otomatik doldurulur. Seçilen her numaraya ayrı gider.
+    const wamids: string[] = []
     for (const numara of hedefNumaralar) {
       const result = await sendHatirlatmaWhatsApp({
         to: formatPhoneWhatsApp(numara),
-        cariKod: cari.cari_kod,
-        body: messageBody,
         cari,
+        snapshotTarihi: snapshot.snapshot_tarihi,
       })
-      kuyrukIds.push(result.kuyrukId)
+      wamids.push(result.wamid)
     }
 
     const logResult = await insertMailGonderimLog({
       mail_to: hedefNumaralar.join(';'),
       subject: defaultMessage.ozet,
-      body_preview: JSON.stringify({ kuyruk_ids: kuyrukIds, mesaj: messageBody.slice(0, 200) }),
+      body_preview: JSON.stringify({ wamids, sablon: ODEME_TALEP_TEMPLATE }),
       kaynak: HATIRLATMA_LOG_KAYNAK,
       ilgili_id: cari.cari_kod,
       ilgili_tip: WHATSAPP_SEND_TIP,
@@ -112,16 +100,16 @@ export async function POST(request: Request) {
 
     const logWarning = logResult.ok
       ? ''
-      : ' (Kuyruğa alındı; gönderim geçmişi kaydı yazılamadı.)'
+      : ' (Gönderildi; ancak gönderim geçmişi kaydı yazılamadı.)'
 
     return NextResponse.json({
       success: true,
-      message: `WhatsApp mesajı kuyruğa alındı → ${hedefNumaralar
+      message: `WhatsApp ödeme talebi gönderildi → ${hedefNumaralar
         .map((p) => formatPhoneDisplay(p))
         .join(', ')}. Gönderen: ${WHATSAPP_SENDER_LABEL}.${logWarning}`,
       sentAt,
-      kuyrukIds,
-      kuyrukId: kuyrukIds[0], // geriye uyum: tek-numara panelinin durum sorgusu için
+      wamids,
+      kuyrukId: wamids[0], // geriye uyum: tek-numara panelinin durum sorgusu için
       deliveryHint: hatirlatmaDeliveryHint(),
       gonderimSayisi: cari.whatsapp_gonderim_sayisi + (logResult.ok ? 1 : 0),
       logKaydedildi: logResult.ok,
