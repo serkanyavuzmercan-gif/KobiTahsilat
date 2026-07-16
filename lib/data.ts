@@ -181,6 +181,9 @@ async function fetchTahsilatRows(admin: AdminClient, tarih: string): Promise<Tah
       // 320* = tedarikçiler (Satıcılar). Fazla ödeme yaptığımızda bize borçlu görünüp
       // yanlışlıkla tahsilat listesine düşerler; okuma tarafında da hariç tutulur.
       .not('cari_kod', 'ilike', '320%')
+      // AYGÜN MAKİNA (120.01.0214): bakiyesi 128 şüpheli alacağa alınmış; tahsilat hedefi değil
+      // (120 tarafında yalnız kuruş kalıntısı kalır). Kaynak sync de eler; burada emniyet ağı.
+      .neq('cari_kod', '120.01.0214')
       .order('id', { ascending: true })
       .range(from, from + PAGE - 1)
     if (error) throw error
@@ -516,7 +519,7 @@ async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
     sourced_at: new Date().toISOString(),
     source: 'Supabase · vade_takip_tahsilat (canlı)',
     snapshot_tarihi: snapshotTarihi,
-    note: 'Canlı Supabase: vade_takip_tahsilat açık alacak evrakları + cariler kartı. Bakiye>0 alacağımız; yalnızca 120* müşteriler, 320* tedarikçiler hariç. ŞAHLAN/AYGÜN dahil.',
+    note: 'Canlı Supabase: vade_takip_tahsilat açık alacak evrakları + cariler kartı. Bakiye>0 alacağımız; yalnızca 120* müşteriler (320* tedarikçiler ve 128 şüpheli alacaklar hariç).',
     cari_sayisi: cariler.length,
     toplam_alacak: 0,
     toplam_gecikmis: 0,
