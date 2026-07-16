@@ -11,7 +11,7 @@ export function AppFooter({ minimal = false }: { minimal?: boolean }) {
 
   return (
     <footer className="mt-auto border-t border-slate-200 bg-white/90">
-      <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex w-full flex-col gap-2 px-4 py-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-6">
         <div>
           <p className="font-medium text-slate-700">Hidroteknik Mutabakat ve Tahsilat Sistemi</p>
           <p className="mt-0.5">Hidroteknik A.Ş.</p>

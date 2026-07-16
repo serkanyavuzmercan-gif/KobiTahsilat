@@ -1,8 +1,17 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { CalendarClock, CheckCircle2, Eye, Mail, MailWarning, Search } from 'lucide-react'
+import {
+  CalendarClock,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  Mail,
+  MailWarning,
+  Search,
+} from 'lucide-react'
 import { PreviewLink } from '@/components/ui/button'
 import {
   EmptyTableRow,
@@ -15,6 +24,8 @@ import {
 import { MutabakatEmailSecici } from '@/components/mutabakat-email-secici'
 import type { MutabakatCari } from '@/lib/mutabakat-data'
 import { formatTL } from '@/lib/types'
+
+const SAYFA_BOYUTU = 50
 
 export function MutabakatClient({
   cariler,
@@ -57,6 +68,14 @@ export function MutabakatClient({
   const ready = kapsamdaki.filter((cari) => cari.email).length
   const candidate = kapsamdaki.filter((cari) => !cari.email && cari.email_adaylari.length > 0).length
   const missing = kapsamdaki.length - ready - candidate
+
+  // Sayfalama: tüm kayıtları tek seferde basmak yavaş → 50'lik sayfalar.
+  const [sayfa, setSayfa] = useState(1)
+  useEffect(() => setSayfa(1), [query, emailFilter, tabanBakiye])
+  const toplamSayfa = Math.max(1, Math.ceil(filtered.length / SAYFA_BOYUTU))
+  const aktifSayfa = Math.min(sayfa, toplamSayfa)
+  const baslangic = (aktifSayfa - 1) * SAYFA_BOYUTU
+  const sayfalik = filtered.slice(baslangic, baslangic + SAYFA_BOYUTU)
 
   return (
     <div className="space-y-5">
@@ -137,7 +156,7 @@ export function MutabakatClient({
               {filtered.length === 0 ? (
                 <EmptyTableRow colSpan={6} message="Arama veya filtreye uygun firma bulunamadı." />
               ) : (
-                filtered.map((cari) => (
+                sayfalik.map((cari) => (
                   <tr key={cari.cari_kod}>
                     <td className="px-4 py-3">
                       <p className="font-medium">{cari.firma_adi}</p>
@@ -201,6 +220,40 @@ export function MutabakatClient({
             </tbody>
           </table>
         </div>
+
+        {filtered.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 px-4 py-3">
+            <p className="text-xs text-slate-500">
+              {baslangic + 1}–{Math.min(baslangic + SAYFA_BOYUTU, filtered.length)} / {filtered.length}{' '}
+              firma
+            </p>
+            {toplamSayfa > 1 && (
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setSayfa((p) => Math.max(1, p - 1))}
+                  disabled={aktifSayfa <= 1}
+                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  <ChevronLeft size={14} />
+                  Önceki
+                </button>
+                <span className="px-2 text-xs font-medium tabular-nums text-slate-600">
+                  Sayfa {aktifSayfa} / {toplamSayfa}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setSayfa((p) => Math.min(toplamSayfa, p + 1))}
+                  disabled={aktifSayfa >= toplamSayfa}
+                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  Sonraki
+                  <ChevronRight size={14} />
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </section>
     </div>
   )

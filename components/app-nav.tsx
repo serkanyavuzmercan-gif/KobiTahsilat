@@ -70,7 +70,7 @@ export function AppNav() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto max-w-6xl px-4 py-3">
+      <div className="w-full px-4 py-3 lg:px-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <AppBrand />
 
