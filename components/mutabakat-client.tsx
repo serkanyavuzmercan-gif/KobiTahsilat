@@ -12,6 +12,7 @@ import {
   StatusBadge,
   SummaryStat,
 } from '@/components/ui/summary-stat'
+import { MutabakatEmailSecici } from '@/components/mutabakat-email-secici'
 import type { MutabakatCari } from '@/lib/mutabakat-data'
 import { formatTL } from '@/lib/types'
 
@@ -117,7 +118,15 @@ export function MutabakatClient({
                       <p className="mt-0.5 font-mono text-xs text-slate-400">{cari.cari_kod}</p>
                     </td>
                     <td className="px-4 py-3 align-top">
-                      <CariEmailStatus cari={cari} />
+                      {cari.email_havuzu.length > 0 ? (
+                        <MutabakatEmailSecici
+                          cariKod={cari.cari_kod}
+                          havuz={cari.email_havuzu}
+                          secili={cari.email_adresleri}
+                        />
+                      ) : (
+                        <CariEmailStatus cari={cari} />
+                      )}
                     </td>
                     <td className="px-4 py-3 text-right font-semibold tabular-nums">
                       {formatTL(cari.bakiye)}

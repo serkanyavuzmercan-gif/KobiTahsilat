@@ -5,6 +5,8 @@ import { createAdminClient } from './supabase/admin'
 import { addBusinessDays } from './business-days'
 
 export type MutabakatCari = CariBakiye & {
+  /** Bu cari için keşfedilmiş TÜM doğrulanmış e-posta adresleri (seçim havuzu). */
+  email_havuzu: string[]
   mutabakat_son_gonderim: string | null
   mutabakat_gonderim_sayisi: number
   mutabakat_tekrar_gonderilebilir_at: string | null
@@ -28,7 +30,9 @@ export async function loadMutabakatCariler(): Promise<MutabakatCari[]> {
           'mutabakat_email_aday_reddet',
         ])
         .in('ilgili_id', codes)
-        .order('sent_at', { ascending: false }),
+        // created_at desc: hem "son gönderim" (mutabakat satırlarında sent_at≈created_at) doğru
+        // kalır, hem de override satırları (sent_at null) arasında EN YENİ seçim kazanır.
+        .order('created_at', { ascending: false, nullsFirst: false }),
     ])
 
   if (masterError) throw masterError
@@ -65,6 +69,12 @@ export async function loadMutabakatCariler(): Promise<MutabakatCari[]> {
     const effectiveEmails =
       override !== undefined ? override : master.length ? master : cari.email_adresleri
     const emailAddresses = effectiveEmails.length ? effectiveEmails : []
+    // Seçim havuzu: keşfedilen tüm adresler (override + master + snapshot merge) — tekilleştirilmiş.
+    const emailHavuzu = [
+      ...new Set(
+        [...(override ?? []), ...master, ...cari.email_adresleri].filter(Boolean)
+      ),
+    ]
     const history = sentHistory.get(cari.cari_kod) || []
     const hiddenCandidates = dismissedCandidates.get(cari.cari_kod) || new Set<string>()
     const visibleCandidates = cari.email_adaylari.filter(
@@ -84,6 +94,7 @@ export async function loadMutabakatCariler(): Promise<MutabakatCari[]> {
           : cari.email_kaynagi,
       email_guven: emailAddresses.length ? 'dogrulanmis' : cari.email_guven,
       email_adaylari: visibleCandidates,
+      email_havuzu: emailHavuzu,
       mutabakat_son_gonderim: history[0] || null,
       mutabakat_gonderim_sayisi: history.length,
       mutabakat_tekrar_gonderilebilir_at: nextSendAt,
