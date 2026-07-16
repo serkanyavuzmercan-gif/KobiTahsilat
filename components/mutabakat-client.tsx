@@ -27,10 +27,18 @@ export function MutabakatClient({
 }) {
   const [query, setQuery] = useState('')
   const [emailFilter, setEmailFilter] = useState<'all' | 'ready' | 'candidate' | 'missing'>('all')
+  // Taban bakiye: altındaki cariler mutabakata gelmesin (kullanıcı incelerken belirler).
+  const [tabanBakiye, setTabanBakiye] = useState(0)
+
+  // Önce taban bakiye kapısı: bunun altındaki cariler mutabakat kapsamı dışında (özet + liste).
+  const kapsamdaki = useMemo(
+    () => cariler.filter((cari) => cari.bakiye >= tabanBakiye),
+    [cariler, tabanBakiye]
+  )
 
   const filtered = useMemo(() => {
     const term = query.trim().toLocaleLowerCase('tr')
-    return cariler.filter((cari) => {
+    return kapsamdaki.filter((cari) => {
       const matchesSearch =
         !term ||
         cari.firma_adi.toLocaleLowerCase('tr').includes(term) ||
@@ -44,11 +52,11 @@ export function MutabakatClient({
         (emailFilter === 'missing' && !cari.email && cari.email_adaylari.length === 0)
       return matchesSearch && matchesEmail
     })
-  }, [cariler, emailFilter, query])
+  }, [kapsamdaki, emailFilter, query])
 
-  const ready = cariler.filter((cari) => cari.email).length
-  const candidate = cariler.filter((cari) => !cari.email && cari.email_adaylari.length > 0).length
-  const missing = cariler.length - ready - candidate
+  const ready = kapsamdaki.filter((cari) => cari.email).length
+  const candidate = kapsamdaki.filter((cari) => !cari.email && cari.email_adaylari.length > 0).length
+  const missing = kapsamdaki.length - ready - candidate
 
   return (
     <div className="space-y-5">
@@ -77,7 +85,9 @@ export function MutabakatClient({
         </div>
 
         <FilterBar
-          resultText={`${filtered.length} firma listeleniyor${filtered.length !== cariler.length ? ` (${cariler.length} toplam)` : ''}`}
+          resultText={`${filtered.length} firma listeleniyor${
+            tabanBakiye > 0 ? ` · taban ${formatTL(tabanBakiye)}` : ''
+          }${filtered.length !== cariler.length ? ` (${cariler.length} toplam)` : ''}`}
         >
           <SearchInput
             value={query}
@@ -85,6 +95,22 @@ export function MutabakatClient({
             placeholder="Firma, cari kod veya e-posta ara…"
             icon={<Search size={17} />}
           />
+          <label className="flex items-center gap-2 text-sm text-slate-600">
+            <span className="whitespace-nowrap">Taban bakiye (₺)</span>
+            <input
+              type="number"
+              min={0}
+              step={100}
+              value={tabanBakiye || ''}
+              onChange={(event) => {
+                const value = Number(event.target.value)
+                setTabanBakiye(Number.isFinite(value) && value > 0 ? value : 0)
+              }}
+              placeholder="0"
+              title="Bu tutarın altındaki bakiyeli cariler mutabakata gelmez"
+              className="w-28 rounded-md border border-slate-300 px-2 py-1.5 text-sm outline-none focus:ring-2 focus:ring-brand-500"
+            />
+          </label>
           <FilterSelect value={emailFilter} onChange={(value) => setEmailFilter(value as typeof emailFilter)}>
             <option value="all">Tüm firmalar</option>
             <option value="ready">E-postası hazır</option>
@@ -118,15 +144,12 @@ export function MutabakatClient({
                       <p className="mt-0.5 font-mono text-xs text-slate-400">{cari.cari_kod}</p>
                     </td>
                     <td className="px-4 py-3 align-top">
-                      {cari.email_havuzu.length > 0 ? (
-                        <MutabakatEmailSecici
-                          cariKod={cari.cari_kod}
-                          havuz={cari.email_havuzu}
-                          secili={cari.email_adresleri}
-                        />
-                      ) : (
-                        <CariEmailStatus cari={cari} />
-                      )}
+                      <MutabakatEmailSecici
+                        cariKod={cari.cari_kod}
+                        havuz={cari.email_havuzu}
+                        adaylar={cari.email_adaylari.map((aday) => aday.email)}
+                        secili={cari.email_adresleri}
+                      />
                     </td>
                     <td className="px-4 py-3 text-right font-semibold tabular-nums">
                       {formatTL(cari.bakiye)}
@@ -179,40 +202,6 @@ export function MutabakatClient({
           </table>
         </div>
       </section>
-    </div>
-  )
-}
-
-function CariEmailStatus({ cari }: { cari: MutabakatCari }) {
-  if (cari.email) {
-    return (
-      <div>
-        <p className="font-medium text-slate-800">{cari.email_adresleri.join(', ')}</p>
-        <p className="mt-1 text-xs text-emerald-700">
-          {cari.email_kaynagi || 'Mikro cari kartı'} · gönderime hazır
-        </p>
-      </div>
-    )
-  }
-
-  if (cari.email_adaylari.length > 0) {
-    return (
-      <div>
-        <p className="text-slate-600">{cari.email_adaylari[0].email}</p>
-        {cari.email_adaylari.length > 1 && (
-          <p className="mt-0.5 text-xs text-slate-400">
-            +{cari.email_adaylari.length - 1} aday daha
-          </p>
-        )}
-        <p className="mt-1 text-xs text-amber-700">Gmail adayı · önizlemede düzenleyin</p>
-      </div>
-    )
-  }
-
-  return (
-    <div>
-      <p className="text-slate-500">—</p>
-      <p className="mt-1 text-xs text-red-600">E-posta adresi bulunamadı</p>
     </div>
   )
 }
