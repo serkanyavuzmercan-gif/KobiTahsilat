@@ -1,20 +1,30 @@
 export type AutomationChannel = 'email' | 'whatsapp'
+export type OdemeTalepKanal = 'email' | 'whatsapp' | 'her-ikisi'
 
-export type AutomationRule = {
-  id: string
-  kanal: AutomationChannel
-  /** Ortalama gecikme bu gün ve üzerindeyse kural tetiklenir. */
-  min_ortalama_gecikme_gun: number
+/** Otomatik Mutabakat bloğu (bağımsız aç/kapa). */
+export type MutabakatOtomasyon = {
   aktif: boolean
-  etiket: string
+  /** Deneme modu: gönderme, yalnızca aday listesini çıkar. */
+  taslak_mod: boolean
+  /** Bu bakiyenin altındaki cariler otomatik mutabakata girmez. */
+  taban_bakiye: number
+}
+
+/** Otomatik Ödeme Talebi bloğu (bağımsız aç/kapa). */
+export type OdemeTalepOtomasyon = {
+  aktif: boolean
+  taslak_mod: boolean
+  /** Ortalama gecikme bu gün ve üzerindeyse aday olur. */
+  min_ortalama_gecikme_gun: number
+  /** Bu tutarın altındaki gecikmiş bakiyeler gelmez. */
+  min_gecikmis_tutar: number
+  kanal: OdemeTalepKanal
 }
 
 export type AutomationSettings = {
-  version: 1
-  otomasyon_aktif: boolean
-  /** true: gönderim yapılmaz, yalnızca adaylar raporlanır. */
-  taslak_mod: boolean
-  kurallar: AutomationRule[]
+  version: 2
+  mutabakat: MutabakatOtomasyon
+  odeme_talebi: OdemeTalepOtomasyon
   /** HH:mm — cron bu saatten sonra çalışır (Türkiye). */
   calisma_saati: string
   sadece_is_gunu: boolean
@@ -31,12 +41,13 @@ export type AutomationConnectionsStatus = {
 }
 
 export type AutomationRunCandidate = {
+  tur: 'mutabakat' | 'odeme_talebi'
   cari_kod: string
   firma_adi: string
   kanal: AutomationChannel
-  kural_id: string
-  ortalama_gecikme_gun: number
+  ortalama_gecikme_gun: number | null
   gecikmis_bakiye: number
+  bakiye: number
   alici: string | null
   engel: string | null
 }

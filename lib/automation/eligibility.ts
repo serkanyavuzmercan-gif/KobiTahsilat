@@ -5,76 +5,75 @@ import type { HatirlatmaCari } from '../hatirlatma-data'
 import type { MutabakatCari } from '../mutabakat-data'
 import { formatPhoneDisplay } from '../phone'
 import { isTestCari } from '../test-cariler'
-import type { AutomationChannel, AutomationRule, AutomationRunCandidate } from './types'
+import type { AutomationRunCandidate, OdemeTalepKanal } from './types'
 
-export function matchesDelayRule(
-  ortalamaGecikme: number | null,
-  minGun: number,
-  gecikmisBakiye: number
-) {
-  if (gecikmisBakiye <= 0.01) return false
-  if (ortalamaGecikme == null) return false
-  return ortalamaGecikme >= minGun
+/** Otomatik mutabakat adayları: bakiye ≥ taban, alıcı e-posta seçili, 8 iş günü engeli yok. */
+export function collectMutabakatCandidates(
+  cariler: MutabakatCari[],
+  tabanBakiye: number
+): AutomationRunCandidate[] {
+  return cariler.flatMap((cari) => {
+    if (isTestCari(cari.cari_kod)) return []
+    if (cari.bakiye <= 0.01 || cari.bakiye < tabanBakiye) return []
+
+    let engel: string | null = null
+    if (!cari.email) engel = 'Alıcı e-posta seçili değil'
+    else if (cari.mutabakat_gonderim_engelli) engel = '8 iş günü dolmadı'
+
+    return [
+      {
+        tur: 'mutabakat' as const,
+        cari_kod: cari.cari_kod,
+        firma_adi: cari.firma_adi,
+        kanal: 'email' as const,
+        ortalama_gecikme_gun: cariOrtalamaGecikmeGun(cari),
+        gecikmis_bakiye: cari.gecikmis_bakiye,
+        bakiye: cari.bakiye,
+        alici: cari.email || null,
+        engel,
+      },
+    ]
+  })
 }
 
-function buildCandidate(
-  cari: { cari_kod: string; firma_adi: string; gecikmis_bakiye: number },
-  rule: AutomationRule,
-  ortalamaGecikme: number,
-  alici: string | null,
-  engel: string | null
-): AutomationRunCandidate {
-  return {
-    cari_kod: cari.cari_kod,
-    firma_adi: cari.firma_adi,
-    kanal: rule.kanal,
-    kural_id: rule.id,
-    ortalama_gecikme_gun: ortalamaGecikme,
-    gecikmis_bakiye: cari.gecikmis_bakiye,
-    alici,
-    engel,
+/** Otomatik ödeme talebi adayları: ort. gecikme ≥ eşik VE gecikmiş ≥ taban; kanal(lar)a göre. */
+export function collectOdemeTalepCandidates(
+  cariler: HatirlatmaCari[],
+  opts: { minGun: number; minTutar: number; kanal: OdemeTalepKanal }
+): AutomationRunCandidate[] {
+  const out: AutomationRunCandidate[] = []
+  for (const cari of cariler) {
+    if (isTestCari(cari.cari_kod)) continue
+    const ortalama = cariOrtalamaGecikmeGun(cari)
+    if (cari.gecikmis_bakiye < opts.minTutar) continue
+    if (ortalama == null || ortalama < opts.minGun) continue
+
+    const base = {
+      tur: 'odeme_talebi' as const,
+      cari_kod: cari.cari_kod,
+      firma_adi: cari.firma_adi,
+      ortalama_gecikme_gun: ortalama,
+      gecikmis_bakiye: cari.gecikmis_bakiye,
+      bakiye: cari.bakiye,
+    }
+    if (opts.kanal === 'email' || opts.kanal === 'her-ikisi') {
+      out.push({
+        ...base,
+        kanal: 'email',
+        alici: cari.email_adresleri[0] || null,
+        engel: cari.email_adresleri.length ? null : 'Doğrulanmış e-posta yok',
+      })
+    }
+    if (opts.kanal === 'whatsapp' || opts.kanal === 'her-ikisi') {
+      out.push({
+        ...base,
+        kanal: 'whatsapp',
+        alici: cari.telefon ? formatPhoneDisplay(cari.telefon) : null,
+        engel: cari.telefon ? null : 'Kayıtlı cep telefonu yok',
+      })
+    }
   }
-}
-
-export function collectEmailCandidates(
-  rule: AutomationRule,
-  cariler: MutabakatCari[]
-): AutomationRunCandidate[] {
-  return cariler.flatMap((cari) => {
-    if (isTestCari(cari.cari_kod)) return []
-    const ortalama = cariOrtalamaGecikmeGun(cari)
-    if (!matchesDelayRule(ortalama, rule.min_ortalama_gecikme_gun, cari.gecikmis_bakiye)) {
-      return []
-    }
-
-    let engel: string | null = null
-    let alici: string | null = cari.email_adresleri[0] || null
-
-    if (!cari.email) engel = 'Doğrulanmış e-posta yok'
-    else if (cari.mutabakat_gonderim_engelli) engel = 'E-posta bekleme süresi aktif'
-
-    return [buildCandidate(cari, rule, ortalama!, alici, engel)]
-  })
-}
-
-export function collectWhatsAppCandidates(
-  rule: AutomationRule,
-  cariler: HatirlatmaCari[]
-): AutomationRunCandidate[] {
-  return cariler.flatMap((cari) => {
-    if (isTestCari(cari.cari_kod)) return []
-    const ortalama = cariOrtalamaGecikmeGun(cari)
-    if (!matchesDelayRule(ortalama, rule.min_ortalama_gecikme_gun, cari.gecikmis_bakiye)) {
-      return []
-    }
-
-    let engel: string | null = null
-    const alici = cari.telefon ? formatPhoneDisplay(cari.telefon) : null
-
-    if (!cari.telefon) engel = 'Kayıtlı cep telefonu yok'
-
-    return [buildCandidate(cari, rule, ortalama!, alici, engel)]
-  })
+  return out
 }
 
 export async function listSnapshotDelaySummary() {
