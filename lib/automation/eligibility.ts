@@ -17,8 +17,8 @@ export function collectMutabakatCandidates(
     if (cari.bakiye <= 0.01 || cari.bakiye < tabanBakiye) return []
 
     let engel: string | null = null
-    if (!cari.email) engel = 'Alıcı e-posta seçili değil'
-    else if (cari.mutabakat_gonderim_engelli) engel = '8 iş günü dolmadı'
+    if (!cari.email) engel = 'E-posta seçilmemiş'
+    else if (cari.mutabakat_gonderim_engelli) engel = 'Kısa süre önce gönderildi'
 
     return [
       {
@@ -61,7 +61,7 @@ export function collectOdemeTalepCandidates(
         ...base,
         kanal: 'email',
         alici: cari.email_adresleri[0] || null,
-        engel: cari.email_adresleri.length ? null : 'Doğrulanmış e-posta yok',
+        engel: cari.email_adresleri.length ? null : 'E-posta yok',
       })
     }
     if (opts.kanal === 'whatsapp' || opts.kanal === 'her-ikisi') {
@@ -69,7 +69,7 @@ export function collectOdemeTalepCandidates(
         ...base,
         kanal: 'whatsapp',
         alici: cari.telefon ? formatPhoneDisplay(cari.telefon) : null,
-        engel: cari.telefon ? null : 'Kayıtlı cep telefonu yok',
+        engel: cari.telefon ? null : 'Telefon yok',
       })
     }
   }

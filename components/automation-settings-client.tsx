@@ -184,7 +184,7 @@ export function AutomationSettingsClient() {
             icon={<CheckCircle2 size={16} />}
             title="Canlı gönderim izni"
             ok={sistemOk}
-            detail={sistemOk ? 'OTOMATIK_TAHSILAT_ENABLED açık' : 'Sistem beklemede (env kapalı)'}
+            detail={sistemOk ? 'Açık' : 'Henüz açık değil (yönetici açacak)'}
           />
         </div>
         {!sistemOk && (
@@ -205,14 +205,14 @@ export function AutomationSettingsClient() {
         renk="violet"
         icon={<Handshake size={18} />}
         baslik="Otomatik Mutabakat"
-        aciklama="Uygun carilere zamanı gelince otomatik mutabakat e-postası (onay/itiraz linkli) gönderir."
+        aciklama="Seçtiğin sıklıkta, uygun carilere otomatik mutabakat e-postası gönderir."
         aktif={m.aktif}
         onAktif={(v) => patchM({ aktif: v })}
         taslak={m.taslak_mod}
         onTaslak={(v) => patchM({ taslak_mod: v })}
       >
         <div className="grid gap-3 sm:grid-cols-2">
-          <Alan label="Taban bakiye (₺)" ipucu="Bu tutarın altındaki bakiyeli cariler girmez.">
+          <Alan label="Taban bakiye (₺)" ipucu="Bakiyesi bundan az olanlara gönderilmez.">
             <input
               type="number"
               min={0}
@@ -224,7 +224,7 @@ export function AutomationSettingsClient() {
           </Alan>
           <Alan
             label="Sıklık"
-            ipucu="Ayın ilk iş gününde çalışır; her cariye bu aralıkta bir kez (manuel gönderdiğin de sayılır)."
+            ipucu="Her cariye bu aralıkta bir kez gönderilir. Elle gönderdiğin de sayılır."
           >
             <select
               value={m.ay_araligi}
@@ -238,7 +238,7 @@ export function AutomationSettingsClient() {
           </Alan>
         </div>
         <p className="text-xs text-slate-400">
-          8 iş günü tekrar-gönderim engeli ve “alıcı e-posta seçili olma” şartı otomatik uygulanır.
+          Alıcı e-postası seçili olmayan carilere gönderilmez.
         </p>
       </BlokKart>
 
@@ -247,14 +247,14 @@ export function AutomationSettingsClient() {
         renk="emerald"
         icon={<MessageCircle size={18} />}
         baslik="Otomatik Ödeme Talebi"
-        aciklama="Ortalama gecikmesi eşiği aşan carilere otomatik ödeme talebi (WhatsApp / e-posta) gönderir."
+        aciklama="Çok geciken carilere otomatik ödeme hatırlatması (WhatsApp / e-posta) gönderir."
         aktif={o.aktif}
         onAktif={(v) => patchO({ aktif: v })}
         taslak={o.taslak_mod}
         onTaslak={(v) => patchO({ taslak_mod: v })}
       >
         <div className="grid gap-3 sm:grid-cols-3">
-          <Alan label="Ort. gecikme eşiği (gün)">
+          <Alan label="Ort. gecikme eşiği (gün)" ipucu="Ortalama gecikmesi bu günü geçenlere.">
             <input
               type="number"
               min={0}
@@ -266,7 +266,7 @@ export function AutomationSettingsClient() {
               className="w-24 rounded-md border border-slate-300 px-2 py-1.5 text-sm"
             />
           </Alan>
-          <Alan label="Taban gecikmiş (₺)">
+          <Alan label="Taban gecikmiş (₺)" ipucu="Gecikmişi bundan az olana gönderilmez.">
             <input
               type="number"
               min={0}
@@ -334,7 +334,7 @@ export function AutomationSettingsClient() {
           Şimdi çalıştır
         </Button>
         <span className="ml-auto text-xs text-slate-400">
-          “Şimdi çalıştır” yalnız deneme modu KAPALI blokları gerçekten gönderir.
+          Deneme modu kapalı bloklar gerçekten gönderilir.
         </span>
       </div>
 
@@ -497,7 +497,7 @@ function BlokKart({
           <span className="text-sm">
             <span className="font-medium">Deneme modu</span>
             <span className="block text-[11px] text-slate-500">
-              Açıkken GÖNDERMEZ, yalnız aday listesini çıkarır. Emin olunca kapatın → gerçek gönderim.
+              Açıkken göndermez, sadece kimlere gideceğini gösterir. Kapatınca gerçekten gönderir.
             </span>
           </span>
         </label>

@@ -229,7 +229,7 @@ async function collectCandidatesForUser(
       MUTABAKAT_TIPS,
       since
     )
-    mutabakatAday = isaretle(mutabakatAday, contacted, 'Bu periyotta zaten mutabakat gönderildi')
+    mutabakatAday = isaretle(mutabakatAday, contacted, 'Bu dönem zaten gönderildi')
   }
   if (odemeAday.length) {
     const since = odemePeriodBasi(settings.odeme_talebi.frekans, now)
@@ -238,14 +238,14 @@ async function collectCandidatesForUser(
       ODEME_TALEP_TIPS,
       since
     )
-    odemeAday = isaretle(odemeAday, contacted, 'Bu periyotta zaten ödeme talebi gönderildi')
+    odemeAday = isaretle(odemeAday, contacted, 'Bu dönem zaten gönderildi')
   }
 
   // Çakışma önleme: aynı gün bir cariye hem mutabakat hem ödeme talebi GİTMEZ → mutabakat önceliklidir.
   const mutabakatGidecek = new Set(
     mutabakatAday.filter((a) => !a.engel).map((a) => a.cari_kod)
   )
-  odemeAday = isaretle(odemeAday, mutabakatGidecek, 'Bugün mutabakat gönderiliyor (öncelik)')
+  odemeAday = isaretle(odemeAday, mutabakatGidecek, 'Bugün gönderilmeyecek — mutabakat önceliği')
 
   const unique = new Map<string, AutomationRunCandidate>()
   for (const candidate of [...mutabakatAday, ...odemeAday]) {
