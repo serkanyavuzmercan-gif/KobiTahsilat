@@ -572,6 +572,47 @@ function SonTeyidPaneli({
   const odemeMail = gidecek.filter((a) => a.tur === 'odeme_talebi' && a.kanal === 'email').length
   const toplam = gidecek.length
 
+  const ilkMail = gidecek.find((a) => a.kanal === 'email')
+  const ilkWa = gidecek.find((a) => a.kanal === 'whatsapp')
+  const [mailOnizleme, setMailOnizleme] = useState<{
+    firma: string
+    alici: string | null
+    subject: string
+    html: string
+  } | null>(null)
+  const [waOnizleme, setWaOnizleme] = useState<{ firma: string; alici: string | null; text: string } | null>(null)
+  const [onizlemeYukleniyor, setOnizlemeYukleniyor] = useState(true)
+
+  useEffect(() => {
+    let iptal = false
+    async function yukle() {
+      setOnizlemeYukleniyor(true)
+      try {
+        if (ilkMail) {
+          const r = await fetch(
+            `/api/otomasyon/onizle?cariKod=${encodeURIComponent(ilkMail.cari_kod)}&tur=${ilkMail.tur}&kanal=email`
+          )
+          const j = await r.json()
+          if (!iptal && j.success) setMailOnizleme({ firma: j.firma, alici: j.alici, subject: j.subject, html: j.html })
+        }
+        if (ilkWa) {
+          const r = await fetch(
+            `/api/otomasyon/onizle?cariKod=${encodeURIComponent(ilkWa.cari_kod)}&tur=odeme_talebi&kanal=whatsapp`
+          )
+          const j = await r.json()
+          if (!iptal && j.success) setWaOnizleme({ firma: j.firma, alici: j.alici, text: j.text })
+        }
+      } finally {
+        if (!iptal) setOnizlemeYukleniyor(false)
+      }
+    }
+    void yukle()
+    return () => {
+      iptal = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ilkMail?.cari_kod, ilkWa?.cari_kod])
+
   return (
     <section className="rounded-xl border-2 border-red-300 bg-red-50 p-5">
       <div className="flex items-center gap-2 text-sm font-semibold text-red-800">
@@ -599,6 +640,60 @@ function SonTeyidPaneli({
           dönebilir. E-postalar bu sınırdan etkilenmez.
         </p>
       )}
+      {/* GERÇEK İÇERİK ÖNİZLEMESİ — ilk gidecek mail + WhatsApp */}
+      <div className="mt-4 rounded-lg border border-slate-200 bg-white p-4">
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          Gidecek mesajın örneği (ilk kayıt)
+        </p>
+        {onizlemeYukleniyor && !mailOnizleme && !waOnizleme ? (
+          <p className="mt-2 flex items-center gap-2 text-sm text-slate-500">
+            <LoaderCircle className="animate-spin" size={15} /> Önizleme hazırlanıyor…
+          </p>
+        ) : (
+          <div className="mt-2 grid gap-4 lg:grid-cols-2">
+            {mailOnizleme && (
+              <div>
+                <p className="text-xs text-slate-500">
+                  <Mail size={12} className="mr-1 inline text-brand-600" />
+                  <strong>{mailOnizleme.firma}</strong> → {mailOnizleme.alici || '—'}
+                </p>
+                <p className="mt-1 text-xs text-slate-600">
+                  <span className="text-slate-400">Konu:</span> {mailOnizleme.subject}
+                </p>
+                <iframe
+                  sandbox=""
+                  srcDoc={mailOnizleme.html}
+                  title="Mail önizleme"
+                  className="mt-1.5 h-80 w-full rounded-lg border border-slate-200 bg-white"
+                />
+              </div>
+            )}
+            {waOnizleme && (
+              <div>
+                <p className="text-xs text-slate-500">
+                  <MessageCircle size={12} className="mr-1 inline text-emerald-600" />
+                  <strong>{waOnizleme.firma}</strong> → {waOnizleme.alici || '—'}
+                </p>
+                <div className="mt-1.5 rounded-lg border border-emerald-200 bg-emerald-50 p-3">
+                  <div className="whitespace-pre-wrap rounded-lg bg-white p-3 text-sm text-slate-800 shadow-sm ring-1 ring-emerald-100">
+                    {waOnizleme.text}
+                  </div>
+                  <p className="mt-1.5 text-[11px] text-emerald-700">
+                    Meta onaylı şablon · her firma için ad/tutar/link otomatik dolar.
+                  </p>
+                </div>
+              </div>
+            )}
+            {!mailOnizleme && !waOnizleme && (
+              <p className="text-sm text-slate-400">Gösterilecek hazır kayıt yok.</p>
+            )}
+          </div>
+        )}
+        <p className="mt-2 text-[11px] text-slate-400">
+          Not: içerik firmaya göre değişir (ad, bakiye, tutar, link). Bu yalnızca listedeki ilk kaydın örneğidir.
+        </p>
+      </div>
+
       <p className="mt-3 text-xs text-slate-500">
         Tam gidecek liste yukarıdaki “Son çalıştırma özeti” tablosunda (durumu <strong>Hazır</strong> olanlar).
         Engelli/atlanan satırlara gönderilmez.

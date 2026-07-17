@@ -31,6 +31,30 @@ export function odemeTalepPdfUrl(cariKod: string, snapshotTarihi: string): strin
   return `${baseUrl}/api/odeme-talebi/pdf?token=${encodeURIComponent(token)}`
 }
 
+/**
+ * Göndermeden, WhatsApp müşteriye görünecek mesajın birebir metnini üretir (önizleme).
+ * Meta onaylı "odeme_talebi_hatirlatma" gövdesi + {{1}}/{{2}}/{{3}} doldurulur.
+ */
+export function buildHatirlatmaWhatsAppOnizleme(
+  cari: CariBakiye,
+  snapshotTarihi: string
+): { text: string; tutar: string; pdfUrl: string } {
+  const dokum = buildOdemeTalepDokum(cari.acik_kalemler, cari.bakiye)
+  const tutar = formatTL(dokum.vadesi_gecen_toplam)
+  const pdfUrl = odemeTalepPdfUrl(cari.cari_kod, snapshotTarihi)
+  const text = `Sayın ${cari.firma_adi.trim()} yetkilisi,
+
+Cari hesabınızda vadesi geçen ${tutar} tutarında alacağımız bulunmaktadır. Vadesi geçen faturalarınızın detaylı dökümüne aşağıdaki bağlantıdan ulaşabilirsiniz:
+
+${pdfUrl}
+
+Ödemenizi en kısa sürede yapmanızı; ödeme yaptıysanız veya bir hata olduğunu düşünüyorsanız bizimle iletişime geçmenizi rica ederiz.
+
+Saygılarımızla,
+Hidroteknik A.Ş.`
+  return { text, tutar, pdfUrl }
+}
+
 export async function sendHatirlatmaWhatsApp(options: {
   to: string
   cari: CariBakiye
