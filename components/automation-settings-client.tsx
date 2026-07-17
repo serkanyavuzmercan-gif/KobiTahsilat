@@ -18,6 +18,7 @@ import { StatusBadge } from '@/components/ui/summary-stat'
 import { formatTL } from '@/lib/types'
 import type {
   AutomationConnectionsStatus,
+  AutomationRunCandidate,
   AutomationRunResult,
   AutomationSettings,
   Frekans,
@@ -33,6 +34,8 @@ export function AutomationSettingsClient() {
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [lastRun, setLastRun] = useState<AutomationRunResult | null>(null)
+  // Gerçek gönderim öncesi son teyid modu (önizle → onayla → gönder).
+  const [onayBekliyor, setOnayBekliyor] = useState(false)
 
   async function loadAll() {
     setLoading(true)
@@ -323,13 +326,14 @@ export function AutomationSettingsClient() {
           <input
             type="checkbox"
             checked={m.taslak_mod || o.taslak_mod}
-            onChange={(e) =>
+            onChange={(e) => {
+              setOnayBekliyor(false)
               setSettings({
                 ...settings,
                 mutabakat: { ...settings.mutabakat, taslak_mod: e.target.checked },
                 odeme_talebi: { ...settings.odeme_talebi, taslak_mod: e.target.checked },
               })
-            }
+            }}
             className="mt-0.5 h-4 w-4 rounded border-slate-300 text-amber-600"
           />
           <span className="text-sm">
@@ -355,23 +359,37 @@ export function AutomationSettingsClient() {
           </Button>
         ) : (
           <Button
-            variant="success"
-            onClick={() => {
-              if (confirm('Deneme modu KAPALI. Uygun carilere gerçekten mesaj gönderilecek. Devam edilsin mi?'))
-                void runAutomation(false)
+            variant="secondary"
+            onClick={async () => {
+              // Önce önizleme (deneme) çıkar, sonra SON TEYİD panelini aç.
+              await runAutomation(true)
+              setOnayBekliyor(true)
             }}
             disabled={running}
           >
-            {running ? <LoaderCircle className="animate-spin" size={15} /> : <Send size={15} />}
-            Şimdi gerçekten gönder
+            {running ? <LoaderCircle className="animate-spin" size={15} /> : <Play size={15} />}
+            Önizle ve gönder
           </Button>
         )}
         <span className="ml-auto text-xs text-slate-400">
           {denemeAcik
             ? 'Deneme modu açık — sadece liste çıkar, gönderim olmaz.'
-            : 'Deneme modu kapalı — buton gerçek gönderim yapar.'}
+            : 'Önce önizleme çıkar, son teyidden sonra gönderilir.'}
         </span>
       </div>
+
+      {/* SON TEYİD paneli — gerçek gönderimden hemen önce */}
+      {onayBekliyor && !denemeAcik && lastRun && (
+        <SonTeyidPaneli
+          adaylar={lastRun.adaylar}
+          gonderiliyor={running}
+          onVazgec={() => setOnayBekliyor(false)}
+          onOnayla={async () => {
+            setOnayBekliyor(false)
+            await runAutomation(false)
+          }}
+        />
+      )}
 
       {lastRun && (
         <section className="rounded-xl border border-slate-200 bg-white p-5">
@@ -533,6 +551,67 @@ function BlokKart({
       </div>
 
       <div className={`mt-4 space-y-3 ${aktif ? '' : 'opacity-60'}`}>{children}</div>
+    </section>
+  )
+}
+
+function SonTeyidPaneli({
+  adaylar,
+  gonderiliyor,
+  onOnayla,
+  onVazgec,
+}: {
+  adaylar: AutomationRunCandidate[]
+  gonderiliyor: boolean
+  onOnayla: () => void
+  onVazgec: () => void
+}) {
+  const gidecek = adaylar.filter((a) => !a.engel)
+  const mutabakatMail = gidecek.filter((a) => a.tur === 'mutabakat').length
+  const odemeWa = gidecek.filter((a) => a.tur === 'odeme_talebi' && a.kanal === 'whatsapp').length
+  const odemeMail = gidecek.filter((a) => a.tur === 'odeme_talebi' && a.kanal === 'email').length
+  const toplam = gidecek.length
+
+  return (
+    <section className="rounded-xl border-2 border-red-300 bg-red-50 p-5">
+      <div className="flex items-center gap-2 text-sm font-semibold text-red-800">
+        <AlertTriangle size={18} />
+        SON TEYİD — gerçekten gönderilecek
+      </div>
+      <p className="mt-2 text-sm text-slate-700">
+        Aşağıdaki <strong>{toplam}</strong> carie <strong>gerçekten</strong> mesaj gönderilecek. Bu işlem
+        <strong> geri alınamaz.</strong>
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2 text-xs">
+        <span className="rounded-full bg-violet-100 px-2.5 py-1 font-medium text-violet-700">
+          {mutabakatMail} mutabakat e-posta
+        </span>
+        <span className="rounded-full bg-emerald-100 px-2.5 py-1 font-medium text-emerald-700">
+          {odemeWa} ödeme WhatsApp
+        </span>
+        <span className="rounded-full bg-blue-100 px-2.5 py-1 font-medium text-blue-700">
+          {odemeMail} ödeme e-posta
+        </span>
+      </div>
+      {odemeWa > 250 && (
+        <p className="mt-3 rounded-lg border border-amber-300 bg-amber-100 px-3 py-2 text-xs text-amber-900">
+          ⚠️ {odemeWa} WhatsApp, Meta’nın günlük 250 sınırını aşıyor olabilir — 250’den sonrakiler hata
+          dönebilir. E-postalar bu sınırdan etkilenmez.
+        </p>
+      )}
+      <p className="mt-3 text-xs text-slate-500">
+        Tam gidecek liste yukarıdaki “Son çalıştırma özeti” tablosunda (durumu <strong>Hazır</strong> olanlar).
+        Engelli/atlanan satırlara gönderilmez.
+      </p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <Button variant="success" onClick={onOnayla} disabled={gonderiliyor || toplam === 0}>
+          {gonderiliyor ? <LoaderCircle className="animate-spin" size={15} /> : <Send size={15} />}
+          Onayla ve {toplam} carie gönder
+        </Button>
+        <Button variant="secondary" onClick={onVazgec} disabled={gonderiliyor}>
+          Vazgeç
+        </Button>
+      </div>
     </section>
   )
 }
