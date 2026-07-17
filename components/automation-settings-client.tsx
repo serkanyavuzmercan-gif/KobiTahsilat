@@ -109,8 +109,9 @@ export function AutomationSettingsClient() {
       const res = await fetch('/api/otomasyon/calistir', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        // Canlı "Şimdi çalıştır" frekans/çalışma-saati kapılarını atlar (force).
-        body: JSON.stringify({ dryRun, force: !dryRun }),
+        // "Şimdi çalıştır" her zaman gün/frekans/saat kapılarını atlar (force);
+        // gönderim/önizleme kararını ortak Deneme modu (dryRun) verir. Dönem kilidi yine geçerli.
+        body: JSON.stringify({ dryRun, force: true }),
       })
       const result = (await res.json()) as {
         success?: boolean
@@ -143,6 +144,8 @@ export function AutomationSettingsClient() {
     setSettings({ ...settings, mutabakat: { ...settings.mutabakat, ...patch } })
   const patchO = (patch: Partial<AutomationSettings['odeme_talebi']>) =>
     setSettings({ ...settings, odeme_talebi: { ...settings.odeme_talebi, ...patch } })
+  // Tek, ortak deneme modu (her iki blok birlikte).
+  const denemeAcik = m.taslak_mod || o.taslak_mod
 
   const gmailOk = Boolean(connections?.email_bagli)
   const waOk = Boolean(connections?.whatsapp_api_yapilandirildi)
@@ -209,8 +212,6 @@ export function AutomationSettingsClient() {
         aciklama="Seçtiğin sıklıkta, uygun carilere otomatik mutabakat e-postası gönderir."
         aktif={m.aktif}
         onAktif={(v) => patchM({ aktif: v })}
-        taslak={m.taslak_mod}
-        onTaslak={(v) => patchM({ taslak_mod: v })}
       >
         <div className="grid gap-3 sm:grid-cols-2">
           <Alan label="Taban bakiye (₺)" ipucu="Bakiyesi bundan az olanlara gönderilmez.">
@@ -251,8 +252,6 @@ export function AutomationSettingsClient() {
         aciklama="Çok geciken carilere otomatik ödeme hatırlatması (WhatsApp / e-posta) gönderir."
         aktif={o.aktif}
         onAktif={(v) => patchO({ aktif: v })}
-        taslak={o.taslak_mod}
-        onTaslak={(v) => patchO({ taslak_mod: v })}
       >
         <div className="grid gap-3 sm:grid-cols-3">
           <Alan label="Ort. gecikme eşiği (gün)" ipucu="Ortalama gecikmesi bu günü geçenlere.">
@@ -318,6 +317,29 @@ export function AutomationSettingsClient() {
             Yalnızca iş günlerinde çalış
           </label>
         </div>
+
+        {/* Tek, ortak Deneme modu — her iki otomasyonu birlikte yönetir */}
+        <label className="mt-4 flex items-start gap-2.5 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5">
+          <input
+            type="checkbox"
+            checked={m.taslak_mod || o.taslak_mod}
+            onChange={(e) =>
+              setSettings({
+                ...settings,
+                mutabakat: { ...settings.mutabakat, taslak_mod: e.target.checked },
+                odeme_talebi: { ...settings.odeme_talebi, taslak_mod: e.target.checked },
+              })
+            }
+            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-amber-600"
+          />
+          <span className="text-sm">
+            <span className="font-medium text-slate-800">Deneme modu (güvenli mod)</span>
+            <span className="block text-[11px] text-slate-600">
+              Açıkken <strong>hiçbir mesaj gönderilmez</strong> — otomatik çalışma da, aşağıdaki
+              “Şimdi çalıştır” da yalnızca kimlere gideceğini listeler. Gerçekten göndermek için kapatın.
+            </span>
+          </span>
+        </label>
       </section>
 
       {/* Aksiyonlar */}
@@ -326,16 +348,28 @@ export function AutomationSettingsClient() {
           {saving ? <LoaderCircle className="animate-spin" size={16} /> : <Save size={16} />}
           Ayarları kaydet
         </Button>
-        <Button variant="secondary" onClick={() => runAutomation(true)} disabled={running}>
-          {running ? <LoaderCircle className="animate-spin" size={15} /> : <Play size={15} />}
-          Deneme çalıştır (gönderme)
-        </Button>
-        <Button variant="success" onClick={() => runAutomation(false)} disabled={running}>
-          <Send size={15} />
-          Şimdi çalıştır
-        </Button>
+        {denemeAcik ? (
+          <Button variant="secondary" onClick={() => runAutomation(true)} disabled={running}>
+            {running ? <LoaderCircle className="animate-spin" size={15} /> : <Play size={15} />}
+            Şimdi çalıştır (deneme — göndermez)
+          </Button>
+        ) : (
+          <Button
+            variant="success"
+            onClick={() => {
+              if (confirm('Deneme modu KAPALI. Uygun carilere gerçekten mesaj gönderilecek. Devam edilsin mi?'))
+                void runAutomation(false)
+            }}
+            disabled={running}
+          >
+            {running ? <LoaderCircle className="animate-spin" size={15} /> : <Send size={15} />}
+            Şimdi gerçekten gönder
+          </Button>
+        )}
         <span className="ml-auto text-xs text-slate-400">
-          Deneme modu kapalı bloklar gerçekten gönderilir.
+          {denemeAcik
+            ? 'Deneme modu açık — sadece liste çıkar, gönderim olmaz.'
+            : 'Deneme modu kapalı — buton gerçek gönderim yapar.'}
         </span>
       </div>
 
@@ -454,8 +488,6 @@ function BlokKart({
   aciklama,
   aktif,
   onAktif,
-  taslak,
-  onTaslak,
   children,
 }: {
   renk: 'violet' | 'emerald'
@@ -464,8 +496,6 @@ function BlokKart({
   aciklama: string
   aktif: boolean
   onAktif: (v: boolean) => void
-  taslak: boolean
-  onTaslak: (v: boolean) => void
   children: React.ReactNode
 }) {
   const kenar = aktif
@@ -502,23 +532,7 @@ function BlokKart({
         </label>
       </div>
 
-      <div className={`mt-4 space-y-3 ${aktif ? '' : 'opacity-60'}`}>
-        {children}
-        <label className="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-          <input
-            type="checkbox"
-            checked={taslak}
-            onChange={(e) => onTaslak(e.target.checked)}
-            className="h-4 w-4 rounded border-slate-300 text-brand-600"
-          />
-          <span className="text-sm">
-            <span className="font-medium">Deneme modu</span>
-            <span className="block text-[11px] text-slate-500">
-              Açıkken göndermez, sadece kimlere gideceğini gösterir. Kapatınca gerçekten gönderir.
-            </span>
-          </span>
-        </label>
-      </div>
+      <div className={`mt-4 space-y-3 ${aktif ? '' : 'opacity-60'}`}>{children}</div>
     </section>
   )
 }
