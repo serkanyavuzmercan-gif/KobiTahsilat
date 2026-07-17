@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
-import { CheckCircle2, History, Mail, MessageCircle, Phone, Reply, Send, Users } from 'lucide-react'
+import { CheckCircle2, History, MessageCircle, Reply, Send, Users } from 'lucide-react'
 import { BackLink } from '@/components/ui/button'
+import { CariKanalEditor } from '@/components/cari-kanal-editor'
 import { CariKisilerEditor } from '@/components/cari-kisiler-editor'
 import { loadCariKisiler } from '@/lib/cari-kisiler'
 import { loadCariGecmis } from '@/lib/cari-gecmis'
@@ -31,57 +32,25 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
       <section className="card p-6">
         <p className="font-mono text-xs text-slate-500">{cari.cari_kod}</p>
         <h2 className="mt-1 text-2xl font-semibold text-slate-900">{cari.firma_adi}</h2>
-        {/* Bu cariye tanımlı iletişim bilgileri (tüm kaynaklardan birleşik) */}
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-            <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
-              <Mail size={13} className="text-brand-600" /> E-posta ({cari.email_adresleri.length})
-            </p>
-            {cari.email_adresleri.length ? (
-              <ul className="mt-1.5 space-y-0.5">
-                {cari.email_adresleri.map((email, i) => (
-                  <li key={email} className="text-sm text-slate-700">
-                    {email}
-                    {i === 0 && (
-                      <span className="ml-1.5 rounded bg-brand-100 px-1.5 py-0.5 text-[10px] font-medium text-brand-700">
-                        varsayılan
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="mt-1.5 text-sm text-red-600">Tanımlı e-posta yok</p>
-            )}
-          </div>
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
-            <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500">
-              <Phone size={13} className="text-emerald-600" /> Telefon ({cari.telefon_numaralari.length})
-            </p>
-            {cari.telefon_numaralari.length ? (
-              <ul className="mt-1.5 space-y-0.5">
-                {cari.telefon_numaralari.map((tel, i) => (
-                  <li key={tel} className="text-sm text-slate-700">
-                    {formatPhoneDisplay(tel)}
-                    {i === 0 && (
-                      <span className="ml-1.5 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700">
-                        varsayılan
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="mt-1.5 text-sm text-red-600">Tanımlı telefon yok</p>
-            )}
-          </div>
+        {/* Bu cariye tanımlı iletişim bilgileri — doğrudan ekle/sil (körlere özel: ekleme her zaman görünür) */}
+        <p className="mt-4 text-xs text-slate-500">
+          Aşağıdan e-posta ve WA telefon numarası <strong>ekleyebilir</strong> (kutuya yazıp <strong>Ekle</strong>) veya
+          yanındaki <strong>✕</strong> ile <strong>kaldırabilirsiniz</strong>. İlk numara <strong>varsayılan</strong> olur.
+          Değişiklikler kalıcıdır.
+        </p>
+        <div className="mt-2 grid gap-3 sm:grid-cols-2">
+          <CariKanalEditor
+            cariKod={cari.cari_kod}
+            kind="email"
+            values={cari.email_adresleri}
+          />
+          <CariKanalEditor
+            cariKod={cari.cari_kod}
+            kind="phone"
+            values={cari.telefon_numaralari}
+            display={cari.telefon_numaralari.map((t) => formatPhoneDisplay(t))}
+          />
         </div>
-        {!cari.email && cari.email_adaylari.length > 0 && (
-          <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
-            <strong>Onay bekleyen Gmail adayları:</strong>{' '}
-            {cari.email_adaylari.map((aday) => aday.email).join(', ')}
-          </div>
-        )}
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <Info label="Açık bakiye" value={formatTL(cari.bakiye)} accent />

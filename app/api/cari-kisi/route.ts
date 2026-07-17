@@ -17,15 +17,22 @@ export async function POST(request: Request) {
       telefon?: string
       email?: string
     }
-    const adSoyad = String(body.ad_soyad || '').trim()
-    if (!adSoyad) {
-      return NextResponse.json({ success: false, error: 'Ad soyad gerekli.' }, { status: 400 })
+    const telefon = String(body.telefon || '').trim() || null
+    const email = String(body.email || '').trim().toLowerCase() || null
+    // Ad soyad zorunlu DEĞİL: sadece e-posta veya sadece telefon eklemeye izin ver.
+    // Hiçbiri yoksa hata. Ad soyad boşsa '—' varsayılır (kanal-only kayıt).
+    const adSoyad = String(body.ad_soyad || '').trim() || '—'
+    if (adSoyad === '—' && !telefon && !email) {
+      return NextResponse.json(
+        { success: false, error: 'En az bir e-posta, telefon veya ad soyad girin.' },
+        { status: 400 }
+      )
     }
     const payload = {
       ad_soyad: adSoyad,
       unvan: String(body.unvan || '').trim() || null,
-      telefon: String(body.telefon || '').trim() || null,
-      email: String(body.email || '').trim().toLowerCase() || null,
+      telefon,
+      email,
     }
 
     const admin = createAdminClient()
