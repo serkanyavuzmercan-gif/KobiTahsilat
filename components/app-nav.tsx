@@ -100,7 +100,7 @@ export function AppNav() {
 
             <NavItem
               href="/ayarlar"
-              label="Ayarlar"
+              label="Otomasyon Ayarları"
               active={pathname.startsWith('/ayarlar') || pathname.startsWith('/mutabakat/ayarlar')}
               icon={<Settings2 size={15} className="opacity-90" />}
             />
