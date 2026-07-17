@@ -26,7 +26,36 @@ import {
 } from './settings'
 import { collectMutabakatCandidates, collectOdemeTalepCandidates } from './eligibility'
 import { buildHatirlatmaEmail } from './email-template'
-import type { AutomationRunCandidate, AutomationRunResult, AutomationSettings } from './types'
+import type {
+  AutomationRunCandidate,
+  AutomationRunResult,
+  AutomationSettings,
+  Frekans,
+} from './types'
+
+/** Verilen ayda, hedef günden itibaren İLK hafta-içi günü (Pzt-Cuma) döndürür (cron yalnız hafta içi). */
+function ilkIsGunuOnOrAfter(year: number, month: number, hedefGun: number): number {
+  const gunSayisi = new Date(year, month + 1, 0).getDate()
+  let d = Math.min(Math.max(1, hedefGun), gunSayisi)
+  for (let i = 0; i < 7; i++) {
+    const wd = new Date(year, month, d).getDay() // 0=Paz..6=Cmt
+    if (wd !== 0 && wd !== 6) return d
+    d = d + 1 > gunSayisi ? gunSayisi : d + 1
+  }
+  return d
+}
+
+/** Bu blok bugün (Türkiye) çalışmalı mı? (yalnız zamanlanmış cron için). */
+function blokZamani(frekans: Frekans, now: Date): boolean {
+  if (frekans.tur === 'gunluk') return true
+  const t = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Istanbul' }))
+  if (frekans.tur === 'haftalik') {
+    const haftaGun = t.getDay() === 0 ? 7 : t.getDay() // 1=Pzt..7=Paz
+    return haftaGun === frekans.gun
+  }
+  // aylik: bugün, hedef günden itibaren ilk iş günü mü?
+  return t.getDate() === ilkIsGunuOnOrAfter(t.getFullYear(), t.getMonth(), frekans.gun)
+}
 
 function isWithinWorkHour(calismaSaati: string, now = new Date()) {
   const [hour, minute] = calismaSaati.split(':').map((part) => Number(part))
@@ -177,11 +206,20 @@ async function sendAutomationWhatsApp(
 }
 
 async function collectCandidatesForUser(
-  settings: AutomationSettings
+  settings: AutomationSettings,
+  opts: { scheduled: boolean; now: Date }
 ): Promise<AutomationRunCandidate[]> {
   const out: AutomationRunCandidate[] = []
 
-  if (settings.odeme_talebi.aktif) {
+  // Zamanlanmış cron'da frekans kapısı uygulanır; manuel (force/dryRun) çalıştırmada uygulanmaz.
+  const odemeZamani =
+    settings.odeme_talebi.aktif &&
+    (!opts.scheduled || blokZamani(settings.odeme_talebi.frekans, opts.now))
+  const mutabakatZamani =
+    settings.mutabakat.aktif &&
+    (!opts.scheduled || blokZamani(settings.mutabakat.frekans, opts.now))
+
+  if (odemeZamani) {
     const hatirlatmaCariler = await loadHatirlatmaCariler()
     out.push(
       ...collectOdemeTalepCandidates(hatirlatmaCariler, {
@@ -191,7 +229,7 @@ async function collectCandidatesForUser(
       })
     )
   }
-  if (settings.mutabakat.aktif) {
+  if (mutabakatZamani) {
     const mutabakatCariler = await loadMutabakatCariler()
     out.push(...collectMutabakatCandidates(mutabakatCariler, settings.mutabakat.taban_bakiye))
   }
@@ -264,7 +302,8 @@ export async function runAutomationForUser(
     }
   }
 
-  const adaylar = await collectCandidatesForUser(settings)
+  const scheduled = !options?.force && !options?.dryRun
+  const adaylar = await collectCandidatesForUser(settings, { scheduled, now })
 
   for (const aday of adaylar) {
     if (aday.engel) {

@@ -1,6 +1,13 @@
 export type AutomationChannel = 'email' | 'whatsapp'
 export type OdemeTalepKanal = 'email' | 'whatsapp' | 'her-ikisi'
 
+export type FrekansTur = 'gunluk' | 'haftalik' | 'aylik'
+/** Otomasyon sıklığı. gun: haftalik→1=Pazartesi..7=Pazar; aylik→ayın günü 1-28; gunluk→kullanılmaz. */
+export type Frekans = {
+  tur: FrekansTur
+  gun: number
+}
+
 /** Otomatik Mutabakat bloğu (bağımsız aç/kapa). */
 export type MutabakatOtomasyon = {
   aktif: boolean
@@ -8,6 +15,7 @@ export type MutabakatOtomasyon = {
   taslak_mod: boolean
   /** Bu bakiyenin altındaki cariler otomatik mutabakata girmez. */
   taban_bakiye: number
+  frekans: Frekans
 }
 
 /** Otomatik Ödeme Talebi bloğu (bağımsız aç/kapa). */
@@ -19,6 +27,7 @@ export type OdemeTalepOtomasyon = {
   /** Bu tutarın altındaki gecikmiş bakiyeler gelmez. */
   min_gecikmis_tutar: number
   kanal: OdemeTalepKanal
+  frekans: Frekans
 }
 
 export type AutomationSettings = {

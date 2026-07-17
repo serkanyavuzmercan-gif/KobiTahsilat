@@ -19,6 +19,7 @@ import type {
   AutomationConnectionsStatus,
   AutomationRunResult,
   AutomationSettings,
+  Frekans,
   OdemeTalepKanal,
 } from '@/lib/automation/types'
 
@@ -88,14 +89,27 @@ export function AutomationSettingsClient() {
   }
 
   async function runAutomation(dryRun: boolean) {
+    if (!settings) return
     setRunning(true)
     setMessage('')
     setError('')
     try {
+      // Çalıştırma sunucudaki KAYITLI ayarları kullanır → önce ekrandakini kaydet ki
+      // az önce açtığın "Aktif"/eşik/frekans değişiklikleri bu çalıştırmaya yansısın.
+      const saveRes = await fetch('/api/otomasyon/ayarlar', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings),
+      })
+      const saveJson = (await saveRes.json()) as { success?: boolean; settings?: AutomationSettings; error?: string }
+      if (!saveRes.ok || !saveJson.success) throw new Error(saveJson.error || 'Ayarlar kaydedilemedi.')
+      if (saveJson.settings) setSettings(saveJson.settings)
+
       const res = await fetch('/api/otomasyon/calistir', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ dryRun }),
+        // Canlı "Şimdi çalıştır" frekans/çalışma-saati kapılarını atlar (force).
+        body: JSON.stringify({ dryRun, force: !dryRun }),
       })
       const result = (await res.json()) as {
         success?: boolean
@@ -197,16 +211,19 @@ export function AutomationSettingsClient() {
         taslak={m.taslak_mod}
         onTaslak={(v) => patchM({ taslak_mod: v })}
       >
-        <Alan label="Taban bakiye (₺)" ipucu="Bu tutarın altındaki bakiyeli cariler otomatik mutabakata girmez.">
-          <input
-            type="number"
-            min={0}
-            step={100}
-            value={m.taban_bakiye || ''}
-            onChange={(e) => patchM({ taban_bakiye: Math.max(0, Number(e.target.value) || 0) })}
-            className="w-32 rounded-md border border-slate-300 px-2 py-1.5 text-sm"
-          />
-        </Alan>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Alan label="Taban bakiye (₺)" ipucu="Bu tutarın altındaki bakiyeli cariler girmez.">
+            <input
+              type="number"
+              min={0}
+              step={100}
+              value={m.taban_bakiye || ''}
+              onChange={(e) => patchM({ taban_bakiye: Math.max(0, Number(e.target.value) || 0) })}
+              className="w-32 rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+            />
+          </Alan>
+          <FrekansSecici value={m.frekans} onChange={(frekans) => patchM({ frekans })} />
+        </div>
         <p className="text-xs text-slate-400">
           8 iş günü tekrar-gönderim engeli ve “alıcı e-posta seçili olma” şartı otomatik uygulanır.
         </p>
@@ -258,6 +275,7 @@ export function AutomationSettingsClient() {
             </select>
           </Alan>
         </div>
+        <FrekansSecici value={o.frekans} onChange={(frekans) => patchO({ frekans })} />
       </BlokKart>
 
       {/* Ortak: çalışma zamanı */}
@@ -490,5 +508,73 @@ function Alan({
       <div className="mt-1">{children}</div>
       {ipucu && <span className="mt-1 block text-[11px] text-slate-400">{ipucu}</span>}
     </label>
+  )
+}
+
+const HAFTA_GUNLERI: Array<[number, string]> = [
+  [1, 'Pazartesi'],
+  [2, 'Salı'],
+  [3, 'Çarşamba'],
+  [4, 'Perşembe'],
+  [5, 'Cuma'],
+]
+
+function FrekansSecici({ value, onChange }: { value: Frekans; onChange: (f: Frekans) => void }) {
+  const inp = 'rounded-md border border-slate-300 px-2 py-1.5 text-sm'
+  const ozet =
+    value.tur === 'gunluk'
+      ? 'her (iş) gün'
+      : value.tur === 'haftalik'
+        ? `her hafta ${HAFTA_GUNLERI.find(([g]) => g === value.gun)?.[1] || ''}`
+        : `her ay (ayın ${value.gun}. günü; hafta sonuna denk gelirse ilk iş günü)`
+  return (
+    <Alan label="Sıklık" ipucu={`Otomatik: ${ozet}.`}>
+      <div className="flex flex-wrap items-center gap-2">
+        <select
+          value={value.tur}
+          onChange={(e) => {
+            const tur = e.target.value as Frekans['tur']
+            let gun = value.gun
+            if (tur === 'haftalik') gun = Math.min(5, Math.max(1, gun))
+            else if (tur === 'aylik') gun = Math.min(28, Math.max(1, gun))
+            onChange({ tur, gun })
+          }}
+          className={inp}
+        >
+          <option value="gunluk">Her gün</option>
+          <option value="haftalik">Her hafta</option>
+          <option value="aylik">Her ay</option>
+        </select>
+        {value.tur === 'haftalik' && (
+          <select
+            value={value.gun}
+            onChange={(e) => onChange({ ...value, gun: Number(e.target.value) })}
+            className={inp}
+          >
+            {HAFTA_GUNLERI.map(([g, ad]) => (
+              <option key={g} value={g}>
+                {ad}
+              </option>
+            ))}
+          </select>
+        )}
+        {value.tur === 'aylik' && (
+          <span className="flex items-center gap-1 text-sm text-slate-600">
+            Ayın
+            <input
+              type="number"
+              min={1}
+              max={28}
+              value={value.gun}
+              onChange={(e) =>
+                onChange({ ...value, gun: Math.min(28, Math.max(1, Number(e.target.value) || 1)) })
+              }
+              className="w-16 rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+            />
+            günü
+          </span>
+        )}
+      </div>
+    </Alan>
   )
 }

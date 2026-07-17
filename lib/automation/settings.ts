@@ -1,6 +1,6 @@
 import 'server-only'
 import { createDefaultAutomationSettings } from './defaults'
-import type { AutomationSettings, OdemeTalepKanal } from './types'
+import type { AutomationSettings, Frekans, OdemeTalepKanal } from './types'
 import { AUTOMATION_LOG_KAYNAK, AUTOMATION_SETTINGS_TIP } from '../automation-log'
 import { createAdminClient } from '../supabase/admin'
 
@@ -12,6 +12,17 @@ function num(value: unknown, def: number, min = 0, max = 1_000_000_000): number 
 
 function saat(value: unknown, def: string): string {
   return /^\d{2}:\d{2}$/.test(String(value || '')) ? String(value) : def
+}
+
+function parseFrekans(value: unknown, def: Frekans): Frekans {
+  const raw = (value as Record<string, unknown>) || {}
+  const tur = (['gunluk', 'haftalik', 'aylik'].includes(String(raw.tur))
+    ? String(raw.tur)
+    : def.tur) as Frekans['tur']
+  let gun = num(raw.gun, def.gun, 1, 31)
+  if (tur === 'haftalik') gun = Math.min(7, Math.max(1, gun))
+  else if (tur === 'aylik') gun = Math.min(28, Math.max(1, gun))
+  return { tur, gun }
 }
 
 /**
@@ -34,6 +45,7 @@ function parseSettings(value: unknown): AutomationSettings {
         aktif: Boolean(m.aktif),
         taslak_mod: m.taslak_mod !== false,
         taban_bakiye: num(m.taban_bakiye, d.mutabakat.taban_bakiye),
+        frekans: parseFrekans(m.frekans, d.mutabakat.frekans),
       },
       odeme_talebi: {
         aktif: Boolean(o.aktif),
@@ -48,6 +60,7 @@ function parseSettings(value: unknown): AutomationSettings {
         kanal: (['email', 'whatsapp', 'her-ikisi'].includes(kanal)
           ? kanal
           : d.odeme_talebi.kanal) as OdemeTalepKanal,
+        frekans: parseFrekans(o.frekans, d.odeme_talebi.frekans),
       },
       calisma_saati: saat(raw.calisma_saati, d.calisma_saati),
       sadece_is_gunu: raw.sadece_is_gunu !== false,
@@ -65,13 +78,19 @@ function parseSettings(value: unknown): AutomationSettings {
     : d.odeme_talebi.min_ortalama_gecikme_gun
   return {
     version: 2,
-    mutabakat: { aktif: false, taslak_mod: true, taban_bakiye: d.mutabakat.taban_bakiye },
+    mutabakat: {
+      aktif: false,
+      taslak_mod: true,
+      taban_bakiye: d.mutabakat.taban_bakiye,
+      frekans: d.mutabakat.frekans,
+    },
     odeme_talebi: {
       aktif: Boolean(raw.otomasyon_aktif),
       taslak_mod: raw.taslak_mod !== false,
       min_ortalama_gecikme_gun: minGun,
       min_gecikmis_tutar: d.odeme_talebi.min_gecikmis_tutar,
       kanal: 'her-ikisi',
+      frekans: d.odeme_talebi.frekans,
     },
     calisma_saati: saat(raw.calisma_saati, d.calisma_saati),
     sadece_is_gunu: raw.sadece_is_gunu !== false,
