@@ -98,7 +98,7 @@ async function sendAutomationMutabakat(
   const from = process.env.GMAIL_SENDER || process.env.MAIL_FROM || 'Hidroteknik A.Ş.'
   const sentAt = new Date().toISOString()
   await sendMail({ to: [alici], subject: email.subject, html: email.html, text: email.text })
-  await insertMailGonderimLog({
+  const log = await insertMailGonderimLog({
     mail_to: alici,
     mail_from: from,
     subject: email.subject,
@@ -109,6 +109,8 @@ async function sendAutomationMutabakat(
     sent_at: sentAt,
     gonderen_user_id: userId,
   })
+  // Log yazılamazsa tekrar-gönderim kilidi çalışmaz → sessiz geçme, görünür kıl.
+  if (!log.ok) console.error('[mutabakat-log-yazilamadi]', cari.cari_kod, log.error)
 }
 
 /** Otomatik ÖDEME TALEBİ e-postası (hatırlatma içeriği; varsayılan alıcı override-farkında). */
