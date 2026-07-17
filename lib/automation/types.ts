@@ -15,7 +15,8 @@ export type MutabakatOtomasyon = {
   taslak_mod: boolean
   /** Bu bakiyenin altındaki cariler otomatik mutabakata girmez. */
   taban_bakiye: number
-  frekans: Frekans
+  /** Sıklık: her kaç ayda bir (1=her ay, 2=her 2 ayda, 3=her 3 ayda). Cari başına periyot kilidi. */
+  ay_araligi: number
 }
 
 /** Otomatik Ödeme Talebi bloğu (bağımsız aç/kapa). */

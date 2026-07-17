@@ -7,8 +7,8 @@ export function createDefaultAutomationSettings(): AutomationSettings {
       aktif: false,
       taslak_mod: true,
       taban_bakiye: 1000,
-      // Varsayılan: her ay (ayın 1'i; hafta sonuna denk gelirse ilk iş günü).
-      frekans: { tur: 'aylik', gun: 1 },
+      // Varsayılan: her ay. Ayın ilk iş gününde çalışır; cari başına ay_araligı kadar tekrar yok.
+      ay_araligi: 1,
     },
     odeme_talebi: {
       aktif: false,

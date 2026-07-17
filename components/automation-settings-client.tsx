@@ -222,7 +222,20 @@ export function AutomationSettingsClient() {
               className="w-32 rounded-md border border-slate-300 px-2 py-1.5 text-sm"
             />
           </Alan>
-          <FrekansSecici value={m.frekans} onChange={(frekans) => patchM({ frekans })} />
+          <Alan
+            label="Sıklık"
+            ipucu="Ayın ilk iş gününde çalışır; her cariye bu aralıkta bir kez (manuel gönderdiğin de sayılır)."
+          >
+            <select
+              value={m.ay_araligi}
+              onChange={(e) => patchM({ ay_araligi: Number(e.target.value) })}
+              className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
+            >
+              <option value={1}>Her ay</option>
+              <option value={2}>Her 2 ayda bir</option>
+              <option value={3}>Her 3 ayda bir</option>
+            </select>
+          </Alan>
         </div>
         <p className="text-xs text-slate-400">
           8 iş günü tekrar-gönderim engeli ve “alıcı e-posta seçili olma” şartı otomatik uygulanır.

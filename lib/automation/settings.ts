@@ -45,7 +45,7 @@ function parseSettings(value: unknown): AutomationSettings {
         aktif: Boolean(m.aktif),
         taslak_mod: m.taslak_mod !== false,
         taban_bakiye: num(m.taban_bakiye, d.mutabakat.taban_bakiye),
-        frekans: parseFrekans(m.frekans, d.mutabakat.frekans),
+        ay_araligi: num(m.ay_araligi, d.mutabakat.ay_araligi, 1, 3),
       },
       odeme_talebi: {
         aktif: Boolean(o.aktif),
@@ -82,7 +82,7 @@ function parseSettings(value: unknown): AutomationSettings {
       aktif: false,
       taslak_mod: true,
       taban_bakiye: d.mutabakat.taban_bakiye,
-      frekans: d.mutabakat.frekans,
+      ay_araligi: d.mutabakat.ay_araligi,
     },
     odeme_talebi: {
       aktif: Boolean(raw.otomasyon_aktif),

@@ -26,36 +26,16 @@ import {
 } from './settings'
 import { collectMutabakatCandidates, collectOdemeTalepCandidates } from './eligibility'
 import { buildHatirlatmaEmail } from './email-template'
-import type {
-  AutomationRunCandidate,
-  AutomationRunResult,
-  AutomationSettings,
-  Frekans,
-} from './types'
-
-/** Verilen ayda, hedef günden itibaren İLK hafta-içi günü (Pzt-Cuma) döndürür (cron yalnız hafta içi). */
-function ilkIsGunuOnOrAfter(year: number, month: number, hedefGun: number): number {
-  const gunSayisi = new Date(year, month + 1, 0).getDate()
-  let d = Math.min(Math.max(1, hedefGun), gunSayisi)
-  for (let i = 0; i < 7; i++) {
-    const wd = new Date(year, month, d).getDay() // 0=Paz..6=Cmt
-    if (wd !== 0 && wd !== 6) return d
-    d = d + 1 > gunSayisi ? gunSayisi : d + 1
-  }
-  return d
-}
-
-/** Bu blok bugün (Türkiye) çalışmalı mı? (yalnız zamanlanmış cron için). */
-function blokZamani(frekans: Frekans, now: Date): boolean {
-  if (frekans.tur === 'gunluk') return true
-  const t = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Istanbul' }))
-  if (frekans.tur === 'haftalik') {
-    const haftaGun = t.getDay() === 0 ? 7 : t.getDay() // 1=Pzt..7=Paz
-    return haftaGun === frekans.gun
-  }
-  // aylik: bugün, hedef günden itibaren ilk iş günü mü?
-  return t.getDate() === ilkIsGunuOnOrAfter(t.getFullYear(), t.getMonth(), frekans.gun)
-}
+import {
+  contactedSince,
+  mutabakatBucketBasi,
+  mutabakatFireBugun,
+  odemeFireBugun,
+  odemePeriodBasi,
+  MUTABAKAT_TIPS,
+  ODEME_TALEP_TIPS,
+} from './dedup'
+import type { AutomationRunCandidate, AutomationRunResult, AutomationSettings } from './types'
 
 function isWithinWorkHour(calismaSaati: string, now = new Date()) {
   const [hour, minute] = calismaSaati.split(':').map((part) => Number(part))
@@ -205,37 +185,70 @@ async function sendAutomationWhatsApp(
   })
 }
 
+/** Var olan engel korunur; yoksa `sebep` ile işaretlenir (deduped/öncelik). */
+function isaretle(
+  adaylar: AutomationRunCandidate[],
+  hariç: Set<string>,
+  sebep: string
+): AutomationRunCandidate[] {
+  return adaylar.map((a) => (a.engel || !hariç.has(a.cari_kod) ? a : { ...a, engel: sebep }))
+}
+
 async function collectCandidatesForUser(
   settings: AutomationSettings,
   opts: { scheduled: boolean; now: Date }
 ): Promise<AutomationRunCandidate[]> {
-  const out: AutomationRunCandidate[] = []
-
+  const { now } = opts
   // Zamanlanmış cron'da frekans kapısı uygulanır; manuel (force/dryRun) çalıştırmada uygulanmaz.
   const odemeZamani =
-    settings.odeme_talebi.aktif &&
-    (!opts.scheduled || blokZamani(settings.odeme_talebi.frekans, opts.now))
+    settings.odeme_talebi.aktif && (!opts.scheduled || odemeFireBugun(settings.odeme_talebi.frekans, now))
   const mutabakatZamani =
-    settings.mutabakat.aktif &&
-    (!opts.scheduled || blokZamani(settings.mutabakat.frekans, opts.now))
+    settings.mutabakat.aktif && (!opts.scheduled || mutabakatFireBugun(settings.mutabakat.ay_araligi, now))
 
-  if (odemeZamani) {
-    const hatirlatmaCariler = await loadHatirlatmaCariler()
-    out.push(
-      ...collectOdemeTalepCandidates(hatirlatmaCariler, {
-        minGun: settings.odeme_talebi.min_ortalama_gecikme_gun,
-        minTutar: settings.odeme_talebi.min_gecikmis_tutar,
-        kanal: settings.odeme_talebi.kanal,
-      })
-    )
-  }
+  let mutabakatAday: AutomationRunCandidate[] = []
+  let odemeAday: AutomationRunCandidate[] = []
+
   if (mutabakatZamani) {
-    const mutabakatCariler = await loadMutabakatCariler()
-    out.push(...collectMutabakatCandidates(mutabakatCariler, settings.mutabakat.taban_bakiye))
+    const cariler = await loadMutabakatCariler()
+    mutabakatAday = collectMutabakatCandidates(cariler, settings.mutabakat.taban_bakiye)
   }
+  if (odemeZamani) {
+    const cariler = await loadHatirlatmaCariler()
+    odemeAday = collectOdemeTalepCandidates(cariler, {
+      minGun: settings.odeme_talebi.min_ortalama_gecikme_gun,
+      minTutar: settings.odeme_talebi.min_gecikmis_tutar,
+      kanal: settings.odeme_talebi.kanal,
+    })
+  }
+
+  // Periyot kilidi (MANUEL + otomatik dahil): bu periyotta zaten gönderilmişse atla → sonraki periyoda.
+  if (mutabakatAday.length) {
+    const since = mutabakatBucketBasi(settings.mutabakat.ay_araligi, now)
+    const contacted = await contactedSince(
+      mutabakatAday.map((a) => a.cari_kod),
+      MUTABAKAT_TIPS,
+      since
+    )
+    mutabakatAday = isaretle(mutabakatAday, contacted, 'Bu periyotta zaten mutabakat gönderildi')
+  }
+  if (odemeAday.length) {
+    const since = odemePeriodBasi(settings.odeme_talebi.frekans, now)
+    const contacted = await contactedSince(
+      odemeAday.map((a) => a.cari_kod),
+      ODEME_TALEP_TIPS,
+      since
+    )
+    odemeAday = isaretle(odemeAday, contacted, 'Bu periyotta zaten ödeme talebi gönderildi')
+  }
+
+  // Çakışma önleme: aynı gün bir cariye hem mutabakat hem ödeme talebi GİTMEZ → mutabakat önceliklidir.
+  const mutabakatGidecek = new Set(
+    mutabakatAday.filter((a) => !a.engel).map((a) => a.cari_kod)
+  )
+  odemeAday = isaretle(odemeAday, mutabakatGidecek, 'Bugün mutabakat gönderiliyor (öncelik)')
 
   const unique = new Map<string, AutomationRunCandidate>()
-  for (const candidate of out) {
+  for (const candidate of [...mutabakatAday, ...odemeAday]) {
     unique.set(`${candidate.tur}:${candidate.kanal}:${candidate.cari_kod}`, candidate)
   }
   return [...unique.values()].sort(
