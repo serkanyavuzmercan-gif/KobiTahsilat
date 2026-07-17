@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { StatusBadge } from '@/components/ui/summary-stat'
+import { formatTL } from '@/lib/types'
 import type {
   AutomationConnectionsStatus,
   AutomationRunResult,
@@ -353,32 +354,48 @@ export function AutomationSettingsClient() {
           )}
           {lastRun.adaylar.length > 0 && (
             <div className="mt-3 overflow-x-auto rounded-lg border border-slate-200">
-              <table className="min-w-[640px] w-full text-left text-sm">
-                <thead className="bg-slate-50 text-[11px] uppercase tracking-wide text-slate-500">
+              <table className="min-w-[860px] w-full text-left text-sm">
+                <thead className="bg-slate-100 text-[11px] uppercase tracking-wide text-slate-600">
                   <tr>
                     <th className="px-3 py-2">Firma</th>
                     <th className="px-3 py-2">Tür</th>
                     <th className="px-3 py-2">Kanal</th>
-                    <th className="px-3 py-2">Ort. gecikme</th>
+                    <th className="px-3 py-2 text-right">Bakiye</th>
+                    <th className="px-3 py-2 text-right">Gecikmiş</th>
+                    <th className="px-3 py-2 text-right">Ort. gecikme</th>
                     <th className="px-3 py-2">Alıcı</th>
                     <th className="px-3 py-2">Durum</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {lastRun.adaylar.slice(0, 30).map((aday) => (
+                  {lastRun.adaylar.map((aday, i) => (
                     <tr
                       key={`${aday.tur}-${aday.kanal}-${aday.cari_kod}`}
-                      className="border-t border-slate-100"
+                      className={i % 2 === 0 ? 'bg-white' : 'bg-slate-100/70'}
                     >
                       <td className="px-3 py-2">
                         <p className="font-medium">{aday.firma_adi}</p>
                         <p className="text-[11px] text-slate-400">{aday.cari_kod}</p>
                       </td>
                       <td className="px-3 py-2">
-                        {aday.tur === 'mutabakat' ? 'Mutabakat' : 'Ödeme talebi'}
+                        {aday.tur === 'mutabakat' ? (
+                          <span className="rounded bg-violet-100 px-1.5 py-0.5 text-[11px] font-medium text-violet-700">
+                            Mutabakat
+                          </span>
+                        ) : (
+                          <span className="rounded bg-emerald-100 px-1.5 py-0.5 text-[11px] font-medium text-emerald-700">
+                            Ödeme talebi
+                          </span>
+                        )}
                       </td>
                       <td className="px-3 py-2 capitalize">{aday.kanal}</td>
-                      <td className="px-3 py-2">
+                      <td className="px-3 py-2 text-right font-medium tabular-nums">
+                        {formatTL(aday.bakiye)}
+                      </td>
+                      <td className="px-3 py-2 text-right tabular-nums text-red-700">
+                        {formatTL(aday.gecikmis_bakiye)}
+                      </td>
+                      <td className="px-3 py-2 text-right tabular-nums">
                         {aday.ortalama_gecikme_gun != null ? `${aday.ortalama_gecikme_gun} gün` : '—'}
                       </td>
                       <td className="px-3 py-2">{aday.alici || '—'}</td>
