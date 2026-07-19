@@ -54,6 +54,7 @@ export type CreatePaymentLinkResult = {
   ok: true
   id: string
   url: string
+  qr?: string | null
 } | {
   ok: false
   error: string
@@ -72,15 +73,18 @@ export async function createPaymentLink(input: CreatePaymentLinkInput): Promise<
 
   const price = String(Math.round(input.amountKurus))
   const currency = 'TL'
-  const maxInstallment = '0'
+  // PayTR Link API: max_installment '0' KABUL EDİLMEZ (canlı test) → '1' (tek çekim tabanı).
+  const maxInstallment = '1'
   const linkType = 'collection'
   const lang = 'tr'
   const email = input.email
 
-  // collection hash: name+price+currency+max_installment+link_type+lang+email + merchant_salt
+  // collection hash: name+price+currency+max_installment+link_type+lang+email + merchant_salt.
+  // (callback_link ve callback_id hash'e GİRMEZ — canlı testte doğrulandı.)
   const required = `${input.name}${price}${currency}${maxInstallment}${linkType}${lang}${email}`
   const paytrToken = base64Hmac(`${required}${cfg.merchantSalt}`, cfg.merchantKey)
 
+  const base = (process.env.NEXT_PUBLIC_APP_URL || 'https://finans.hidroteknik.com.tr').replace(/\/$/, '')
   const form = new URLSearchParams({
     merchant_id: cfg.merchantId,
     name: input.name,
@@ -92,6 +96,7 @@ export async function createPaymentLink(input: CreatePaymentLinkInput): Promise<
     email,
     get_qr: '1',
     callback_id: input.callbackId,
+    callback_link: `${base}/api/odeme/paytr-callback`, // ZORUNLU (canlı testte doğrulandı)
     debug_on: cfg.testMode ? '1' : '0',
     paytr_token: paytrToken,
   })
@@ -102,12 +107,19 @@ export async function createPaymentLink(input: CreatePaymentLinkInput): Promise<
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: form.toString(),
     })
-    const json = (await res.json()) as { status?: string; id?: string; link?: string; reason?: string; err_msg?: string }
+    const json = (await res.json()) as {
+      status?: string
+      id?: string
+      link?: string
+      base64_qr?: string
+      reason?: string
+      err_msg?: string
+    }
     if (json.status !== 'success' || !json.id) {
       return { ok: false, error: json.reason || json.err_msg || 'PayTR link oluşturulamadı.' }
     }
     const url = json.link || `https://www.paytr.com/link/${json.id}`
-    return { ok: true, id: json.id, url }
+    return { ok: true, id: json.id, url, qr: json.base64_qr || null }
   } catch (cause) {
     return { ok: false, error: cause instanceof Error ? cause.message : 'PayTR isteği başarısız.' }
   }

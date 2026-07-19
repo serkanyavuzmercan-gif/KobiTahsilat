@@ -13,7 +13,7 @@ export function OdemeAlClient({ cariler, yapili }: { cariler: CariMini[]; yapili
   const [tutar, setTutar] = useState('')
   const [editable, setEditable] = useState(true)
   const [busy, setBusy] = useState(false)
-  const [sonuc, setSonuc] = useState<{ kisa_link: string; firma: string; tutar: number } | null>(null)
+  const [sonuc, setSonuc] = useState<{ kisa_link: string; firma: string; tutar: number; qr: string | null } | null>(null)
   const [hata, setHata] = useState('')
   const [kopyalandi, setKopyalandi] = useState(false)
 
@@ -55,10 +55,16 @@ export function OdemeAlClient({ cariler, yapili }: { cariler: CariMini[]; yapili
         kisa_link?: string
         firma?: string
         tutar?: number
+        qr?: string | null
         error?: string
       }
       if (!j.success) throw new Error(j.error || 'Link oluşturulamadı.')
-      setSonuc({ kisa_link: j.kisa_link!, firma: j.firma || secili.firma_adi, tutar: j.tutar || 0 })
+      setSonuc({
+        kisa_link: j.kisa_link!,
+        firma: j.firma || secili.firma_adi,
+        tutar: j.tutar || 0,
+        qr: j.qr || null,
+      })
     } catch (e) {
       setHata(e instanceof Error ? e.message : 'Hata')
     } finally {
@@ -175,6 +181,15 @@ export function OdemeAlClient({ cariler, yapili }: { cariler: CariMini[]; yapili
                     {kopyalandi ? 'Kopyalandı' : 'Kopyala'}
                   </Button>
                 </div>
+                {sonuc.qr && (
+                  <div className="mt-3 flex items-center gap-3">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={sonuc.qr} alt="Ödeme QR" width={104} height={104} className="rounded-lg border border-slate-200" />
+                    <p className="text-[11px] text-slate-500">
+                      Müşteri telefonuyla bu QR'ı okutup da ödeyebilir.
+                    </p>
+                  </div>
+                )}
                 <p className="mt-2 text-[11px] text-slate-500">
                   Bu linki müşteriye gönder. Ödeme tamamlanınca sistemde “ödendi” olarak işaretlenir ve
                   o cari bir süre otomatik hatırlatmadan çıkarılır.

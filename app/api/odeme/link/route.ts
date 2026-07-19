@@ -71,6 +71,7 @@ export async function POST(request: Request) {
       success: true,
       kisa_link: shortLinkUrl(token),
       paytr_url: link.url,
+      qr: link.qr || null,
       tutar: tutarTL,
       firma: cari.firma_adi,
     })
