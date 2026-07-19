@@ -23,9 +23,11 @@ export async function POST(request: Request) {
     const hash = raw.hash || ''
 
     // Yapılandırma yoksa veya hash geçersizse: PayTR'yi tekrar denemekten kurtarmak için "OK"
-    // döneriz ama HİÇBİR şeyi ödendi işaretlemeyiz (fail-closed). Hash PayTR'nin merchant_oid'iyle doğrulanır.
-    if (!paytrYapili() || !merchantOid || !verifyCallbackHash({ merchantOid, status, totalAmount, hash })) {
-      if (paytrYapili()) console.error('[paytr-callback] hash/param doğrulanamadı', merchantOid)
+    // döneriz ama HİÇBİR şeyi ödendi işaretlemeyiz (fail-closed).
+    // Link API hash: callback_id + merchant_oid + merchant_salt + status + total_amount.
+    if (!paytrYapili() || !merchantOid || !verifyCallbackHash({ callbackId, merchantOid, status, totalAmount, hash })) {
+      if (paytrYapili())
+        console.error('[paytr-callback] hash/param doğrulanamadı', JSON.stringify({ merchantOid, callbackId, status, totalAmount }))
       return new Response('OK', { status: 200, headers: { 'Content-Type': 'text/plain' } })
     }
 

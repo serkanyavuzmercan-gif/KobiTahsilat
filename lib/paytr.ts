@@ -126,11 +126,13 @@ export async function createPaymentLink(input: CreatePaymentLinkInput): Promise<
 }
 
 /**
- * PayTR bildirim (callback) hash doğrulaması — FAIL-CLOSED.
+ * PayTR Link API bildirim (callback) hash doğrulaması — FAIL-CLOSED.
  * Hash eşleşmezse false → çağıran ASLA ödemeyi "ödendi" işaretlemez. Sahte bildirim geçemez.
- * ⚠️ YARIN DOĞRULA: callback hash string'inin alan sırası (merchant_oid+salt+status+total_amount).
+ * Link API formülü (dev.paytr.com/link-api/callback ile doğrulandı; iFrame'den FARKLI):
+ *   hash = base64(HMAC-SHA256(callback_id + merchant_oid + merchant_salt + status + total_amount, merchant_key))
  */
 export function verifyCallbackHash(params: {
+  callbackId: string
   merchantOid: string
   status: string
   totalAmount: string
@@ -138,7 +140,7 @@ export function verifyCallbackHash(params: {
 }): boolean {
   const cfg = getPaytrConfig()
   if (!cfg) return false
-  const hashStr = `${params.merchantOid}${cfg.merchantSalt}${params.status}${params.totalAmount}`
+  const hashStr = `${params.callbackId}${params.merchantOid}${cfg.merchantSalt}${params.status}${params.totalAmount}`
   const expected = base64Hmac(hashStr, cfg.merchantKey)
   const a = Buffer.from(expected)
   const b = Buffer.from(params.hash || '')
