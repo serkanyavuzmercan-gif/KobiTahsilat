@@ -1,7 +1,7 @@
 import 'server-only'
 import fs from 'fs'
 import path from 'path'
-import { PDFDocument, PDFFont, PDFImage, PDFPage, rgb } from 'pdf-lib'
+import { PDFDocument, PDFFont, PDFImage, PDFName, PDFPage, PDFString, rgb } from 'pdf-lib'
 import fontkit from '@pdf-lib/fontkit'
 import type { CariBakiye } from './types'
 import { buildOdemeTalepDokum } from './odeme-talep-dokum'
@@ -74,7 +74,9 @@ function fit(font: PDFFont, text: string, size: number, maxWidth: number): strin
 
 export async function renderOdemeTalepPdf(
   cari: CariBakiye,
-  snapshotTarihi: string
+  snapshotTarihi: string,
+  /** Varsa dökümün altına tıklanabilir "Online öde (PayTR)" CTA'sı eklenir. */
+  odemeUrl?: string | null
 ): Promise<Uint8Array> {
   const dokum = buildOdemeTalepDokum(cari.acik_kalemler, cari.bakiye)
 
@@ -277,6 +279,51 @@ export async function renderOdemeTalepPdf(
   })
   rightText(page, money(dokum.genel_bakiye), PAGE_W - MARGIN - 14, boxTop - 44, 12, bold, BRAND)
   y = boxTop - boxH - 22
+
+  // ---- Online ödeme CTA (tıklanabilir) ---- (hata döküm PDF'ini bozmasın)
+  try {
+  if (odemeUrl) {
+    const SKY = rgb(0.02, 0.52, 0.78)
+    const SKY_SOFT = rgb(0.9, 0.96, 1)
+    const cH = 40
+    const cTop = y
+    page.drawRectangle({
+      x: MARGIN,
+      y: cTop - cH,
+      width: PAGE_W - 2 * MARGIN,
+      height: cH,
+      color: SKY_SOFT,
+      borderColor: SKY,
+      borderWidth: 1,
+    })
+    page.drawText('Online öde — kartla güvenli ödeme (PayTR)', {
+      x: MARGIN + 14,
+      y: cTop - 17,
+      size: 11,
+      font: bold,
+      color: SKY,
+    })
+    page.drawText(fit(font, odemeUrl, 9, PAGE_W - 2 * MARGIN - 28), {
+      x: MARGIN + 14,
+      y: cTop - 31,
+      size: 9,
+      font,
+      color: SKY,
+    })
+    // Kutunun tamamını kaplayan tıklanabilir link (URI action).
+    const annot = pdf.context.obj({
+      Type: 'Annot',
+      Subtype: 'Link',
+      Rect: [MARGIN, cTop - cH, PAGE_W - MARGIN, cTop],
+      Border: [0, 0, 0],
+      A: pdf.context.obj({ Type: 'Action', S: 'URI', URI: PDFString.of(odemeUrl) }),
+    })
+    page.node.set(PDFName.of('Annots'), pdf.context.obj([pdf.context.register(annot)]))
+    y = cTop - cH - 18
+  }
+  } catch {
+    // CTA çizilemezse sessizce atla; döküm yine tam üretilir.
+  }
 
   // ---- Dipnot ----
   const notu =

@@ -103,6 +103,37 @@ export async function olusturVeKaydetOdemeLink(opts: {
   }
 }
 
+/**
+ * Bir cari için AKTİF (henüz ödenmemiş, son 7 günde üretilmiş) linki tekrar kullanır; yoksa yeni üretir.
+ * Döküm PDF'i gibi müşteri her açtığında çağrılan yerlerde link enflasyonunu önler. Hata → null.
+ */
+export async function getOrCreateOdemeLinkForCari(opts: {
+  cariKod: string
+  firmaAdi: string | null
+  cariEmail: string | null
+  amountKurus: number
+}): Promise<{ kisaLink: string } | null> {
+  try {
+    if (!paytrYapili() || !(opts.amountKurus > 0)) return null
+    const admin = createAdminClient()
+    const enEski = new Date(Date.now() - 7 * 86400000).toISOString()
+    const { data } = await admin
+      .from('odeme_linkleri')
+      .select('token')
+      .eq('cari_kod', opts.cariKod)
+      .eq('durum', 'olusturuldu')
+      .gte('created_at', enEski)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    if (data?.token) return { kisaLink: shortLinkUrl(String(data.token)) }
+    const yeni = await olusturVeKaydetOdemeLink(opts)
+    return yeni ? { kisaLink: yeni.kisaLink } : null
+  } catch {
+    return null
+  }
+}
+
 export async function findLinkByToken(token: string): Promise<OdemeLinkRow | null> {
   const admin = createAdminClient()
   const { data } = await admin.from('odeme_linkleri').select('*').eq('token', token).maybeSingle()
