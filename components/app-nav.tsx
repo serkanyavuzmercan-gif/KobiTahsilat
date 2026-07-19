@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Handshake, MessageCircle, Settings2 } from 'lucide-react'
+import { CreditCard, Handshake, MessageCircle, Settings2 } from 'lucide-react'
 import { AppBrand } from '@/components/app-brand'
 import { AuthActions } from '@/components/auth-actions'
 import { cn } from '@/lib/utils'
@@ -29,6 +29,14 @@ const commLinks = [
     icon: <MessageCircle size={15} className="opacity-90" />,
     idle: 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100',
     activeCls: 'bg-emerald-600 text-white shadow-sm',
+  },
+  {
+    href: '/odeme-al',
+    label: 'Ödeme Al',
+    match: (path: string) => path.startsWith('/odeme-al'),
+    icon: <CreditCard size={15} className="opacity-90" />,
+    idle: 'bg-sky-50 text-sky-700 hover:bg-sky-100',
+    activeCls: 'bg-sky-600 text-white shadow-sm',
   },
 ]
 

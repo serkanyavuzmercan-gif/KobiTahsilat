@@ -12,6 +12,7 @@ import { MAIL_LOG_KAYNAK } from '../mutabakat-log'
 import { formatPhoneWhatsApp } from '../phone'
 import { sendHatirlatmaWhatsApp } from '../hatirlatma-whatsapp'
 import { whatsAppBotEnabled } from '../whatsapp-kuyruk'
+import { recentlyPaidCariKods } from '../odeme-link'
 import {
   AUTOMATION_EMAIL_SEND_TIP,
   AUTOMATION_LOG_KAYNAK,
@@ -241,6 +242,17 @@ async function collectCandidatesForUser(
       since
     )
     odemeAday = isaretle(odemeAday, contacted, 'Bu dönem zaten gönderildi')
+  }
+
+  // PayTR askısı: son 14 günde ödeme ALINMIŞ cariye tekrar hatırlatma/mutabakat GİTMEZ. Mikro
+  // senkronu güncellenene kadar "az önce ödedim, neden yine istiyorsunuz" durumunu önler.
+  if (mutabakatAday.length || odemeAday.length) {
+    const askiSince = new Date(now.getTime() - 14 * 86400000).toISOString()
+    const odedi = await recentlyPaidCariKods(askiSince)
+    if (odedi.size) {
+      mutabakatAday = isaretle(mutabakatAday, odedi, 'Yakında ödeme alındı (askıda)')
+      odemeAday = isaretle(odemeAday, odedi, 'Yakında ödeme alındı (askıda)')
+    }
   }
 
   // Çakışma önleme: aynı gün bir cariye hem mutabakat hem ödeme talebi GİTMEZ → mutabakat önceliklidir.
