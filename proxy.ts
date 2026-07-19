@@ -19,7 +19,10 @@ export async function proxy(request: NextRequest) {
     request.nextUrl.pathname === '/api/mutabakat/itiraz' ||
     request.nextUrl.pathname === '/api/mutabakat/onay' ||
     request.nextUrl.pathname === '/api/odeme-talebi/pdf' ||
-    request.nextUrl.pathname === '/api/enrich/telefon-mikro'
+    request.nextUrl.pathname === '/api/enrich/telefon-mikro' ||
+    // PayTR: müşteriye giden kısa ödeme linki (/o/<token>) + PayTR bildirim webhook'u.
+    request.nextUrl.pathname.startsWith('/o/') ||
+    request.nextUrl.pathname === '/api/odeme/paytr-callback'
   const isCronRoute = request.nextUrl.pathname.startsWith('/api/cron/')
   const isWebhookRoute = request.nextUrl.pathname.startsWith('/api/webhooks/')
   if (isPublicMutabakatResponse || isCronRoute || isWebhookRoute) return NextResponse.next()
