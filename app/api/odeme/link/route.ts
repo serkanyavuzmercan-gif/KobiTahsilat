@@ -3,7 +3,7 @@ import { requireAuthUser } from '@/lib/auth'
 import { toErrorMessage } from '@/lib/errors'
 import { getCari } from '@/lib/data'
 import { getPaytrConfig, paytrYapili, createPaymentLink } from '@/lib/paytr'
-import { generateMerchantOid, generateLinkToken, insertOdemeLink, shortLinkUrl } from '@/lib/odeme-link'
+import { generateLinkToken, insertOdemeLink, shortLinkUrl } from '@/lib/odeme-link'
 
 export const dynamic = 'force-dynamic'
 
@@ -39,28 +39,29 @@ export async function POST(request: Request) {
     }
 
     const editable = body.editable !== false
-    const merchantOid = generateMerchantOid(cariKod)
     const token = generateLinkToken()
-    const email = cari.email_adresleri[0] || null
+    // collection tipi hash'i için email ZORUNLU. Cari e-postası yoksa şirket fallback'i (PayTR bildirimi
+    // buraya gider; müşterinin gerçek maili değilse bile link çalışır).
+    const cariEmail = cari.email_adresleri[0] || null
+    const email =
+      cariEmail || process.env.PAYTR_FALLBACK_EMAIL || process.env.GMAIL_SENDER || 'finans@hidroteknik.com.tr'
 
     const link = await createPaymentLink({
-      merchantOid,
       name: `${cari.firma_adi} — cari hesap ödemesi`,
       amountKurus,
       email,
-      editable,
       callbackId: token,
     })
     if (!link.ok) return NextResponse.json({ success: false, error: link.error }, { status: 502 })
 
     await insertOdemeLink({
-      merchantOid,
       token,
+      paytrLinkId: link.id,
       cariKod,
       firmaAdi: cari.firma_adi,
       tutarKurus: amountKurus,
       editable,
-      email,
+      email: cariEmail,
       paytrUrl: link.url,
       testMode: getPaytrConfig()?.testMode ?? false,
       userId: user.id,

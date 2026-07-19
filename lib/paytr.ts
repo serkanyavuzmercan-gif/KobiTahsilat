@@ -4,12 +4,10 @@ import crypto from 'crypto'
 /**
  * PayTR "Ödeme Linki API" entegrasyonu (B2B tahsilat).
  *
- * ⚠️ PROTOKOL DOĞRULAMASI (YARIN — creds gelince):
- * Aşağıdaki `LINK_CREATE_URL`, link-create `paytr_token` hash string'i ve callback hash string'i
- * PayTR'nin GÜNCEL "Ödeme Linki API" dokümanına göre BİREBİR doğrulanmalıdır. iFrame API'sine
- * benzediği VARSAYILMAMALIDIR (alan sırası / key-salt rolü farklı olabilir). Doğruladıktan sonra
- * `verifyCallbackHash` fail-closed kaldığı için sahte "ödendi" bildirimi zaten geçemez; ama link
- * oluşturma hash'i yanlışsa PayTR isteği reddeder (zararsız, sadece link üretilmez).
+ * Protokol dev.paytr.com/link-api dokümanıyla DOĞRULANDI (2026-07):
+ *   - create endpoint + collection hash (name+price+currency+max_installment+link_type+lang+email+salt)
+ *   - callback hash (merchant_oid+salt+status+total_amount) → verifyCallbackHash fail-closed.
+ *   - price KURUŞ; merchant_oid create'te gönderilmez (PayTR üretir), eşleştirme callback_id ile.
  */
 
 const LINK_CREATE_URL = 'https://www.paytr.com/odeme/api/link/create'
@@ -44,13 +42,11 @@ function base64Hmac(data: string, key: string): string {
 }
 
 export type CreatePaymentLinkInput = {
-  merchantOid: string
   name: string
   amountKurus: number
-  email?: string | null
-  /** Müşteri hosted sayfada tutarı değiştirebilsin mi (serbest tutar). */
-  editable: boolean
-  /** PayTR bildirimi geldiğinde bize dönecek referans (kendi token'ımız). */
+  /** collection tipinde ZORUNLU (hash'e girer); yoksa şirket fallback'i verilmeli. */
+  email: string
+  /** PayTR bildirimi geldiğinde bize geri dönecek eşleştirme referansımız (kendi token'ımız). */
   callbackId: string
 }
 
@@ -64,38 +60,41 @@ export type CreatePaymentLinkResult = {
 }
 
 /**
- * PayTR'de ödeme linki oluşturur. Config yoksa çağrılmamalı (paytrYapili ile önce kontrol et).
- * ⚠️ Alan seti ve hash string'i yarın doküman ile kesinleştirilecek.
+ * PayTR'de "collection" (tahsilat) tipi ödeme linki oluşturur. Config yoksa çağrılmamalı.
+ * Doküman (dev.paytr.com/link-api/link-api-create) ile doğrulanmış:
+ *   collection hash = name+price+currency+max_installment+link_type+lang+email+merchant_salt
+ *   paytr_token = base64(HMAC-SHA256(hashStr, merchant_key)); price KURUŞ; merchant_oid create'te YOK
+ *   (PayTR ödeme anında üretir). Eşleştirme callback_id ile.
  */
 export async function createPaymentLink(input: CreatePaymentLinkInput): Promise<CreatePaymentLinkResult> {
   const cfg = getPaytrConfig()
   if (!cfg) return { ok: false, error: 'PayTR yapılandırılmadı.' }
 
   const price = String(Math.round(input.amountKurus))
-  const linkType = input.editable ? 'collection' : 'product'
+  const currency = 'TL'
   const maxInstallment = '0'
+  const linkType = 'collection'
   const lang = 'tr'
+  const email = input.email
 
-  // ⚠️ YARIN DOĞRULA: PayTR Ödeme Linki API'sinin link-create hash string alan SIRASI.
-  const hashStr = `${cfg.merchantId}${input.name}${price}TL${maxInstallment}${linkType}${lang}${cfg.merchantSalt}`
-  const paytrToken = base64Hmac(hashStr, cfg.merchantKey)
+  // collection hash: name+price+currency+max_installment+link_type+lang+email + merchant_salt
+  const required = `${input.name}${price}${currency}${maxInstallment}${linkType}${lang}${email}`
+  const paytrToken = base64Hmac(`${required}${cfg.merchantSalt}`, cfg.merchantKey)
 
   const form = new URLSearchParams({
     merchant_id: cfg.merchantId,
     name: input.name,
     price,
-    currency: 'TL',
+    currency,
     max_installment: maxInstallment,
     link_type: linkType,
     lang,
+    email,
     get_qr: '1',
     callback_id: input.callbackId,
-    merchant_oid: input.merchantOid,
-    test_mode: cfg.testMode ? '1' : '0',
     debug_on: cfg.testMode ? '1' : '0',
     paytr_token: paytrToken,
   })
-  if (input.email) form.set('email', input.email)
 
   try {
     const res = await fetch(LINK_CREATE_URL, {
@@ -107,7 +106,6 @@ export async function createPaymentLink(input: CreatePaymentLinkInput): Promise<
     if (json.status !== 'success' || !json.id) {
       return { ok: false, error: json.reason || json.err_msg || 'PayTR link oluşturulamadı.' }
     }
-    // PayTR ödeme URL'si: dönen id ile. (Bazı sürümlerde `link` alanı da döner.)
     const url = json.link || `https://www.paytr.com/link/${json.id}`
     return { ok: true, id: json.id, url }
   } catch (cause) {

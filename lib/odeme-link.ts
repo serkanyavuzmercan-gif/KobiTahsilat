@@ -19,17 +19,12 @@ export type OdemeLinkRow = {
   odendi_at: string | null
 }
 
-/** PayTR merchant_oid: yalnız alfanumerik olmalı (cari_kod noktalı) + her link tekil. */
-export function generateMerchantOid(cariKod: string): string {
-  const kod = cariKod.replace(/[^a-zA-Z0-9]/g, '')
-  const rnd = crypto.randomBytes(6).toString('hex')
-  const ts = crypto.randomBytes(4).toString('hex')
-  return `HT${kod}${ts}${rnd}`.slice(0, 62)
-}
-
-/** Kendi domainimizdeki kısa link token'ı (tahmin edilemez; DB'den lookup edilir). */
+/**
+ * Kendi kısa link token'ımız. Aynı zamanda PayTR'ye `callback_id` olarak gönderilir ve callback'te
+ * geri döner → eşleştirme anahtarı. Yalnız alfanumerik (PayTR callback_id kısıtı için güvenli).
+ */
 export function generateLinkToken(): string {
-  return crypto.randomBytes(20).toString('base64url')
+  return crypto.randomBytes(18).toString('hex')
 }
 
 export function shortLinkUrl(token: string): string {
@@ -38,8 +33,8 @@ export function shortLinkUrl(token: string): string {
 }
 
 export async function insertOdemeLink(row: {
-  merchantOid: string
   token: string
+  paytrLinkId: string
   cariKod: string
   firmaAdi: string | null
   tutarKurus: number
@@ -51,8 +46,8 @@ export async function insertOdemeLink(row: {
 }): Promise<void> {
   const admin = createAdminClient()
   const { error } = await admin.from('odeme_linkleri').insert({
-    merchant_oid: row.merchantOid,
     token: row.token,
+    paytr_link_id: row.paytrLinkId,
     cari_kod: row.cariKod,
     firma_adi: row.firmaAdi,
     tutar_kurus: row.tutarKurus,
@@ -73,10 +68,12 @@ export async function findLinkByToken(token: string): Promise<OdemeLinkRow | nul
 }
 
 /**
- * Callback: merchant_oid ile satırı bulup öder olarak işaretler. İdempotent — zaten 'odendi' ise
- * dokunmaz (PayTR aynı bildirimi tekrar gönderebilir). Satır tekil (merchant_oid UNIQUE) → race-safe.
+ * Callback: callback_id (=bizim token) ile satırı bulup öder olarak işaretler. PayTR'nin ürettiği
+ * merchant_oid'i de o an yazar. İdempotent — zaten 'odendi' ise dokunmaz (PayTR aynı bildirimi
+ * tekrar gönderebilir; yalnız ilki dikkate alınır). Satır token UNIQUE → race-safe.
  */
 export async function markLinkFromCallback(params: {
+  callbackId: string
   merchantOid: string
   basarili: boolean
   totalAmountKurus: number | null
@@ -86,7 +83,7 @@ export async function markLinkFromCallback(params: {
   const { data: mevcut } = await admin
     .from('odeme_linkleri')
     .select('id,durum')
-    .eq('merchant_oid', params.merchantOid)
+    .eq('token', params.callbackId)
     .maybeSingle()
   if (!mevcut) return { bulundu: false, zatenIslendi: false }
   if (mevcut.durum === 'odendi') return { bulundu: true, zatenIslendi: true }
@@ -94,12 +91,13 @@ export async function markLinkFromCallback(params: {
   await admin
     .from('odeme_linkleri')
     .update({
+      merchant_oid: params.merchantOid,
       durum: params.basarili ? 'odendi' : 'basarisiz',
       odenen_kurus: params.totalAmountKurus,
       odendi_at: params.basarili ? new Date().toISOString() : null,
       callback_ham: params.raw,
     })
-    .eq('merchant_oid', params.merchantOid)
+    .eq('token', params.callbackId)
     .neq('durum', 'odendi')
   return { bulundu: true, zatenIslendi: false }
 }

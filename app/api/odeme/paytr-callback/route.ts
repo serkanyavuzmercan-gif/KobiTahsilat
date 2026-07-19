@@ -17,12 +17,13 @@ export async function POST(request: Request) {
     for (const [k, v] of form.entries()) raw[k] = String(v)
 
     const merchantOid = raw.merchant_oid || ''
+    const callbackId = raw.callback_id || ''
     const status = raw.status || ''
     const totalAmount = raw.total_amount || ''
     const hash = raw.hash || ''
 
     // Yapılandırma yoksa veya hash geçersizse: PayTR'yi tekrar denemekten kurtarmak için "OK"
-    // döneriz ama HİÇBİR şeyi ödendi işaretlemeyiz (fail-closed).
+    // döneriz ama HİÇBİR şeyi ödendi işaretlemeyiz (fail-closed). Hash PayTR'nin merchant_oid'iyle doğrulanır.
     if (!paytrYapili() || !merchantOid || !verifyCallbackHash({ merchantOid, status, totalAmount, hash })) {
       if (paytrYapili()) console.error('[paytr-callback] hash/param doğrulanamadı', merchantOid)
       return new Response('OK', { status: 200, headers: { 'Content-Type': 'text/plain' } })
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
 
     const totalKurus = /^\d+$/.test(totalAmount) ? Number(totalAmount) : null
     const sonuc = await markLinkFromCallback({
+      callbackId,
       merchantOid,
       basarili: status === 'success',
       totalAmountKurus: totalKurus,

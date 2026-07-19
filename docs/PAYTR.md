@@ -17,17 +17,24 @@ bize hiç değmez — müşteri PayTR hosted sayfasında öder. Manuel mail-orde
 
 Creds yokken her şey **güvenli no-op**: panel "PayTR bağlı değil" der, otomasyon linksiz çalışmaya devam eder.
 
-## YARIN — canlıya alma kontrol listesi
+## Protokol (dev.paytr.com/link-api ile DOĞRULANDI)
 
-1. **Env (Vercel, production):** `PAYTR_MERCHANT_ID`, `PAYTR_MERCHANT_KEY`, `PAYTR_MERCHANT_SALT`, `PAYTR_TEST_MODE=true` (önce test).
-2. **PayTR panelinde bildirim (callback) URL'i:** `https://finans.hidroteknik.com.tr/api/odeme/paytr-callback`
-3. **⚠️ PROTOKOLÜ DOĞRULA (kritik):** `lib/paytr.ts` içindeki `⚠️` işaretli iki hash string'i
-   ("Ödeme Linki API" link-create + callback) PayTR'nin **güncel dokümanıyla birebir** karşılaştır.
-   Alan sırası / key-salt rolü / endpoint iFrame API'sinden farklı olabilir — **varsayma, doğrula.**
-   Callback hash'i fail-closed olduğu için yanlışsa ödeme "ödendi" işaretlenmez (log'da görürsün) —
-   sahte ödeme asla geçmez, ama doğru formülü koyana kadar gerçek ödemeler de işlenmez.
-4. **Test modunda uçtan uca dene:** panelden küçük tutarlı link → öde → callback geldi mi, `odeme_linkleri.durum='odendi'` oldu mu.
-5. **Kanıtlandıktan sonra** `PAYTR_TEST_MODE=false` yap ve (2. faz) ödeme talebi mail/WhatsApp'ına linki göm.
+- **Create endpoint:** `POST https://www.paytr.com/odeme/api/link/create`
+- **link_type:** `collection` (tahsilat). **price KURUŞ** (34,56 TL → `3456`).
+- **create hash (collection):** `name+price+currency+max_installment+link_type+lang+email + merchant_salt`
+  → `base64(HMAC-SHA256(hashStr, merchant_key))`. **email ZORUNLU** (hash'e girer; cari maili yoksa fallback).
+- **merchant_oid create'te YOK** — PayTR ödeme anında üretir; eşleştirme **callback_id** (=bizim token) ile.
+- **Callback:** `x-www-form-urlencoded` POST; alanlar `merchant_oid, callback_id, status, total_amount, hash`.
+  **hash:** `merchant_oid+merchant_salt+status+total_amount` → base64 HMAC. Yanıt **düz `"OK"`** (yoksa tekrar dener).
+
+## Canlıya alma kontrol listesi
+
+1. **Env (Vercel, production):** `PAYTR_MERCHANT_ID/KEY/SALT` **eklendi** ✓, `PAYTR_TEST_MODE=true` **eklendi** ✓
+   (opsiyonel `PAYTR_FALLBACK_EMAIL` — cari maili yoksa collection hash'i için kullanılır).
+2. **PayTR panelinde bildirim (callback) URL'i:** `https://finans.hidroteknik.com.tr/api/odeme/paytr-callback` ← **sen ekleyeceksin**
+3. **Test modunda uçtan uca dene:** "Ödeme Al" sekmesinden küçük tutarlı link üret → PayTR test kartıyla öde →
+   `odeme_linkleri.durum='odendi'` oldu mu bak (callback zinciri kanıtı).
+4. **Kanıtlandıktan sonra** `PAYTR_TEST_MODE=false` yap ve (2. faz) ödeme talebi mail/WhatsApp'ına linki göm.
 
 ## 2. faz (panel kanıtlandıktan sonra)
 

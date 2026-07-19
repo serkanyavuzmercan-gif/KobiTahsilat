@@ -1,16 +1,18 @@
 -- PayTR ödeme linkleri + callback bildirimleri.
--- merchant_oid UNIQUE = idempotency (PayTR aynı bildirimi tekrar gönderebilir).
+-- Eşleştirme token (=PayTR'ye callback_id olarak gönderilir, callback'te geri döner) üzerinden.
+-- merchant_oid'i PayTR ödeme anında üretir → callback'te yazılır (create'te YOK, o yüzden nullable).
 -- Satır link OLUŞTURULUNCA yazılır (durum='olusturuldu'); callback bu satırı UPDATE eder → mükerrer satır yok.
 -- Supabase MCP / dashboard ile uygulanır (bu repoda numaralı migration YOK).
 
 create table if not exists odeme_linkleri (
   id uuid primary key default gen_random_uuid(),
-  merchant_oid text unique not null,
-  token text unique not null,               -- kendi kısa linkimizin token'ı (/o/<token>)
+  token text unique not null,               -- kendi kısa linkimiz (/o/<token>) + PayTR callback_id
+  paytr_link_id text,                       -- PayTR create yanıtındaki link id
+  merchant_oid text unique,                 -- PayTR ödeme anında üretir; callback'te dolar (nullable)
   cari_kod text not null,
   firma_adi text,
   tutar_kurus bigint not null,              -- hedeflenen tutar (kuruş)
-  editable boolean not null default true,   -- müşteri hosted sayfada tutarı değiştirebilir mi
+  editable boolean not null default true,   -- müşteri hosted sayfada tutarı değiştirebilir mi (kayıt)
   email text,
   paytr_url text,                           -- PayTR'nin döndürdüğü ödeme URL'si
   durum text not null default 'olusturuldu',-- olusturuldu | odendi | basarisiz | iptal
