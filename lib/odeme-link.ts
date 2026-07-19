@@ -1,6 +1,7 @@
 import 'server-only'
 import crypto from 'crypto'
 import { createAdminClient } from './supabase/admin'
+import { createPaymentLink, getPaytrConfig, paytrYapili } from './paytr'
 
 export type OdemeLinkRow = {
   id: string
@@ -59,6 +60,47 @@ export async function insertOdemeLink(row: {
     olusturan_user_id: row.userId || null,
   })
   if (error) throw new Error(error.message)
+}
+
+/**
+ * Bir cari için PayTR ödeme linki üretir + kaydeder, kendi kısa linkimizi döner.
+ * Mail/panel ortak yardımcısı. PayTR yoksa veya hata olursa null (ASLA throw etmez → gönderimi bozmaz).
+ */
+export async function olusturVeKaydetOdemeLink(opts: {
+  cariKod: string
+  firmaAdi: string | null
+  cariEmail: string | null
+  amountKurus: number
+  userId?: string | null
+}): Promise<{ kisaLink: string; paytrUrl: string; qr: string | null } | null> {
+  try {
+    if (!paytrYapili() || !Number.isFinite(opts.amountKurus) || opts.amountKurus <= 0) return null
+    const token = generateLinkToken()
+    const hashEmail =
+      opts.cariEmail || process.env.PAYTR_FALLBACK_EMAIL || process.env.GMAIL_SENDER || 'finans@hidroteknik.com.tr'
+    const link = await createPaymentLink({
+      name: `${opts.firmaAdi || opts.cariKod} — cari hesap ödemesi`,
+      amountKurus: opts.amountKurus,
+      email: hashEmail,
+      callbackId: token,
+    })
+    if (!link.ok) return null
+    await insertOdemeLink({
+      token,
+      paytrLinkId: link.id,
+      cariKod: opts.cariKod,
+      firmaAdi: opts.firmaAdi,
+      tutarKurus: opts.amountKurus,
+      editable: true,
+      email: opts.cariEmail,
+      paytrUrl: link.url,
+      testMode: getPaytrConfig()?.testMode ?? false,
+      userId: opts.userId ?? null,
+    })
+    return { kisaLink: shortLinkUrl(token), paytrUrl: link.url, qr: link.qr ?? null }
+  } catch {
+    return null
+  }
 }
 
 export async function findLinkByToken(token: string): Promise<OdemeLinkRow | null> {

@@ -10,10 +10,12 @@ import type { AutomationRunCandidate, OdemeTalepKanal } from './types'
 /** Otomatik mutabakat adayları: bakiye ≥ taban, alıcı e-posta seçili, 8 iş günü engeli yok. */
 export function collectMutabakatCandidates(
   cariler: MutabakatCari[],
-  tabanBakiye: number
+  tabanBakiye: number,
+  /** Deneme/önizleme modunda test carilerini de göster (gerçek gönderimde false). */
+  includeTest = false
 ): AutomationRunCandidate[] {
   return cariler.flatMap((cari) => {
-    if (isTestCari(cari.cari_kod)) return []
+    if (!includeTest && isTestCari(cari.cari_kod)) return []
     if (cari.bakiye <= 0.01 || cari.bakiye < tabanBakiye) return []
 
     let engel: string | null = null
@@ -39,11 +41,11 @@ export function collectMutabakatCandidates(
 /** Otomatik ödeme talebi adayları: ort. gecikme ≥ eşik VE gecikmiş ≥ taban; kanal(lar)a göre. */
 export function collectOdemeTalepCandidates(
   cariler: HatirlatmaCari[],
-  opts: { minGun: number; minTutar: number; kanal: OdemeTalepKanal }
+  opts: { minGun: number; minTutar: number; kanal: OdemeTalepKanal; includeTest?: boolean }
 ): AutomationRunCandidate[] {
   const out: AutomationRunCandidate[] = []
   for (const cari of cariler) {
-    if (isTestCari(cari.cari_kod)) continue
+    if (!opts.includeTest && isTestCari(cari.cari_kod)) continue
     const ortalama = cariOrtalamaGecikmeGun(cari)
     if (cari.gecikmis_bakiye < opts.minTutar) continue
     if (ortalama == null || ortalama < opts.minGun) continue

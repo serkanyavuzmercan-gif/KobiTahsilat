@@ -7,6 +7,7 @@ import { buildHatirlatmaEmail } from '@/lib/automation/email-template'
 import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
 import { HATIRLATMA_LOG_KAYNAK, ODEME_TALEP_EMAIL_TIP } from '@/lib/hatirlatma-log'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
+import { olusturVeKaydetOdemeLink } from '@/lib/odeme-link'
 import { sendMail } from '@/lib/mail'
 import { renderOdemeTalepPdf } from '@/lib/odeme-talep-pdf'
 
@@ -64,7 +65,15 @@ export async function POST(request: Request) {
       : [cari.email_adresleri[0]]
 
     const snapshot = await loadSnapshot()
-    const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi, customBody)
+    // PayTR ödeme linki (gecikmiş tutar) → mailde "Ödeme yapmak için tıklayın" düğmesi. Hata → null.
+    const odeme = await olusturVeKaydetOdemeLink({
+      cariKod: cari.cari_kod,
+      firmaAdi: cari.firma_adi,
+      cariEmail: cari.email_adresleri[0] || null,
+      amountKurus: Math.round(cari.gecikmis_bakiye * 100),
+      userId: user.id,
+    })
+    const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi, customBody, odeme?.kisaLink)
     // Gönderen sabit: Gmail (GMAIL_SENDER = serkan.mercan@). Yanıtlar da aynı kutuya döner.
     const from = process.env.GMAIL_SENDER || process.env.MAIL_FROM || 'Hidroteknik A.Ş.'
     const sentAt = new Date().toISOString()

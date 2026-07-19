@@ -12,7 +12,7 @@ import { MAIL_LOG_KAYNAK } from '../mutabakat-log'
 import { formatPhoneWhatsApp } from '../phone'
 import { sendHatirlatmaWhatsApp } from '../hatirlatma-whatsapp'
 import { whatsAppBotEnabled } from '../whatsapp-kuyruk'
-import { recentlyPaidCariKods } from '../odeme-link'
+import { recentlyPaidCariKods, olusturVeKaydetOdemeLink } from '../odeme-link'
 import {
   AUTOMATION_EMAIL_SEND_TIP,
   AUTOMATION_LOG_KAYNAK,
@@ -128,9 +128,17 @@ async function sendAutomationOdemeEmail(
   if (!cari.email) throw new Error('Doğrulanmış e-posta yok.')
 
   const snapshot = await loadSnapshot()
-  const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi)
-
   if (taslakMod) return
+
+  // Gerçek gönderim: gecikmiş tutar için PayTR ödeme linki üret (hata mail'i engellemez → null döner).
+  const odeme = await olusturVeKaydetOdemeLink({
+    cariKod: cari.cari_kod,
+    firmaAdi: cari.firma_adi,
+    cariEmail: cari.email_adresleri[0] || null,
+    amountKurus: Math.round(cari.gecikmis_bakiye * 100),
+    userId,
+  })
+  const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi, undefined, odeme?.kisaLink)
 
   const from = process.env.GMAIL_SENDER || process.env.MAIL_FROM || 'Hidroteknik A.Ş.'
   const sentAt = new Date().toISOString()
@@ -213,7 +221,12 @@ async function collectCandidatesForUser(
 
   if (mutabakatZamani) {
     const cariler = await loadMutabakatCariler()
-    mutabakatAday = collectMutabakatCandidates(cariler, settings.mutabakat.taban_bakiye)
+    // Deneme (taslak) modunda test carilerini de göster ki aday mantığı test edilebilsin.
+    mutabakatAday = collectMutabakatCandidates(
+      cariler,
+      settings.mutabakat.taban_bakiye,
+      settings.mutabakat.taslak_mod
+    )
   }
   if (odemeZamani) {
     const cariler = await loadHatirlatmaCariler()
@@ -221,6 +234,7 @@ async function collectCandidatesForUser(
       minGun: settings.odeme_talebi.min_ortalama_gecikme_gun,
       minTutar: settings.odeme_talebi.min_gecikmis_tutar,
       kanal: settings.odeme_talebi.kanal,
+      includeTest: settings.odeme_talebi.taslak_mod,
     })
   }
 
