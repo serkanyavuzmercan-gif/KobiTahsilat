@@ -86,15 +86,30 @@ export function OdemeTalepActions({
     }
   }
 
-  // Listede olmayan özel numara/e-posta ekle (yalnız bu gönderim için; seçili gelir).
+  // Listede olmayan numara/e-posta ekle → seçili gelir VE carie KALICI kaydedilir (cari_kisiler).
+  // Böylece bir daha girmeye gerek kalmaz; otomasyon ve diğer ekranlar da görür.
   function numaraEkle(telefon: string) {
     setMobilNumaralar((list) => (list.includes(telefon) ? list : [...list, telefon]))
     setNumaralar((list) => (list.includes(telefon) ? list : [...list, telefon]))
+    void fetch('/api/cari-kisi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cariKod: cari.cari_kod, telefon }),
+    })
+      .then(() => router.refresh())
+      .catch(() => {})
   }
 
   function adresEkle(email: string) {
     setEmailAdresleri((list) => (list.includes(email) ? list : [...list, email]))
     setAlicilar((list) => (list.includes(email) ? list : [...list, email]))
+    void fetch('/api/cari-kisi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cariKod: cari.cari_kod, email }),
+    })
+      .then(() => router.refresh())
+      .catch(() => {})
   }
 
   async function adresSil(email: string) {
@@ -198,8 +213,7 @@ export function OdemeTalepActions({
         <button
           type="button"
           onClick={() => acPencere('whatsapp')}
-          disabled={!hasPhone}
-          title={hasPhone ? 'WhatsApp ile ödeme talebi' : 'Kayıtlı cep telefonu yok'}
+          title={hasPhone ? 'WhatsApp ile ödeme talebi' : 'Numara yok — açıp ekleyebilirsiniz'}
           className={`${btnBase} bg-emerald-50 text-emerald-700 hover:bg-emerald-100`}
         >
           <MessageCircle size={13} />
@@ -208,8 +222,7 @@ export function OdemeTalepActions({
         <button
           type="button"
           onClick={() => acPencere('email')}
-          disabled={!hasEmail}
-          title={hasEmail ? 'E-posta ile ödeme talebi' : 'Doğrulanmış e-posta yok'}
+          title={hasEmail ? 'E-posta ile ödeme talebi' : 'E-posta yok — açıp ekleyebilirsiniz'}
           className={`${btnBase} bg-brand-50 text-brand-700 hover:bg-brand-100`}
         >
           <Mail size={13} />
@@ -218,12 +231,7 @@ export function OdemeTalepActions({
         <button
           type="button"
           onClick={() => acPencere('her-ikisi')}
-          disabled={!hasPhone || !hasEmail}
-          title={
-            hasPhone && hasEmail
-              ? 'Hem WhatsApp hem e-posta'
-              : 'Her ikisi için telefon ve e-posta gerekli'
-          }
+          title="Hem WhatsApp hem e-posta (eksik varsa açıp ekleyebilirsiniz)"
           className={`${btnBase} bg-slate-800 text-white hover:bg-slate-900`}
         >
           <CheckCircle2 size={13} />
