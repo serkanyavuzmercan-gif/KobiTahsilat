@@ -20,7 +20,8 @@ export function collectMutabakatCandidates(
 
     let engel: string | null = null
     if (!cari.email) engel = 'E-posta seçilmemiş'
-    else if (cari.mutabakat_gonderim_engelli) engel = 'Kısa süre önce gönderildi'
+    // Test carisinde 8-gün kilidini atla (sınırsız test).
+    else if (cari.mutabakat_gonderim_engelli && !isTestCari(cari.cari_kod)) engel = 'Kısa süre önce gönderildi'
 
     return [
       {

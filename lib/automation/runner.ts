@@ -13,6 +13,13 @@ import { formatPhoneWhatsApp } from '../phone'
 import { sendHatirlatmaWhatsApp } from '../hatirlatma-whatsapp'
 import { whatsAppBotEnabled } from '../whatsapp-kuyruk'
 import { recentlyPaidCariKods, getOrCreateOdemeLinkForCari } from '../odeme-link'
+import { isTestCari } from '../test-cariler'
+
+/** Test carilerini kilit kümesinden çıkarır → test carisi sınırsız denenebilir (dönem/8-gün/askı). */
+function sinirsizTest(set: Set<string>): Set<string> {
+  for (const kod of set) if (isTestCari(kod)) set.delete(kod)
+  return set
+}
 import {
   AUTOMATION_EMAIL_SEND_TIP,
   AUTOMATION_LOG_KAYNAK,
@@ -237,19 +244,15 @@ async function collectCandidatesForUser(
   // Periyot kilidi (MANUEL + otomatik dahil): bu periyotta zaten gönderilmişse atla → sonraki periyoda.
   if (mutabakatAday.length) {
     const since = mutabakatBucketBasi(settings.mutabakat.ay_araligi, now)
-    const contacted = await contactedSince(
-      mutabakatAday.map((a) => a.cari_kod),
-      MUTABAKAT_TIPS,
-      since
+    const contacted = sinirsizTest(
+      await contactedSince(mutabakatAday.map((a) => a.cari_kod), MUTABAKAT_TIPS, since)
     )
     mutabakatAday = isaretle(mutabakatAday, contacted, 'Bu dönem zaten gönderildi')
   }
   if (odemeAday.length) {
     const since = odemePeriodBasi(settings.odeme_talebi.frekans, now)
-    const contacted = await contactedSince(
-      odemeAday.map((a) => a.cari_kod),
-      ODEME_TALEP_TIPS,
-      since
+    const contacted = sinirsizTest(
+      await contactedSince(odemeAday.map((a) => a.cari_kod), ODEME_TALEP_TIPS, since)
     )
     odemeAday = isaretle(odemeAday, contacted, 'Bu dönem zaten gönderildi')
   }
@@ -258,7 +261,7 @@ async function collectCandidatesForUser(
   // senkronu güncellenene kadar "az önce ödedim, neden yine istiyorsunuz" durumunu önler.
   if (mutabakatAday.length || odemeAday.length) {
     const askiSince = new Date(now.getTime() - 14 * 86400000).toISOString()
-    const odedi = await recentlyPaidCariKods(askiSince)
+    const odedi = sinirsizTest(await recentlyPaidCariKods(askiSince))
     if (odedi.size) {
       mutabakatAday = isaretle(mutabakatAday, odedi, 'Yakında ödeme alındı (askıda)')
       odemeAday = isaretle(odemeAday, odedi, 'Yakında ödeme alındı (askıda)')

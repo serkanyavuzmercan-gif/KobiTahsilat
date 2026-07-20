@@ -2,6 +2,7 @@ import 'server-only'
 import crypto from 'crypto'
 import { createAdminClient } from './supabase/admin'
 import { createPaymentLink, getPaytrConfig, paytrYapili } from './paytr'
+import { isTestCari } from './test-cariler'
 
 export type OdemeLinkRow = {
   id: string
@@ -76,9 +77,11 @@ export async function olusturVeKaydetOdemeLink(opts: {
   try {
     if (!paytrYapili() || !Number.isFinite(opts.amountKurus) || opts.amountKurus <= 0) return null
     // Çift tahsilat engeli: bu cari için AYNI tutar son 3 günde TAM ödendiyse yeni ödenebilir link
-    // üretme; ödenen linkin /o'sunu dön (müşteri "ödeme alınmış" görür). Snapshot gecikmesi (24s) kapısı.
-    const paid = await recentPaidLinkUrl(opts.cariKod, opts.amountKurus)
-    if (paid) return { kisaLink: paid, paytrUrl: '', qr: null }
+    // üretme; ödenen linkin /o'sunu dön (müşteri "ödeme alınmış" görür). Test carisinde atla (sınırsız).
+    if (!isTestCari(opts.cariKod)) {
+      const paid = await recentPaidLinkUrl(opts.cariKod, opts.amountKurus)
+      if (paid) return { kisaLink: paid, paytrUrl: '', qr: null }
+    }
 
     const token = generateLinkToken()
     const hashEmail =
@@ -146,6 +149,18 @@ export async function getOrCreateOdemeLinkForCari(opts: {
   try {
     if (!paytrYapili() || !(opts.amountKurus > 0)) return null
     const admin = createAdminClient()
+
+    // Test carisi: kilit/reuse YOK → her seferinde taze ödenebilir link (sınırsız test).
+    // Açık link tekil index'ini bozmamak için önce eski açık linkleri iptal et.
+    if (isTestCari(opts.cariKod)) {
+      await admin
+        .from('odeme_linkleri')
+        .update({ durum: 'iptal' })
+        .eq('cari_kod', opts.cariKod)
+        .eq('durum', 'olusturuldu')
+      const yeni = await olusturVeKaydetOdemeLink(opts)
+      return yeni ? { kisaLink: yeni.kisaLink, qr: yeni.qr, paytrUrl: yeni.paytrUrl } : null
+    }
 
     const paid = await recentPaidLinkUrl(opts.cariKod, opts.amountKurus)
     if (paid) return { kisaLink: paid, qr: null, paytrUrl: null }
