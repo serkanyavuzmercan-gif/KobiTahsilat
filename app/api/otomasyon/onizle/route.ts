@@ -54,7 +54,7 @@ export async function GET(request: Request) {
       const cariler = await loadHatirlatmaCariler()
       const cari = cariler.find((c) => c.cari_kod === cariKod)
       if (!cari) return NextResponse.json({ success: false, error: 'Cari bulunamadı.' }, { status: 404 })
-      const onizleme = buildHatirlatmaWhatsAppOnizleme(cari, tarih)
+      const onizleme = await buildHatirlatmaWhatsAppOnizleme(cari, tarih)
       return NextResponse.json({
         success: true,
         kanal: 'whatsapp',

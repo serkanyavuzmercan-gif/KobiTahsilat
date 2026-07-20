@@ -3,6 +3,7 @@ import type { CariBakiye } from './types'
 import { formatTL } from './types'
 import { buildOdemeTalepDokum } from './odeme-talep-dokum'
 import { createOdemeTalepToken } from './odeme-talep-token'
+import { getOrCreateDokumShortLink } from './dokum-link'
 import { sendWhatsAppTemplate, whatsAppCloudYapili } from './whatsapp-cloud'
 import { whatsAppBotEnabled } from './whatsapp-kuyruk'
 
@@ -35,13 +36,16 @@ export function odemeTalepPdfUrl(cariKod: string, snapshotTarihi: string): strin
  * Göndermeden, WhatsApp müşteriye görünecek mesajın birebir metnini üretir (önizleme).
  * Meta onaylı "odeme_talebi_hatirlatma" gövdesi + {{1}}/{{2}}/{{3}} doldurulur.
  */
-export function buildHatirlatmaWhatsAppOnizleme(
+export async function buildHatirlatmaWhatsAppOnizleme(
   cari: CariBakiye,
   snapshotTarihi: string
-): { text: string; tutar: string; pdfUrl: string } {
+): Promise<{ text: string; tutar: string; pdfUrl: string }> {
   const dokum = buildOdemeTalepDokum(cari.acik_kalemler, cari.bakiye)
   const tutar = formatTL(dokum.vadesi_gecen_toplam)
-  const pdfUrl = odemeTalepPdfUrl(cari.cari_kod, snapshotTarihi)
+  // Kısa döküm linki (WhatsApp'ta uzun token URL'si yerine); üretilemezse uzununa düş.
+  const pdfUrl =
+    (await getOrCreateDokumShortLink(cari.cari_kod, snapshotTarihi)) ||
+    odemeTalepPdfUrl(cari.cari_kod, snapshotTarihi)
   const text = `Sayın ${cari.firma_adi.trim()} yetkilisi,
 
 Cari hesabınızda vadesi geçen ${tutar} tutarında alacağımız bulunmaktadır. Vadesi geçen faturalarınızın detaylı dökümüne aşağıdaki bağlantıdan ulaşabilirsiniz:
@@ -62,7 +66,9 @@ export async function sendHatirlatmaWhatsApp(options: {
 }): Promise<HatirlatmaWhatsAppSendResult> {
   const dokum = buildOdemeTalepDokum(options.cari.acik_kalemler, options.cari.bakiye)
   const tutar = formatTL(dokum.vadesi_gecen_toplam)
-  const pdfUrl = odemeTalepPdfUrl(options.cari.cari_kod, options.snapshotTarihi)
+  const pdfUrl =
+    (await getOrCreateDokumShortLink(options.cari.cari_kod, options.snapshotTarihi)) ||
+    odemeTalepPdfUrl(options.cari.cari_kod, options.snapshotTarihi)
 
   const result = await sendWhatsAppTemplate({
     to: options.to,

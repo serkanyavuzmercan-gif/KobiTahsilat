@@ -122,6 +122,7 @@ export async function getOrCreateOdemeLinkForCari(opts: {
       .select('token')
       .eq('cari_kod', opts.cariKod)
       .eq('durum', 'olusturuldu')
+      .eq('tutar_kurus', opts.amountKurus) // tutar değiştiyse eski/yanlış linki tekrar kullanma
       .gte('created_at', enEski)
       .order('created_at', { ascending: false })
       .limit(1)

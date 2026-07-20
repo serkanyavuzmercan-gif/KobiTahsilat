@@ -22,7 +22,9 @@ export async function proxy(request: NextRequest) {
     request.nextUrl.pathname === '/api/enrich/telefon-mikro' ||
     // PayTR: müşteriye giden kısa ödeme linki (/o/<token>) + PayTR bildirim webhook'u.
     request.nextUrl.pathname.startsWith('/o/') ||
-    request.nextUrl.pathname === '/api/odeme/paytr-callback'
+    request.nextUrl.pathname === '/api/odeme/paytr-callback' ||
+    // Kısa döküm linki (/d/<code>) — WhatsApp'ta müşteriye giden PDF döküm.
+    request.nextUrl.pathname.startsWith('/d/')
   const isCronRoute = request.nextUrl.pathname.startsWith('/api/cron/')
   const isWebhookRoute = request.nextUrl.pathname.startsWith('/api/webhooks/')
   if (isPublicMutabakatResponse || isCronRoute || isWebhookRoute) return NextResponse.next()
