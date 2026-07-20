@@ -20,6 +20,17 @@ function sinirsizTest(set: Set<string>): Set<string> {
   for (const kod of set) if (isTestCari(kod)) set.delete(kod)
   return set
 }
+
+/** `now`'dan n İŞ GÜNÜ öncesinin tarihini döndürür (hafta sonlarını atlar). */
+function isGunuOnce(now: Date, n: number): Date {
+  const d = new Date(now)
+  let sayac = 0
+  while (sayac < n) {
+    d.setUTCDate(d.getUTCDate() - 1)
+    if (isBusinessDay(d)) sayac++
+  }
+  return d
+}
 import {
   AUTOMATION_EMAIL_SEND_TIP,
   AUTOMATION_LOG_KAYNAK,
@@ -255,6 +266,21 @@ async function collectCandidatesForUser(
       await contactedSince(odemeAday.map((a) => a.cari_kod), ODEME_TALEP_TIPS, since)
     )
     odemeAday = isaretle(odemeAday, contacted, 'Bu dönem zaten gönderildi')
+  }
+
+  // TÜRLER-ARASI 8 İŞ GÜNÜ KURALI: son 8 iş günü içinde bu cariye HERHANGİ bir evrak (mutabakat VEYA
+  // ödeme talebi) gittiyse yeni evrak GÖNDERİLMEZ. (Kullanıcı kuralı: 8 gün dolmadan tekrar evrak yok —
+  // mutabakat da ödeme talebini bloklar, tersi de.) Test carileri muaf.
+  if (mutabakatAday.length || odemeAday.length) {
+    const evrakSince = isGunuOnce(now, 8)
+    const kodlar = [...new Set([...mutabakatAday, ...odemeAday].map((a) => a.cari_kod))]
+    const yakinEvrak = sinirsizTest(
+      await contactedSince(kodlar, [...MUTABAKAT_TIPS, ...ODEME_TALEP_TIPS], evrakSince)
+    )
+    if (yakinEvrak.size) {
+      mutabakatAday = isaretle(mutabakatAday, yakinEvrak, '8 iş günü dolmadı (yakında evrak gönderildi)')
+      odemeAday = isaretle(odemeAday, yakinEvrak, '8 iş günü dolmadı (yakında evrak gönderildi)')
+    }
   }
 
   // PayTR askısı: son 14 günde ödeme ALINMIŞ cariye tekrar hatırlatma/mutabakat GİTMEZ. Mikro
