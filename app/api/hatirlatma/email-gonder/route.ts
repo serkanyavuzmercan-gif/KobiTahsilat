@@ -7,7 +7,7 @@ import { buildHatirlatmaEmail } from '@/lib/automation/email-template'
 import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
 import { HATIRLATMA_LOG_KAYNAK, ODEME_TALEP_EMAIL_TIP } from '@/lib/hatirlatma-log'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
-import { olusturVeKaydetOdemeLink } from '@/lib/odeme-link'
+import { getOrCreateOdemeLinkForCari } from '@/lib/odeme-link'
 import { sendMail } from '@/lib/mail'
 import { renderOdemeTalepPdf } from '@/lib/odeme-talep-pdf'
 
@@ -66,7 +66,7 @@ export async function POST(request: Request) {
 
     const snapshot = await loadSnapshot()
     // PayTR ödeme linki (gecikmiş tutar) → mailde "Ödeme yapmak için tıklayın" düğmesi. Hata → null.
-    const odeme = await olusturVeKaydetOdemeLink({
+    const odeme = await getOrCreateOdemeLinkForCari({
       cariKod: cari.cari_kod,
       firmaAdi: cari.firma_adi,
       cariEmail: cari.email_adresleri[0] || null,

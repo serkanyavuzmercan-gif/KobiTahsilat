@@ -33,7 +33,7 @@ export async function getOrCreateDokumShortLink(
       .maybeSingle()
     if (data?.code) return dokumShortUrl(String(data.code))
 
-    const code = crypto.randomBytes(6).toString('base64url') // ~8 karakter
+    const code = crypto.randomBytes(9).toString('base64url') // ~12 karakter (72 bit)
     const { error } = await admin
       .from('dokum_linkleri')
       .insert({ code, cari_kod: cariKod, snapshot_tarihi: snapshotTarihi })
@@ -44,6 +44,9 @@ export async function getOrCreateDokumShortLink(
   }
 }
 
+/** Kısa döküm linki geçerlilik süresi (gün). Finansal PDF süresiz erişilebilir kalmasın. */
+const DOKUM_TTL_GUN = 90
+
 export async function resolveDokumCode(
   code: string
 ): Promise<{ cariKod: string; snapshotTarihi: string } | null> {
@@ -51,10 +54,14 @@ export async function resolveDokumCode(
     const admin = createAdminClient()
     const { data } = await admin
       .from('dokum_linkleri')
-      .select('cari_kod,snapshot_tarihi')
+      .select('cari_kod,snapshot_tarihi,created_at')
       .eq('code', code)
       .maybeSingle()
     if (!data) return null
+    // TTL: DOKUM_TTL_GUN'den eski link geçersiz.
+    if (data.created_at && Date.now() - Date.parse(String(data.created_at)) > DOKUM_TTL_GUN * 86400000) {
+      return null
+    }
     return { cariKod: String(data.cari_kod), snapshotTarihi: String(data.snapshot_tarihi) }
   } catch {
     return null

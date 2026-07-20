@@ -13,7 +13,7 @@ export type OdemeLinkRow = {
   editable: boolean
   email: string | null
   paytr_url: string | null
-  durum: 'olusturuldu' | 'odendi' | 'basarisiz' | 'iptal'
+  durum: 'olusturuldu' | 'odendi' | 'kismi' | 'basarisiz' | 'iptal'
   odenen_kurus: number | null
   test_mode: boolean
   created_at: string
@@ -75,6 +75,11 @@ export async function olusturVeKaydetOdemeLink(opts: {
 }): Promise<{ kisaLink: string; paytrUrl: string; qr: string | null } | null> {
   try {
     if (!paytrYapili() || !Number.isFinite(opts.amountKurus) || opts.amountKurus <= 0) return null
+    // Çift tahsilat engeli: bu cari için AYNI tutar son 3 günde TAM ödendiyse yeni ödenebilir link
+    // üretme; ödenen linkin /o'sunu dön (müşteri "ödeme alınmış" görür). Snapshot gecikmesi (24s) kapısı.
+    const paid = await recentPaidLinkUrl(opts.cariKod, opts.amountKurus)
+    if (paid) return { kisaLink: paid, paytrUrl: '', qr: null }
+
     const token = generateLinkToken()
     const hashEmail =
       opts.cariEmail || process.env.PAYTR_FALLBACK_EMAIL || process.env.GMAIL_SENDER || 'finans@hidroteknik.com.tr'
@@ -104,32 +109,67 @@ export async function olusturVeKaydetOdemeLink(opts: {
 }
 
 /**
- * Bir cari için AKTİF (henüz ödenmemiş, son 7 günde üretilmiş) linki tekrar kullanır; yoksa yeni üretir.
- * Döküm PDF'i gibi müşteri her açtığında çağrılan yerlerde link enflasyonunu önler. Hata → null.
+ * Aynı cari için AYNI tutar son 3 günde TAM ödendiyse (durum='odendi'), o ödenen linkin /o URL'sini
+ * döner; yoksa null. Çift tahsilat engeli — snapshot gecikmesinde (gecikmiş tutar düşene kadar) aynı
+ * borç için ikinci ödenebilir link üretilmesini önler. Sadece EŞİT tutar kilitler; kısmi/farklı geçer.
+ */
+async function recentPaidLinkUrl(cariKod: string, amountKurus: number): Promise<string | null> {
+  const admin = createAdminClient()
+  const since = new Date(Date.now() - 3 * 86400000).toISOString()
+  const { data } = await admin
+    .from('odeme_linkleri')
+    .select('token')
+    .eq('cari_kod', cariKod)
+    .eq('durum', 'odendi')
+    .eq('tutar_kurus', amountKurus)
+    .gte('odendi_at', since)
+    .order('odendi_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  return data?.token ? shortLinkUrl(String(data.token)) : null
+}
+
+/**
+ * TÜM kanalların (mail/otomasyon/panel/döküm PDF) ortak giriş noktası — cari başına TEK aktif link:
+ *  1) aynı tutar son 3 günde tam ödendiyse → ödenen linki dön (yeni ödenebilir link YOK),
+ *  2) açık (olusturuldu) aynı tutarlı link varsa → tekrar kullan (kanallar arası paylaşım),
+ *  3) yoksa yeni üret.
+ * Böylece aynı borç için birden çok canlı link doğmaz; biri ödenince kardeşleri callback iptal eder.
  */
 export async function getOrCreateOdemeLinkForCari(opts: {
   cariKod: string
   firmaAdi: string | null
   cariEmail: string | null
   amountKurus: number
-}): Promise<{ kisaLink: string } | null> {
+  userId?: string | null
+}): Promise<{ kisaLink: string; qr: string | null; paytrUrl: string | null } | null> {
   try {
     if (!paytrYapili() || !(opts.amountKurus > 0)) return null
     const admin = createAdminClient()
+
+    const paid = await recentPaidLinkUrl(opts.cariKod, opts.amountKurus)
+    if (paid) return { kisaLink: paid, qr: null, paytrUrl: null }
+
     const enEski = new Date(Date.now() - 7 * 86400000).toISOString()
     const { data } = await admin
       .from('odeme_linkleri')
-      .select('token')
+      .select('token,paytr_url')
       .eq('cari_kod', opts.cariKod)
       .eq('durum', 'olusturuldu')
-      .eq('tutar_kurus', opts.amountKurus) // tutar değiştiyse eski/yanlış linki tekrar kullanma
+      .eq('tutar_kurus', opts.amountKurus)
       .gte('created_at', enEski)
       .order('created_at', { ascending: false })
       .limit(1)
       .maybeSingle()
-    if (data?.token) return { kisaLink: shortLinkUrl(String(data.token)) }
+    if (data?.token) {
+      return {
+        kisaLink: shortLinkUrl(String(data.token)),
+        qr: null,
+        paytrUrl: data.paytr_url ? String(data.paytr_url) : null,
+      }
+    }
     const yeni = await olusturVeKaydetOdemeLink(opts)
-    return yeni ? { kisaLink: yeni.kisaLink } : null
+    return yeni ? { kisaLink: yeni.kisaLink, qr: yeni.qr, paytrUrl: yeni.paytrUrl } : null
   } catch {
     return null
   }
@@ -152,28 +192,49 @@ export async function markLinkFromCallback(params: {
   basarili: boolean
   totalAmountKurus: number | null
   raw: Record<string, string>
-}): Promise<{ bulundu: boolean; zatenIslendi: boolean }> {
+}): Promise<{ bulundu: boolean; zatenIslendi: boolean; durum: string }> {
   const admin = createAdminClient()
   const { data: mevcut } = await admin
     .from('odeme_linkleri')
-    .select('id,durum')
+    .select('id,durum,cari_kod,tutar_kurus')
     .eq('token', params.callbackId)
     .maybeSingle()
-  if (!mevcut) return { bulundu: false, zatenIslendi: false }
-  if (mevcut.durum === 'odendi') return { bulundu: true, zatenIslendi: true }
+  if (!mevcut) return { bulundu: false, zatenIslendi: false, durum: '' }
+  if (mevcut.durum === 'odendi') return { bulundu: true, zatenIslendi: true, durum: 'odendi' }
 
-  await admin
+  // Tutar kıyası: PayTR'nin fiilen tahsil ettiği (total_amount) hedeften AZSA "kısmi" — "tam ödendi"
+  // sayma (aksi halde 1 TL kısmi ödeme borcu kapatmış gibi görünür, cari haksız yere susturulur).
+  const tam =
+    params.basarili &&
+    params.totalAmountKurus != null &&
+    mevcut.tutar_kurus != null &&
+    params.totalAmountKurus >= Number(mevcut.tutar_kurus)
+  const yeniDurum = params.basarili ? (tam ? 'odendi' : 'kismi') : 'basarisiz'
+
+  const { error } = await admin
     .from('odeme_linkleri')
     .update({
       merchant_oid: params.merchantOid,
-      durum: params.basarili ? 'odendi' : 'basarisiz',
+      durum: yeniDurum,
       odenen_kurus: params.totalAmountKurus,
-      odendi_at: params.basarili ? new Date().toISOString() : null,
+      odendi_at: tam ? new Date().toISOString() : null,
       callback_ham: params.raw,
     })
     .eq('token', params.callbackId)
     .neq('durum', 'odendi')
-  return { bulundu: true, zatenIslendi: false }
+  if (error) throw new Error(error.message) // route 500 döner → PayTR retry eder (callback kaybolmaz)
+
+  // TAM ödemede: aynı cariye ait diğer AÇIK linkleri iptal et (çift tahsilat kapısını kapat).
+  // Müşteriler yalnız /o/<token> kısa linkini alır; iptal edilen link orada "iptal edildi" gösterir.
+  if (tam && mevcut.cari_kod) {
+    await admin
+      .from('odeme_linkleri')
+      .update({ durum: 'iptal' })
+      .eq('cari_kod', mevcut.cari_kod)
+      .eq('durum', 'olusturuldu')
+      .neq('token', params.callbackId)
+  }
+  return { bulundu: true, zatenIslendi: false, durum: yeniDurum }
 }
 
 /**

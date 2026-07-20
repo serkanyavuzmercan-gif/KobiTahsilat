@@ -12,7 +12,7 @@ import { MAIL_LOG_KAYNAK } from '../mutabakat-log'
 import { formatPhoneWhatsApp } from '../phone'
 import { sendHatirlatmaWhatsApp } from '../hatirlatma-whatsapp'
 import { whatsAppBotEnabled } from '../whatsapp-kuyruk'
-import { recentlyPaidCariKods, olusturVeKaydetOdemeLink } from '../odeme-link'
+import { recentlyPaidCariKods, getOrCreateOdemeLinkForCari } from '../odeme-link'
 import {
   AUTOMATION_EMAIL_SEND_TIP,
   AUTOMATION_LOG_KAYNAK,
@@ -130,8 +130,8 @@ async function sendAutomationOdemeEmail(
   const snapshot = await loadSnapshot()
   if (taslakMod) return
 
-  // Gerçek gönderim: gecikmiş tutar için PayTR ödeme linki üret (hata mail'i engellemez → null döner).
-  const odeme = await olusturVeKaydetOdemeLink({
+  // Gerçek gönderim: gecikmiş tutar için PayTR ödeme linki (cari başına tek aktif link; hata → null).
+  const odeme = await getOrCreateOdemeLinkForCari({
     cariKod: cari.cari_kod,
     firmaAdi: cari.firma_adi,
     cariEmail: cari.email_adresleri[0] || null,

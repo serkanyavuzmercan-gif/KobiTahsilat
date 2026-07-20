@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 import { requireAuthUser } from '@/lib/auth'
 import { toErrorMessage } from '@/lib/errors'
 import { getCari } from '@/lib/data'
-import { getPaytrConfig, paytrYapili, createPaymentLink } from '@/lib/paytr'
-import { generateLinkToken, insertOdemeLink, shortLinkUrl } from '@/lib/odeme-link'
+import { paytrYapili } from '@/lib/paytr'
+import { getOrCreateOdemeLinkForCari } from '@/lib/odeme-link'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,40 +38,21 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Geçerli bir tutar girin.' }, { status: 400 })
     }
 
-    const editable = body.editable !== false
-    const token = generateLinkToken()
-    // collection tipi hash'i için email ZORUNLU. Cari e-postası yoksa şirket fallback'i (PayTR bildirimi
-    // buraya gider; müşterinin gerçek maili değilse bile link çalışır).
-    const cariEmail = cari.email_adresleri[0] || null
-    const email =
-      cariEmail || process.env.PAYTR_FALLBACK_EMAIL || process.env.GMAIL_SENDER || 'finans@hidroteknik.com.tr'
-
-    const link = await createPaymentLink({
-      name: `${cari.firma_adi} — cari hesap ödemesi`,
-      amountKurus,
-      email,
-      callbackId: token,
-    })
-    if (!link.ok) return NextResponse.json({ success: false, error: link.error }, { status: 502 })
-
-    await insertOdemeLink({
-      token,
-      paytrLinkId: link.id,
+    // Ortak yardımcı: cari başına tek aktif link + "aynı tutar yakında ödendi" çift-tahsilat engeli.
+    const link = await getOrCreateOdemeLinkForCari({
       cariKod,
       firmaAdi: cari.firma_adi,
-      tutarKurus: amountKurus,
-      editable,
-      email: cariEmail,
-      paytrUrl: link.url,
-      testMode: getPaytrConfig()?.testMode ?? false,
+      cariEmail: cari.email_adresleri[0] || null,
+      amountKurus,
       userId: user.id,
     })
+    if (!link) return NextResponse.json({ success: false, error: 'Link oluşturulamadı.' }, { status: 502 })
 
     return NextResponse.json({
       success: true,
-      kisa_link: shortLinkUrl(token),
-      paytr_url: link.url,
-      qr: link.qr || null,
+      kisa_link: link.kisaLink,
+      paytr_url: link.paytrUrl,
+      qr: link.qr,
       tutar: tutarTL,
       firma: cari.firma_adi,
     })

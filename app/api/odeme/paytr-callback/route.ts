@@ -32,6 +32,8 @@ export async function POST(request: Request) {
     }
 
     const totalKurus = /^\d+$/.test(totalAmount) ? Number(totalAmount) : null
+    // markLinkFromCallback DB hatasında FIRLATIR → aşağıdaki catch 500 döner → PayTR tekrar dener
+    // (doğrulanmış ödeme sessizce kaybolmaz). Eşleşmeyen callback_id 500 değil, sadece loglanır.
     const sonuc = await markLinkFromCallback({
       callbackId,
       merchantOid,
@@ -39,12 +41,12 @@ export async function POST(request: Request) {
       totalAmountKurus: totalKurus,
       raw,
     })
-    if (!sonuc.bulundu) console.error('[paytr-callback] merchant_oid eşleşmedi', merchantOid)
+    if (!sonuc.bulundu) console.error('[paytr-callback] callback_id eşleşmedi', callbackId, merchantOid)
 
     return new Response('OK', { status: 200, headers: { 'Content-Type': 'text/plain' } })
   } catch (cause) {
-    console.error('[paytr-callback]', cause)
-    // Hata durumunda dahi PayTR'ye 200/OK dönmek genelde tekrar fırtınasını önler; sorunu logdan çözeriz.
-    return new Response('OK', { status: 200, headers: { 'Content-Type': 'text/plain' } })
+    // Doğrulanmış ama İŞLENEMEYEN callback: OK DÖNME → 500 ver ki PayTR tekrar denesin.
+    console.error('[paytr-callback] işleme hatası', cause)
+    return new Response('Gecici hata', { status: 500, headers: { 'Content-Type': 'text/plain' } })
   }
 }

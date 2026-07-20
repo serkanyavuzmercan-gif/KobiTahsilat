@@ -11,7 +11,6 @@ export function OdemeAlClient({ cariler, yapili }: { cariler: CariMini[]; yapili
   const [q, setQ] = useState('')
   const [secili, setSecili] = useState<CariMini | null>(null)
   const [tutar, setTutar] = useState('')
-  const [editable, setEditable] = useState(true)
   const [busy, setBusy] = useState(false)
   const [sonuc, setSonuc] = useState<{ kisa_link: string; firma: string; tutar: number; qr: string | null } | null>(null)
   const [hata, setHata] = useState('')
@@ -46,7 +45,6 @@ export function OdemeAlClient({ cariler, yapili }: { cariler: CariMini[]; yapili
         body: JSON.stringify({
           cariKod: secili.cari_kod,
           tutar: Number(tutar.replace(',', '.')) || undefined,
-          editable,
         }),
       })
       const j = (await res.json()) as {
@@ -144,16 +142,6 @@ export function OdemeAlClient({ cariler, yapili }: { cariler: CariMini[]; yapili
               <span className="mt-1 block text-[11px] text-slate-400">
                 Varsayılan gecikmiş tutar. Kısmi/farklı tahsilat için değiştirebilirsiniz.
               </span>
-            </label>
-
-            <label className="flex items-center gap-2 text-sm text-slate-700">
-              <input
-                type="checkbox"
-                checked={editable}
-                onChange={(e) => setEditable(e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300 text-sky-600"
-              />
-              Müşteri ödeme sayfasında tutarı değiştirebilsin
             </label>
 
             <Button variant="primary" onClick={linkUret} disabled={busy || !yapili}>

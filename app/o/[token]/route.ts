@@ -30,6 +30,12 @@ export async function GET(_request: Request, { params }: { params: Promise<{ tok
       headers: { 'Content-Type': 'text/html; charset=utf-8' },
     })
   }
+  if (link.durum === 'kismi') {
+    return new NextResponse(
+      sayfa('Kısmi ödeme alındı', 'Bu bağlantı üzerinden kısmi ödemeniz alınmıştır. Kalan bakiye için lütfen bizimle iletişime geçin; yeni bir ödeme bağlantısı iletelim.'),
+      { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+    )
+  }
   return NextResponse.redirect(link.paytr_url, 302)
 }
 
