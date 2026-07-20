@@ -221,12 +221,8 @@ async function collectCandidatesForUser(
 
   if (mutabakatZamani) {
     const cariler = await loadMutabakatCariler()
-    // Deneme (taslak) modunda test carilerini de göster ki aday mantığı test edilebilsin.
-    mutabakatAday = collectMutabakatCandidates(
-      cariler,
-      settings.mutabakat.taban_bakiye,
-      settings.mutabakat.taslak_mod
-    )
+    // Test carileri hem denemede hem gerçek çalıştırmada aday olur (kullanıcı kararı: reelde de görünsün).
+    mutabakatAday = collectMutabakatCandidates(cariler, settings.mutabakat.taban_bakiye, true)
   }
   if (odemeZamani) {
     const cariler = await loadHatirlatmaCariler()
@@ -234,7 +230,7 @@ async function collectCandidatesForUser(
       minGun: settings.odeme_talebi.min_ortalama_gecikme_gun,
       minTutar: settings.odeme_talebi.min_gecikmis_tutar,
       kanal: settings.odeme_talebi.kanal,
-      includeTest: settings.odeme_talebi.taslak_mod,
+      includeTest: true,
     })
   }
 
