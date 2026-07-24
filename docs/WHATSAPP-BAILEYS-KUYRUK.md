@@ -25,9 +25,11 @@ KobiTahsilat (Vercel)                    Supabase (ortak)                 Ofis P
 - **Tüketici:** Ofis botu ss uç noktasını poll'ler ve `durum='bekliyor'` olan **tüm** satırları
   (kaynak ayırmadan) çeker. Bot `grup_jid`'i doğrudan Baileys `sendMessage`'a verir; Baileys grup
   (`@g.us`) ve birey (`@s.whatsapp.net`) JID'ini aynı şekilde işler → **DM için bot değişikliği gerekmez.**
-- **Durum takibi:** UI, enqueue dönüşündeki `kuyrukId` ile `/api/hatirlatma/whatsapp-durum`'u
-  yoklayıp `bekliyor → gonderildi/hata` geçişini gösterir. Bot heartbeat'i (`whatsapp_bot_state.son_poll_at`)
-  panelde "bot çevrimiçi mi" olarak görünür (`loadBotDurum`).
+- **Durum takibi:** UI, enqueue dönüşündeki kuyruk id'leriyle `/api/hatirlatma/whatsapp-durum`'u
+  yoklayıp her alıcı için `bekliyor → gonderildi/hata` geçişini gösterir. Bir cariye birden fazla
+  numara kayıtlıysa (en fazla 3) önizleme ekranında alıcılar işaretlenir; her seçili numara için
+  ayrı kuyruk satırı ve ayrı gönderim geçmişi kaydı oluşur. Bot heartbeat'i
+  (`whatsapp_bot_state.son_poll_at`) panelde "bot çevrimiçi mi" olarak görünür (`loadBotDurum`).
 
 ## Neden gayri-resmi?
 

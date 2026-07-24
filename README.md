@@ -47,7 +47,7 @@ Geliştirme için Vercel deploy şart değil; yerelde `npm run dev` yeterli. Can
 | `/mutabakat/ayarlar` | Gönderici e-posta bağlantıları (kullanıcı başına) |
 | `/mutabakat/[kod]` | Firmaya özel mutabakat e-postası önizlemesi ve gönderimi |
 | `/hatirlatma` | WhatsApp ödeme hatırlatması listesi |
-| `/hatirlatma/[kod]` | Mesaj önizleme, telefon düzenleme ve gönderim |
+| `/hatirlatma/[kod]` | Mesaj önizleme, telefon düzenleme, çoklu alıcı seçimi ve gönderim |
 | `/api/cariler?q=` | JSON API |
 
 **Veri kaynağı: canlı Supabase.** Bakiye, açık evrak ve yaşlandırma doğrudan

@@ -6,11 +6,14 @@ import { Check, LoaderCircle, Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   formatPhoneDisplay,
+  isMobileTurkey,
   normalizePhone,
   PHONE_INPUT_HINT,
   PHONE_INPUT_PLACEHOLDER,
 } from '@/lib/phone'
 import type { TelefonAday } from '@/lib/types'
+
+const MAX_TELEFON = 3
 
 export function CariTelefonEditor({
   cariKod,
@@ -32,16 +35,23 @@ export function CariTelefonEditor({
   const [error, setError] = useState('')
   const [visibleCandidates, setVisibleCandidates] = useState(candidates)
 
+  // Kaydedilecek numaraların canlı önizlemesi (API ile aynı ayraçlar).
   const preview = useMemo(() => {
     const parts = value
-      .split(/[;]+/)
+      .split(/[;,\n/|]+/)
       .map((item) => item.trim())
       .filter(Boolean)
     return parts.map((part) => {
       const normalized = normalizePhone(part)
-      return normalized ? formatPhoneDisplay(normalized) : part
+      return {
+        raw: part,
+        normalized,
+        mobil: normalized ? isMobileTurkey(normalized) : false,
+      }
     })
   }, [value])
+
+  const gecerliSayi = preview.filter((item) => item.normalized).length
 
   async function save() {
     setLoading(true)
@@ -118,6 +128,12 @@ export function CariTelefonEditor({
             setMessage('')
             setError('')
           }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault()
+              if (!loading) void save()
+            }
+          }}
           placeholder={PHONE_INPUT_PLACEHOLDER}
           className="min-w-0 flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-brand-500"
         />
@@ -134,9 +150,43 @@ export function CariTelefonEditor({
       <p className="mt-1.5 text-xs text-slate-500">{PHONE_INPUT_HINT}</p>
 
       {preview.length > 0 && value.trim() && (
-        <p className="mt-1 text-xs text-slate-600">
-          Kayıt önizleme: {preview.join(' · ')}
-        </p>
+        <div className="mt-2">
+          <div className="flex flex-wrap gap-1">
+            {preview.map((item, index) =>
+              item.normalized ? (
+                <span
+                  key={`${item.normalized}-${index}`}
+                  className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs ${
+                    item.mobil
+                      ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
+                      : 'border-amber-200 bg-amber-50 text-amber-800'
+                  }`}
+                >
+                  {formatPhoneDisplay(item.normalized)}
+                  <span className="text-[10px] font-medium opacity-80">
+                    {item.mobil ? 'cep' : 'sabit hat — WhatsApp alamaz'}
+                  </span>
+                </span>
+              ) : (
+                <span
+                  key={`gecersiz-${index}`}
+                  className="inline-flex items-center gap-1 rounded-md border border-red-200 bg-red-50 px-2 py-0.5 text-xs text-red-700"
+                >
+                  {item.raw}
+                  <span className="text-[10px] font-medium">geçersiz</span>
+                </span>
+              )
+            )}
+          </div>
+          <p className="mt-1 text-xs text-slate-500">
+            {gecerliSayi}/{MAX_TELEFON} numara
+            {gecerliSayi > MAX_TELEFON ? (
+              <span className="ml-1 font-medium text-red-600">
+                — en fazla {MAX_TELEFON} numara kaydedilebilir
+              </span>
+            ) : null}
+          </p>
+        </div>
       )}
 
       {visibleCandidates.length > 0 && (
