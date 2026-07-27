@@ -242,9 +242,8 @@ export function HatirlatmaClient({
 
       <p className="text-xs text-slate-500">
         <MessageCircle size={14} className="mr-1 inline text-emerald-600" />
-        WhatsApp gönderimi ss ile ortak Baileys ofis botu üzerinden yapılır (Meta Cloud API
-        kullanılmaz); e-posta ise kurumsal Gmail kutusundan gider. Mesaj metni her iki kanalda da
-        önceden belirlenmiş ödeme talebidir.
+        WhatsApp ödeme talepleri Meta'nın resmi Cloud API'si üzerinden onaylı şablonla gönderilir;
+        e-posta ise kurumsal Gmail kutusundan gider.
       </p>
     </div>
   )

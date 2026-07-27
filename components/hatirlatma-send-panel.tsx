@@ -120,7 +120,7 @@ export function HatirlatmaSendPanel({
         response = await fetch('/api/hatirlatma/whatsapp-gonder', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ cariKod, messageBody: messageBody.trim(), telefonlar: hedefler }),
+          body: JSON.stringify({ cariKod, messageBody: messageBody.trim(), phones: hedefler }),
           signal: controller.signal,
         })
         raw = await response.text()
@@ -151,7 +151,7 @@ export function HatirlatmaSendPanel({
       setAlicilar(durumlar)
       if (typeof result.gonderimSayisi === 'number') setSentCount(result.gonderimSayisi)
       else setSentCount((count) => count + durumlar.filter((item) => item.kuyrukId).length)
-      setFeedback({ type: 'success', text: result.message || 'WhatsApp mesajı kuyruğa alındı.' })
+      setFeedback({ type: 'success', text: result.message || 'WhatsApp ödeme talebi gönderildi.' })
       router.refresh()
       const ids = durumlar.map((item) => item.kuyrukId).filter((id): id is string => Boolean(id))
       if (ids.length) void pollDurum(ids)
@@ -237,23 +237,23 @@ export function HatirlatmaSendPanel({
             {whatsappContext.botCevrimici ? (
               <>
                 <Wifi size={14} className="text-emerald-600" />
-                <span className="font-medium text-emerald-700">Ofis WhatsApp botu çevrimiçi</span>
+                <span className="font-medium text-emerald-700">WhatsApp Cloud API hazır</span>
               </>
             ) : (
               <>
                 <WifiOff size={14} className="text-amber-600" />
-                <span className="font-medium text-amber-700">Bot çevrimdışı</span>
+                <span className="font-medium text-amber-700">WhatsApp Cloud API yapılandırması eksik</span>
               </>
             )}
           </div>
           <p className="mt-1.5 text-slate-500">
             {whatsappContext.botCevrimici
-              ? 'Mesaj kuyruğa alınır alınmaz bot sırayla gönderir.'
-              : 'Mesaj kuyrukta bekler; bot PC\'si açılınca otomatik gönderilir.'}
+              ? "Onaylı ödeme talebi şablonu Meta'nın resmi API'si üzerinden doğrudan gönderilir."
+              : 'Gönderim için WhatsApp Cloud API erişim bilgileri kontrol edilmelidir.'}
           </p>
           {whatsappContext.sonGonderim ? (
             <p className="mt-1 text-slate-400">
-              Botun son gönderimi: {new Date(whatsappContext.sonGonderim).toLocaleString('tr-TR')}
+              Son gönderim: {new Date(whatsappContext.sonGonderim).toLocaleString('tr-TR')}
             </p>
           ) : null}
         </div>
@@ -266,7 +266,7 @@ export function HatirlatmaSendPanel({
         className="w-full"
       >
         {loading ? <LoaderCircle className="animate-spin" size={18} /> : <Send size={18} />}
-        {seciliSayi > 1 ? `${seciliSayi} kişiye gönder` : 'WhatsApp kuyruğuna gönder'}
+        {seciliSayi > 1 ? `${seciliSayi} kişiye gönder` : 'WhatsApp ile gönder'}
       </Button>
 
       {telefonlar.length === 0 && (
