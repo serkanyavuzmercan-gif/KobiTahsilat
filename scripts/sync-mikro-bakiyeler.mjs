@@ -210,12 +210,13 @@ SELECT
 FROM CARI_HESAP_HAREKETLERI cha WITH (NOLOCK)
 LEFT JOIN CARI_HESAPLAR ch WITH (NOLOCK) ON ch.cari_kod = cha.cha_kod
 WHERE ISNULL(cha.cha_iptal,0)=0 AND ISNULL(cha.cha_hidden,0)=0
-  AND (cha.cha_kod LIKE '120%' OR cha.cha_kod LIKE '320%')
+  AND cha.cha_kod LIKE '120%'
   AND cha.cha_kod NOT LIKE '120.B%'
   AND cha.cha_kod NOT LIKE '128%'
-  AND cha.cha_kod NOT IN ('120.01.0001','120.01.4249')
   AND ISNULL(cha.cha_meblag,0) <> 0
 ORDER BY cha.cha_kod, cha.cha_tarihi`
+// NOT: 320* tedarikçiler hariç (fazla ödemede bize borçlu görünür, tahsilat hedefi değil).
+// ŞAHLAN (120.01.0001) ve AYGÜN SARI (120.01.4249) artık dahil — normal müşteridirler.
 
 const planSql = `SELECT cari_kod, CAST(cari_odemeplan_no AS VARCHAR(20)) AS plan_no,
   ISNULL(cari_EMail,'') AS email,
@@ -224,7 +225,7 @@ const planSql = `SELECT cari_kod, CAST(cari_odemeplan_no AS VARCHAR(20)) AS plan
   ISNULL(cari_Tel2,'') AS tel2,
   (SELECT odp_adi FROM ODEME_PLANLARI WHERE odp_no = cari_odemeplan_no) AS odeme_vadesi,
   CAST((SELECT odp_ortgun FROM ODEME_PLANLARI WHERE odp_no = cari_odemeplan_no) AS VARCHAR(20)) AS vade_gun
-  FROM CARI_HESAPLAR WHERE cari_kod LIKE '120%' OR cari_kod LIKE '320%'`
+  FROM CARI_HESAPLAR WHERE cari_kod LIKE '120%'`
 
 const base = process.env.MIKRO_BASE_URL
 const balRes = await post(base, { Mikro: auth, SQLSorgu: sql })
@@ -349,7 +350,7 @@ const out = mergeTestCariler(
     sourced_at: new Date().toISOString(),
     source: `Mikro firma ${process.env.MIKRO_FIRMA_KODU}`,
     snapshot_tarihi: snapshotTarihi,
-    note: 'MikRapor TL/vade + ss cari-net/FIFO kuralları. Bakiye>0 alacağımız; 128, ŞAHLAN ve AYGÜN hariç.',
+    note: 'MikRapor TL/vade + ss cari-net/FIFO kuralları. Bakiye>0 alacağımız; yalnızca 120* müşteriler, 320* tedarikçiler + 128* hariç. ŞAHLAN/AYGÜN dahil.',
     cari_sayisi: cariler.length,
     toplam_alacak: Math.round(cariler.reduce((s, c) => s + c.bakiye, 0) * 100) / 100,
     toplam_gecikmis: money(cariler.reduce((s, c) => s + c.gecikmis_bakiye, 0)),

@@ -1,28 +1,22 @@
 import { Suspense } from 'react'
 import { loadSnapshot } from '@/lib/data'
 import { requireAuthUser } from '@/lib/auth'
-import { loadCariYanitlari, loadYanitInbox } from '@/lib/cari-yanitlar'
-import { CarilerPageClient } from '@/components/cariler-page-client'
+import CarilerClient from '@/components/cariler-client'
 
 export const dynamic = 'force-dynamic'
 
 export default async function CarilerPage() {
-  const user = await requireAuthUser()
+  await requireAuthUser()
   const snap = await loadSnapshot()
-  const kodlar = snap.cariler.map((cari) => cari.cari_kod)
-  const [yanitlar, inbox] = await Promise.all([
-    loadCariYanitlari(user.id, kodlar),
-    loadYanitInbox(user.id),
-  ])
 
+  // Yanıtlar artık "Mutabakat > Sonuçlar" altında görülüyor; burada yanıt verisi çekilmez
+  // (sayfa açılış hızını yavaşlatıyordu). Yalnız cari listesi + sayfalama.
   return (
     <Suspense fallback={<div className="text-sm text-slate-500">Yükleniyor…</div>}>
-      <CarilerPageClient
+      <CarilerClient
         cariler={snap.cariler}
         toplam={snap.toplam_alacak}
         sourcedAt={snap.sourced_at}
-        yanitlar={yanitlar}
-        inbox={inbox}
       />
     </Suspense>
   )

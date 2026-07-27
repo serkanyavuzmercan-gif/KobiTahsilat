@@ -5,6 +5,8 @@ import { createAdminClient } from './supabase/admin'
 import { addBusinessDays } from './business-days'
 
 export type MutabakatCari = CariBakiye & {
+  /** Bu cari için keşfedilmiş TÜM doğrulanmış e-posta adresleri (seçim havuzu). */
+  email_havuzu: string[]
   mutabakat_son_gonderim: string | null
   mutabakat_gonderim_sayisi: number
   mutabakat_tekrar_gonderilebilir_at: string | null
@@ -16,23 +18,41 @@ export async function loadMutabakatCariler(): Promise<MutabakatCari[]> {
   const admin = createAdminClient()
   const codes = snapshot.cariler.map((cari) => cari.cari_kod)
 
-  const [{ data: masterRows, error: masterError }, { data: logRows, error: logError }] =
-    await Promise.all([
-      admin.from('cariler').select('cari_kod,email').in('cari_kod', codes),
-      admin
-        .from('mail_gonderim_log')
-        .select('ilgili_id,ilgili_tip,mail_to,sent_at')
-        .in('ilgili_tip', [
-          'mutabakat',
-          'mutabakat_email_override',
-          'mutabakat_email_aday_reddet',
-        ])
-        .in('ilgili_id', codes)
-        .order('sent_at', { ascending: false }),
-    ])
+  const [
+    { data: masterRows, error: masterError },
+    { data: logRows, error: logError },
+    { data: gizliRows, error: gizliError },
+  ] = await Promise.all([
+    admin.from('cariler').select('cari_kod,email').in('cari_kod', codes),
+    admin
+      .from('mail_gonderim_log')
+      .select('ilgili_id,ilgili_tip,mail_to,sent_at')
+      .in('ilgili_tip', [
+        'mutabakat',
+        'mutabakat_email_override',
+        'mutabakat_email_aday_reddet',
+      ])
+      .in('ilgili_id', codes)
+      // created_at desc: hem "son gönderim" (mutabakat satırlarında sent_at≈created_at) doğru
+      // kalır, hem de override satırları (sent_at null) arasında EN YENİ seçim kazanır.
+      .order('created_at', { ascending: false, nullsFirst: false }),
+    // Kullanıcının kalıcı sildiği (gizlediği) e-postalar — mutabakat havuzundan da elenir.
+    admin.from('cari_email_gizli').select('cari_kod,email').in('cari_kod', codes),
+  ])
 
   if (masterError) throw masterError
   if (logError) throw logError
+  if (gizliError) throw gizliError
+
+  const gizliByCode = new Map<string, Set<string>>()
+  for (const row of gizliRows || []) {
+    const kod = String(row.cari_kod)
+    const email = String(row.email || '').trim().toLowerCase()
+    if (!email) continue
+    const set = gizliByCode.get(kod) || new Set<string>()
+    set.add(email)
+    gizliByCode.set(kod, set)
+  }
 
   const masterEmail = new Map(
     (masterRows || []).map((row) => [String(row.cari_kod), parseEmails(row.email)])
@@ -60,17 +80,29 @@ export async function loadMutabakatCariler(): Promise<MutabakatCari[]> {
   }
 
   return snapshot.cariler.map((cari) => {
-    const override = overrideEmail.get(cari.cari_kod)
-    const master = masterEmail.get(cari.cari_kod) || []
+    const gizli = gizliByCode.get(cari.cari_kod) || new Set<string>()
+    const suz = (list: string[]) => list.filter((e) => !gizli.has(e.toLowerCase()))
+    const override = overrideEmail.has(cari.cari_kod)
+      ? suz(overrideEmail.get(cari.cari_kod) || [])
+      : undefined
+    const master = suz(masterEmail.get(cari.cari_kod) || [])
     const effectiveEmails =
       override !== undefined ? override : master.length ? master : cari.email_adresleri
     const emailAddresses = effectiveEmails.length ? effectiveEmails : []
+    // Seçim havuzu: keşfedilen tüm adresler (override + master + snapshot merge) — tekilleştirilmiş,
+    // gizlenenler (kalıcı silinmiş) hariç.
     const history = sentHistory.get(cari.cari_kod) || []
     const hiddenCandidates = dismissedCandidates.get(cari.cari_kod) || new Set<string>()
-    const visibleCandidates = cari.email_adaylari.filter(
-      (candidate) =>
-        !emailAddresses.includes(candidate.email) && !hiddenCandidates.has(candidate.email)
-    )
+    // Onay mekanizması kaldırıldı (kullanıcı kararı): reddedilmemiş Gmail adayları da doğrudan
+    // normal e-posta havuzuna katılır; artık "onay bekleyen" ayrımı yok, elle seç/sil yeterli.
+    const adayEmails = cari.email_adaylari
+      .map((c) => c.email)
+      .filter((e) => !hiddenCandidates.has(e))
+    const emailHavuzu = suz([
+      ...new Set(
+        [...(override ?? []), ...master, ...cari.email_adresleri, ...adayEmails].filter(Boolean)
+      ),
+    ])
     const nextSendAt = history[0] ? addBusinessDays(history[0], 8).toISOString() : null
     const sendBlocked = nextSendAt ? new Date(nextSendAt).getTime() > Date.now() : false
     return {
@@ -83,7 +115,8 @@ export async function loadMutabakatCariler(): Promise<MutabakatCari[]> {
           ? 'SS cari kartı'
           : cari.email_kaynagi,
       email_guven: emailAddresses.length ? 'dogrulanmis' : cari.email_guven,
-      email_adaylari: visibleCandidates,
+      email_adaylari: [],
+      email_havuzu: emailHavuzu,
       mutabakat_son_gonderim: history[0] || null,
       mutabakat_gonderim_sayisi: history.length,
       mutabakat_tekrar_gonderilebilir_at: nextSendAt,

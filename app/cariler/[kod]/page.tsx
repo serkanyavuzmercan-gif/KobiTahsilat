@@ -1,7 +1,13 @@
 import { notFound } from 'next/navigation'
+import { CheckCircle2, History, MessageCircle, Reply, Send, Users } from 'lucide-react'
 import { BackLink } from '@/components/ui/button'
+import { CariKanalEditor } from '@/components/cari-kanal-editor'
+import { CariKisilerEditor } from '@/components/cari-kisiler-editor'
+import { loadCariKisiler } from '@/lib/cari-kisiler'
+import { loadCariGecmis } from '@/lib/cari-gecmis'
 import { getCari, loadSnapshot } from '@/lib/data'
 import { cariOrtalamaGecikmeGun, formatGecikmeGun } from '@/lib/gecikme'
+import { formatPhoneDisplay } from '@/lib/phone'
 import { AGING_BUCKETS, formatTL, formatNumber } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -13,6 +19,8 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
   if (!cari) notFound()
 
   const snap = await loadSnapshot()
+  const kisiler = await loadCariKisiler(cari.cari_kod)
+  const gecmis = await loadCariGecmis(cari.cari_kod)
   const sira = snap.cariler.findIndex((c) => c.cari_kod === cari.cari_kod) + 1
   const pay = snap.toplam_alacak > 0 ? (cari.bakiye / snap.toplam_alacak) * 100 : 0
   const ortalamaGecikme = cariOrtalamaGecikmeGun(cari)
@@ -24,17 +32,25 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
       <section className="card p-6">
         <p className="font-mono text-xs text-slate-500">{cari.cari_kod}</p>
         <h2 className="mt-1 text-2xl font-semibold text-slate-900">{cari.firma_adi}</h2>
-        <p className={`mt-1 text-sm ${cari.email ? 'text-slate-500' : 'text-red-600'}`}>
-          {cari.email_adresleri.length
-            ? `E-posta: ${cari.email_adresleri.join(', ')} · ${cari.email_kaynagi || 'Mikro cari kartı'}`
-            : 'Mikro cari kartında e-posta adresi yok'}
+        {/* Bu cariye tanımlı iletişim bilgileri — doğrudan ekle/sil (körlere özel: ekleme her zaman görünür) */}
+        <p className="mt-4 text-xs text-slate-500">
+          Aşağıdan e-posta ve WA telefon numarası <strong>ekleyebilir</strong> (kutuya yazıp <strong>Ekle</strong>) veya
+          yanındaki <strong>✕</strong> ile <strong>kaldırabilirsiniz</strong>. İlk numara <strong>varsayılan</strong> olur.
+          Değişiklikler kalıcıdır.
         </p>
-        {!cari.email && cari.email_adaylari.length > 0 && (
-          <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-800">
-            <strong>Onay bekleyen Gmail adayları:</strong>{' '}
-            {cari.email_adaylari.map((aday) => aday.email).join(', ')}
-          </div>
-        )}
+        <div className="mt-2 grid gap-3 sm:grid-cols-2">
+          <CariKanalEditor
+            cariKod={cari.cari_kod}
+            kind="email"
+            values={cari.email_adresleri}
+          />
+          <CariKanalEditor
+            cariKod={cari.cari_kod}
+            kind="phone"
+            values={cari.telefon_numaralari}
+            display={cari.telefon_numaralari.map((t) => formatPhoneDisplay(t))}
+          />
+        </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           <Info label="Açık bakiye" value={formatTL(cari.bakiye)} accent />
@@ -65,6 +81,96 @@ export default async function CariDetayPage({ params }: { params: Promise<{ kod:
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="card p-5">
+        <h3 className="flex items-center gap-2 font-semibold">
+          <Users size={18} className="text-brand-600" /> İletişim Kişileri
+          <span className="text-xs font-normal text-slate-400">({kisiler.length})</span>
+        </h3>
+        <p className="mt-0.5 text-xs text-slate-500">
+          Mikro yetkilileri + web/teklif kayıtları. Numara/e-posta yanındaki açıklamayı düzenleyebilir,
+          kişi ekleyip silebilirsiniz — değişiklik kalıcıdır.
+        </p>
+        <div className="mt-3">
+          <CariKisilerEditor cariKod={cari.cari_kod} kisiler={kisiler} />
+        </div>
+      </section>
+
+      <section className="card p-5">
+        <h3 className="flex items-center gap-2 font-semibold">
+          <History size={18} className="text-brand-600" /> Gönderim geçmişi &amp; yanıtlar
+          <span className="text-xs font-normal text-slate-400">({gecmis.length})</span>
+        </h3>
+        <p className="mt-0.5 text-xs text-slate-500">
+          Bu cariye gönderilen mutabakat / ödeme talepleri ve müşteriden gelen onay / itiraz / yanıtlar.
+        </p>
+        {gecmis.length === 0 ? (
+          <p className="mt-3 text-sm text-slate-400">Henüz gönderim veya yanıt kaydı yok.</p>
+        ) : (
+          <ol className="mt-3 space-y-2">
+            {gecmis.map((k) => {
+              const yanit = k.yon === 'yanit'
+              const Icon = k.onay
+                ? CheckCircle2
+                : yanit
+                  ? Reply
+                  : k.kanal === 'WhatsApp'
+                    ? MessageCircle
+                    : Send
+              return (
+                <li
+                  key={k.id}
+                  className={`flex items-start gap-3 rounded-xl border p-3 ${
+                    k.onay
+                      ? 'border-emerald-200 bg-emerald-50'
+                      : yanit
+                        ? 'border-amber-200 bg-amber-50'
+                        : 'border-slate-200 bg-slate-50'
+                  }`}
+                >
+                  <Icon
+                    size={17}
+                    className={`mt-0.5 shrink-0 ${
+                      k.onay ? 'text-emerald-600' : yanit ? 'text-amber-600' : 'text-brand-600'
+                    }`}
+                  />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                      <span className="text-sm font-medium text-slate-800">{k.baslik}</span>
+                      {k.kanal && (
+                        <span className="rounded-full bg-white px-1.5 py-0.5 text-[10px] font-medium text-slate-500 ring-1 ring-slate-200">
+                          {k.kanal}
+                        </span>
+                      )}
+                      <span
+                        className={`rounded-full px-1.5 py-0.5 text-[10px] font-medium ${
+                          yanit ? 'bg-amber-100 text-amber-700' : 'bg-brand-100 text-brand-700'
+                        }`}
+                      >
+                        {yanit ? 'Gelen' : 'Giden'}
+                      </span>
+                    </div>
+                    {k.metin && (
+                      <p className="mt-0.5 whitespace-pre-wrap break-words text-xs text-slate-600">
+                        {k.metin}
+                      </p>
+                    )}
+                    {k.kisi && (
+                      <p className="mt-0.5 truncate text-[11px] text-slate-400">
+                        {yanit ? 'İletişim: ' : 'Alıcı: '}
+                        {k.kisi}
+                      </p>
+                    )}
+                  </div>
+                  <span className="shrink-0 whitespace-nowrap text-[11px] text-slate-400">
+                    {k.tarih ? new Date(k.tarih).toLocaleString('tr-TR') : ''}
+                  </span>
+                </li>
+              )
+            })}
+          </ol>
+        )}
       </section>
 
       <section className="table-shell">

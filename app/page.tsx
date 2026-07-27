@@ -12,7 +12,6 @@ export const dynamic = 'force-dynamic'
 export default async function HomePage() {
   const snap = await loadSnapshot()
   const top = snap.cariler.slice(0, 10)
-  const ort = snap.cari_sayisi ? snap.toplam_alacak / snap.cari_sayisi : 0
   const ortalamaGecikme = portfoyOrtalamaGecikmeGun(snap.cariler)
 
   return (
@@ -23,13 +22,11 @@ export default async function HomePage() {
           Kaynak: {snap.source} · Güncellendi:{' '}
           {new Date(snap.sourced_at).toLocaleString('tr-TR')}
         </p>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-5 grid gap-4 sm:grid-cols-3">
           <Stat label="Toplam alacak" value={formatTL(snap.toplam_alacak)} accent />
           <Stat label="Vadesi geçmiş" value={formatTL(snap.toplam_gecikmis)} warning />
           <Stat label="Açık cari sayısı" value={String(snap.cari_sayisi)} />
-          <Stat label="Ortalama bakiye" value={formatTL(ort)} />
         </div>
-        <p className="mt-4 text-xs text-slate-500">{snap.note}</p>
       </section>
 
       <section className="card p-6">

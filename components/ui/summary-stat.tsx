@@ -8,7 +8,7 @@ export function SummaryStat({
 }: {
   icon: React.ReactNode
   label: string
-  value: number
+  value: number | string
   tone: 'ok' | 'candidate' | 'missing'
 }) {
   const styles = {

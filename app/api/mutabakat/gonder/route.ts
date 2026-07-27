@@ -4,6 +4,7 @@ import { toErrorMessage } from '@/lib/errors'
 import { MAIL_LOG_KAYNAK } from '@/lib/mutabakat-log'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
 import { loadSnapshot } from '@/lib/data'
+import { normalizeEmail } from '@/lib/email'
 import { sendMail } from '@/lib/mail'
 import { buildMutabakatEmail } from '@/lib/mutabakat'
 import { loadMutabakatCari } from '@/lib/mutabakat-data'
@@ -13,6 +14,15 @@ export const dynamic = 'force-dynamic'
 
 function sendEnabled() {
   return process.env.MUTABAKAT_SEND_ENABLED !== 'false'
+}
+
+/** YYYY-MM-DD, gelecek olmayan (bugün veya geçmiş) geçerli tarih → aksi halde null. */
+function normalizeMutabakatTarihi(value: string | undefined): string | null {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null
+  const bugun = new Date().toISOString().slice(0, 10)
+  if (value > bugun) return null
+  if (Number(value.slice(0, 4)) < 2000) return null
+  return value
 }
 
 export async function POST(request: Request) {
@@ -25,7 +35,12 @@ export async function POST(request: Request) {
     }
 
     const user = await requireAuthUser()
-    const body = (await request.json()) as { cariKod?: string; senderId?: string }
+    const body = (await request.json()) as {
+      cariKod?: string
+      senderId?: string
+      mutabakatTarihi?: string
+      recipients?: string[]
+    }
     const cariKod = String(body.cariKod || '').trim()
     if (!cariKod) {
       return NextResponse.json({ success: false, error: 'Cari kodu gerekli.' }, { status: 400 })
@@ -41,6 +56,16 @@ export async function POST(request: Request) {
         { status: 400 }
       )
     }
+    // ASLA tüm adreslere birden gönderme. Kullanıcının seçtiği adreslere gider; seçim yoksa
+    // yalnız VARSAYILAN (ilk) adres. Kayıtlı adresler VEYA elle girilen geçerli e-postalar kabul
+    // edilir (garbage elenir); böylece listede olmayan özel bir alıcıya da gönderilebilir.
+    const istenenAlicilar = Array.isArray(body.recipients) ? body.recipients.map(String) : []
+    const secilenAlicilar = istenenAlicilar
+      .map((e) => (cari.email_adresleri.includes(e) ? e : normalizeEmail(e)))
+      .filter((e): e is string => Boolean(e))
+    const alicilar = secilenAlicilar.length
+      ? [...new Set(secilenAlicilar)]
+      : [cari.email_adresleri[0]]
     if (cari.mutabakat_gonderim_engelli) {
       return NextResponse.json(
         {
@@ -52,12 +77,14 @@ export async function POST(request: Request) {
     }
 
     const snapshot = await loadSnapshot()
-    const token = createMutabakatToken(cari.cari_kod, snapshot.snapshot_tarihi, cari.bakiye)
+    // Önizlemede seçilen tarih (geçmiş tarihli mutabakat) → token + e-posta aynı tarihi kullanır.
+    const secilenTarih = normalizeMutabakatTarihi(body.mutabakatTarihi) || snapshot.snapshot_tarihi
+    const token = createMutabakatToken(cari.cari_kod, secilenTarih, cari.bakiye)
     const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://kobi-tahsilat.vercel.app').replace(
       /\/$/,
       ''
     )
-    const email = buildMutabakatEmail(cari, snapshot.snapshot_tarihi, {
+    const email = buildMutabakatEmail(cari, secilenTarih, {
       onayUrl: `${baseUrl}/mutabakat/onay/${encodeURIComponent(token)}`,
       itirazUrl: `${baseUrl}/mutabakat/itiraz/${encodeURIComponent(token)}`,
     })
@@ -66,14 +93,14 @@ export async function POST(request: Request) {
     const sentAt = new Date().toISOString()
 
     const result = await sendMail({
-      to: cari.email_adresleri,
+      to: alicilar,
       subject: email.subject,
       html: email.html,
       text: email.text,
     })
 
     const logResult = await insertMailGonderimLog({
-      mail_to: cari.email_adresleri.join('; '),
+      mail_to: alicilar.join('; '),
       mail_from: from,
       subject: email.subject,
       body_preview: `${cari.firma_adi} mutabakatı gönderildi`,
@@ -89,7 +116,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      message: `Mutabakat e-postası ${cari.email_adresleri.join(', ')} adresine gönderildi.`,
+      message: `Mutabakat e-postası ${alicilar.join(', ')} adresine gönderildi.`,
       sentAt,
       from,
       providerId: result?.id || null,

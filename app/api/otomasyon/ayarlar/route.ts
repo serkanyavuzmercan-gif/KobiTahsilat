@@ -43,8 +43,9 @@ export async function PATCH(request: Request) {
     const next: AutomationSettings = {
       ...current,
       ...body,
-      version: 1,
-      kurallar: body.kurallar ?? current.kurallar,
+      version: 2,
+      mutabakat: { ...current.mutabakat, ...(body.mutabakat || {}) },
+      odeme_talebi: { ...current.odeme_talebi, ...(body.odeme_talebi || {}) },
       updated_at: new Date().toISOString(),
     }
 

@@ -1,23 +1,26 @@
 import 'server-only'
 import { gmailSendConfigured } from '../gmail-send'
-import { loadBotDurum, whatsAppBotEnabled } from '../whatsapp-kuyruk'
-import { automationGloballyEnabled, loadAutomationSettings } from './settings'
+import { whatsAppBotEnabled } from '../whatsapp-kuyruk'
+import { whatsAppCloudYapili } from '../whatsapp-cloud'
+import {
+  automationAnyActive,
+  automationGloballyEnabled,
+  loadAutomationSettings,
+} from './settings'
 import type { AutomationConnectionsStatus } from './types'
 
 export async function loadAutomationConnectionsStatus(
   _userId: string
 ): Promise<AutomationConnectionsStatus> {
-  const botDurum = await loadBotDurum()
-
-  // E-posta gönderimi sabit: Gmail (GMAIL_SENDER = serkan.mercan@) + servis hesabı.
+  // E-posta gönderimi sabit: Gmail (GMAIL_SENDER) + servis hesabı.
   const gmailReady = gmailSendConfigured()
   const gmailSender = (process.env.GMAIL_SENDER || '').trim() || null
 
   return {
     email_bagli: gmailReady,
     email_varsayilan: gmailSender,
-    // Baileys ofis botu heartbeat'i son 90 sn içinde geldiyse "bağlı".
-    whatsapp_api_yapilandirildi: botDurum.cevrimici,
+    // WhatsApp artık resmi Cloud API (Baileys değil): token + phone number id tanımlıysa hazır.
+    whatsapp_api_yapilandirildi: whatsAppCloudYapili(),
     whatsapp_gonderim_acik: whatsAppBotEnabled(),
     mutabakat_gonderim_acik: process.env.MUTABAKAT_SEND_ENABLED !== 'false',
     otomasyon_global_acik: automationGloballyEnabled(),
@@ -37,13 +40,16 @@ export async function assertAutomationReady(userId: string) {
   if (!connections.email_bagli) {
     issues.push('Gmail gönderimi yapılandırılmadı (GOOGLE_SA_KEY_B64 + GMAIL_SENDER).')
   }
-  if (!connections.whatsapp_api_yapilandirildi) {
-    issues.push('Ofis WhatsApp botu çevrimiçi değil (son heartbeat yok). Bot PC\'sini kontrol edin.')
+  // WhatsApp yalnız Ödeme Talebi bloğu WhatsApp kanalı açıkken şart.
+  const whatsappGerekli =
+    settings.odeme_talebi.aktif &&
+    (settings.odeme_talebi.kanal === 'whatsapp' || settings.odeme_talebi.kanal === 'her-ikisi')
+  if (whatsappGerekli && !connections.whatsapp_api_yapilandirildi) {
+    issues.push('WhatsApp Cloud API yapılandırılmadı (WHATSAPP_TOKEN + WHATSAPP_PHONE_NUMBER_ID).')
   }
 
-  const activeRules = settings.kurallar.filter((rule) => rule.aktif)
-  if (!activeRules.length) {
-    issues.push('En az bir aktif otomasyon kuralı tanımlayın.')
+  if (!automationAnyActive(settings)) {
+    issues.push('En az bir otomasyon bloğunu (mutabakat veya ödeme talebi) etkinleştirin.')
   }
 
   return { settings, connections, issues }

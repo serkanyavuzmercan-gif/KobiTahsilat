@@ -24,10 +24,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     )
   }
 
+  // Tüm uygulama TAM GENİŞLİK (kullanıcı kararı): yan boşluklar yok, sayfa ferah; geniş
+  // tablolar rahatça sığar. Yalnız kenar payı bırakılır (px).
   return (
     <div className="flex min-h-screen flex-col">
       <AppNav />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6">{children}</main>
+      <main className="w-full flex-1 px-4 py-6 lg:px-6">{children}</main>
       <AppFooter />
     </div>
   )

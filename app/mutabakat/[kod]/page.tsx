@@ -4,6 +4,7 @@ import { BackLink } from '@/components/ui/button'
 import { CariEmailEditor } from '@/components/cari-email-editor'
 import { MutabakatSendPanel } from '@/components/mutabakat-send-panel'
 import { requireAuthUser } from '@/lib/auth'
+import { loadIletisimEtiketleri } from '@/lib/cari-kisiler'
 import { loadSnapshot } from '@/lib/data'
 import { buildMutabakatEmail, formatDate } from '@/lib/mutabakat'
 import { loadMutabakatCari } from '@/lib/mutabakat-data'
@@ -16,10 +17,21 @@ function sendEnabled() {
   return process.env.MUTABAKAT_SEND_ENABLED !== 'false'
 }
 
+/** YYYY-MM-DD, gelecek olmayan (bugün veya geçmiş) geçerli tarih → aksi halde null. */
+function normalizeMutabakatTarihi(value: string | undefined): string | null {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null
+  const bugun = new Date().toISOString().slice(0, 10)
+  if (value > bugun) return null // gelecek tarihe izin yok
+  if (Number(value.slice(0, 4)) < 2000) return null
+  return value
+}
+
 export default async function MutabakatPreviewPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ kod: string }>
+  searchParams: Promise<{ d?: string }>
 }) {
   const { kod: encodedKod } = await params
   const cari = await loadMutabakatCari(decodeURIComponent(encodedKod))
@@ -29,12 +41,19 @@ export default async function MutabakatPreviewPage({
   const canSend = sendEnabled()
 
   const snapshot = await loadSnapshot()
-  const token = createMutabakatToken(cari.cari_kod, snapshot.snapshot_tarihi, cari.bakiye)
+  const { d } = await searchParams
+  const secilenTarih = normalizeMutabakatTarihi(d) || snapshot.snapshot_tarihi
+
+  const token = createMutabakatToken(cari.cari_kod, secilenTarih, cari.bakiye)
   const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://kobi-tahsilat.vercel.app').replace(/\/$/, '')
-  const email = buildMutabakatEmail(cari, snapshot.snapshot_tarihi, {
+  const email = buildMutabakatEmail(cari, secilenTarih, {
     onayUrl: `${baseUrl}/mutabakat/onay/${encodeURIComponent(token)}`,
     itirazUrl: `${baseUrl}/mutabakat/itiraz/${encodeURIComponent(token)}`,
   })
+
+  // Alıcı e-postaları yanına yazılacak açıklamalar (ad + rol; cari_kisiler'den).
+  const etiketler = await loadIletisimEtiketleri([cari.cari_kod])
+  const emailEtiket = etiketler[cari.cari_kod]?.email
 
   return (
     <div className="space-y-4">
@@ -133,10 +152,14 @@ export default async function MutabakatPreviewPage({
               <p className="mb-2 text-xs font-medium text-slate-500">Gönderim</p>
               <MutabakatSendPanel
                 cariKod={cari.cari_kod}
+                mutabakatTarihi={secilenTarih}
+                bugun={snapshot.snapshot_tarihi}
                 hasRecipient={Boolean(cari.email)}
+                emailAdresleri={cari.email_adresleri}
                 sendBlocked={cari.mutabakat_gonderim_engelli}
                 blockedUntil={cari.mutabakat_tekrar_gonderilebilir_at}
                 sendEnabled={canSend}
+                emailEtiket={emailEtiket}
               />
             </div>
             {canSend ? (

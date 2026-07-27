@@ -11,9 +11,9 @@ export default function AyarlarPage() {
           <Settings2 size={18} />
         </div>
         <div>
-          <h2 className="text-base font-semibold leading-tight">Tahsilat ayarları</h2>
+          <h2 className="text-base font-semibold leading-tight">Otomasyon Ayarları</h2>
           <p className="text-xs text-slate-500">
-            E-posta & WhatsApp bağlantıları, otomatik hatırlatma kuralları ve çalışma zamanı.
+            Otomatik mutabakat ve otomatik ödeme talebi — her biri bağımsız aç/kapa.
           </p>
         </div>
       </div>

@@ -20,8 +20,9 @@ import { parsePhones } from './phone'
  *   - `vade_takip_tahsilat`  → açık alacak evrakları (günlük snapshot, Mikro sync)
  *   - `cariler`              → firma adı, e-posta, telefon, ödeme vadesi
  *
- * İşaret kuralı ss ile aynı: bakiye>0 = alacağımız (tahsilat). 128, ŞAHLAN ve AYGÜN
- * hariç tutulması Mikro sync tarafında yapıldığı için bu tabloda zaten uygulanmıştır.
+ * İşaret kuralı ss ile aynı: bakiye>0 = alacağımız (tahsilat). Yalnızca 120* müşteriler dahil;
+ * 320* tedarikçiler (fazla ödeme yüzünden borçlu görünebilir) hem Mikro sync'te hem okuma
+ * tarafında hariç tutulur. ŞAHLAN (120.01.0001) ve AYGÜN SARI (120.01.4249) normal müşteridir, dahildir.
  *
  * Supabase erişilemezse (servis rolü tanımlı değil / sorgu boş) `data/tahsilat_snapshot.json`
  * yedeğine düşülür; böylece yerelde anahtarsız `npm run dev` de çalışır.
@@ -177,6 +178,12 @@ async function fetchTahsilatRows(admin: AdminClient, tarih: string): Promise<Tah
       .from('vade_takip_tahsilat')
       .select('cari_kod,firma_adi,evrak_no,belge_no,evrak_tarihi,vade_tarihi,tutar,temsilci')
       .eq('snapshot_tarihi', tarih)
+      // 320* = tedarikçiler (Satıcılar). Fazla ödeme yaptığımızda bize borçlu görünüp
+      // yanlışlıkla tahsilat listesine düşerler; okuma tarafında da hariç tutulur.
+      .not('cari_kod', 'ilike', '320%')
+      // AYGÜN MAKİNA (120.01.0214): bakiyesi 128 şüpheli alacağa alınmış; tahsilat hedefi değil
+      // (120 tarafında yalnız kuruş kalıntısı kalır). Kaynak sync de eler; burada emniyet ağı.
+      .neq('cari_kod', '120.01.0214')
       .order('id', { ascending: true })
       .range(from, from + PAGE - 1)
     if (error) throw error
@@ -188,6 +195,7 @@ async function fetchTahsilatRows(admin: AdminClient, tarih: string): Promise<Tah
 }
 
 type CariMasterRow = {
+  id: string | null
   cari_kod: string
   firma_adi: string | null
   yetkili_adi: string | null
@@ -208,12 +216,186 @@ async function fetchCariMaster(
     const slice = codes.slice(i, i + CHUNK)
     const { data, error } = await admin
       .from('cariler')
-      .select('cari_kod,firma_adi,yetkili_adi,email,telefon,vade_gun,odeme_vadesi,odeme_plani_adi')
+      .select('id,cari_kod,firma_adi,yetkili_adi,email,telefon,vade_gun,odeme_vadesi,odeme_plani_adi')
       .in('cari_kod', slice)
     if (error) throw error
     for (const row of (data as CariMasterRow[]) || []) {
       map.set(String(row.cari_kod), row)
     }
+  }
+  return map
+}
+
+// ---- İletişim zenginleştirme (Faz 1) ---------------------------------------
+// Eksik e-posta/telefonları AYNI Supabase'deki cari'ye bağlı kaynaklardan okuma
+// anında doldurur: cari_kisiler (CRM), services (servis kayıtları), yurtici_teklif
+// (gönderdiğimiz teklif e-postaları) ve teklif_no ile bağlanan teklif_talep gönderenleri.
+// Ayrı tablo/cron yok; günlük Mikro sync bunları ezmez, hep güncel kalır.
+
+type ContactEnrichment = Map<string, { emails: string[]; telefonlar: string[] }>
+
+const ENRICH_EMAIL_RE = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/gi
+
+/** "Ad Soyad <mail@x>" gibi ham alanlardan geçerli e-postaları çıkarır; kendi alan adımızı eler. */
+function extractEnrichEmails(raw: unknown): string[] {
+  if (!raw) return []
+  const matches = String(raw).toLowerCase().match(ENRICH_EMAIL_RE) || []
+  return matches.filter((e) => !e.endsWith('@hidroteknik.com.tr'))
+}
+
+async function selectInChunks<T>(
+  keys: string[],
+  run: (slice: string[]) => PromiseLike<{ data: unknown; error: unknown }>
+): Promise<T[]> {
+  const out: T[] = []
+  const CHUNK = 150
+  for (let i = 0; i < keys.length; i += CHUNK) {
+    const { data, error } = await run(keys.slice(i, i + CHUNK))
+    if (error) throw error
+    if (Array.isArray(data)) out.push(...(data as T[]))
+  }
+  return out
+}
+
+async function fetchContactEnrichment(
+  admin: AdminClient,
+  masters: CariMasterRow[]
+): Promise<ContactEnrichment> {
+  const result: ContactEnrichment = new Map()
+  const idToKod = new Map<string, string>()
+  const cariIds: string[] = []
+  const cariKods: string[] = []
+  for (const m of masters) {
+    if (m.id) {
+      idToKod.set(m.id, m.cari_kod)
+      cariIds.push(m.id)
+    }
+    cariKods.push(m.cari_kod)
+  }
+
+  const addEmail = (kod: string | undefined, raw: unknown) => {
+    if (!kod) return
+    const cur = result.get(kod) || { emails: [], telefonlar: [] }
+    for (const e of extractEnrichEmails(raw)) if (!cur.emails.includes(e)) cur.emails.push(e)
+    result.set(kod, cur)
+  }
+  const addTel = (kod: string | undefined, raw: unknown) => {
+    if (!kod || raw == null || !String(raw).trim()) return
+    const cur = result.get(kod) || { emails: [], telefonlar: [] }
+    cur.telefonlar.push(String(raw))
+    result.set(kod, cur)
+  }
+
+  // 1) cari_kisiler (cari_id) — CRM kişi kartları
+  if (cariIds.length) {
+    const kisiler = await selectInChunks<{ cari_id: string; email: string | null; telefon: string | null }>(
+      cariIds,
+      (slice) => admin.from('cari_kisiler').select('cari_id,email,telefon').in('cari_id', slice)
+    )
+    for (const r of kisiler) {
+      const kod = idToKod.get(String(r.cari_id))
+      addEmail(kod, r.email)
+      addTel(kod, r.telefon)
+    }
+
+    // 2) services (cari_id) — servis kayıtlarındaki müşteri/teslim iletişimi
+    const services = await selectInChunks<{
+      cari_id: string
+      customer_email: string | null
+      customer_phone: string | null
+      teslim_alan_telefon: string | null
+    }>(cariIds, (slice) =>
+      admin
+        .from('services')
+        .select('cari_id,customer_email,customer_phone,teslim_alan_telefon')
+        .in('cari_id', slice)
+    )
+    for (const r of services) {
+      const kod = idToKod.get(String(r.cari_id))
+      addEmail(kod, r.customer_email)
+      addTel(kod, r.customer_phone)
+      addTel(kod, r.teslim_alan_telefon)
+    }
+  }
+
+  // 3) yurtici_teklif (cari_kod) — gönderdiğimiz teklif e-postaları + teklif_no eşlemesi
+  const teklifNoToKod = new Map<string, string>()
+  if (cariKods.length) {
+    const yts = await selectInChunks<{ cari_kod: string; musteri_mail: string | null; teklif_no: string | null }>(
+      cariKods,
+      (slice) => admin.from('yurtici_teklif').select('cari_kod,musteri_mail,teklif_no').in('cari_kod', slice)
+    )
+    for (const r of yts) {
+      addEmail(String(r.cari_kod), r.musteri_mail)
+      const tn = String(r.teklif_no || '').trim()
+      if (tn) teklifNoToKod.set(tn, String(r.cari_kod))
+    }
+  }
+
+  // 4) teklif_talep (mail_from) — teklif_no üzerinden cari'ye bağlanan gelen teklif e-postaları
+  const teklifNos = [...teklifNoToKod.keys()]
+  if (teklifNos.length) {
+    const talepler = await selectInChunks<{ teklif_no: string | null; mail_from: string | null }>(
+      teklifNos,
+      (slice) => admin.from('teklif_talep').select('teklif_no,mail_from').in('teklif_no', slice)
+    )
+    for (const r of talepler) {
+      addEmail(teklifNoToKod.get(String(r.teklif_no || '').trim()), r.mail_from)
+    }
+  }
+
+  // 5) cari_email_web (cari_kod) — internetten (Tavily) bulunan e-postalar
+  if (cariKods.length) {
+    const web = await selectInChunks<{ cari_kod: string; email: string | null }>(
+      cariKods,
+      (slice) => admin.from('cari_email_web').select('cari_kod,email').in('cari_kod', slice)
+    )
+    for (const r of web) addEmail(String(r.cari_kod), r.email)
+  }
+
+  return result
+}
+
+/** Kullanıcının "yanlış" diye gizlediği e-postalar (kaynak fark etmez, elenir). */
+async function fetchGizliEmails(
+  admin: AdminClient,
+  cariKods: string[]
+): Promise<Map<string, Set<string>>> {
+  const map = new Map<string, Set<string>>()
+  if (!cariKods.length) return map
+  const rows = await selectInChunks<{ cari_kod: string; email: string | null }>(
+    cariKods,
+    (slice) => admin.from('cari_email_gizli').select('cari_kod,email').in('cari_kod', slice)
+  )
+  for (const r of rows) {
+    const kod = String(r.cari_kod)
+    const email = String(r.email || '').trim().toLowerCase()
+    if (!email) continue
+    const set = map.get(kod) || new Set<string>()
+    set.add(email)
+    map.set(kod, set)
+  }
+  return map
+}
+
+/** Kullanıcının "yanlış" diye gizlediği telefonlar (kaynak fark etmez, elenir). */
+async function fetchGizliTelefonlar(
+  admin: AdminClient,
+  cariKods: string[]
+): Promise<Map<string, Set<string>>> {
+  const map = new Map<string, Set<string>>()
+  if (!cariKods.length) return map
+  const rows = await selectInChunks<{ cari_kod: string; telefon: string | null }>(
+    cariKods,
+    (slice) => admin.from('cari_telefon_gizli').select('cari_kod,telefon').in('cari_kod', slice)
+  )
+  for (const r of rows) {
+    const kod = String(r.cari_kod)
+    const tel = String(r.telefon || '').trim()
+    if (!tel) continue
+    const set = map.get(kod) || new Set<string>()
+    set.add(tel)
+    map.set(kod, set)
   }
   return map
 }
@@ -243,6 +425,9 @@ async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
 
   const cariMaster = await fetchCariMaster(admin, [...grouped.keys()])
   const adaylar = loadAdaylarOverlay()
+  const iletisim = await fetchContactEnrichment(admin, [...cariMaster.values()])
+  const gizliEmailler = await fetchGizliEmails(admin, [...grouped.keys()])
+  const gizliTelefonlar = await fetchGizliTelefonlar(admin, [...grouped.keys()])
 
   const cariler: CariBakiye[] = []
   for (const [cariKod, evraklar] of grouped) {
@@ -278,8 +463,19 @@ async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
       (a.vade_tarihi || '9999').localeCompare(b.vade_tarihi || '9999')
     )
 
-    const emails = parseEmails(master?.email)
-    const phones = parsePhones(master?.telefon)
+    // Master (cari kartı) önce; eksikleri Faz-1 + web zenginleştirme kaynaklarıyla tamamla.
+    // Kullanıcının gizlediği ("yanlış" diye sildiği) e-postalar her kaynaktan elenir.
+    const enr = iletisim.get(cariKod)
+    const gizli = gizliEmailler.get(cariKod)
+    const gizliTel = gizliTelefonlar.get(cariKod)
+    const masterEmails = parseEmails(master?.email).filter((e) => !gizli?.has(e))
+    const masterPhones = parsePhones(master?.telefon).filter((p) => !gizliTel?.has(p))
+    const emails = parseEmails([master?.email, ...(enr?.emails || [])].filter(Boolean).join(';')).filter(
+      (e) => !gizli?.has(e)
+    )
+    const phones = parsePhones(
+      [master?.telefon, ...(enr?.telefonlar || [])].filter(Boolean).join(';')
+    ).filter((p) => !gizliTel?.has(p))
     const odemeVadesi = master?.odeme_vadesi || master?.odeme_plani_adi || null
     const vadeGun =
       master?.vade_gun != null && master.vade_gun > 0
@@ -292,12 +488,20 @@ async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
       firma_adi: (master?.firma_adi || evraklar[0]?.firma_adi || cariKod).trim(),
       email: emails[0] || null,
       email_adresleri: emails,
-      email_kaynagi: emails.length ? 'SS cari kartı' : null,
+      email_kaynagi: emails.length
+        ? masterEmails.length
+          ? 'SS cari kartı'
+          : 'Teklif/servis/kişi kaydı'
+        : null,
       email_guven: emails.length ? 'dogrulanmis' : null,
       email_adaylari: overlay?.email || [],
       telefon: phones[0] || null,
       telefon_numaralari: phones,
-      telefon_kaynagi: phones.length ? 'SS cari kartı' : null,
+      telefon_kaynagi: phones.length
+        ? masterPhones.length
+          ? 'SS cari kartı'
+          : 'Teklif/servis/kişi kaydı'
+        : null,
       telefon_guven: phones.length ? 'dogrulanmis' : null,
       telefon_adaylari: overlay?.telefon || [],
       bakiye,
@@ -315,7 +519,7 @@ async function buildFromSupabase(): Promise<TahsilatSnapshot | null> {
     sourced_at: new Date().toISOString(),
     source: 'Supabase · vade_takip_tahsilat (canlı)',
     snapshot_tarihi: snapshotTarihi,
-    note: 'Canlı Supabase: vade_takip_tahsilat açık alacak evrakları + cariler kartı. Bakiye>0 alacağımız; 128/ŞAHLAN/AYGÜN Mikro sync tarafında hariç.',
+    note: 'Canlı Supabase: vade_takip_tahsilat açık alacak evrakları + cariler kartı. Bakiye>0 alacağımız; yalnızca 120* müşteriler (320* tedarikçiler ve 128 şüpheli alacaklar hariç).',
     cari_sayisi: cariler.length,
     toplam_alacak: 0,
     toplam_gecikmis: 0,

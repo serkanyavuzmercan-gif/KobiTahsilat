@@ -33,13 +33,15 @@ export async function insertMailGonderimLog(row: MailGonderimLogRow): Promise<Ma
   if (row.mail_from) payload.mail_from = row.mail_from
   if (row.gonderen_user_id) payload.gonderen_user_id = row.gonderen_user_id
 
+  // Şemada opsiyonel kolonlar (mail_from / gonderen_user_id) bulunmayabilir. Insert bu yüzden
+  // patlarsa, hataya konu olan opsiyonel kolonu düşürüp tekrar dene — böylece log ASLA sessizce
+  // kaybolmaz. (mail_from kolonu yokken 133 mutabakat gönderimi loglanmamıştı; bu onu önler.)
+  const opsiyonel = ['mail_from', 'gonderen_user_id']
   let { error } = await admin.from('mail_gonderim_log').insert(payload)
-  if (
-    error &&
-    row.gonderen_user_id &&
-    /gonderen_user_id/i.test(error.message)
-  ) {
-    delete payload.gonderen_user_id
+  for (let i = 0; i < opsiyonel.length && error; i++) {
+    const eksik = opsiyonel.find((c) => c in payload && new RegExp(c, 'i').test(error!.message))
+    if (!eksik) break
+    delete payload[eksik]
     ;({ error } = await admin.from('mail_gonderim_log').insert(payload))
   }
 
