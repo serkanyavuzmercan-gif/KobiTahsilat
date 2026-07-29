@@ -48,6 +48,23 @@ export type CreatePaymentLinkInput = {
   email: string
   /** PayTR bildirimi geldiğinde bize geri dönecek eşleştirme referansımız (kendi token'ımız). */
   callbackId: string
+  /**
+   * Linkin son kullanma anı, "YYYY-MM-DD HH:MM:SS" (PayTR formatı, Türkiye saati).
+   *
+   * ⚠️ GÖNDERİLMEZSE LİNK SÜRESİZDİR — PayTR dokümanı: "If not sent, it remains open until
+   * deleted". Yani panelden elle silinene kadar ödenebilir kalır (2026-07-29'da fark edildi).
+   * `expiry_date` paytr_token HASH'İNE GİRMEZ; eklemek imza hesabını etkilemez.
+   *
+   * NOT: `max_count` (kullanım adedi limiti) YALNIZ `product` tipinde çalışır; bizim
+   * `collection` linklerimizde kullanılamaz — süre sınırı tek koruma mekanizmasıdır.
+   */
+  expiryDate?: string
+}
+
+/** Date → PayTR'nin beklediği "YYYY-MM-DD HH:MM:SS" (Türkiye saati). */
+export function paytrTarih(d: Date): string {
+  // 'sv-SE' locale'i tam olarak "YYYY-MM-DD HH:MM:SS" üretir; timeZone ile TR saatine sabitlenir.
+  return d.toLocaleString('sv-SE', { timeZone: 'Europe/Istanbul' }).replace('T', ' ')
 }
 
 export type CreatePaymentLinkResult = {
@@ -100,6 +117,8 @@ export async function createPaymentLink(input: CreatePaymentLinkInput): Promise<
     debug_on: cfg.testMode ? '1' : '0',
     paytr_token: paytrToken,
   })
+  // Opsiyonel: verilmezse link SÜRESİZ kalır (bkz. CreatePaymentLinkInput.expiryDate).
+  if (input.expiryDate) form.set('expiry_date', input.expiryDate)
 
   try {
     const res = await fetch(LINK_CREATE_URL, {

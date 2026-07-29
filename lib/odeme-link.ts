@@ -1,7 +1,7 @@
 import 'server-only'
 import crypto from 'crypto'
 import { createAdminClient } from './supabase/admin'
-import { createPaymentLink, getPaytrConfig, paytrYapili } from './paytr'
+import { createPaymentLink, getPaytrConfig, paytrYapili, paytrTarih } from './paytr'
 import { isTestCari } from './test-cariler'
 
 export type OdemeLinkRow = {
@@ -286,8 +286,24 @@ export async function recentlyPaidCariKods(sinceIso: string): Promise<Set<string
 const WA_TUTAR_MIN_KURUS = 100
 const WA_TUTAR_MAX_KURUS = 500_000_00
 
-/** Açık WhatsApp linki bu süreden eskiyse iptal edilip yenisi üretilir (PayTR linki bayatlamasın). */
-const WA_LINK_TAZE_MS = 30 * 86400000
+/**
+ * WhatsApp ödeme linkinin PayTR'deki GEÇERLİLİK SÜRESİ (gün).
+ *
+ * ⚠️ Süre verilmezse PayTR linki SÜRESİZ tutuyor ("remains open until deleted") — müşterinin
+ * telefonunda aylar sonra da ödenebilir bir link kalır. `collection` tipinde `max_count`
+ * (kullanım adedi limiti) çalışmadığı için SÜRE tek koruma mekanizmasıdır.
+ *
+ * 7 gün: "yarın/hafta başı öderim" diyen müşteriyi kaybetmeyecek kadar uzun, unutulmuş bir
+ * linkin süresiz yaşamasına izin vermeyecek kadar kısa.
+ */
+const WA_LINK_GECERLILIK_GUN = 7
+
+/**
+ * Açık linki yeniden kullanma penceresi. GEÇERLİLİKTEN KISA OLMAK ZORUNDA — aksi halde
+ * PayTR'de süresi dolmuş bir linki müşteriye tekrar verirdik (bizim satır hâlâ 'olusturuldu'
+ * görünür, PayTR ise linki kapatmıştır). 1 günlük emniyet payı bırakılır.
+ */
+const WA_LINK_TAZE_MS = (WA_LINK_GECERLILIK_GUN - 1) * 86400000
 
 /**
  * WhatsApp ödemeleri için SENTETİK cari kodu: `WA-<son10>`.
@@ -353,6 +369,7 @@ export async function getOrCreateWaOdemeLink(opts: {
       amountKurus,
       email,
       callbackId: token,
+      expiryDate: paytrTarih(new Date(Date.now() + WA_LINK_GECERLILIK_GUN * 86400000)),
     })
     if (!link.ok) {
       console.error('[wa-odeme-link] PayTR link üretilemedi:', link.error)
