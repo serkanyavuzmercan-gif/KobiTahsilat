@@ -53,20 +53,27 @@ deyince) bot linki **API ile** üretir; panelde elle link açmaya gerek yoktur.
 - **`lib/odeme-link.ts` → `getOrCreateWaOdemeLink()`** — telefon başına TEK açık link.
 - **`app/api/tahsilat/wa-odeme-link`** (secret: `WA_BAGLAM_SECRET`, `wa-baglam` ile aynı) — tawkto
   `lib/odeme-link-iste.ts`'ten çağırır, dönen `/o/<token>` sohbete yapıştırılır.
-- **Tutar 1 TL açılır**; müşteri PayTR sayfasında ödeyeceği tutarı kendi girer. Fiilî tutar
-  callback'teki `total_amount` → `odenen_kurus`.
+### ⚠️ Tutar ZORUNLU — `price` bir TAVANDIR (2026-07-29 canlı bulgu)
+
+PayTR `collection` linkinde `price` **tavandır**: ödeme sayfasındaki "Ödeme Tutarı" alanı o rakamla
+DOLU gelir, müşteri yalnız **aşağı** çekebilir. İlk sürüm linki 1 TL açıp "müşteri istediğini yazar"
+varsayıyordu — canlı testte müşteri **1 TL dışında bir şey yazamadı**. Yüksek tavan da riskli: alan
+dolu geldiği için silmeden onaylayan müşteriden yanlış tutar çekilir.
+
+Bu yüzden bot tutarı **önce sorar** (tawkto `lib/odeme.ts` → `tutarAyikla`), link **tam o tutarla**
+açılır ve müşteri PayTR'de hiçbir şey değiştirmeden öder. Fiilen tahsil edilen tutarın doğruluk
+kaynağı yine callback'teki `total_amount` → `odenen_kurus`.
 
 ### ⚠️ Neden sentetik `cari_kod` (`WA-<son10>`) — dokunmayın
 
 `markLinkFromCallback`, bir link TAM ödendiğinde aynı `cari_kod`'un diğer **açık** linklerini iptal
-eder. WhatsApp linki 1 TL açıldığından her ödeme "tam" sayılır. Gerçek cari kodu kullansaydık,
-müşterinin WhatsApp'tan yaptığı ödeme **finans ekibinin o cariye gönderdiği gerçek tahsilat linkini
-iptal ederdi**. Sentetik kod iki dünyayı ayırır ve para akışındaki mevcut kodun tek satırına bile
-dokunulmamasını sağlar.
+eder. Gerçek cari kodu kullansaydık, müşterinin WhatsApp'tan yaptığı bir ödeme **finans ekibinin o
+cariye gönderdiği gerçek tahsilat linkini iptal ederdi**. Sentetik kod iki dünyayı ayırır ve para
+akışındaki mevcut kodun tek satırına bile dokunulmamasını sağlar.
 
 Aynı sebeple `getOrCreateOdemeLinkForCari` **kullanılmaz**: oradaki "aynı tutar son 3 günde ödendiyse
-yeni link üretme" kilidi, hedef tutar herkeste 1 TL olduğu için bir kez ödeyen müşterinin 3 gün
-boyunca tekrar ödeyememesine yol açardı.
+yeni link üretme" kilidi, WhatsApp'tan aynı tutarı tekrar ödemek isteyen müşteriyi 3 gün boyunca
+kilitlerdi.
 
 Tekil index `(cari_kod, tutar_kurus) WHERE durum='olusturuldu'` gereği: açık link varsa yeniden
 kullanılır, 30 günden eskiyse önce `iptal` edilip slot boşaltılır. Eşzamanlı istekte kaybeden taraf

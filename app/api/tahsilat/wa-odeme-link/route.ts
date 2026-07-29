@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getOrCreateWaOdemeLink, WA_ODEME_VARSAYILAN_KURUS } from '@/lib/odeme-link'
+import { getOrCreateWaOdemeLink } from '@/lib/odeme-link'
 import { paytrYapili } from '@/lib/paytr'
 
 export const dynamic = 'force-dynamic'
@@ -10,8 +10,9 @@ export const dynamic = 'force-dynamic'
  * Müşteri WhatsApp'ta ödeme yapmak isteyince bot bu ucu çağırır, dönen kısa linki (/o/<token>)
  * sohbete yapıştırır. Kart bilgisi ne bota ne bize değer — ödeme PayTR hosted sayfasında yapılır.
  *
- * Tutar: varsayılan 1 TL; müşteri PayTR sayfasında ödemek istediği tutarı girer. Fiilen tahsil
- * edilen tutar callback'te `total_amount` ile gelir ve `odeme_linkleri.odenen_kurus`'a yazılır.
+ * Tutar (TL) ZORUNLUDUR: PayTR'de `price` bir TAVAN (müşteri ödeme sayfasında yalnız aşağı
+ * çekebilir), bu yüzden bot tutarı önce müşteriye sorar. Fiilen tahsil edilen tutar callback'te
+ * `total_amount` ile gelir ve `odeme_linkleri.odenen_kurus`'a yazılır.
  *
  * Yetki: `wa-baglam` ile AYNI secret (aynı güven sınırı — tawkto sunucusu). service_role bu
  * projede kalır; tawkto'ya asla verilmez.
@@ -33,11 +34,11 @@ export async function POST(request: Request) {
     const tel = String(body.tel || '').trim()
     if (!tel) return NextResponse.json({ ok: false, error: 'tel gerekli' }, { status: 400 })
 
-    // tutar TL cinsinden opsiyoneldir; verilmezse 1 TL (müşteri sayfada kendi tutarını girer).
-    const amountKurus =
-      typeof body.tutar === 'number' && body.tutar > 0
-        ? Math.round(body.tutar * 100)
-        : WA_ODEME_VARSAYILAN_KURUS
+    // tutar TL cinsinden ZORUNLU. Verilmezse link AÇILMAZ — bot tutarı sorup tekrar çağırır.
+    if (typeof body.tutar !== 'number' || !(body.tutar > 0)) {
+      return NextResponse.json({ ok: false, error: 'tutar gerekli' }, { status: 400 })
+    }
+    const amountKurus = Math.round(body.tutar * 100)
 
     const link = await getOrCreateWaOdemeLink({ telefon: tel, amountKurus })
     if (!link) return NextResponse.json({ ok: false, error: 'link üretilemedi' }, { status: 200 })

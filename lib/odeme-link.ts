@@ -267,17 +267,24 @@ export async function recentlyPaidCariKods(sinceIso: string): Promise<Set<string
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// WhatsApp (tawkto) ödeme linki — "müşteri tutarı kendi girer" akışı
+// WhatsApp (tawkto) ödeme linki
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * WhatsApp'tan gelen ödeme talebi için AÇILIŞ tutarı: 1 TL (100 kuruş).
- * Gerekçe (kullanıcı kararı 2026-07): panel akışında link cari borcu kadar açılıyor ama müşteri
- * PayTR sayfasında tutarı DEĞİŞTİREBİLİYOR. WhatsApp'ta borç bilinmediği (ve telefonun sahibine
- * bakiye ifşa edilmemesi gerektiği) için link 1 TL açılır; müşteri ödemek istediği tutarı girer.
- * Fiilen tahsil edilen tutarın doğruluk kaynağı callback'teki `total_amount` → `odenen_kurus`.
+ * ⚠️ TUTAR ZORUNLUDUR — varsayılan tutar YOK. Değiştirmeden önce oku (2026-07-29 canlı bulgu):
+ *
+ * PayTR `collection` linkinde oluştururken verilen `price` bir TAVANDIR. Ödeme sayfasındaki
+ * "Ödeme Tutarı" alanı o rakamla DOLU gelir; müşteri yalnız AŞAĞI çekebilir, üstüne çıkamaz.
+ *
+ * İlk sürümde link 1 TL açılıp "müşteri istediğini yazar" varsayılmıştı — canlı testte müşteri
+ * 1 TL dışında bir şey yazamadı. Yüksek tavan (ör. 500.000) da riskli: alan dolu geldiği için
+ * silmeden onaylayan müşteriden yanlış tutar çekilir. Bu yüzden tutar ÖNCE müşteriye sorulur
+ * (tawkto `lib/odeme.ts` → `tutarAyikla`) ve link TAM o tutarla açılır.
+ *
+ * Fiilen tahsil edilen tutarın doğruluk kaynağı yine callback'teki `total_amount` → `odenen_kurus`.
  */
-export const WA_ODEME_VARSAYILAN_KURUS = 100
+const WA_TUTAR_MIN_KURUS = 100
+const WA_TUTAR_MAX_KURUS = 500_000_00
 
 /** Açık WhatsApp linki bu süreden eskiyse iptal edilip yenisi üretilir (PayTR linki bayatlamasın). */
 const WA_LINK_TAZE_MS = 30 * 86400000
@@ -311,16 +318,21 @@ function son10(tel: string): string {
  */
 export async function getOrCreateWaOdemeLink(opts: {
   telefon: string
-  amountKurus?: number
+  amountKurus: number
 }): Promise<{ kisaLink: string; paytrUrl: string | null } | null> {
   try {
     if (!paytrYapili()) return null
     const s10 = son10(opts.telefon)
     if (s10.length !== 10) return null
 
+    // Tutar zorunlu ve sınırlı: yanlış/uçuk tutarla link açmaktansa hiç açma (çağıran tekrar sorar).
+    const amountKurus = Math.round(opts.amountKurus)
+    if (!Number.isFinite(amountKurus) || amountKurus < WA_TUTAR_MIN_KURUS || amountKurus > WA_TUTAR_MAX_KURUS) {
+      console.error('[wa-odeme-link] geçersiz tutar (kuruş):', opts.amountKurus)
+      return null
+    }
+
     const cariKod = `WA-${s10}`
-    const amountKurus =
-      opts.amountKurus && opts.amountKurus > 0 ? Math.round(opts.amountKurus) : WA_ODEME_VARSAYILAN_KURUS
     const admin = createAdminClient()
 
     const acik = await acikWaLink(cariKod, amountKurus)
@@ -332,8 +344,10 @@ export async function getOrCreateWaOdemeLink(opts: {
     }
 
     const token = generateLinkToken()
-    const email =
-      process.env.PAYTR_FALLBACK_EMAIL || process.env.GMAIL_SENDER || 'finans@hidroteknik.com.tr'
+    // ⚠️ Bu adres PayTR ödeme sayfasında MÜŞTERİYE GÖRÜNÜR (Sipariş Bilgileri → E-posta Adresi).
+    // Bu yüzden GMAIL_SENDER/PAYTR_FALLBACK_EMAIL zincirine BİLEREK bakılmaz — oradan kişisel bir
+    // çalışan adresi gelip müşteriye gösterilirdi. Kurumsal adres sabit; env ile değiştirilebilir.
+    const email = process.env.PAYTR_WA_EMAIL || 'info@hidroteknik.com.tr'
     const link = await createPaymentLink({
       name: 'Hidroteknik A.Ş. — ödeme',
       amountKurus,
