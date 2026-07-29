@@ -45,6 +45,33 @@ Creds yokken her şey **güvenli no-op**: panel "PayTR bağlı değil" der, otom
   eklenemez). Buton tabanı **kendi domainimiz** olmalı (`/o/{{1}}`) — Meta "sabit taban + dinamik ek" kuralı.
   Onay saatler/günler sürebilir; mail kanalı buna bağımlı kalmamalı.
 
+## WhatsApp botu (tawkto) — müşteriye özel link
+
+Müşteri WhatsApp'ta ödeme yapmak isteyince (kart fotoğrafı/numarası atınca ya da "ödeme yapacağım"
+deyince) bot linki **API ile** üretir; panelde elle link açmaya gerek yoktur.
+
+- **`lib/odeme-link.ts` → `getOrCreateWaOdemeLink()`** — telefon başına TEK açık link.
+- **`app/api/tahsilat/wa-odeme-link`** (secret: `WA_BAGLAM_SECRET`, `wa-baglam` ile aynı) — tawkto
+  `lib/odeme-link-iste.ts`'ten çağırır, dönen `/o/<token>` sohbete yapıştırılır.
+- **Tutar 1 TL açılır**; müşteri PayTR sayfasında ödeyeceği tutarı kendi girer. Fiilî tutar
+  callback'teki `total_amount` → `odenen_kurus`.
+
+### ⚠️ Neden sentetik `cari_kod` (`WA-<son10>`) — dokunmayın
+
+`markLinkFromCallback`, bir link TAM ödendiğinde aynı `cari_kod`'un diğer **açık** linklerini iptal
+eder. WhatsApp linki 1 TL açıldığından her ödeme "tam" sayılır. Gerçek cari kodu kullansaydık,
+müşterinin WhatsApp'tan yaptığı ödeme **finans ekibinin o cariye gönderdiği gerçek tahsilat linkini
+iptal ederdi**. Sentetik kod iki dünyayı ayırır ve para akışındaki mevcut kodun tek satırına bile
+dokunulmamasını sağlar.
+
+Aynı sebeple `getOrCreateOdemeLinkForCari` **kullanılmaz**: oradaki "aynı tutar son 3 günde ödendiyse
+yeni link üretme" kilidi, hedef tutar herkeste 1 TL olduğu için bir kez ödeyen müşterinin 3 gün
+boyunca tekrar ödeyememesine yol açardı.
+
+Tekil index `(cari_kod, tutar_kurus) WHERE durum='olusturuldu'` gereği: açık link varsa yeniden
+kullanılır, 30 günden eskiyse önce `iptal` edilip slot boşaltılır. Eşzamanlı istekte kaybeden taraf
+kazananın linkini döner.
+
 ## Açık tasarım kararları
 
 - **Tutar:** varsayılan gecikmiş bakiye; `editable=true` → müşteri hosted sayfada değiştirebilir. Callback'te

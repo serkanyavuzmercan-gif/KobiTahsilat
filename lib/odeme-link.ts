@@ -265,3 +265,131 @@ export async function recentlyPaidCariKods(sinceIso: string): Promise<Set<string
     .gte('odendi_at', sinceIso)
   return new Set((data || []).map((r) => String(r.cari_kod)))
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WhatsApp (tawkto) ödeme linki — "müşteri tutarı kendi girer" akışı
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * WhatsApp'tan gelen ödeme talebi için AÇILIŞ tutarı: 1 TL (100 kuruş).
+ * Gerekçe (kullanıcı kararı 2026-07): panel akışında link cari borcu kadar açılıyor ama müşteri
+ * PayTR sayfasında tutarı DEĞİŞTİREBİLİYOR. WhatsApp'ta borç bilinmediği (ve telefonun sahibine
+ * bakiye ifşa edilmemesi gerektiği) için link 1 TL açılır; müşteri ödemek istediği tutarı girer.
+ * Fiilen tahsil edilen tutarın doğruluk kaynağı callback'teki `total_amount` → `odenen_kurus`.
+ */
+export const WA_ODEME_VARSAYILAN_KURUS = 100
+
+/** Açık WhatsApp linki bu süreden eskiyse iptal edilip yenisi üretilir (PayTR linki bayatlamasın). */
+const WA_LINK_TAZE_MS = 30 * 86400000
+
+/**
+ * WhatsApp ödemeleri için SENTETİK cari kodu: `WA-<son10>`.
+ *
+ * ⚠️ NEDEN GERÇEK cari_kod DEĞİL — bilerek: `markLinkFromCallback`, bir link TAM ödendiğinde
+ * AYNI cari_kod'a ait diğer AÇIK linkleri iptal eder. WhatsApp linki 1 TL açıldığı için her ödeme
+ * "tam" sayılır; gerçek cari kodu kullansaydık müşterinin WhatsApp'tan yaptığı 1 TL'lik ödeme,
+ * finans ekibinin o cariye gönderdiği GERÇEK tahsilat linkini iptal ederdi. Sentetik kod bu iki
+ * dünyayı tamamen ayırır ve mevcut (para akışındaki) kodun tek satırına dokunmayı gerektirmez.
+ */
+export function waCariKodu(telefon: string): string {
+  return `WA-${son10(telefon)}`
+}
+
+function son10(tel: string): string {
+  return String(tel || '').replace(/\D/g, '').slice(-10)
+}
+
+/**
+ * WhatsApp botunun (tawkto) müşteriye vereceği ödeme linki. Telefon başına TEK açık link tutulur.
+ *
+ * ⚠️ `getOrCreateOdemeLinkForCari` BİLEREK kullanılmıyor: o fonksiyon "aynı tutar son 3 günde
+ * ödendiyse yeni link üretme" kilidi uygular. Burada hedef tutar herkeste 1 TL olduğundan bu kilit,
+ * bir kez ödeme yapan müşterinin 3 gün boyunca bir daha ödeyememesine yol açardı.
+ *
+ * Tekil index (cari_kod, tutar_kurus) WHERE durum='olusturuldu' gereği: açık link varsa yeniden
+ * kullanılır; bayatsa önce 'iptal' edilip slot boşaltılır. Hata hâlinde ASLA throw etmez → null.
+ */
+export async function getOrCreateWaOdemeLink(opts: {
+  telefon: string
+  amountKurus?: number
+}): Promise<{ kisaLink: string; paytrUrl: string | null } | null> {
+  try {
+    if (!paytrYapili()) return null
+    const s10 = son10(opts.telefon)
+    if (s10.length !== 10) return null
+
+    const cariKod = `WA-${s10}`
+    const amountKurus =
+      opts.amountKurus && opts.amountKurus > 0 ? Math.round(opts.amountKurus) : WA_ODEME_VARSAYILAN_KURUS
+    const admin = createAdminClient()
+
+    const acik = await acikWaLink(cariKod, amountKurus)
+    if (acik) {
+      const yas = Date.now() - new Date(acik.created_at).getTime()
+      if (yas < WA_LINK_TAZE_MS) return { kisaLink: shortLinkUrl(acik.token), paytrUrl: acik.paytr_url }
+      // Bayat: tekil index slotunu boşalt, aşağıda taze link üretilsin.
+      await admin.from('odeme_linkleri').update({ durum: 'iptal' }).eq('token', acik.token)
+    }
+
+    const token = generateLinkToken()
+    const email =
+      process.env.PAYTR_FALLBACK_EMAIL || process.env.GMAIL_SENDER || 'finans@hidroteknik.com.tr'
+    const link = await createPaymentLink({
+      name: 'Hidroteknik A.Ş. — ödeme',
+      amountKurus,
+      email,
+      callbackId: token,
+    })
+    if (!link.ok) {
+      console.error('[wa-odeme-link] PayTR link üretilemedi:', link.error)
+      return null
+    }
+
+    try {
+      await insertOdemeLink({
+        token,
+        paytrLinkId: link.id,
+        cariKod,
+        firmaAdi: `WhatsApp — +90${s10}`,
+        tutarKurus: amountKurus,
+        editable: true,
+        email: null,
+        paytrUrl: link.url,
+        testMode: getPaytrConfig()?.testMode ?? false,
+      })
+    } catch (cause) {
+      // Yarış: aynı telefondan eşzamanlı iki istek → tekil index ihlali. Kaybeden taraf, kazananın
+      // açık linkini döner (müşteri linksiz kalmasın).
+      const yarisSonrasi = await acikWaLink(cariKod, amountKurus)
+      if (yarisSonrasi) return { kisaLink: shortLinkUrl(yarisSonrasi.token), paytrUrl: yarisSonrasi.paytr_url }
+      throw cause
+    }
+
+    return { kisaLink: shortLinkUrl(token), paytrUrl: link.url }
+  } catch (cause) {
+    console.error('[wa-odeme-link]', cause)
+    return null
+  }
+}
+
+async function acikWaLink(
+  cariKod: string,
+  amountKurus: number,
+): Promise<{ token: string; paytr_url: string | null; created_at: string } | null> {
+  const admin = createAdminClient()
+  const { data } = await admin
+    .from('odeme_linkleri')
+    .select('token,paytr_url,created_at')
+    .eq('cari_kod', cariKod)
+    .eq('durum', 'olusturuldu')
+    .eq('tutar_kurus', amountKurus)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  if (!data?.token) return null
+  return {
+    token: String(data.token),
+    paytr_url: data.paytr_url ? String(data.paytr_url) : null,
+    created_at: String(data.created_at),
+  }
+}
