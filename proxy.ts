@@ -26,7 +26,9 @@ export async function proxy(request: NextRequest) {
     // Kısa döküm linki (/d/<code>) — WhatsApp'ta müşteriye giden PDF döküm.
     request.nextUrl.pathname.startsWith('/d/') ||
     // Sunucu-sunucu (secret'lı) WhatsApp bot bağlam ucu — tawkto çağırır.
-    request.nextUrl.pathname === '/api/tahsilat/wa-baglam'
+    request.nextUrl.pathname === '/api/tahsilat/wa-baglam' ||
+    // Giriş ucu: oturum AÇILMADAN çağrılır (auth kapısına takılırsa login imkânsız olur).
+    request.nextUrl.pathname === '/api/auth/giris'
   const isCronRoute = request.nextUrl.pathname.startsWith('/api/cron/')
   const isWebhookRoute = request.nextUrl.pathname.startsWith('/api/webhooks/')
   if (isPublicMutabakatResponse || isCronRoute || isWebhookRoute) return NextResponse.next()

@@ -2,9 +2,16 @@
 
 import { FormEvent, useState } from 'react'
 import { AlertTriangle, Eye, EyeOff, KeyRound, Lock, User } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
 import { APP_VERSION } from '@/lib/app-version'
 import './login.css'
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''
+
+declare global {
+  interface Window {
+    turnstile?: { reset: (id?: string) => void }
+  }
+}
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
@@ -13,50 +20,31 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  /**
+   * Giriş SUNUCUDA doğrulanır (/api/auth/giris): brute-force kilidi + CAPTCHA orada uygulanır,
+   * deneme kaydı sahtelenemez. Oturum çerezleri de o route'ta set edilir.
+   */
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setLoading(true)
     setError('')
 
+    const form = event.currentTarget
+    const captchaToken =
+      (form.elements.namedItem('cf-turnstile-response') as HTMLInputElement | null)?.value || ''
+
     try {
-      const supabase = createClient()
-      const email = username.includes('@')
-        ? username.trim()
-        : `${username.trim()}@hidroteknik.com.tr`
-
-      const { data, error: loginError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const res = await fetch('/api/auth/giris', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, captchaToken }),
       })
+      const json = (await res.json()) as { success?: boolean; error?: string }
 
-      if (loginError || !data.user) {
-        setError(
-          loginError?.message === 'Invalid login credentials'
-            ? 'Geçersiz kullanıcı adı veya şifre.'
-            : loginError?.message || 'Giriş yapılamadı.'
-        )
+      if (!res.ok || !json.success) {
+        setError(json.error || 'Giriş yapılamadı.')
         setLoading(false)
-        return
-      }
-
-      // ss ile aynı yetki kontrolü: aktif personel + servis erişimi.
-      const { data: personel, error: personelError } = await supabase
-        .from('personel')
-        .select('aktif, erisim_servis')
-        .eq('user_id', data.user.id)
-        .single()
-
-      if (personelError || !personel) {
-        await supabase.auth.signOut()
-        setError('Personel kaydı bulunamadı.')
-        setLoading(false)
-        return
-      }
-
-      if (!personel.aktif || !personel.erisim_servis) {
-        await supabase.auth.signOut()
-        setError('Bu sisteme erişim yetkiniz yok.')
-        setLoading(false)
+        window.turnstile?.reset()
         return
       }
 
@@ -64,6 +52,7 @@ export default function LoginPage() {
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Giriş sırasında hata oluştu.')
       setLoading(false)
+      window.turnstile?.reset()
     }
   }
 
@@ -157,6 +146,20 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {/* CAPTCHA — yalnız site anahtarı tanımlıysa görünür (kademeli devreye alma) */}
+          {TURNSTILE_SITE_KEY && (
+            <>
+              {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+              <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+              <div
+                className="cf-turnstile"
+                data-sitekey={TURNSTILE_SITE_KEY}
+                data-theme="light"
+                style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}
+              />
+            </>
+          )}
+
           <button type="submit" className="login-btn" disabled={loading}>
             <span className="btn-text" style={{ opacity: loading ? 0 : 1 }}>
               Giriş Yap
@@ -187,10 +190,9 @@ export default function LoginPage() {
           </div>
         </form>
 
-        {/* Footer */}
+        {/* Footer — altyapı/yetki bilgisi VERİLMEZ (saldırgana ipucu olmasın). */}
         <div className="login-footer">
-          <p>ss ile aynı Supabase Auth ve personel yetkileri kullanılır.</p>
-          <p style={{ marginTop: 6 }}>Hidroteknik A.Ş. © 2026</p>
+          <p>Hidroteknik A.Ş. © 2026</p>
         </div>
       </div>
     </div>
