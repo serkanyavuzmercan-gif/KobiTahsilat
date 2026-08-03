@@ -5,12 +5,26 @@ import Script from 'next/script'
 import { AlertTriangle, Eye, EyeOff, KeyRound, Lock, ShieldAlert, User } from 'lucide-react'
 import { APP_VERSION } from '@/lib/app-version'
 
+// hCaptcha öncelikli (görsel bulmaca gösterebilir); yoksa Turnstile.
+const HCAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || ''
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ''
+const CAPTCHA: 'hcaptcha' | 'turnstile' | null = HCAPTCHA_SITE_KEY
+  ? 'hcaptcha'
+  : TURNSTILE_SITE_KEY
+    ? 'turnstile'
+    : null
 
 declare global {
   interface Window {
     turnstile?: { reset: (id?: string) => void }
+    hcaptcha?: { reset: (id?: string) => void }
   }
+}
+
+/** Başarısız denemeden sonra widget'ı sıfırla (token tek kullanımlıktır). */
+function captchaSifirla() {
+  if (CAPTCHA === 'hcaptcha') window.hcaptcha?.reset()
+  else if (CAPTCHA === 'turnstile') window.turnstile?.reset()
 }
 
 export function LoginForm({ ip }: { ip: string }) {
@@ -30,8 +44,8 @@ export function LoginForm({ ip }: { ip: string }) {
     setError('')
 
     const form = event.currentTarget
-    const captchaToken =
-      (form.elements.namedItem('cf-turnstile-response') as HTMLInputElement | null)?.value || ''
+    const alan = CAPTCHA === 'hcaptcha' ? 'h-captcha-response' : 'cf-turnstile-response'
+    const captchaToken = (form.elements.namedItem(alan) as HTMLInputElement | null)?.value || ''
 
     try {
       const res = await fetch('/api/auth/giris', {
@@ -44,7 +58,7 @@ export function LoginForm({ ip }: { ip: string }) {
       if (!res.ok || !json.success) {
         setError(json.error || 'Giriş yapılamadı.')
         setLoading(false)
-        window.turnstile?.reset()
+        captchaSifirla()
         return
       }
 
@@ -52,7 +66,7 @@ export function LoginForm({ ip }: { ip: string }) {
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Giriş sırasında hata oluştu.')
       setLoading(false)
-      window.turnstile?.reset()
+      captchaSifirla()
     }
   }
 
@@ -161,11 +175,22 @@ export function LoginForm({ ip }: { ip: string }) {
             </div>
           </div>
 
-          {/* CAPTCHA — yalnız site anahtarı tanımlıysa görünür.
-              Script next/script ile yüklenir (JSX <script> güvenilir çalışmaz).
-              Widget FORM İÇİNDE durur: Turnstile gizli 'cf-turnstile-response' input'unu buraya
-              ekler, gönderimde form.elements üzerinden okunur. */}
-          {TURNSTILE_SITE_KEY && (
+          {/* CAPTCHA — yalnız site anahtarı tanımlıysa görünür. Script next/script ile yüklenir
+              (JSX <script> güvenilir çalışmaz). Widget FORM İÇİNDE durur: sağlayıcı gizli token
+              input'unu ('h-captcha-response' / 'cf-turnstile-response') buraya ekler, gönderimde
+              form.elements üzerinden okunur. */}
+          {CAPTCHA === 'hcaptcha' && (
+            <>
+              <Script src="https://js.hcaptcha.com/1/api.js" strategy="afterInteractive" />
+              <div
+                className="h-captcha"
+                data-sitekey={HCAPTCHA_SITE_KEY}
+                data-theme="dark"
+                style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}
+              />
+            </>
+          )}
+          {CAPTCHA === 'turnstile' && (
             <>
               <Script
                 src="https://challenges.cloudflare.com/turnstile/v0/api.js"
