@@ -42,13 +42,19 @@ export async function POST(request: Request) {
       )
     }
 
-    // 2) CAPTCHA (yapılandırıldıysa zorunlu)
-    if (captchaZorunlu()) {
-      const ok = await captchaDogrula(body.captchaToken || '', ip)
+    // 2) CAPTCHA — KADEMELİ.
+    //    Token varsa DAİMA doğrulanır (geçersizse reddedilir).
+    //    Token yoksa: yalnızca bu kullanıcı/IP'de yakın zamanda başarısız deneme VARSA reddedilir.
+    //    Neden? Turnstile widget'ı (Cloudflare erişilemezse/JS engelliyse) yüklenemezse temiz
+    //    girişte personel kilitlenmesin; saldırgan ise ilk hatasından sonra CAPTCHA'ya takılır.
+    //    Brute-force kilidi zaten ayrıca çalışıyor (5 hata → 15 dk).
+    const token = body.captchaToken || ''
+    if (captchaZorunlu() && (token || kilit.basarisizSayisi > 0)) {
+      const ok = await captchaDogrula(token, ip)
       if (!ok) {
         await girisKaydet(kullanici, ip, false)
         return NextResponse.json(
-          { success: false, error: 'Güvenlik doğrulaması başarısız. Lütfen tekrar deneyin.' },
+          { success: false, error: 'Güvenlik doğrulaması başarısız. Sayfayı yenileyip tekrar deneyin.' },
           { status: 400 }
         )
       }

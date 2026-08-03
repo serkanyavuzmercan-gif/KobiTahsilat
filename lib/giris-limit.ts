@@ -22,6 +22,8 @@ export type GirisKontrolSonuc = {
   bloke: boolean
   kalanSaniye: number
   sebep?: 'kullanici' | 'ip'
+  /** Son pencerede bu kullanıcı/IP için başarısız deneme sayısı (kademeli CAPTCHA için). */
+  basarisizSayisi: number
 }
 
 function pencereBasi(): string {
@@ -54,11 +56,12 @@ export async function girisKontrol(kullanici: string, ip: string): Promise<Giris
       .or(`kullanici.eq.${kullanici},ip.eq.${ip}`)
       .order('created_at', { ascending: false })
       .limit(200)
-    if (error) return { bloke: false, kalanSaniye: 0 }
+    if (error) return { bloke: false, kalanSaniye: 0, basarisizSayisi: 0 }
 
     const rows = data || []
     const kullaniciDenemeleri = kullanici ? rows.filter((r) => r.kullanici === kullanici) : []
     const ipDenemeleri = rows.filter((r) => r.ip === ip)
+    const basarisizSayisi = Math.max(kullaniciDenemeleri.length, ipDenemeleri.length)
 
     const kilit = (liste: typeof rows, limit: number, sebep: 'kullanici' | 'ip') => {
       if (liste.length < limit) return null
@@ -66,15 +69,15 @@ export async function girisKontrol(kullanici: string, ip: string): Promise<Giris
       const enEski = liste[limit - 1]
       const bitis = Date.parse(String(enEski!.created_at)) + PENCERE_DK * 60_000
       const kalan = Math.ceil((bitis - Date.now()) / 1000)
-      return kalan > 0 ? { bloke: true as const, kalanSaniye: kalan, sebep } : null
+      return kalan > 0 ? { bloke: true as const, kalanSaniye: kalan, sebep, basarisizSayisi } : null
     }
 
     return (
       kilit(kullaniciDenemeleri, KULLANICI_LIMIT, 'kullanici') ||
-      kilit(ipDenemeleri, IP_LIMIT, 'ip') || { bloke: false, kalanSaniye: 0 }
+      kilit(ipDenemeleri, IP_LIMIT, 'ip') || { bloke: false, kalanSaniye: 0, basarisizSayisi }
     )
   } catch {
-    return { bloke: false, kalanSaniye: 0 }
+    return { bloke: false, kalanSaniye: 0, basarisizSayisi: 0 }
   }
 }
 
