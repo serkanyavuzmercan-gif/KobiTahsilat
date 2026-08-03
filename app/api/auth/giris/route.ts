@@ -42,14 +42,19 @@ export async function POST(request: Request) {
       )
     }
 
-    // 2) CAPTCHA — KADEMELİ.
-    //    Token varsa DAİMA doğrulanır (geçersizse reddedilir).
-    //    Token yoksa: yalnızca bu kullanıcı/IP'de yakın zamanda başarısız deneme VARSA reddedilir.
-    //    Neden? Turnstile widget'ı (Cloudflare erişilemezse/JS engelliyse) yüklenemezse temiz
-    //    girişte personel kilitlenmesin; saldırgan ise ilk hatasından sonra CAPTCHA'ya takılır.
-    //    Brute-force kilidi zaten ayrıca çalışıyor (5 hata → 15 dk).
+    // 2) CAPTCHA
+    //    ÖNEMLİ: CAPTCHA token'ı TEK KULLANIMLIKTIR. Supabase Auth tarafında da CAPTCHA açıksa
+    //    token'ı Supabase doğrulayacağı için BURADA doğrulamamalıyız (yoksa token tükenir ve
+    //    Supabase reddeder). Bu durumu SUPABASE_CAPTCHA_ENABLED=true ile belirtiyoruz.
+    //
+    //    Kendi doğrulamamız KADEMELİ: token varsa daima doğrulanır; token yoksa yalnızca bu
+    //    kullanıcı/IP'de yakın zamanda başarısız deneme VARSA reddedilir. Neden? Widget
+    //    yüklenemezse (JS engeli / sağlayıcıya erişilemezse) temiz girişte personel kilitlenmesin;
+    //    saldırgan ise ilk hatasından sonra CAPTCHA'ya takılır. Brute-force kilidi zaten ayrıca çalışır.
     const token = body.captchaToken || ''
-    if (captchaZorunlu() && (token || kilit.basarisizSayisi > 0)) {
+    const supabaseCaptcha = process.env.SUPABASE_CAPTCHA_ENABLED === 'true'
+
+    if (!supabaseCaptcha && captchaZorunlu() && (token || kilit.basarisizSayisi > 0)) {
       const ok = await captchaDogrula(token, ip)
       if (!ok) {
         await girisKaydet(kullanici, ip, false)
@@ -83,9 +88,11 @@ export async function POST(request: Request) {
       },
     })
 
+    // Supabase tarafında CAPTCHA açıksa token'ı ONA geçir (doğrulamayı Supabase yapar).
     const { data, error } = await supabase.auth.signInWithPassword({
       email: kullanici,
       password,
+      ...(supabaseCaptcha && token ? { options: { captchaToken: token } } : {}),
     })
 
     if (error || !data.user) {
