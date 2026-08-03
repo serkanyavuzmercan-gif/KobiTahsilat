@@ -1,6 +1,7 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
+import Script from 'next/script'
 import { AlertTriangle, Eye, EyeOff, KeyRound, Lock, ShieldAlert, User } from 'lucide-react'
 import { APP_VERSION } from '@/lib/app-version'
 
@@ -160,11 +161,16 @@ export function LoginForm({ ip }: { ip: string }) {
             </div>
           </div>
 
-          {/* CAPTCHA — yalnız site anahtarı tanımlıysa görünür */}
+          {/* CAPTCHA — yalnız site anahtarı tanımlıysa görünür.
+              Script next/script ile yüklenir (JSX <script> güvenilir çalışmaz).
+              Widget FORM İÇİNDE durur: Turnstile gizli 'cf-turnstile-response' input'unu buraya
+              ekler, gönderimde form.elements üzerinden okunur. */}
           {TURNSTILE_SITE_KEY && (
             <>
-              {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-              <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+              <Script
+                src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+                strategy="afterInteractive"
+              />
               <div
                 className="cf-turnstile"
                 data-sitekey={TURNSTILE_SITE_KEY}
