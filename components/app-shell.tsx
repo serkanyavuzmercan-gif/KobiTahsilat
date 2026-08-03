@@ -7,8 +7,9 @@ import { AppNav } from './app-nav'
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
-  // Login sayfası kendi tam ekran (ss ile aynı) tasarımını yönetir; sarmalama yok.
-  if (pathname === '/login') {
+  // Login ve MFA (2. adım) sayfaları kendi tam ekran tasarımlarını yönetir; sarmalama yok.
+  // MFA ekranında nav gösterilmemeli — oturum henüz doğrulanmadı (aal1).
+  if (pathname === '/login' || pathname === '/mfa') {
     return <>{children}</>
   }
 

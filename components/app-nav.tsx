@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { CreditCard, Handshake, MessageCircle, Settings2 } from 'lucide-react'
+import { CreditCard, Handshake, MessageCircle, Settings2, ShieldCheck } from 'lucide-react'
 import { AppBrand } from '@/components/app-brand'
 import { AuthActions } from '@/components/auth-actions'
 import { cn } from '@/lib/utils'
@@ -111,6 +111,13 @@ export function AppNav() {
               label="Otomasyon Ayarları"
               active={pathname.startsWith('/ayarlar') || pathname.startsWith('/mutabakat/ayarlar')}
               icon={<Settings2 size={15} className="opacity-90" />}
+            />
+
+            <NavItem
+              href="/guvenlik"
+              label="Güvenlik"
+              active={pathname.startsWith('/guvenlik')}
+              icon={<ShieldCheck size={15} className="opacity-90" />}
             />
 
             <span className="mx-1 hidden h-5 w-px bg-slate-200 sm:inline" aria-hidden />

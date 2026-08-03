@@ -72,6 +72,26 @@ export async function proxy(request: NextRequest) {
     return redirectWithCookies(url, response)
   }
 
+  // MFA ZORUNLULUĞU — kullanıcının doğrulanmış bir kimlik doğrulayıcısı varsa (nextLevel=aal2)
+  // ama oturum henüz kodla yükseltilmemişse (currentLevel=aal1), kod ekranına yönlendir.
+  // Bu kontrol OLMAZSA kullanıcı kodu girmeden gezinebilirdi (MFA baypas edilirdi).
+  // Faktörü OLMAYAN personel etkilenmez → kademeli geçiş güvenli.
+  const mfaSayfasi = request.nextUrl.pathname === '/mfa'
+  const mfaApi = request.nextUrl.pathname.startsWith('/api/auth/mfa/')
+  if (!mfaSayfasi && !mfaApi) {
+    try {
+      const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+      if (aal?.nextLevel === 'aal2' && aal.currentLevel !== 'aal2') {
+        const url = request.nextUrl.clone()
+        url.pathname = '/mfa'
+        url.search = ''
+        return redirectWithCookies(url, response)
+      }
+    } catch {
+      // AAL okunamazsa girişi engelleme (kendimizi dışarıda bırakmayalım).
+    }
+  }
+
   return response
 }
 
