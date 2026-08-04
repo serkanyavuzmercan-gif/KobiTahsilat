@@ -90,10 +90,19 @@ export function MfaKurulum({ kurulu }: { kurulu: boolean }) {
             <div className="text-sm text-slate-600">
               <p className="font-medium text-slate-800">Nasıl çalışır?</p>
               <ol className="mt-1.5 list-decimal space-y-1 pl-5">
-                <li>Telefonunuza bir doğrulayıcı uygulama kurun (Google Authenticator, Microsoft Authenticator).</li>
-                <li>Aşağıdaki QR kodunu uygulamayla okutun.</li>
-                <li>Uygulamada çıkan 6 haneli kodu girip doğrulayın.</li>
+                <li>
+                  Telefonunuza <strong>Google Authenticator</strong> uygulamasını kurun (App Store /
+                  Google Play&apos;de aratın; ücretsizdir).
+                </li>
+                <li>
+                  Uygulamayı açıp <strong>içinden</strong> QR kodu tarayın — telefonun normal
+                  kamerasıyla değil.
+                </li>
+                <li>Uygulamada çıkan 6 haneli kodu buraya girin.</li>
               </ol>
+              <p className="mt-2 text-xs text-slate-500">
+                Bundan sonra her girişte şifrenizin ardından bu koddan istenecek.
+              </p>
             </div>
           </div>
           <Button onClick={baslat} disabled={busy}>
@@ -106,9 +115,32 @@ export function MfaKurulum({ kurulu }: { kurulu: boolean }) {
 
       {adim === 'qr' && (
         <div className="space-y-4">
-          <p className="text-sm text-slate-600">
-            QR kodunu doğrulayıcı uygulamanızla okutun, ardından uygulamada görünen kodu girin.
-          </p>
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+            <p className="font-semibold">⚠️ Telefonun normal kamerasıyla okutmayın!</p>
+            <p className="mt-1">
+              Kamerayla okutursanız karşınıza <code className="rounded bg-amber-100 px-1">otpauth://…</code>{' '}
+              diye bir yazı çıkar, işe yaramaz. QR kodu{' '}
+              <strong>doğrulayıcı uygulamanın İÇİNDEN</strong> taranmalıdır.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+            <p className="font-semibold text-slate-800">1. Uygulamayı kurun (telefonunuzda yoksa)</p>
+            <p className="mt-1.5">
+              App Store / Google Play&apos;de <strong>&quot;Google Authenticator&quot;</strong> aratın ve
+              kurun. (Microsoft Authenticator veya Authy de olur.)
+            </p>
+            <p className="mt-3 font-semibold text-slate-800">2. Uygulamayı açın ve tarayın</p>
+            <p className="mt-1.5">
+              Google Authenticator&apos;da sağ alttaki <strong>+</strong> düğmesine basın →{' '}
+              <strong>&quot;QR kodu tara&quot;</strong> seçin → aşağıdaki kodu okutun.
+            </p>
+            <p className="mt-3 font-semibold text-slate-800">3. Kodu girin</p>
+            <p className="mt-1.5">
+              Uygulamada &quot;Hidroteknik&quot; kaydı belirecek ve altında 6 haneli bir sayı
+              görünecek. O sayıyı aşağıya yazın. (Kod 30 saniyede bir yenilenir.)
+            </p>
+          </div>
           {qr && (
             /* eslint-disable-next-line @next/next/no-img-element */
             <img
@@ -121,7 +153,8 @@ export function MfaKurulum({ kurulu }: { kurulu: boolean }) {
           )}
           {secret && (
             <p className="text-xs text-slate-500">
-              QR okutamıyorsanız bu anahtarı elle girin:{' '}
+              QR okutamıyorsanız uygulamada <strong>&quot;Kurulum anahtarını gir&quot;</strong> seçeneğini
+              kullanıp bu anahtarı yazın:{' '}
               <code className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[11px]">{secret}</code>
             </p>
           )}
