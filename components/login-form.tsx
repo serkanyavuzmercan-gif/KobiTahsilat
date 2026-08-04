@@ -1,6 +1,6 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import Script from 'next/script'
 import { AlertTriangle, Eye, EyeOff, KeyRound, Lock, ShieldAlert, User } from 'lucide-react'
 import { APP_VERSION } from '@/lib/app-version'
@@ -33,6 +33,15 @@ export function LoginForm({ ip }: { ip: string }) {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  // CAPTCHA çözülmeden giriş butonu AÇILMAZ (sunucu da ayrıca zorunlu tutar).
+  const [captchaOk, setCaptchaOk] = useState(false)
+
+  useEffect(() => {
+    if (!CAPTCHA) return
+    const w = window as unknown as Record<string, unknown>
+    w.__captchaTamam = (t: string) => setCaptchaOk(Boolean(t))
+    w.__captchaSifirlandi = () => setCaptchaOk(false)
+  }, [])
 
   /**
    * Giriş SUNUCUDA doğrulanır (/api/auth/giris): brute-force kilidi + CAPTCHA orada uygulanır,
@@ -59,6 +68,7 @@ export function LoginForm({ ip }: { ip: string }) {
         setError(json.error || 'Giriş yapılamadı.')
         setLoading(false)
         captchaSifirla()
+        setCaptchaOk(false)
         return
       }
 
@@ -67,6 +77,7 @@ export function LoginForm({ ip }: { ip: string }) {
       setError(cause instanceof Error ? cause.message : 'Giriş sırasında hata oluştu.')
       setLoading(false)
       captchaSifirla()
+      setCaptchaOk(false)
     }
   }
 
@@ -186,6 +197,9 @@ export function LoginForm({ ip }: { ip: string }) {
                 className="h-captcha"
                 data-sitekey={HCAPTCHA_SITE_KEY}
                 data-theme="dark"
+                data-callback="__captchaTamam"
+                data-expired-callback="__captchaSifirlandi"
+                data-error-callback="__captchaSifirlandi"
                 style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}
               />
             </>
@@ -200,12 +214,32 @@ export function LoginForm({ ip }: { ip: string }) {
                 className="cf-turnstile"
                 data-sitekey={TURNSTILE_SITE_KEY}
                 data-theme="dark"
+                data-callback="__captchaTamam"
+                data-expired-callback="__captchaSifirlandi"
+                data-error-callback="__captchaSifirlandi"
                 style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}
               />
             </>
           )}
 
-          <button type="submit" className="login-btn" disabled={loading}>
+          {CAPTCHA && !captchaOk && (
+            <p
+              style={{
+                margin: '0 0 4px',
+                textAlign: 'center',
+                fontSize: 11.5,
+                color: '#94a3b8',
+              }}
+            >
+              Devam etmek için yukarıdaki güvenlik doğrulamasını tamamlayın.
+            </p>
+          )}
+
+          <button
+            type="submit"
+            className="login-btn"
+            disabled={loading || (CAPTCHA !== null && !captchaOk)}
+          >
             <span className="btn-text" style={{ opacity: loading ? 0 : 1 }}>
               GİRİŞ YAP
             </span>

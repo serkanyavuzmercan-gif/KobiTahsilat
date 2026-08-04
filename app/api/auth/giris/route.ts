@@ -42,24 +42,26 @@ export async function POST(request: Request) {
       )
     }
 
-    // 2) CAPTCHA
-    //    ÖNEMLİ: CAPTCHA token'ı TEK KULLANIMLIKTIR. Supabase Auth tarafında da CAPTCHA açıksa
-    //    token'ı Supabase doğrulayacağı için BURADA doğrulamamalıyız (yoksa token tükenir ve
-    //    Supabase reddeder). Bu durumu SUPABASE_CAPTCHA_ENABLED=true ile belirtiyoruz.
+    // 2) CAPTCHA — HER ZAMAN ZORUNLU (yapılandırılmışsa).
+    //    Token yoksa veya geçersizse giriş REDDEDİLİR. (Önceki "kademeli" davranış, temiz ilk
+    //    denemede CAPTCHA'yı atlatıyordu — güvenlik açığıydı, kaldırıldı.)
+    //    Acil durum: Vercel'den HCAPTCHA_SECRET_KEY (ve TURNSTILE_SECRET_KEY) silinirse CAPTCHA
+    //    tamamen devre dışı kalır; brute-force kilidi çalışmaya devam eder.
     //
-    //    Kendi doğrulamamız KADEMELİ: token varsa daima doğrulanır; token yoksa yalnızca bu
-    //    kullanıcı/IP'de yakın zamanda başarısız deneme VARSA reddedilir. Neden? Widget
-    //    yüklenemezse (JS engeli / sağlayıcıya erişilemezse) temiz girişte personel kilitlenmesin;
-    //    saldırgan ise ilk hatasından sonra CAPTCHA'ya takılır. Brute-force kilidi zaten ayrıca çalışır.
+    //    NOT: CAPTCHA token'ı TEK KULLANIMLIKTIR. Supabase Auth tarafında da CAPTCHA açıksa
+    //    token'ı Supabase doğrulayacağı için BURADA doğrulamayız (SUPABASE_CAPTCHA_ENABLED=true).
     const token = body.captchaToken || ''
     const supabaseCaptcha = process.env.SUPABASE_CAPTCHA_ENABLED === 'true'
 
-    if (!supabaseCaptcha && captchaZorunlu() && (token || kilit.basarisizSayisi > 0)) {
+    if (!supabaseCaptcha && captchaZorunlu()) {
       const ok = await captchaDogrula(token, ip)
       if (!ok) {
         await girisKaydet(kullanici, ip, false)
         return NextResponse.json(
-          { success: false, error: 'Güvenlik doğrulaması başarısız. Sayfayı yenileyip tekrar deneyin.' },
+          {
+            success: false,
+            error: 'Güvenlik doğrulamasını tamamlayın ("İnsan olduğumu doğrula" kutusu).',
+          },
           { status: 400 }
         )
       }
