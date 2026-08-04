@@ -72,18 +72,27 @@ export async function proxy(request: NextRequest) {
     return redirectWithCookies(url, response)
   }
 
-  // MFA ZORUNLULUĞU — kullanıcının doğrulanmış bir kimlik doğrulayıcısı varsa (nextLevel=aal2)
-  // ama oturum henüz kodla yükseltilmemişse (currentLevel=aal1), kod ekranına yönlendir.
-  // Bu kontrol OLMAZSA kullanıcı kodu girmeden gezinebilirdi (MFA baypas edilirdi).
-  // Faktörü OLMAYAN personel etkilenmez → kademeli geçiş güvenli.
+  // MFA ZORUNLULUĞU
+  //  (a) Faktörü VAR ama oturum kodla yükseltilmemişse (aal1) → /mfa (kod ekranı).
+  //      Bu kontrol OLMAZSA kullanıcı kodu girmeden gezinebilirdi (MFA baypas edilirdi).
+  //  (b) MFA_ZORUNLU=true iken faktörü HİÇ YOKSA → /guvenlik (kurulum zorunlu).
+  //      Kapalıyken faktörü olmayan personel etkilenmez (kademeli geçiş).
   const mfaSayfasi = request.nextUrl.pathname === '/mfa'
+  const guvenlikSayfasi = request.nextUrl.pathname === '/guvenlik'
   const mfaApi = request.nextUrl.pathname.startsWith('/api/auth/mfa/')
-  if (!mfaSayfasi && !mfaApi) {
+  if (!mfaSayfasi && !guvenlikSayfasi && !mfaApi) {
     try {
       const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
       if (aal?.nextLevel === 'aal2' && aal.currentLevel !== 'aal2') {
         const url = request.nextUrl.clone()
         url.pathname = '/mfa'
+        url.search = ''
+        return redirectWithCookies(url, response)
+      }
+      // Faktör yok (nextLevel=aal1) ve zorunluluk açık → kuruluma yönlendir.
+      if (process.env.MFA_ZORUNLU === 'true' && aal?.nextLevel === 'aal1') {
+        const url = request.nextUrl.clone()
+        url.pathname = '/guvenlik'
         url.search = ''
         return redirectWithCookies(url, response)
       }

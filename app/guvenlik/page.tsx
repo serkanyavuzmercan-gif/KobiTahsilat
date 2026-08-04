@@ -1,4 +1,4 @@
-import { ShieldCheck } from 'lucide-react'
+import { AlertTriangle, ShieldCheck } from 'lucide-react'
 import { MfaKurulum } from '@/components/mfa-kurulum'
 import { createServerSupabaseClient } from '@/lib/supabase/server'
 
@@ -8,6 +8,7 @@ export default async function GuvenlikPage() {
   const supabase = await createServerSupabaseClient()
   const { data } = await supabase.auth.mfa.listFactors()
   const kurulu = (data?.all || []).some((f) => f.status === 'verified')
+  const zorunlu = process.env.MFA_ZORUNLU === 'true'
 
   return (
     <div className="space-y-4">
@@ -17,9 +18,24 @@ export default async function GuvenlikPage() {
         </h2>
         <p className="mt-1 text-sm text-slate-500">
           İki adımlı doğrulama (2FA) açıkken, şifreniz ele geçse bile telefonunuzdaki kod olmadan
-          hesabınıza girilemez. Finans verilerine erişim için önerilir.
+          hesabınıza girilemez.
         </p>
       </section>
+
+      {zorunlu && !kurulu && (
+        <section className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-5">
+          <div className="flex items-start gap-3">
+            <AlertTriangle size={20} className="mt-0.5 shrink-0 text-amber-600" />
+            <div className="text-sm text-amber-900">
+              <p className="font-semibold">Bu adım zorunludur</p>
+              <p className="mt-1">
+                Finans sisteminde iki adımlı doğrulama tüm personel için zorunlu tutulmuştur.
+                Kurulumu tamamlamadan diğer ekranlara erişemezsiniz.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
 
       <MfaKurulum kurulu={kurulu} />
     </div>
