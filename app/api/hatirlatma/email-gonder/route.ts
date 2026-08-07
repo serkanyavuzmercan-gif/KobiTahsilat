@@ -48,21 +48,25 @@ export async function POST(request: Request) {
     if (!cari) {
       return NextResponse.json({ success: false, error: 'Cari bulunamadı.' }, { status: 404 })
     }
-    if (!cari.email_adresleri.length) {
-      return NextResponse.json(
-        { success: false, error: 'Gönderim için doğrulanmış alıcı e-postası gerekli.' },
-        { status: 400 }
-      )
-    }
+    // NOT: Carinin KAYITLI e-postası olmasa da gönderilebilir — kullanıcı modalda ELLE adres
+    // girebiliyor (girilen adres aynı zamanda carie kalıcı kaydediliyor). Geçerlilik aşağıda,
+    // elle girilenler dahil edilerek kontrol edilir.
     // ASLA tüm adreslere birden gönderme. Seçilen alt küme; seçim yoksa yalnız VARSAYILAN (ilk) adres.
     // Kayıtlı adresler VEYA elle girilen geçerli e-postalar kabul edilir (garbage elenir).
     const istenenAlicilar = Array.isArray(body.recipients) ? body.recipients.map(String) : []
     const secilenAlicilar = istenenAlicilar
       .map((e) => (cari.email_adresleri.includes(e) ? e : normalizeEmail(e)))
       .filter((e): e is string => Boolean(e))
-    const alicilar = secilenAlicilar.length
-      ? [...new Set(secilenAlicilar)]
-      : [cari.email_adresleri[0]]
+    const alicilar = (
+      secilenAlicilar.length ? [...new Set(secilenAlicilar)] : [cari.email_adresleri[0]]
+    ).filter((e): e is string => Boolean(e))
+
+    if (!alicilar.length) {
+      return NextResponse.json(
+        { success: false, error: 'Gönderim için geçerli bir e-posta adresi girin.' },
+        { status: 400 }
+      )
+    }
 
     const snapshot = await loadSnapshot()
     // PayTR ödeme linki (gecikmiş tutar) → mailde "Ödeme yapmak için tıklayın" düğmesi. Hata → null.

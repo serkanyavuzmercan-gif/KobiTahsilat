@@ -37,12 +37,10 @@ export async function POST(request: Request) {
     if (!cari) {
       return NextResponse.json({ success: false, error: 'Cari bulunamadı.' }, { status: 404 })
     }
-    if (!cari.telefon) {
-      return NextResponse.json(
-        { success: false, error: 'Gönderim için kayıtlı cep telefonu gerekli.' },
-        { status: 400 }
-      )
-    }
+    // NOT: Carinin KAYITLI telefonu olmasa da gönderilebilir — kullanıcı modalda ELLE numara
+    // girebiliyor (girilen numara aynı zamanda carie kalıcı kaydediliyor). Bu yüzden burada
+    // "kayıtlı telefon yoksa reddet" kontrolü YOKTUR; geçerlilik aşağıda elle girilen numaralar
+    // dahil edilerek yapılır.
     // ASLA tüm numaralara birden gönderme. Seçilenler; seçim yoksa yalnız VARSAYILAN (ilk).
     // Kayıtlı numaralar VEYA elle girilen geçerli cep numaraları kabul edilir (garbage elenir).
     // Yalnız cep (mobil) numaralara WhatsApp gider.
@@ -61,7 +59,9 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: false,
-          error: `WhatsApp için geçerli cep numarası seçin. Kayıtlı: ${formatPhoneDisplay(cari.telefon)}`,
+          error: cari.telefon
+            ? `WhatsApp için geçerli bir cep numarası seçin. Kayıtlı: ${formatPhoneDisplay(cari.telefon)}`
+            : 'WhatsApp için geçerli bir cep numarası girin (05xx ile başlayan mobil numara).',
         },
         { status: 400 }
       )
