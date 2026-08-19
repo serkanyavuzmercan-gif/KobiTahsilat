@@ -12,8 +12,12 @@ import { MAIL_LOG_KAYNAK } from '../mutabakat-log'
 import { formatPhoneWhatsApp } from '../phone'
 import { sendHatirlatmaWhatsApp } from '../hatirlatma-whatsapp'
 import { whatsAppBotEnabled } from '../whatsapp-kuyruk'
-import { recentlyPaidCariKods, getOrCreateOdemeLinkForCari } from '../odeme-link'
+import { recentlyPaidAmounts, getOrCreateOdemeLinkForCari } from '../odeme-link'
 import { isTestCari } from '../test-cariler'
+import { sonOdemeler, odemeAnlamliMi, ODEME_ESIK_YUZDE } from '../odeme-tespit'
+
+/** Ödeme aranan geriye dönük pencere = anlamlı ödemede uygulanan öteleme süresi (gün). */
+const ODEME_BAKIS_GUN = 10
 
 /** Test carilerini kilit kümesinden çıkarır → test carisi sınırsız denenebilir (dönem/8-gün/askı). */
 function sinirsizTest(set: Set<string>): Set<string> {
@@ -136,7 +140,8 @@ async function sendAutomationMutabakat(
 async function sendAutomationOdemeEmail(
   userId: string,
   cariKod: string,
-  taslakMod: boolean
+  taslakMod: boolean,
+  sonOdeme = 0
 ): Promise<void> {
   if (process.env.MUTABAKAT_SEND_ENABLED === 'false') throw new Error('E-posta gönderimi kapalı.')
 
@@ -156,7 +161,13 @@ async function sendAutomationOdemeEmail(
     amountKurus: Math.round(cari.gecikmis_bakiye * 100),
     userId,
   })
-  const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi, undefined, odeme?.kisaLink)
+  const email = buildHatirlatmaEmail(
+    cari,
+    snapshot.snapshot_tarihi,
+    undefined,
+    odeme?.kisaLink,
+    sonOdeme
+  )
 
   const from = process.env.GMAIL_SENDER || process.env.MAIL_FROM || 'Hidroteknik A.Ş.'
   const sentAt = new Date().toISOString()
@@ -177,11 +188,20 @@ async function sendAutomationOdemeEmail(
   })
 }
 
-/** Otomatik ÖDEME TALEBİ WhatsApp (onaylı şablon; resmi Cloud API). */
+/**
+ * Otomatik ÖDEME TALEBİ WhatsApp (onaylı şablon; resmi Cloud API).
+ *
+ * ⚠️ TEŞEKKÜR SATIRI WHATSAPP'A EKLENEMEZ. Meta onaylı `odeme_talebi_hatirlatma` şablonunun
+ * gövdesi sabittir ({{1}} firma, {{2}} tutar, {{3}} PDF) — serbest metin 24 saat penceresi
+ * dışında reddedilir. Ödeme tanıma şu an E-POSTA ve önizlemede görünür; WhatsApp'ta görünmesi
+ * için Meta'ya teşekkür değişkenli YENİ şablon başvurusu gerekir.
+ * `sonOdeme` yine de log özetine yazılır (hangi gönderim ödeme sonrası gitti, iz kalsın).
+ */
 async function sendAutomationWhatsApp(
   _userId: string,
   cariKod: string,
-  taslakMod: boolean
+  taslakMod: boolean,
+  sonOdeme = 0
 ): Promise<void> {
   if (!whatsAppBotEnabled()) throw new Error('WhatsApp gönderimi kapalı.')
 
@@ -191,7 +211,7 @@ async function sendAutomationWhatsApp(
   if (!cari.telefon) throw new Error('Telefon yok.')
 
   const snapshot = await loadSnapshot()
-  const message = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
+  const message = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi, sonOdeme)
 
   if (taslakMod) return
 
@@ -206,7 +226,11 @@ async function sendAutomationWhatsApp(
   await admin.from('mail_gonderim_log').insert({
     mail_to: cari.telefon,
     subject: message.ozet,
-    body_preview: JSON.stringify({ wamid: gonderim.wamid, mesaj: message.ozet.slice(0, 200) }),
+    body_preview: JSON.stringify({
+      wamid: gonderim.wamid,
+      mesaj: message.ozet.slice(0, 200),
+      ...(sonOdeme > 0 ? { son_odeme: sonOdeme } : {}),
+    }),
     kaynak: AUTOMATION_LOG_KAYNAK,
     ilgili_id: cari.cari_kod,
     ilgili_tip: AUTOMATION_WHATSAPP_SEND_TIP,
@@ -283,14 +307,37 @@ async function collectCandidatesForUser(
     }
   }
 
-  // PayTR askısı: son 14 günde ödeme ALINMIŞ cariye tekrar hatırlatma/mutabakat GİTMEZ. Mikro
-  // senkronu güncellenene kadar "az önce ödedim, neden yine istiyorsunuz" durumunu önler.
+  // ORANTILI ÖDEME KURALI (kullanıcı kararı 2026-08, HİDROBARSAN olayı sonrası).
+  // Eski davranış "son 14 günde ödeme geldiyse tamamen sus" idi; bu YANLIŞTI — 1.000.000 ₺ borca
+  // 10.000 ₺ ödeyen cari de susturuluyordu. Yeni davranış iki kademeli:
+  //   • Ödeme gecikmişin %25'inden FAZLA  → aday ötelenir (bu tur gönderim yok).
+  //   • Ödeme %25'in ALTINDA               → gönderim DEVAM eder, ama mesaj ödemeyi tanır
+  //                                          ("… ödemeniz alınmıştır" + "kalan" dili).
+  // Kaynak iki taraflı: PayTR linkleri (anlık) + Mikro evrak bazlı tespit (senkron sonrası).
+  // max() alınır; aynı ödeme iki kaynakta da görünürse iki kez sayılmasın.
   if (mutabakatAday.length || odemeAday.length) {
-    const askiSince = new Date(now.getTime() - 14 * 86400000).toISOString()
-    const odedi = sinirsizTest(await recentlyPaidCariKods(askiSince))
-    if (odedi.size) {
-      mutabakatAday = isaretle(mutabakatAday, odedi, 'Yakında ödeme alındı (askıda)')
-      odemeAday = isaretle(odemeAday, odedi, 'Yakında ödeme alındı (askıda)')
+    const askiSince = new Date(now.getTime() - ODEME_BAKIS_GUN * 86400000).toISOString()
+    const [paytr, mikro] = await Promise.all([
+      recentlyPaidAmounts(askiSince),
+      sonOdemeler(ODEME_BAKIS_GUN),
+    ])
+
+    const odemeTutar = (kod: string) =>
+      Math.max(paytr.get(kod) || 0, mikro.get(kod)?.odenen || 0)
+
+    const otele = new Set<string>()
+    for (const aday of [...mutabakatAday, ...odemeAday]) {
+      const odenen = odemeTutar(aday.cari_kod)
+      if (odenen <= 0) continue
+      aday.son_odeme = odenen
+      if (odemeAnlamliMi(odenen, aday.gecikmis_bakiye)) otele.add(aday.cari_kod)
+    }
+
+    const oteleGercek = sinirsizTest(otele)
+    if (oteleGercek.size) {
+      const sebep = `Ödeme alındı (gecikmişin %${ODEME_ESIK_YUZDE}+'ı) — ${ODEME_BAKIS_GUN} gün ötelendi`
+      mutabakatAday = isaretle(mutabakatAday, oteleGercek, sebep)
+      odemeAday = isaretle(odemeAday, oteleGercek, sebep)
     }
   }
 
@@ -386,9 +433,9 @@ export async function runAutomationForUser(
       if (aday.tur === 'mutabakat') {
         await sendAutomationMutabakat(userId, aday.cari_kod, taslak)
       } else if (aday.kanal === 'email') {
-        await sendAutomationOdemeEmail(userId, aday.cari_kod, taslak)
+        await sendAutomationOdemeEmail(userId, aday.cari_kod, taslak, aday.son_odeme || 0)
       } else {
-        await sendAutomationWhatsApp(userId, aday.cari_kod, taslak)
+        await sendAutomationWhatsApp(userId, aday.cari_kod, taslak, aday.son_odeme || 0)
       }
       if (!taslak) gonderilen++
     } catch (cause) {

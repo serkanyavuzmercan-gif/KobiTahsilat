@@ -60,6 +60,11 @@ export type AutomationRunCandidate = {
   bakiye: number
   alici: string | null
   engel: string | null
+  /**
+   * Son günlerde tespit edilen ödeme (TL). >0 ise mesaj teşekkürle başlar; gecikmişin
+   * %25'ini aşıyorsa aday zaten `engel` ile ötelenmiştir (bkz. odemeAnlamliMi).
+   */
+  son_odeme?: number
 }
 
 export type AutomationRunResult = {

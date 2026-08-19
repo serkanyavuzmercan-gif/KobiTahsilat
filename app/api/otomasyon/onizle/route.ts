@@ -7,6 +7,7 @@ import { loadHatirlatmaCariler } from '@/lib/hatirlatma-data'
 import { buildMutabakatEmail } from '@/lib/mutabakat'
 import { createMutabakatToken } from '@/lib/mutabakat-token'
 import { buildHatirlatmaEmail } from '@/lib/automation/email-template'
+import { cariSonOdeme } from '@/lib/odeme-tespit'
 import { buildHatirlatmaWhatsAppOnizleme } from '@/lib/hatirlatma-whatsapp'
 
 export const dynamic = 'force-dynamic'
@@ -68,7 +69,9 @@ export async function GET(request: Request) {
     const cariler = await loadMutabakatCariler()
     const cari = cariler.find((c) => c.cari_kod === cariKod)
     if (!cari) return NextResponse.json({ success: false, error: 'Cari bulunamadı.' }, { status: 404 })
-    const email = buildHatirlatmaEmail(cari, tarih)
+    // Önizleme gerçek gönderimle aynı olmalı: ödeme geldiyse metin teşekkürle başlar.
+    const sonOdeme = (await cariSonOdeme(cari.cari_kod))?.odenen || 0
+    const email = buildHatirlatmaEmail(cari, tarih, undefined, null, sonOdeme)
     return NextResponse.json({
       success: true,
       kanal: 'email',

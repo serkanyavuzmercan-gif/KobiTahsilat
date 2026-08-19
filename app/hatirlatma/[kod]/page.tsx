@@ -9,6 +9,7 @@ import { loadSnapshot } from '@/lib/data'
 import { buildHatirlatmaMessage } from '@/lib/hatirlatma'
 import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
 import { loadHatirlatmaWhatsAppContext } from '@/lib/hatirlatma-whatsapp'
+import { cariSonOdeme, odemeAnlamliMi, ODEME_ESIK_YUZDE } from '@/lib/odeme-tespit'
 import { formatPhoneDisplay, isMobileTurkey } from '@/lib/phone'
 import { formatTL } from '@/lib/types'
 import { whatsAppBotEnabled } from '@/lib/whatsapp-kuyruk'
@@ -25,7 +26,8 @@ export default async function HatirlatmaPreviewPage({
   if (!cari) notFound()
 
   const snapshot = await loadSnapshot()
-  const message = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
+  const sonOdeme = (await cariSonOdeme(cari.cari_kod))?.odenen || 0
+  const message = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi, sonOdeme)
   const sendEnabled = whatsAppBotEnabled()
   const whatsappContext = await loadHatirlatmaWhatsAppContext(cari.telefon, cari.cari_kod)
 
@@ -96,6 +98,22 @@ export default async function HatirlatmaPreviewPage({
               </div>
             </div>
           </div>
+
+          {sonOdeme > 0 && (
+            <div className="mt-4 flex items-start gap-2 rounded-lg border border-emerald-300 bg-emerald-50 p-3 text-sm text-emerald-900">
+              <AlertTriangle size={18} className="mt-0.5 shrink-0" />
+              <div>
+                <p className="font-semibold">
+                  Bu firma son günlerde {formatTL(sonOdeme)} ödeme yaptı.
+                </p>
+                <p className="mt-1 text-xs leading-relaxed">
+                  {odemeAnlamliMi(sonOdeme, cari.gecikmis_bakiye)
+                    ? `Ödeme, gecikmiş borcun %${ODEME_ESIK_YUZDE}'inden fazla — otomasyon bu firmayı ötelemiş durumda. Elle göndermeden önce iki kez düşünün.`
+                    : `Ödeme, gecikmiş borcun %${ODEME_ESIK_YUZDE}'inin altında — hatırlatma devam eder, ancak mesaj ödemeyi tanıyarak başlar.`}
+                </p>
+              </div>
+            </div>
+          )}
 
           {!cari.telefon && (
             <div className="mt-4 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">

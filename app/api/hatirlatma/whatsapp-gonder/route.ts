@@ -9,6 +9,8 @@ import { formatPhoneDisplay, formatPhoneWhatsApp, isMobileTurkey, normalizePhone
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
 import { hatirlatmaDeliveryHint, ODEME_TALEP_TEMPLATE, sendHatirlatmaWhatsApp } from '@/lib/hatirlatma-whatsapp'
 import { whatsAppBotEnabled } from '@/lib/whatsapp-kuyruk'
+import { cariSonOdeme } from '@/lib/odeme-tespit'
+import { yukseltmeKapisi } from '@/lib/tahsilat-baski'
 import { WHATSAPP_SENDER_LABEL } from '@/lib/whatsapp-constants'
 
 export const dynamic = 'force-dynamic'
@@ -27,10 +29,21 @@ export async function POST(request: Request) {
       cariKod?: string
       messageBody?: string
       phones?: string[]
+      /** Yükseltme onayı — son 7 günde zaten evrak gittiyse gönderim bu bayrak olmadan reddedilir. */
+      yukseltmeOnay?: boolean
     }
     const cariKod = String(body.cariKod || '').trim()
     if (!cariKod) {
       return NextResponse.json({ success: false, error: 'Cari kodu gerekli.' }, { status: 400 })
+    }
+
+    // YÜKSELTMEYE İNSAN ONAYI: kısa sürede ikinci evrak sessizce gitmez (bkz. lib/tahsilat-baski.ts).
+    const kapi = await yukseltmeKapisi(cariKod, Boolean(body.yukseltmeOnay))
+    if (kapi.engel) {
+      return NextResponse.json(
+        { success: false, error: kapi.engel, yukseltme: true, baski: kapi.durum },
+        { status: 409 }
+      )
     }
 
     const cari = await loadHatirlatmaCari(cariKod)
@@ -68,7 +81,9 @@ export async function POST(request: Request) {
     }
 
     const snapshot = await loadSnapshot()
-    const defaultMessage = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi)
+    // Not: teşekkür satırı WhatsApp'ta GÖRÜNMEZ (Meta şablonu sabit); yalnız özet/loga yansır.
+    const sonOdeme = (await cariSonOdeme(cari.cari_kod))?.odenen || 0
+    const defaultMessage = buildHatirlatmaMessage(cari, snapshot.snapshot_tarihi, sonOdeme)
     const sentAt = new Date().toISOString()
 
     // Resmi WhatsApp Cloud API — proaktif ödeme talebi onaylı şablonla gider (serbest metin

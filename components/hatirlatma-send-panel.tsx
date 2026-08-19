@@ -40,6 +40,8 @@ export function HatirlatmaSendPanel({
   const [sentCount, setSentCount] = useState(gonderimSayisi)
   const [queue, setQueue] = useState<{ durum: KuyrukDurum; hata: string | null } | null>(null)
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  /** Sunucu 409 "yükseltme" dediyse gerekçe burada tutulur; onay verilene kadar gönderim durur. */
+  const [yukseltme, setYukseltme] = useState<string | null>(null)
 
   const canSend = sendEnabled && hasPhone && isMobile && messageBody.trim().length > 0
 
@@ -65,24 +67,37 @@ export function HatirlatmaSendPanel({
     }
   }
 
-  async function sendMessage() {
+  async function sendMessage(yukseltmeOnay = false) {
     setLoading(true)
     setFeedback(null)
     setQueue(null)
+    if (yukseltmeOnay) setYukseltme(null)
     try {
       const response = await fetch('/api/hatirlatma/whatsapp-gonder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cariKod, messageBody: messageBody.trim() }),
+        body: JSON.stringify({ cariKod, messageBody: messageBody.trim(), yukseltmeOnay }),
       })
       const raw = await response.text()
-      let result: { success?: boolean; error?: string; message?: string; kuyrukId?: string } = {}
+      let result: {
+        success?: boolean
+        error?: string
+        message?: string
+        kuyrukId?: string
+        yukseltme?: boolean
+      } = {}
       try {
         result = JSON.parse(raw) as typeof result
       } catch {
         throw new Error(`Sunucu yanıtı okunamadı (${response.status}). Oturum süreniz dolmuş olabilir.`)
       }
+      // 409 = yükseltme kapısı: gönderim yapılmadı, açık onay isteniyor.
+      if (response.status === 409 && result.yukseltme) {
+        setYukseltme(result.error || 'Bu firmaya yakın zamanda evrak gönderildi.')
+        return
+      }
       if (!response.ok || !result.success) throw new Error(result.error || 'Gönderilemedi.')
+      setYukseltme(null)
       setSentCount((count) => count + 1)
       setFeedback({ type: 'success', text: result.message || 'WhatsApp mesajı kuyruğa alındı.' })
       setQueue({ durum: 'bekliyor', hata: null })
@@ -145,13 +160,39 @@ export function HatirlatmaSendPanel({
 
       <Button
         variant="success"
-        onClick={sendMessage}
-        disabled={!canSend || loading}
+        onClick={() => void sendMessage(false)}
+        disabled={!canSend || loading || Boolean(yukseltme)}
         className="w-full"
       >
         {loading ? <LoaderCircle className="animate-spin" size={18} /> : <Send size={18} />}
         WhatsApp kuyruğuna gönder
       </Button>
+
+      {/* YÜKSELTME ONAYI — kısa sürede ikinci evrak sessizce gitmez (HİDROBARSAN dersi). */}
+      {yukseltme ? (
+        <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
+          <div className="flex items-start gap-2">
+            <TriangleAlert className="mt-0.5 shrink-0" size={18} />
+            <div className="w-full">
+              <p className="font-semibold">Yükseltme onayı gerekiyor</p>
+              <p className="mt-1 text-xs leading-relaxed">{yukseltme}</p>
+              <div className="mt-3 flex gap-2">
+                <Button
+                  variant="danger"
+                  onClick={() => void sendMessage(true)}
+                  disabled={loading}
+                  className="text-xs"
+                >
+                  Yine de gönder
+                </Button>
+                <Button variant="ghost" onClick={() => setYukseltme(null)} className="text-xs">
+                  Vazgeç
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {!hasPhone && <p className="text-xs text-red-600">Gönderim için cep telefonu gerekli.</p>}
       {hasPhone && messageBody.trim().length === 0 && (

@@ -8,6 +8,8 @@ import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
 import { HATIRLATMA_LOG_KAYNAK, ODEME_TALEP_EMAIL_TIP } from '@/lib/hatirlatma-log'
 import { insertMailGonderimLog } from '@/lib/mail-gonderim-log'
 import { getOrCreateOdemeLinkForCari } from '@/lib/odeme-link'
+import { cariSonOdeme } from '@/lib/odeme-tespit'
+import { yukseltmeKapisi } from '@/lib/tahsilat-baski'
 import { sendMail } from '@/lib/mail'
 import { renderOdemeTalepPdf } from '@/lib/odeme-talep-pdf'
 
@@ -31,10 +33,21 @@ export async function POST(request: Request) {
       cariKod?: string
       messageBody?: string
       recipients?: string[]
+      /** Yükseltme onayı — son 7 günde zaten evrak gittiyse gönderim bu bayrak olmadan reddedilir. */
+      yukseltmeOnay?: boolean
     }
     const cariKod = String(body.cariKod || '').trim()
     if (!cariKod) {
       return NextResponse.json({ success: false, error: 'Cari kodu gerekli.' }, { status: 400 })
+    }
+
+    // YÜKSELTMEYE İNSAN ONAYI: kısa sürede ikinci evrak sessizce gitmez (bkz. lib/tahsilat-baski.ts).
+    const kapi = await yukseltmeKapisi(cariKod, Boolean(body.yukseltmeOnay))
+    if (kapi.engel) {
+      return NextResponse.json(
+        { success: false, error: kapi.engel, yukseltme: true, baski: kapi.durum },
+        { status: 409 }
+      )
     }
     const customBody = typeof body.messageBody === 'string' ? body.messageBody.trim() : ''
     if (customBody.length > 8000) {
@@ -77,7 +90,15 @@ export async function POST(request: Request) {
       amountKurus: Math.round(cari.gecikmis_bakiye * 100),
       userId: user.id,
     })
-    const email = buildHatirlatmaEmail(cari, snapshot.snapshot_tarihi, customBody, odeme?.kisaLink)
+    // Ödeme tanıma: son günlerde ödeme geldiyse mesaj teşekkürle başlar (manuel gönderimde de).
+    const sonOdeme = (await cariSonOdeme(cari.cari_kod))?.odenen || 0
+    const email = buildHatirlatmaEmail(
+      cari,
+      snapshot.snapshot_tarihi,
+      customBody,
+      odeme?.kisaLink,
+      sonOdeme
+    )
     // Gönderen sabit: Gmail (GMAIL_SENDER = serkan.mercan@). Yanıtlar da aynı kutuya döner.
     const from = process.env.GMAIL_SENDER || process.env.MAIL_FROM || 'Hidroteknik A.Ş.'
     const sentAt = new Date().toISOString()

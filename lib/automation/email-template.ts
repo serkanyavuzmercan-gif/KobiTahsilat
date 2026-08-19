@@ -22,9 +22,11 @@ export function buildHatirlatmaEmail(
   /** Kullanıcı önizlemede düzenlediyse gönderilecek gövde; boşsa varsayılan üretilir. */
   overrideBody?: string,
   /** Varsa "Ödeme yapmak için tıklayın" düğmesi eklenir (kendi kısa PayTR linkimiz). */
-  odemeUrl?: string | null
+  odemeUrl?: string | null,
+  /** Son günlerde tespit edilen ödeme — varsa mesaj teşekkürle başlar. */
+  sonOdeme = 0
 ) {
-  const message = buildHatirlatmaMessage(cari, snapshotTarihi)
+  const message = buildHatirlatmaMessage(cari, snapshotTarihi, sonOdeme)
   const body = overrideBody && overrideBody.trim() ? overrideBody.trim() : message.body
   const htmlBody = whatsappBoldToHtml(body).replace(/\n/g, '<br />')
 

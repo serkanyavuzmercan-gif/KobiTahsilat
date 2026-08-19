@@ -253,15 +253,28 @@ export async function markLinkFromCallback(params: {
 }
 
 /**
- * Son `since` tarihinden beri PayTR'den ödeme ALINMIŞ cari kodları (otomasyon askıya alma için).
+ * Son `since` tarihinden beri PayTR'den ALINAN ödemeler — cari başına TL toplamı.
  * Mikro senkronu güncellenene kadar "az önce ödedim, neden yine istiyorsunuz" durumunu önler.
+ *
+ * TUTAR döner, sadece "ödedi/ödemedi" değil: askı ORANTILIDIR (bkz. odemeAnlamliMi).
+ * 1.000.000 ₺ borca 10.000 ₺ ödeyen cari susturulmaz; kısmi ödeme "kapandı" sayılmaz.
+ * Aynı cari birden çok link ödediyse tutarlar toplanır.
  */
-export async function recentlyPaidCariKods(sinceIso: string): Promise<Set<string>> {
+export async function recentlyPaidAmounts(sinceIso: string): Promise<Map<string, number>> {
   const admin = createAdminClient()
   const { data } = await admin
     .from('odeme_linkleri')
-    .select('cari_kod')
+    .select('cari_kod, tutar_kurus, odenen_kurus')
     .eq('durum', 'odendi')
     .gte('odendi_at', sinceIso)
-  return new Set((data || []).map((r) => String(r.cari_kod)))
+  const harita = new Map<string, number>()
+  for (const row of data || []) {
+    const kod = String(row.cari_kod || '')
+    if (!kod) continue
+    // odenen_kurus boşsa (eski kayıt) linkin talep tutarına düş.
+    const kurus = Number(row.odenen_kurus ?? row.tutar_kurus ?? 0)
+    if (!(kurus > 0)) continue
+    harita.set(kod, (harita.get(kod) || 0) + kurus / 100)
+  }
+  return harita
 }

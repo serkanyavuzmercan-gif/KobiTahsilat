@@ -2,13 +2,31 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { CheckCircle2, FileText, LoaderCircle, Mail, MessageCircle, Send, X } from 'lucide-react'
+import {
+  CheckCircle2,
+  FileText,
+  LoaderCircle,
+  Mail,
+  MessageCircle,
+  Send,
+  TriangleAlert,
+  X,
+} from 'lucide-react'
 import { buildOdemeTalepMesaj } from '@/lib/odeme-talep-mesaj'
 import { formatPhoneDisplay, isMobileTurkey } from '@/lib/phone'
 import { RecipientPicker } from '@/components/recipient-picker'
 import type { HatirlatmaCari } from '@/lib/hatirlatma-data'
 
 type Kanal = 'whatsapp' | 'email' | 'her-ikisi'
+
+/** lib/tahsilat-baski.ts BaskiDurumu ile aynı şekil (o modül 'server-only'). */
+type BaskiDurumu = {
+  gonderimSayisi: number
+  sonGonderim: string | null
+  yukseltme: boolean
+  sonOdeme: number
+  uyari: string | null
+}
 
 const KANAL_ETIKET: Record<Kanal, string> = {
   whatsapp: 'WhatsApp',
@@ -63,6 +81,9 @@ export function OdemeTalepActions({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [done, setDone] = useState('')
+  /** Yükseltme uyarısı (son 7 günde evrak gittiyse dolu) + kullanıcının açık onayı. */
+  const [baski, setBaski] = useState<BaskiDurumu | null>(null)
+  const [yukseltmeOnay, setYukseltmeOnay] = useState(false)
   // WhatsApp yalnız cep (mobil) numaralara gider.
   // Varsayılan: yalnız ilk (birincil) e-posta / numara seçili. Hepsine birden ASLA gitmez.
   const [mobilNumaralar, setMobilNumaralar] = useState<string[]>(
@@ -133,12 +154,35 @@ export function OdemeTalepActions({
   function acPencere(secilenKanal: Kanal) {
     setError('')
     setDone('')
+    setBaski(null)
+    setYukseltmeOnay(false)
     setAlicilar(emailAdresleri.slice(0, 1))
     setNumaralar(mobilNumaralar.slice(0, 1))
     const varsayilan = buildOdemeTalepMesaj(cari, snapshotTarihi, pdfUrl).body
     setWaBody(varsayilan)
     setMailBody(varsayilan)
     setKanal(secilenKanal)
+
+    // Baskı durumunu ÖNDEN çek: kullanıcı göndermeden önce toplamı görsün, ödeme geldiyse
+    // mesaj teşekkürle başlasın (sunucu tarafı da aynı tespiti bağımsız yapar).
+    void (async () => {
+      try {
+        const response = await fetch(
+          `/api/hatirlatma/baski?cariKod=${encodeURIComponent(cari.cari_kod)}`
+        )
+        const result = (await response.json()) as { success?: boolean; baski?: BaskiDurumu }
+        if (!result.success || !result.baski) return
+        setBaski(result.baski)
+        // Teşekkür satırı YALNIZ e-postaya işlenir. WhatsApp Meta onaylı sabit şablonla gider
+        // ({{1}} firma, {{2}} tutar, {{3}} PDF) — buradaki metin WhatsApp'ta müşteriye
+        // GÖRÜNMEZ, o yüzden oraya olmayan bir teşekkür yazmıyoruz.
+        if (result.baski.sonOdeme > 0) {
+          setMailBody(buildOdemeTalepMesaj(cari, snapshotTarihi, pdfUrl, result.baski.sonOdeme).body)
+        }
+      } catch {
+        /* baskı okunamadıysa gönderimi engelleme — sunucu kapısı yine de çalışır */
+      }
+    })()
   }
 
   function kapat() {
@@ -168,6 +212,7 @@ export function OdemeTalepActions({
         mesajlar.push(
           await postGonder('/api/hatirlatma/whatsapp-gonder', cari.cari_kod, waMetin, {
             phones: numaralar,
+            yukseltmeOnay,
           })
         )
       }
@@ -175,7 +220,10 @@ export function OdemeTalepActions({
         if (!alicilar.length) throw new Error('En az bir e-posta alıcısı seçin.')
         mesajlar.push(
           await postGonder('/api/hatirlatma/email-gonder', cari.cari_kod, mailMetin, {
+            // "Her ikisi"nde WhatsApp önce gider ve log yazar; onay önden alındığı için
+            // e-posta kendi kendini bloklamasın diye aynı onay iletilir.
             recipients: alicilar,
+            yukseltmeOnay: yukseltmeOnay || kanal === 'her-ikisi',
           })
         )
       }
@@ -314,6 +362,10 @@ export function OdemeTalepActions({
                   <p className="text-[11px] text-slate-400">
                     {waBody.length} karakter · *yıldız* arasındaki metin WhatsApp&apos;ta kalın görünür.
                   </p>
+                  <p className="text-[11px] leading-relaxed text-amber-700">
+                    Not: WhatsApp mesajı Meta onaylı sabit şablonla gider (firma · tutar · PDF
+                    linki). Buradaki düzenlemeler kayda geçer ancak müşteriye şablon metni ulaşır.
+                  </p>
                 </div>
               )}
 
@@ -344,6 +396,34 @@ export function OdemeTalepActions({
                 </div>
               )}
 
+              {/* YÜKSELTME UYARISI — kısa sürede ikinci evrak açık onay ister (HİDROBARSAN dersi). */}
+              {baski?.yukseltme && (
+                <div className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2.5">
+                  <p className="flex items-center gap-1.5 text-xs font-semibold text-amber-900">
+                    <TriangleAlert size={14} />
+                    Yükseltme — bu firmaya yakın zamanda zaten yazdık
+                  </p>
+                  <p className="mt-1 text-[11px] leading-relaxed text-amber-800">{baski.uyari}</p>
+                  <label className="mt-2 flex cursor-pointer items-start gap-2 text-[11px] font-medium text-amber-900">
+                    <input
+                      type="checkbox"
+                      checked={yukseltmeOnay}
+                      onChange={(event) => setYukseltmeOnay(event.target.checked)}
+                      disabled={loading}
+                      className="mt-0.5"
+                    />
+                    Yeni bir evrak gönderilmesini onaylıyorum.
+                  </label>
+                </div>
+              )}
+
+              {baski && !baski.yukseltme && baski.sonOdeme > 0 && (
+                <p className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-[11px] text-emerald-800">
+                  Bu firma son günlerde ödeme yaptı — e-posta metni teşekkürle başlayacak şekilde
+                  güncellendi.
+                </p>
+              )}
+
               {error && <p className="text-xs text-red-600">{error}</p>}
             </div>
 
@@ -359,7 +439,7 @@ export function OdemeTalepActions({
               <button
                 type="button"
                 onClick={gonder}
-                disabled={loading || !metinHazir}
+                disabled={loading || !metinHazir || (Boolean(baski?.yukseltme) && !yukseltmeOnay)}
                 className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading ? <LoaderCircle size={16} className="animate-spin" /> : <Send size={16} />}
