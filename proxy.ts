@@ -25,8 +25,11 @@ export async function proxy(request: NextRequest) {
     request.nextUrl.pathname === '/api/odeme/paytr-callback' ||
     // Kısa döküm linki (/d/<code>) — WhatsApp'ta müşteriye giden PDF döküm.
     request.nextUrl.pathname.startsWith('/d/') ||
-    // Sunucu-sunucu (secret'lı) WhatsApp bot bağlam ucu — tawkto çağırır.
+    // Sunucu-sunucu (secret'lı) WhatsApp bot uçları — tawkto çağırır. Oturum çerezi YOKTUR;
+    // yetki her iki uçta da WA_BAGLAM_SECRET ile route içinde denetlenir. Buraya eklenmezse
+    // istek /login'e 307'lenir ve bot sessizce linksiz kalır (2026-07-29 canlı doğrulama).
     request.nextUrl.pathname === '/api/tahsilat/wa-baglam' ||
+    request.nextUrl.pathname === '/api/tahsilat/wa-odeme-link' ||
     // Giriş ucu: oturum AÇILMADAN çağrılır (auth kapısına takılırsa login imkânsız olur).
     request.nextUrl.pathname === '/api/auth/giris'
   const isCronRoute = request.nextUrl.pathname.startsWith('/api/cron/')

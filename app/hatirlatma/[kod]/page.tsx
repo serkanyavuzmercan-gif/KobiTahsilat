@@ -10,7 +10,7 @@ import { buildHatirlatmaMessage } from '@/lib/hatirlatma'
 import { loadHatirlatmaCari } from '@/lib/hatirlatma-data'
 import { loadHatirlatmaWhatsAppContext } from '@/lib/hatirlatma-whatsapp'
 import { cariSonOdeme, odemeAnlamliMi, ODEME_ESIK_YUZDE } from '@/lib/odeme-tespit'
-import { formatPhoneDisplay, isMobileTurkey } from '@/lib/phone'
+import { formatPhoneDisplay } from '@/lib/phone'
 import { formatTL } from '@/lib/types'
 import { whatsAppBotEnabled } from '@/lib/whatsapp-kuyruk'
 
@@ -89,8 +89,7 @@ export default async function HatirlatmaPreviewPage({
               <div className="mt-3 border-t border-slate-200 pt-3">
                 <HatirlatmaSendPanel
                   cariKod={cari.cari_kod}
-                  hasPhone={Boolean(cari.telefon)}
-                  isMobile={isMobileTurkey(cari.telefon)}
+                  telefonlar={cari.telefon_numaralari}
                   sendEnabled={sendEnabled}
                   gonderimSayisi={cari.whatsapp_gonderim_sayisi}
                   whatsappContext={whatsappContext}

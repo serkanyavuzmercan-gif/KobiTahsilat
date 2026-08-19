@@ -47,7 +47,7 @@ Geliştirme için Vercel deploy şart değil; yerelde `npm run dev` yeterli. Can
 | `/mutabakat/ayarlar` | Gönderici e-posta bağlantıları (kullanıcı başına) |
 | `/mutabakat/[kod]` | Firmaya özel mutabakat e-postası önizlemesi ve gönderimi |
 | `/hatirlatma` | WhatsApp ödeme hatırlatması listesi |
-| `/hatirlatma/[kod]` | Mesaj önizleme, telefon düzenleme ve gönderim |
+| `/hatirlatma/[kod]` | Mesaj önizleme, telefon düzenleme, çoklu alıcı seçimi ve gönderim |
 | `/api/cariler?q=` | JSON API |
 
 **Veri kaynağı: canlı Supabase.** Bakiye, açık evrak ve yaşlandırma doğrudan
@@ -76,11 +76,9 @@ Gönderimi kapatmak için `MUTABAKAT_SEND_ENABLED=false` tanımlayın.
 
 **WhatsApp hatırlatma** (`/hatirlatma`): Mutabakat değil, kibar ödeme hatırlatması.
 Telefonlar Mikro/SS cari kartından veya manuel girişle gelir. Gönderim geçmişi tarih ve
-sayım olarak tutulur. **Gönderim, ss ile ORTAK Baileys ofis botu üzerindendir** (Meta Cloud
-API değil): mesaj ortak `whatsapp_kuyruk` tablosuna DM olarak yazılır, ofis PC'sindeki bot
-(`ss/tools/whatsapp-bot`) çekip gönderir; UI durumu (`bekliyor → gönderildi/hata`) canlı takip
-eder. Ayrıntı: [`docs/WHATSAPP-BAILEYS-KUYRUK.md`](docs/WHATSAPP-BAILEYS-KUYRUK.md). Enqueue'yu
-kapatmak için `WHATSAPP_SEND_ENABLED=false`. Telefon zenginleştirme: `npm run enrich:phones`
+sayım olarak tutulur. **Gönderimler Meta'nın resmi WhatsApp Cloud API'si** ile, onaylı ödeme
+talebi şablonu üzerinden yapılır. Gönderimi geçici olarak kapatmak için
+`WHATSAPP_SEND_ENABLED=false` kullanılır. Telefon zenginleştirme: `npm run enrich:phones`
 
 Mutabakat bağlantıları 30 gün geçerli HMAC token ile korunur. “Fark / itiraz” yanıtında müşteri
 yazılı açıklama ve en fazla 4 MB PNG/JPG/WEBP ekran görüntüsü iletebilir; bildirim yapılandırılmış

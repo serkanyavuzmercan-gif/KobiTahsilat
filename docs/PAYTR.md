@@ -45,6 +45,40 @@ Creds yokken her şey **güvenli no-op**: panel "PayTR bağlı değil" der, otom
   eklenemez). Buton tabanı **kendi domainimiz** olmalı (`/o/{{1}}`) — Meta "sabit taban + dinamik ek" kuralı.
   Onay saatler/günler sürebilir; mail kanalı buna bağımlı kalmamalı.
 
+## WhatsApp botu (tawkto) — müşteriye özel link
+
+Müşteri WhatsApp'ta ödeme yapmak isteyince (kart fotoğrafı/numarası atınca ya da "ödeme yapacağım"
+deyince) bot linki **API ile** üretir; panelde elle link açmaya gerek yoktur.
+
+- **`lib/odeme-link.ts` → `getOrCreateWaOdemeLink()`** — telefon başına TEK açık link.
+- **`app/api/tahsilat/wa-odeme-link`** (secret: `WA_BAGLAM_SECRET`, `wa-baglam` ile aynı) — tawkto
+  `lib/odeme-link-iste.ts`'ten çağırır, dönen `/o/<token>` sohbete yapıştırılır.
+### ⚠️ Tutar ZORUNLU — `price` bir TAVANDIR (2026-07-29 canlı bulgu)
+
+PayTR `collection` linkinde `price` **tavandır**: ödeme sayfasındaki "Ödeme Tutarı" alanı o rakamla
+DOLU gelir, müşteri yalnız **aşağı** çekebilir. İlk sürüm linki 1 TL açıp "müşteri istediğini yazar"
+varsayıyordu — canlı testte müşteri **1 TL dışında bir şey yazamadı**. Yüksek tavan da riskli: alan
+dolu geldiği için silmeden onaylayan müşteriden yanlış tutar çekilir.
+
+Bu yüzden bot tutarı **önce sorar** (tawkto `lib/odeme.ts` → `tutarAyikla`), link **tam o tutarla**
+açılır ve müşteri PayTR'de hiçbir şey değiştirmeden öder. Fiilen tahsil edilen tutarın doğruluk
+kaynağı yine callback'teki `total_amount` → `odenen_kurus`.
+
+### ⚠️ Neden sentetik `cari_kod` (`WA-<son10>`) — dokunmayın
+
+`markLinkFromCallback`, bir link TAM ödendiğinde aynı `cari_kod`'un diğer **açık** linklerini iptal
+eder. Gerçek cari kodu kullansaydık, müşterinin WhatsApp'tan yaptığı bir ödeme **finans ekibinin o
+cariye gönderdiği gerçek tahsilat linkini iptal ederdi**. Sentetik kod iki dünyayı ayırır ve para
+akışındaki mevcut kodun tek satırına bile dokunulmamasını sağlar.
+
+Aynı sebeple `getOrCreateOdemeLinkForCari` **kullanılmaz**: oradaki "aynı tutar son 3 günde ödendiyse
+yeni link üretme" kilidi, WhatsApp'tan aynı tutarı tekrar ödemek isteyen müşteriyi 3 gün boyunca
+kilitlerdi.
+
+Tekil index `(cari_kod, tutar_kurus) WHERE durum='olusturuldu'` gereği: açık link varsa yeniden
+kullanılır, 30 günden eskiyse önce `iptal` edilip slot boşaltılır. Eşzamanlı istekte kaybeden taraf
+kazananın linkini döner.
+
 ## Açık tasarım kararları
 
 - **Tutar:** varsayılan gecikmiş bakiye; `editable=true` → müşteri hosted sayfada değiştirebilir. Callback'te

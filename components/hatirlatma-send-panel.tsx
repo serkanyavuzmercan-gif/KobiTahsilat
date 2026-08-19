@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CheckCircle2, Clock, LoaderCircle, Send, TriangleAlert, Wifi, WifiOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useHatirlatmaMessage } from '@/components/hatirlatma-message-context'
 import { WHATSAPP_SENDER_LABEL } from '@/lib/whatsapp-constants'
-import { formatPhoneDisplay } from '@/lib/phone'
+import { formatPhoneDisplay, isMobileTurkey } from '@/lib/phone'
 
 type HatirlatmaWhatsAppContext = {
   botEnabled: boolean
@@ -17,19 +17,25 @@ type HatirlatmaWhatsAppContext = {
 
 type KuyrukDurum = 'bekliyor' | 'gonderiliyor' | 'gonderildi' | 'hata' | 'bilinmiyor'
 
+type AliciDurum = {
+  telefon: string
+  kuyrukId: string | null
+  durum: KuyrukDurum
+  hata: string | null
+}
+
 const uyku = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+const ISTEK_ZAMAN_ASIMI_MS = 30_000
 
 export function HatirlatmaSendPanel({
   cariKod,
-  hasPhone,
-  isMobile,
+  telefonlar,
   sendEnabled,
   gonderimSayisi,
   whatsappContext,
 }: {
   cariKod: string
-  hasPhone: boolean
-  isMobile: boolean
+  telefonlar: string[]
   sendEnabled: boolean
   gonderimSayisi: number
   whatsappContext?: HatirlatmaWhatsAppContext
@@ -38,29 +44,63 @@ export function HatirlatmaSendPanel({
   const { body: messageBody } = useHatirlatmaMessage()
   const [loading, setLoading] = useState(false)
   const [sentCount, setSentCount] = useState(gonderimSayisi)
-  const [queue, setQueue] = useState<{ durum: KuyrukDurum; hata: string | null } | null>(null)
+  const [alicilar, setAlicilar] = useState<AliciDurum[] | null>(null)
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   /** Sunucu 409 "yükseltme" dediyse gerekçe burada tutulur; onay verilene kadar gönderim durur. */
   const [yukseltme, setYukseltme] = useState<string | null>(null)
 
-  const canSend = sendEnabled && hasPhone && isMobile && messageBody.trim().length > 0
+  const telefonAnahtari = telefonlar.join('|')
+  const cepNumaralari = useMemo(
+    () => telefonlar.filter((tel) => isMobileTurkey(tel)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [telefonAnahtari]
+  )
+  const [secili, setSecili] = useState<Set<string>>(() => new Set(cepNumaralari))
 
-  /** Enqueue sonrası kuyruk durumunu yoklar (bekliyor → gonderildi/hata). */
-  async function pollDurum(kuyrukId: string) {
+  // Telefon listesi değişirse (numara eklendi/silindi) seçimi tazele.
+  useEffect(() => {
+    setSecili(new Set(cepNumaralari))
+    setAlicilar(null)
+    setFeedback(null)
+  }, [telefonAnahtari, cepNumaralari])
+
+  const seciliSayi = [...secili].filter((tel) => cepNumaralari.includes(tel)).length
+  const canSend = sendEnabled && seciliSayi > 0 && messageBody.trim().length > 0
+
+  function toggleSecim(telefon: string) {
+    setSecili((onceki) => {
+      const yeni = new Set(onceki)
+      if (yeni.has(telefon)) yeni.delete(telefon)
+      else yeni.add(telefon)
+      return yeni
+    })
+  }
+
+  function aliciGuncelle(kuyrukId: string, durum: KuyrukDurum, hata: string | null) {
+    setAlicilar((onceki) =>
+      (onceki || []).map((item) =>
+        item.kuyrukId === kuyrukId ? { ...item, durum, hata: hata ?? item.hata } : item
+      )
+    )
+  }
+
+  /** Enqueue sonrası tüm kuyruk satırlarının durumunu yoklar (bekliyor → gonderildi/hata). */
+  async function pollDurum(ids: string[]) {
     for (let deneme = 0; deneme < 20; deneme++) {
       await uyku(3000)
       try {
         const response = await fetch(
-          `/api/hatirlatma/whatsapp-durum?ids=${encodeURIComponent(kuyrukId)}`
+          `/api/hatirlatma/whatsapp-durum?ids=${encodeURIComponent(ids.join(','))}`
         )
         const result = (await response.json()) as {
-          durumlar?: Array<{ durum: KuyrukDurum; hata: string | null }>
+          durumlar?: Array<{ id: string; durum: KuyrukDurum; hata: string | null }>
         }
-        const kayit = result.durumlar?.[0]
-        if (kayit) {
-          setQueue({ durum: kayit.durum, hata: kayit.hata })
-          if (kayit.durum === 'gonderildi' || kayit.durum === 'hata') return
+        let acikKaldi = false
+        for (const kayit of result.durumlar || []) {
+          aliciGuncelle(kayit.id, kayit.durum, kayit.hata)
+          if (kayit.durum !== 'gonderildi' && kayit.durum !== 'hata') acikKaldi = true
         }
+        if (!acikKaldi) return
       } catch {
         // geçici okuma hatası → sonraki turda yeniden dene
       }
@@ -68,23 +108,41 @@ export function HatirlatmaSendPanel({
   }
 
   async function sendMessage(yukseltmeOnay = false) {
+    const hedefler = [...secili].filter((tel) => cepNumaralari.includes(tel))
+    if (!hedefler.length) return
     setLoading(true)
     setFeedback(null)
-    setQueue(null)
+    setAlicilar(null)
     if (yukseltmeOnay) setYukseltme(null)
     try {
-      const response = await fetch('/api/hatirlatma/whatsapp-gonder', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cariKod, messageBody: messageBody.trim(), yukseltmeOnay }),
-      })
-      const raw = await response.text()
+      const controller = new AbortController()
+      const zamanAsimi = setTimeout(() => controller.abort(), ISTEK_ZAMAN_ASIMI_MS)
+      let raw: string
+      let response: Response
+      try {
+        response = await fetch('/api/hatirlatma/whatsapp-gonder', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            cariKod,
+            messageBody: messageBody.trim(),
+            phones: hedefler,
+            yukseltmeOnay,
+          }),
+          signal: controller.signal,
+        })
+        raw = await response.text()
+      } finally {
+        clearTimeout(zamanAsimi)
+      }
       let result: {
         success?: boolean
         error?: string
         message?: string
         kuyrukId?: string
         yukseltme?: boolean
+        gonderimSayisi?: number
+        gonderimler?: Array<{ telefon: string; kuyrukId?: string; hata?: string }>
       } = {}
       try {
         result = JSON.parse(raw) as typeof result
@@ -98,16 +156,28 @@ export function HatirlatmaSendPanel({
       }
       if (!response.ok || !result.success) throw new Error(result.error || 'Gönderilemedi.')
       setYukseltme(null)
-      setSentCount((count) => count + 1)
-      setFeedback({ type: 'success', text: result.message || 'WhatsApp mesajı kuyruğa alındı.' })
-      setQueue({ durum: 'bekliyor', hata: null })
+
+      const durumlar: AliciDurum[] = (result.gonderimler || []).map((item) => ({
+        telefon: item.telefon,
+        kuyrukId: item.kuyrukId || null,
+        durum: item.kuyrukId ? 'bekliyor' : 'hata',
+        hata: item.hata || null,
+      }))
+      setAlicilar(durumlar)
+      if (typeof result.gonderimSayisi === 'number') setSentCount(result.gonderimSayisi)
+      else setSentCount((count) => count + durumlar.filter((item) => item.kuyrukId).length)
+      setFeedback({ type: 'success', text: result.message || 'WhatsApp ödeme talebi gönderildi.' })
       router.refresh()
-      if (result.kuyrukId) void pollDurum(result.kuyrukId)
+      const ids = durumlar.map((item) => item.kuyrukId).filter((id): id is string => Boolean(id))
+      if (ids.length) void pollDurum(ids)
     } catch (cause) {
-      setFeedback({
-        type: 'error',
-        text: cause instanceof Error ? cause.message : 'Gönderilemedi.',
-      })
+      const mesaj =
+        cause instanceof DOMException && cause.name === 'AbortError'
+          ? 'Sunucu 30 saniyede yanıt vermedi. Bağlantınızı kontrol edip tekrar deneyin.'
+          : cause instanceof Error
+            ? cause.message
+            : 'Gönderilemedi.'
+      setFeedback({ type: 'error', text: mesaj })
     } finally {
       setLoading(false)
     }
@@ -121,6 +191,14 @@ export function HatirlatmaSendPanel({
     )
   }
 
+  const durumEtiketi: Record<KuyrukDurum, string> = {
+    bekliyor: 'Kuyrukta bekliyor',
+    gonderiliyor: 'Bot gönderiyor…',
+    gonderildi: 'Gönderildi ✓',
+    hata: 'Gönderilemedi',
+    bilinmiyor: 'Durum okunamadı',
+  }
+
   return (
     <div className="space-y-3">
       <p className="text-xs text-slate-500">
@@ -130,29 +208,67 @@ export function HatirlatmaSendPanel({
         Daha önce gönderilen: <strong>{sentCount}</strong> mesaj
       </p>
 
+      {telefonlar.length > 0 ? (
+        <div className="rounded-lg border border-slate-200 bg-white p-3">
+          <p className="text-xs font-medium text-slate-600">Alıcılar ({seciliSayi} seçili)</p>
+          <ul className="mt-2 space-y-1.5">
+            {telefonlar.map((telefon) => {
+              const mobil = isMobileTurkey(telefon)
+              return (
+                <li key={telefon}>
+                  <label
+                    className={`flex items-center gap-2 text-sm ${
+                      mobil ? 'cursor-pointer' : 'cursor-not-allowed opacity-60'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={mobil && secili.has(telefon)}
+                      disabled={!mobil || loading}
+                      onChange={() => toggleSecim(telefon)}
+                      className="h-4 w-4 rounded border-slate-300 accent-emerald-600"
+                    />
+                    <span className="font-medium text-slate-800">{formatPhoneDisplay(telefon)}</span>
+                    {mobil ? (
+                      <span className="rounded-full bg-emerald-50 px-1.5 py-0.5 text-[10px] font-medium text-emerald-700">
+                        cep
+                      </span>
+                    ) : (
+                      <span className="rounded-full bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium text-amber-700">
+                        sabit hat — WhatsApp alamaz
+                      </span>
+                    )}
+                  </label>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      ) : null}
+
       {whatsappContext ? (
         <div className="rounded-lg border border-slate-200 bg-white p-3 text-xs text-slate-600">
           <div className="flex items-center gap-2">
             {whatsappContext.botCevrimici ? (
               <>
                 <Wifi size={14} className="text-emerald-600" />
-                <span className="font-medium text-emerald-700">Ofis WhatsApp botu çevrimiçi</span>
+                <span className="font-medium text-emerald-700">WhatsApp Cloud API hazır</span>
               </>
             ) : (
               <>
                 <WifiOff size={14} className="text-amber-600" />
-                <span className="font-medium text-amber-700">Bot çevrimdışı</span>
+                <span className="font-medium text-amber-700">WhatsApp Cloud API yapılandırması eksik</span>
               </>
             )}
           </div>
           <p className="mt-1.5 text-slate-500">
             {whatsappContext.botCevrimici
-              ? 'Mesaj kuyruğa alınır alınmaz bot sırayla gönderir.'
-              : 'Mesaj kuyrukta bekler; bot PC\'si açılınca otomatik gönderilir.'}
+              ? "Onaylı ödeme talebi şablonu Meta'nın resmi API'si üzerinden doğrudan gönderilir."
+              : 'Gönderim için WhatsApp Cloud API erişim bilgileri kontrol edilmelidir.'}
           </p>
           {whatsappContext.sonGonderim ? (
             <p className="mt-1 text-slate-400">
-              Botun son gönderimi: {new Date(whatsappContext.sonGonderim).toLocaleString('tr-TR')}
+              Son gönderim: {new Date(whatsappContext.sonGonderim).toLocaleString('tr-TR')}
             </p>
           ) : null}
         </div>
@@ -165,7 +281,7 @@ export function HatirlatmaSendPanel({
         className="w-full"
       >
         {loading ? <LoaderCircle className="animate-spin" size={18} /> : <Send size={18} />}
-        WhatsApp kuyruğuna gönder
+        {seciliSayi > 1 ? `${seciliSayi} kişiye gönder` : 'WhatsApp ile gönder'}
       </Button>
 
       {/* YÜKSELTME ONAYI — kısa sürede ikinci evrak sessizce gitmez (HİDROBARSAN dersi). */}
@@ -194,57 +310,63 @@ export function HatirlatmaSendPanel({
         </div>
       ) : null}
 
-      {!hasPhone && <p className="text-xs text-red-600">Gönderim için cep telefonu gerekli.</p>}
-      {hasPhone && messageBody.trim().length === 0 && (
+      {telefonlar.length === 0 && (
+        <p className="text-xs text-red-600">Gönderim için cep telefonu gerekli.</p>
+      )}
+      {telefonlar.length > 0 && messageBody.trim().length === 0 && (
         <p className="text-xs text-red-600">Mesaj metni boş olamaz.</p>
       )}
-      {hasPhone && !isMobile && (
+      {telefonlar.length > 0 && cepNumaralari.length === 0 && (
         <p className="text-xs text-amber-700">
-          WhatsApp için cep telefonu girin (05… ile başlamalı).
+          Kayıtlı numaralar sabit hat. WhatsApp için cep telefonu girin (05… ile başlamalı).
         </p>
       )}
+      {cepNumaralari.length > 0 && seciliSayi === 0 && (
+        <p className="text-xs text-amber-700">Gönderim için en az bir alıcı seçin.</p>
+      )}
+      {telefonlar.length > 0 && messageBody.trim().length === 0 && (
+        <p className="text-xs text-red-600">Mesaj metni boş olamaz.</p>
+      )}
 
-      {/* Kuyruk durum takibi */}
-      {queue?.durum === 'bekliyor' || queue?.durum === 'gonderiliyor' ? (
-        <div className="rounded-lg border border-sky-200 bg-sky-50 p-3 text-sm text-sky-900">
-          <div className="flex items-center gap-2">
-            <Clock className="shrink-0 animate-pulse" size={18} />
-            <p>
-              {queue.durum === 'gonderiliyor'
-                ? 'Bot gönderiyor…'
-                : 'Kuyrukta bekliyor — bot birazdan gönderecek…'}
-            </p>
-          </div>
-        </div>
-      ) : null}
-      {queue?.durum === 'gonderildi' ? (
-        <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="shrink-0" size={18} />
-            <p className="font-medium">WhatsApp mesajı gönderildi ✓</p>
-          </div>
-        </div>
-      ) : null}
-      {queue?.durum === 'hata' ? (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
-          <div className="flex items-start gap-2">
-            <TriangleAlert className="mt-0.5 shrink-0" size={18} />
-            <div>
-              <p className="font-medium">Bot gönderemedi.</p>
-              {queue.hata ? <p className="mt-0.5 text-xs">{queue.hata}</p> : null}
-            </div>
-          </div>
-        </div>
+      {/* Alıcı başına kuyruk durum takibi */}
+      {alicilar?.length ? (
+        <ul className="space-y-1.5">
+          {alicilar.map((alici) => (
+            <li
+              key={alici.kuyrukId || alici.telefon}
+              className={`flex items-start gap-2 rounded-lg border p-2.5 text-sm ${
+                alici.durum === 'gonderildi'
+                  ? 'border-emerald-200 bg-emerald-50 text-emerald-900'
+                  : alici.durum === 'hata'
+                    ? 'border-red-200 bg-red-50 text-red-800'
+                    : 'border-sky-200 bg-sky-50 text-sky-900'
+              }`}
+            >
+              {alici.durum === 'gonderildi' ? (
+                <CheckCircle2 className="mt-0.5 shrink-0" size={16} />
+              ) : alici.durum === 'hata' ? (
+                <TriangleAlert className="mt-0.5 shrink-0" size={16} />
+              ) : (
+                <Clock className="mt-0.5 shrink-0 animate-pulse" size={16} />
+              )}
+              <div className="min-w-0">
+                <span className="font-medium">{formatPhoneDisplay(alici.telefon)}</span>
+                <span className="ml-1.5">{durumEtiketi[alici.durum]}</span>
+                {alici.hata ? <p className="mt-0.5 text-xs">{alici.hata}</p> : null}
+              </div>
+            </li>
+          ))}
+        </ul>
       ) : null}
 
-      {feedback?.type === 'success' && !queue ? (
+      {feedback?.type === 'success' && (
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
           <div className="flex items-start gap-2">
             <CheckCircle2 className="mt-0.5 shrink-0" size={18} />
             <p className="font-medium">{feedback.text}</p>
           </div>
         </div>
-      ) : null}
+      )}
       {feedback?.type === 'error' && (
         <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
           <div className="flex items-start gap-2">

@@ -3,17 +3,8 @@ import { createAdminClient } from './supabase/admin'
 import { normalizePhone } from './phone'
 
 /**
- * Tahsilat WhatsApp gönderimi — ss ile ORTAK Baileys kuyruğu (`whatsapp_kuyruk`).
- *
- * Meta resmi Cloud API DEĞİL. Mesajı `whatsapp_kuyruk`'a `durum='bekliyor'` yazarız;
- * ofis PC'sindeki Baileys botu (ss `tools/whatsapp-bot`) ss uç noktasını poll'leyip
- * `durum='bekliyor'` olan TÜM satırları çeker, `sock.sendMessage(grup_jid, {text})` ile
- * gönderir ve ack'ler. Bot `grup_jid`'i olduğu gibi Baileys'e verdiği için birey DM'i
- * (`<numara>@s.whatsapp.net`) grup JID'i (`…@g.us`) ile aynı şekilde çalışır — bot tarafında
- * değişiklik gerekmez.
- *
- * Aynı Supabase projesi ss ve KobiTahsilat arasında paylaşıldığı için ek endpoint/bot yok.
- * Tahsilat satırlarında `siparis_id/siparis_ids` boş kalır → ss ack'i satın-almaya dokunmaz.
+ * Eski Baileys kuyruk yardımcıları yalnızca geriye uyumluluk için tutulur.
+ * Yeni ödeme talepleri resmi WhatsApp Cloud API üzerinden gönderilir.
  */
 
 export type WhatsAppKuyrukDurum = 'bekliyor' | 'gonderiliyor' | 'gonderildi' | 'hata'
@@ -21,7 +12,7 @@ export type WhatsAppKuyrukDurum = 'bekliyor' | 'gonderiliyor' | 'gonderildi' | '
 /** Ofis botu ~10 sn'de bir poll ediyor; bu süreden yeni heartbeat varsa çevrimiçi sayılır. */
 const BOT_CEVRIMICI_ESIK_MS = 90_000
 
-/** Kuyruk gönderimi açık mı? (bot çalışsa da bu bayrakla enqueue kapatılabilir) */
+/** WhatsApp ödeme talebi gönderimi bu ayarla geçici olarak kapatılabilir. */
 export function whatsAppBotEnabled(): boolean {
   return process.env.WHATSAPP_SEND_ENABLED !== 'false'
 }
